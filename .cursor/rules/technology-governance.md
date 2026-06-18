@@ -1,6 +1,7 @@
 # TECHNOLOGY GOVERNANCE RULES
 
 Version: 1.0
+Status: Draft
 
 Project:
 Multi-Tenant School Administration Management SaaS Platform
@@ -21,6 +22,9 @@ Always verify against:
 * DECISIONS_LOG.md
 * SYSTEM_ARCHITECTURE.md
 * PROJECT_OVERVIEW.md
+* TENANCY_DESIGN.md (authoritative for multi-tenancy)
+* MODULE_SPECIFICATIONS.md (authoritative for the module list)
+* DEVELOPMENT_ROADMAP.md (authoritative for phase sequence)
 
 These documents are authoritative.
 
@@ -49,14 +53,14 @@ Do not invent versions.
 
 # TECHNOLOGY STACK AUTHORITY
 
-Current approved stack:
+Current approved stack (Installed = present now; Planned = selected, not yet installed):
 
 Backend:
 
-* Laravel 13
+* Laravel 13 (Installed)
 * PHP 8.4
 
-Frontend:
+Frontend (Planned):
 
 * Blade Templates
 * Bootstrap 5
@@ -67,13 +71,14 @@ Database:
 
 * MySQL 8
 
-Authentication:
+Authentication (Planned):
 
 * Laravel Breeze
 
 Multi-Tenancy:
 
-* Stancl Tenancy
+* Native Laravel Multi-Tenancy (school_id + Global Scopes)
+* No external tenancy package (Stancl Tenancy is NOT used) — see docs/TENANCY_DESIGN.md
 
 Any recommendation conflicting with this stack requires explicit justification.
 

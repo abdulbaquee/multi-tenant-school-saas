@@ -1,6 +1,7 @@
 # PROJECT RULES
 
-Version: 2.0
+Version: 1.0
+Status: Draft
 
 Project:
 Multi-Tenant School Administration Management SaaS Platform
@@ -34,7 +35,7 @@ Backend
 * Laravel 13
 * PHP 8.4
 
-Frontend
+Frontend (Planned)
 
 * Blade Templates
 * Bootstrap 5
@@ -45,13 +46,14 @@ Database
 
 * MySQL 8
 
-Authentication
+Authentication (Planned)
 
 * Laravel Breeze
 
 Multi-Tenancy
 
-* Stancl Tenancy
+* Native Laravel Multi-Tenancy (school_id + Global Scopes) — see docs/TENANCY_DESIGN.md
+* No external tenancy package (Stancl Tenancy is NOT used)
 
 Version Control
 
@@ -111,6 +113,11 @@ Tenant Key:
 
 school_id
 
+Implementation:
+
+Native Laravel Multi-Tenancy — a BelongsToTenant trait + Eloquent global scope +
+TenantContext middleware. No external tenancy package. See docs/TENANCY_DESIGN.md.
+
 Every business entity must belong to a school.
 
 Examples:
@@ -122,7 +129,11 @@ Examples:
 * subjects
 * report_cards
 
-Every query must be tenant scoped.
+Tenant scoping is applied automatically by the global scope (default-deny). Every
+tenant-owned model MUST use the BelongsToTenant trait. Do not rely on manual
+where('school_id', ...) filtering as the protection mechanism.
+
+Super Admin (school_id = NULL) bypasses the scope only via authorized paths.
 
 Never generate code that allows cross-tenant access.
 
