@@ -1,5 +1,8 @@
 # ENTITY RELATIONSHIP DIAGRAM (ERD)
 
+Version: 1.1
+Status: Draft - Matches DATABASE_DESIGN.md v1.1
+
 Project:
 Multi-Tenant School Administration Management SaaS Platform
 
@@ -17,262 +20,615 @@ school_id
 
 ---
 
-# Purpose
+# 1. PURPOSE
 
-This document defines the logical Entity Relationship Diagram (ERD) for the Multi-Tenant School Administration Management SaaS Platform.
+This document defines the logical Entity Relationship Diagram for the 28-table database design in `DATABASE_DESIGN.md`.
 
-The ERD illustrates the relationships between major database entities and serves as the foundation for:
+The ERD is the visual reference for:
 
-* Database Migrations
-* Eloquent Models
-* Foreign Key Design
-* System Architecture
-* MCA Project Report
+* Database relationships
+* Foreign key planning
+* Tenant isolation
+* MCA report explanation
+* Future migration implementation
 
 ---
 
-# High-Level Entity Relationships
+# 2. COMPLETE ER DIAGRAM
 
 ```mermaid
 erDiagram
+    SCHOOLS {
+        bigint id PK
+        varchar name
+        varchar code UK
+        varchar email UK
+        varchar phone
+        text address
+        varchar city
+        varchar state
+        varchar country
+        varchar postal_code
+        varchar principal_name
+        varchar website
+        varchar status
+        timestamp deactivated_at
+        text deactivation_reason
+        timestamp created_at
+        timestamp updated_at
+        timestamp deleted_at
+    }
 
-    SCHOOLS ||--o{ SCHOOL_SETTINGS : has
-    SCHOOLS ||--o{ USERS : has
+    SCHOOL_SETTINGS {
+        bigint id PK
+        bigint school_id FK,UK
+        varchar logo_path
+        varchar timezone
+        varchar currency
+        tinyint academic_year_start_month
+        time attendance_start_time
+        varchar grading_system
+        json settings_json
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    ROLES {
+        bigint id PK
+        varchar name UK
+        varchar code UK
+        text description
+        boolean is_system
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    PERMISSIONS {
+        bigint id PK
+        varchar name
+        varchar code UK
+        varchar module
+        text description
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    ROLE_PERMISSIONS {
+        bigint id PK
+        bigint role_id FK
+        bigint permission_id FK
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    USERS {
+        bigint id PK
+        bigint school_id FK
+        bigint role_id FK
+        varchar name
+        varchar email UK
+        timestamp email_verified_at
+        varchar password
+        varchar phone
+        varchar status
+        timestamp last_login_at
+        varchar remember_token
+        timestamp created_at
+        timestamp updated_at
+        timestamp deleted_at
+    }
+
+    ACADEMIC_YEARS {
+        bigint id PK
+        bigint school_id FK
+        varchar name
+        date start_date
+        date end_date
+        boolean is_current
+        varchar status
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    ACADEMIC_TERMS {
+        bigint id PK
+        bigint school_id FK
+        bigint academic_year_id FK
+        varchar name
+        tinyint term_order
+        date start_date
+        date end_date
+        varchar status
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    CLASSES {
+        bigint id PK
+        bigint school_id FK
+        varchar name
+        varchar code
+        smallint sort_order
+        varchar status
+        timestamp created_at
+        timestamp updated_at
+        timestamp deleted_at
+    }
+
+    SECTIONS {
+        bigint id PK
+        bigint school_id FK
+        bigint class_id FK
+        bigint teacher_id FK
+        varchar name
+        smallint capacity
+        varchar status
+        timestamp created_at
+        timestamp updated_at
+        timestamp deleted_at
+    }
+
+    SUBJECTS {
+        bigint id PK
+        bigint school_id FK
+        bigint class_id FK
+        bigint teacher_id FK
+        varchar name
+        varchar code
+        varchar subject_type
+        varchar status
+        timestamp created_at
+        timestamp updated_at
+        timestamp deleted_at
+    }
+
+    TEACHERS {
+        bigint id PK
+        bigint school_id FK
+        bigint user_id FK,UK
+        varchar employee_code
+        varchar qualification
+        varchar specialization
+        varchar phone
+        date joining_date
+        varchar status
+        timestamp created_at
+        timestamp updated_at
+        timestamp deleted_at
+    }
+
+    STUDENTS {
+        bigint id PK
+        bigint school_id FK
+        varchar admission_no
+        varchar roll_no
+        varchar first_name
+        varchar last_name
+        varchar gender
+        date date_of_birth
+        varchar photo_path
+        varchar guardian_name
+        varchar guardian_phone
+        varchar guardian_email
+        text address
+        date admission_date
+        varchar status
+        timestamp created_at
+        timestamp updated_at
+        timestamp deleted_at
+    }
+
+    STUDENT_ENROLLMENTS {
+        bigint id PK
+        bigint school_id FK
+        bigint student_id FK
+        bigint academic_year_id FK
+        bigint class_id FK
+        bigint section_id FK
+        varchar roll_no
+        date enrollment_date
+        varchar status
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    ATTENDANCES {
+        bigint id PK
+        bigint school_id FK
+        bigint student_id FK
+        bigint academic_year_id FK
+        bigint class_id FK
+        bigint section_id FK
+        date attendance_date
+        varchar status
+        text remarks
+        bigint marked_by FK
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    FEE_CATEGORIES {
+        bigint id PK
+        bigint school_id FK
+        varchar name
+        text description
+        varchar status
+        timestamp created_at
+        timestamp updated_at
+        timestamp deleted_at
+    }
+
+    FEE_STRUCTURES {
+        bigint id PK
+        bigint school_id FK
+        bigint fee_category_id FK
+        bigint academic_year_id FK
+        bigint class_id FK
+        decimal amount
+        date due_date
+        varchar frequency
+        varchar status
+        timestamp created_at
+        timestamp updated_at
+        timestamp deleted_at
+    }
+
+    STUDENT_FEES {
+        bigint id PK
+        bigint school_id FK
+        bigint student_id FK
+        bigint fee_structure_id FK
+        bigint academic_year_id FK
+        decimal amount
+        decimal discount_amount
+        decimal payable_amount
+        decimal paid_amount
+        decimal balance_amount
+        date due_date
+        varchar status
+        timestamp created_at
+        timestamp updated_at
+        timestamp deleted_at
+    }
+
+    FEE_PAYMENTS {
+        bigint id PK
+        bigint school_id FK
+        bigint student_fee_id FK
+        bigint student_id FK
+        varchar receipt_no
+        decimal amount_paid
+        date payment_date
+        varchar payment_mode
+        varchar status
+        bigint received_by FK
+        text remarks
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    PAYMENT_TRANSACTIONS {
+        bigint id PK
+        bigint school_id FK
+        bigint fee_payment_id FK
+        varchar transaction_no
+        varchar gateway_reference
+        decimal amount
+        varchar payment_mode
+        varchar status
+        timestamp processed_at
+        json raw_response
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    GRADE_SCALES {
+        bigint id PK
+        bigint school_id FK
+        varchar grade
+        decimal min_percentage
+        decimal max_percentage
+        decimal grade_point
+        varchar remarks
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    EXAMS {
+        bigint id PK
+        bigint school_id FK
+        bigint academic_year_id FK
+        bigint academic_term_id FK
+        varchar name
+        varchar exam_type
+        date start_date
+        date end_date
+        varchar status
+        timestamp created_at
+        timestamp updated_at
+        timestamp deleted_at
+    }
+
+    EXAM_SUBJECTS {
+        bigint id PK
+        bigint school_id FK
+        bigint exam_id FK
+        bigint subject_id FK
+        bigint class_id FK
+        date exam_date
+        decimal max_marks
+        decimal passing_marks
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    EXAM_RESULTS {
+        bigint id PK
+        bigint school_id FK
+        bigint exam_id FK
+        bigint exam_subject_id FK
+        bigint student_id FK
+        bigint subject_id FK
+        decimal marks_obtained
+        bigint grade_scale_id FK
+        varchar result_status
+        text remarks
+        bigint entered_by FK
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    REPORT_CARDS {
+        bigint id PK
+        bigint school_id FK
+        bigint exam_id FK
+        bigint student_id FK
+        bigint academic_year_id FK
+        bigint class_id FK
+        bigint section_id FK
+        decimal total_marks
+        decimal marks_obtained
+        decimal percentage
+        bigint grade_scale_id FK
+        varchar result_status
+        timestamp generated_at
+        bigint generated_by FK
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    ACTIVITY_LOGS {
+        bigint id PK
+        bigint school_id FK
+        bigint user_id FK
+        varchar module
+        varchar action
+        text description
+        varchar subject_type
+        bigint subject_id
+        varchar ip_address
+        text user_agent
+        timestamp created_at
+    }
+
+    AUDIT_LOGS {
+        bigint id PK
+        bigint school_id FK
+        bigint user_id FK
+        varchar auditable_type
+        bigint auditable_id
+        varchar event
+        json old_values
+        json new_values
+        varchar ip_address
+        text user_agent
+        timestamp created_at
+    }
+
+    BACKUP_LOGS {
+        bigint id PK
+        bigint school_id FK
+        varchar backup_type
+        varchar backup_scope
+        varchar file_path
+        bigint file_size_bytes
+        varchar status
+        timestamp started_at
+        timestamp completed_at
+        bigint generated_by FK
+        text error_message
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    SCHOOLS ||--|| SCHOOL_SETTINGS : has
+    SCHOOLS ||--o{ USERS : owns
+    ROLES ||--o{ USERS : assigned_to
+    ROLES ||--o{ ROLE_PERMISSIONS : has
+    PERMISSIONS ||--o{ ROLE_PERMISSIONS : granted_by
+
+    SCHOOLS ||--o{ ACADEMIC_YEARS : has
+    SCHOOLS ||--o{ ACADEMIC_TERMS : has
+    ACADEMIC_YEARS ||--o{ ACADEMIC_TERMS : contains
+
     SCHOOLS ||--o{ TEACHERS : has
+    USERS ||--o| TEACHERS : profile
+
     SCHOOLS ||--o{ CLASSES : has
     SCHOOLS ||--o{ SECTIONS : has
     SCHOOLS ||--o{ SUBJECTS : has
-    SCHOOLS ||--o{ STUDENTS : has
-    SCHOOLS ||--o{ EXAMS : has
-
-    ROLES ||--o{ USERS : assigned_to
-
-    USERS ||--|| TEACHERS : profile
-
-    ACADEMIC_YEARS ||--o{ STUDENT_ENROLLMENTS : contains
-
     CLASSES ||--o{ SECTIONS : contains
+    CLASSES ||--o{ SUBJECTS : offers
+    TEACHERS ||--o{ SECTIONS : assigned_as_class_teacher
+    TEACHERS ||--o{ SUBJECTS : teaches
 
+    SCHOOLS ||--o{ STUDENTS : has
+    SCHOOLS ||--o{ STUDENT_ENROLLMENTS : has
     STUDENTS ||--o{ STUDENT_ENROLLMENTS : enrolled
-
+    ACADEMIC_YEARS ||--o{ STUDENT_ENROLLMENTS : contains
     CLASSES ||--o{ STUDENT_ENROLLMENTS : assigned
-
     SECTIONS ||--o{ STUDENT_ENROLLMENTS : assigned
 
-    STUDENTS ||--o{ ATTENDANCES : has
+    SCHOOLS ||--o{ ATTENDANCES : has
+    STUDENTS ||--o{ ATTENDANCES : marked_for
+    ACADEMIC_YEARS ||--o{ ATTENDANCES : groups
+    CLASSES ||--o{ ATTENDANCES : groups
+    SECTIONS ||--o{ ATTENDANCES : groups
+    USERS ||--o{ ATTENDANCES : marks
 
+    SCHOOLS ||--o{ FEE_CATEGORIES : has
+    SCHOOLS ||--o{ FEE_STRUCTURES : has
     FEE_CATEGORIES ||--o{ FEE_STRUCTURES : defines
+    ACADEMIC_YEARS ||--o{ FEE_STRUCTURES : applies_to
+    CLASSES ||--o{ FEE_STRUCTURES : applies_to
 
+    SCHOOLS ||--o{ STUDENT_FEES : has
     STUDENTS ||--o{ STUDENT_FEES : assigned
+    FEE_STRUCTURES ||--o{ STUDENT_FEES : generates
+    ACADEMIC_YEARS ||--o{ STUDENT_FEES : groups
 
-    FEE_STRUCTURES ||--o{ STUDENT_FEES : linked
-
+    SCHOOLS ||--o{ FEE_PAYMENTS : has
     STUDENT_FEES ||--o{ FEE_PAYMENTS : paid_by
+    STUDENTS ||--o{ FEE_PAYMENTS : makes
+    USERS ||--o{ FEE_PAYMENTS : receives
 
+    SCHOOLS ||--o{ PAYMENT_TRANSACTIONS : has
+    FEE_PAYMENTS ||--o{ PAYMENT_TRANSACTIONS : records
+
+    SCHOOLS ||--o{ GRADE_SCALES : has
+    SCHOOLS ||--o{ EXAMS : has
+    ACADEMIC_YEARS ||--o{ EXAMS : contains
+    ACADEMIC_TERMS ||--o{ EXAMS : contains
+
+    SCHOOLS ||--o{ EXAM_SUBJECTS : has
     EXAMS ||--o{ EXAM_SUBJECTS : contains
-
     SUBJECTS ||--o{ EXAM_SUBJECTS : linked
+    CLASSES ||--o{ EXAM_SUBJECTS : assigned
 
-    STUDENTS ||--o{ EXAM_RESULTS : receives
-
+    SCHOOLS ||--o{ EXAM_RESULTS : has
     EXAMS ||--o{ EXAM_RESULTS : produces
-
+    EXAM_SUBJECTS ||--o{ EXAM_RESULTS : receives
+    STUDENTS ||--o{ EXAM_RESULTS : earns
     SUBJECTS ||--o{ EXAM_RESULTS : evaluated
+    GRADE_SCALES ||--o{ EXAM_RESULTS : grades
+    USERS ||--o{ EXAM_RESULTS : enters
 
-    GRADE_SCALES ||--o{ REPORT_CARDS : determines
-
+    SCHOOLS ||--o{ REPORT_CARDS : has
+    EXAMS ||--o{ REPORT_CARDS : generates
     STUDENTS ||--o{ REPORT_CARDS : receives
+    ACADEMIC_YEARS ||--o{ REPORT_CARDS : groups
+    CLASSES ||--o{ REPORT_CARDS : groups
+    SECTIONS ||--o{ REPORT_CARDS : groups
+    GRADE_SCALES ||--o{ REPORT_CARDS : grades
+    USERS ||--o{ REPORT_CARDS : generates
 
-    ACTIVITY_LOGS }o--|| USERS : generated_by
+    SCHOOLS ||--o{ ACTIVITY_LOGS : records
+    USERS ||--o{ ACTIVITY_LOGS : performs
 
-    AUDIT_LOGS }o--|| USERS : modified_by
+    SCHOOLS ||--o{ AUDIT_LOGS : records
+    USERS ||--o{ AUDIT_LOGS : modifies
+
+    SCHOOLS ||--o{ BACKUP_LOGS : scopes
+    USERS ||--o{ BACKUP_LOGS : generates
 ```
 
 ---
 
-# Core Entity Overview
+# 3. TABLE COVERAGE CHECK
 
-## School
+| Module | Tables Included |
+| ------ | --------------- |
+| Core | schools, school_settings, users, roles, permissions, role_permissions |
+| Academic | academic_years, academic_terms, classes, sections, subjects, teachers, students, student_enrollments |
+| Attendance | attendances |
+| Fees | fee_categories, fee_structures, student_fees, fee_payments, payment_transactions |
+| Examinations | exams, exam_subjects, exam_results, grade_scales, report_cards |
+| System | activity_logs, audit_logs, backup_logs |
 
-Primary Tenant Entity
-
-Relationship:
-
-School
-├── Users
-├── Teachers
-├── Students
-├── Classes
-├── Sections
-├── Subjects
-├── Exams
-└── Settings
-
-Every business record belongs to a school.
+Total Tables Included: 28
 
 ---
 
-## User Management
+# 4. CARDINALITY SUMMARY
 
-```text
-Roles
-│
-└── Users
-     │
-     └── Teachers
-```
-
-Roles:
-
-* Super Admin
-* School Admin
-* Teacher
-* Accountant
-
----
-
-## Academic Structure
-
-```text
-Academic Year
-│
-├── Classes
-│   │
-│   └── Sections
-│
-└── Student Enrollments
-        │
-        └── Students
-```
-
-Purpose:
-
-Track student movement across academic years without modifying historical records.
-
----
-
-## Attendance Structure
-
-```text
-Students
-    │
-    └── Attendances
-```
-
-One student can have many attendance records.
-
----
-
-## Fee Structure
-
-```text
-Fee Categories
-      │
-      └── Fee Structures
-               │
-               └── Student Fees
-                        │
-                        └── Fee Payments
-```
-
-Purpose:
-
-Support flexible fee assignment and payment tracking.
-
----
-
-## Examination Structure
-
-```text
-Exams
-│
-├── Exam Subjects
-│
-└── Exam Results
-        │
-        └── Report Cards
-```
-
-Purpose:
-
-Manage examinations, marks, grading, and final results.
-
----
-
-# Key Foreign Keys
-
-| Table        | Foreign Key |
+| Relationship | Cardinality |
 | ------------ | ----------- |
-| users        | school_id   |
-| teachers     | school_id   |
-| students     | school_id   |
-| classes      | school_id   |
-| sections     | school_id   |
-| subjects     | school_id   |
-| exams        | school_id   |
-| attendances  | school_id   |
-| fee_payments | school_id   |
-| exam_results | school_id   |
+| School to School Settings | One to One |
+| School to Users | One to Many |
+| Role to Users | One to Many |
+| Role to Role Permissions | One to Many |
+| Permission to Role Permissions | One to Many |
+| School to Academic Years | One to Many |
+| Academic Year to Academic Terms | One to Many |
+| School to Teachers | One to Many |
+| User to Teacher Profile | One to Zero or One |
+| Class to Sections | One to Many |
+| Class to Subjects | One to Many |
+| Teacher to Sections | One to Many |
+| Teacher to Subjects | One to Many |
+| School to Students | One to Many |
+| Student to Student Enrollments | One to Many |
+| Academic Year to Student Enrollments | One to Many |
+| Class to Student Enrollments | One to Many |
+| Section to Student Enrollments | One to Many |
+| Student to Attendances | One to Many |
+| Fee Category to Fee Structures | One to Many |
+| Fee Structure to Student Fees | One to Many |
+| Student to Student Fees | One to Many |
+| Student Fee to Fee Payments | One to Many |
+| Fee Payment to Payment Transactions | One to Many |
+| Academic Year to Exams | One to Many |
+| Academic Term to Exams | One to Many |
+| Exam to Exam Subjects | One to Many |
+| Subject to Exam Subjects | One to Many |
+| Exam Subject to Exam Results | One to Many |
+| Student to Exam Results | One to Many |
+| Grade Scale to Exam Results | One to Many |
+| Exam to Report Cards | One to Many |
+| Student to Report Cards | One to Many |
+| Grade Scale to Report Cards | One to Many |
+| User to Activity Logs | One to Many |
+| User to Audit Logs | One to Many |
+| User to Backup Logs | One to Many |
 
 ---
 
-# Tenant Isolation Rule
+# 5. TENANT ISOLATION RULE
 
-Every business table must contain:
+Tenant-owned tables contain `school_id` and are scoped to the active school.
 
-school_id
+Platform-level tables without tenant ownership:
 
-Examples:
+* roles
+* permissions
+* role_permissions
 
-* students.school_id
-* attendances.school_id
-* exams.school_id
-* fee_payments.school_id
-* report_cards.school_id
+Tables that may contain `school_id = NULL` for Super Admin or platform-level records:
 
-This ensures complete tenant-level data isolation.
-
----
-
-# Cardinality Summary
-
-| Relationship                | Type        |
-| --------------------------- | ----------- |
-| School → Users              | One to Many |
-| School → Students           | One to Many |
-| School → Classes            | One to Many |
-| Class → Sections            | One to Many |
-| Student → Attendances       | One to Many |
-| Student → Student Fees      | One to Many |
-| Student → Exam Results      | One to Many |
-| Exam → Exam Subjects        | One to Many |
-| Subject → Exam Results      | One to Many |
-| Role → Users                | One to Many |
-| Academic Year → Enrollments | One to Many |
+* users
+* activity_logs
+* audit_logs
+* backup_logs
 
 ---
 
-# ER Diagram Design Principles
+# 6. DELETION AND RETENTION RULE
 
-* Fully normalized database structure
-* Tenant-aware architecture
-* Soft delete support
-* Audit-friendly design
-* Scalable SaaS architecture
-* Laravel Eloquent relationship friendly
-* MySQL 8 optimized
+The ERD assumes `restrictOnDelete()` for foreign keys. School, user, teacher, student, class, section, subject, exam, and selected fee setup records use soft deletes. Historical records such as attendance, payments, transactions, exam results, report cards, audit logs, and activity logs are retained.
+
+This matches the deletion strategy in `DATABASE_DESIGN.md`.
 
 ---
 
-# Next Step
+# 7. SUCCESS CRITERIA
 
-After ER Diagram approval:
+The ERD is complete when:
 
-1. Create SYSTEM_ARCHITECTURE.md
-2. Define Laravel migrations
-3. Create Eloquent models
-4. Define relationships
-5. Begin Authentication & RBAC implementation
-
-```
-```
+* All 28 tables are represented.
+* `school_settings` is one-to-one with `schools`.
+* RBAC tables include roles, permissions, and role_permissions.
+* Academic terms are included.
+* Payment transactions are included.
+* Backup logs are included.
+* Cardinalities match `DATABASE_DESIGN.md`.
+* No stale implementation next steps or malformed code blocks remain.

@@ -1,8 +1,13 @@
 # CHANGELOG
 
+Version: 1.0
+Status: Draft
+
 All notable changes to the Multi-Tenant School Administration Management SaaS Platform project will be documented in this file.
 
 The format is inspired by Keep a Changelog and adapted for MCA project development milestones.
+
+Phase numbering follows the canonical sequence in `DEVELOPMENT_ROADMAP.md`.
 
 ---
 
@@ -23,13 +28,16 @@ Status: Completed
 
 ## Technology Stack
 
-* Laravel 13
+* Laravel 13 (Installed)
 * PHP 8.4
 * MySQL 8
-* Bootstrap 5
-* Laravel Breeze
-* Stancl Tenancy
+* Bootstrap 5 (Planned)
+* Laravel Breeze (Planned)
+* Native Laravel Multi-Tenancy (school_id + Global Scopes)
 * Git & GitHub
+
+> Note: The multi-tenancy approach was revised on 2026-06-19 from Stancl Tenancy
+> to Native Laravel Multi-Tenancy. See DECISIONS_LOG.md DECISION-005-R.
 
 ## Documentation Created
 
@@ -85,7 +93,7 @@ Development environment ready.
 
 # [0.3.0] - Architecture & Database Design
 
-Status: Planned
+Status: In Progress
 
 ## Planned
 
@@ -94,13 +102,42 @@ Status: Planned
 * Database schema design
 * Tenant isolation strategy
 * Naming conventions
-* Migration planning
+* Migration planning documentation
 
 ## Deliverables
 
 * DATABASE_DESIGN.md
-* ER Diagram
-* Initial migrations
+* ER_DIAGRAM.md
+* TENANCY_DESIGN.md
+* Migration blueprint only; no migrations generated during documentation remediation
+
+---
+
+# [0.3.1] - Phase 2 Documentation Remediation
+
+Date: 2026-06-19
+
+Status: Completed
+
+## Changed
+
+* Completed implementation-ready data dictionary for all 28 planned tables.
+* Rebuilt ERD to include all 28 tables and corrected `schools` to `school_settings` as one-to-one.
+* Added roles, permissions, role_permissions, academic_terms, payment_transactions, and backup_logs to the ERD.
+* Created one canonical role permission matrix in MODULE_SPECIFICATIONS.md.
+* Reconciled dashboard visibility, menus, reports, fees, audit logs, and backup access across documentation.
+* Removed orphan settings references from scope and navigation.
+* Standardized deletion strategy around soft deletes, historical retention, and `restrictOnDelete()`.
+* Added secure file-storage policy for student photos, school logos, and backups.
+* Added student data privacy, data access, data retention, and minor privacy guidance.
+* Updated project governance status for documentation remediation.
+
+## Notes
+
+* Documentation only.
+* No application code generated.
+* No migrations generated.
+* No models, controllers, or package changes made.
 
 ---
 
@@ -339,14 +376,16 @@ Example:
 
 # Current Project Status
 
-Phase: Planning & Architecture
+Phase: Documentation Phase (Phase 1 — Architecture & Database Design, In Progress)
 
 Repository Setup: Completed
 
 Laravel Installation: Completed
 
-Documentation Setup: Completed
+Documentation Setup: Completed (Draft v1.0; Phase 2 remediation applied)
 
-Database Design: Pending
+Database Design Documentation: Remediated and implementation-ready draft (DATABASE_DESIGN.md, ER_DIAGRAM.md)
 
-Development Progress: 5%
+Application Implementation: Laravel 13 installed; business modules not implemented
+
+Development Progress: ~3–5%

@@ -1,6 +1,7 @@
 # SCREEN FLOW
 
-Version: 2.0
+Version: 1.1
+Status: Draft - Permission Aligned
 
 Project:
 Multi-Tenant School Administration Management SaaS Platform
@@ -11,14 +12,14 @@ Master of Computer Applications (MCA)
 Framework:
 Laravel 13
 
-Frontend:
+Planned Frontend:
 Blade Templates + Bootstrap 5
 
 Purpose:
 
 Define application navigation, user journeys, menu hierarchy, screen relationships, breadcrumbs, and module navigation flows.
 
-This document serves as the master navigation reference for development, testing, screenshots, and project demonstrations.
+The canonical permission matrix is defined in `MODULE_SPECIFICATIONS.md`. Every menu in this document must match that matrix.
 
 ---
 
@@ -27,50 +28,30 @@ This document serves as the master navigation reference for development, testing
 Login
 │
 ▼
-Role Dashboard
-│
-├── School Management
-├── School Settings
-├── User Management
-├── Academic Structure
-├── Student Management
-├── Attendance Management
-├── Fee Management
-├── Examination Management
-├── Reporting
-├── Analytics
-├── Activity Logs
-├── Audit Logs
-└── Backup Management
-
----
-
-# 2. LOGIN FLOW
-
-Login Page
-│
-▼
 Authenticate User
 │
 ▼
-Resolve Tenant
+Resolve Tenant Context
 │
 ▼
-Determine Role
+Resolve Role & Permissions
 │
 ▼
-Role Dashboard
+Role-Specific Dashboard
+│
+▼
+Authorized Menus Only
 
 ---
 
-# 3. GLOBAL LAYOUT STRUCTURE
+# 2. GLOBAL LAYOUT STRUCTURE
 
 Every authenticated screen contains:
 
 Header
 │
-├── School Name
-├── Academic Year
+├── School Name or Platform Name
+├── Active Academic Year when applicable
 ├── User Role
 ├── Notifications
 └── User Menu
@@ -88,60 +69,7 @@ Footer
 
 ---
 
-# 4. DASHBOARD FLOW
-
-## Super Admin Dashboard
-
-Dashboard
-│
-├── Schools
-├── Users
-├── Reports
-├── Activity Logs
-├── Audit Logs
-├── Analytics
-└── System Settings
-
----
-
-## School Admin Dashboard
-
-Dashboard
-│
-├── Students
-├── Attendance
-├── Fees
-├── Examinations
-├── Reports
-├── Users
-└── Academic Structure
-
----
-
-## Teacher Dashboard
-
-Dashboard
-│
-├── Students
-├── Attendance
-├── Marks Entry
-├── Results
-└── Reports
-
----
-
-## Accountant Dashboard
-
-Dashboard
-│
-├── Fee Collection
-├── Transactions
-├── Receipts
-└── Financial Reports
-
----
-
-# 5. SIDEBAR NAVIGATION RULES
+# 3. NAVIGATION RULES
 
 Maximum Navigation Depth:
 
@@ -149,46 +77,148 @@ Maximum Navigation Depth:
 
 Rules:
 
-* Keep navigation simple
-* No nested third-level menus
-* Frequently used actions must remain visible
-* Consistent ordering across modules
+* Menus must be generated from the user's permissions.
+* Hidden menu items must also be protected by authorization checks.
+* No role may see a menu for a module marked "No" in the canonical permission matrix.
+* Reports must only show categories available to the current role.
+* Dashboard widgets must only summarize data available to the current role.
+* No separate platform-wide or application-wide settings module may appear in navigation.
 
 ---
 
-# 6. SUPER ADMIN MENU
+# 4. SUPER ADMIN DASHBOARD FLOW
+
+Dashboard
+│
+├── Schools
+├── Users
+├── Reports
+├── Analytics
+├── Activity Logs
+├── Audit Logs
+└── Backup Management
+
+Visible Widgets:
+
+* Total Schools
+* Active Schools
+* Total Users
+* Recent Platform Activity
+* Audit Alerts
+* Backup Status
+
+---
+
+# 5. SCHOOL ADMIN DASHBOARD FLOW
+
+Dashboard
+│
+├── School Settings
+├── Users
+├── Academic Structure
+├── Students
+├── Attendance
+├── Fees
+├── Examinations
+├── Reports
+├── Analytics
+├── Activity Logs
+└── Audit Logs
+
+Visible Widgets:
+
+* Total Students
+* Attendance Summary
+* Fee Summary
+* Examination Summary
+* Recent School Activity
+
+---
+
+# 6. TEACHER DASHBOARD FLOW
+
+Dashboard
+│
+├── Students
+├── Attendance
+├── Examinations
+└── Reports
+
+Visible Widgets:
+
+* Assigned Classes
+* Today's Attendance
+* Pending Marks Entry
+* Recent Examination Results
+
+---
+
+# 7. ACCOUNTANT DASHBOARD FLOW
+
+Dashboard
+│
+├── Fees
+└── Reports
+
+Visible Widgets:
+
+* Today's Fee Collections
+* Outstanding Fees
+* Recent Transactions
+* Receipt Summary
+
+---
+
+# 8. SUPER ADMIN MENU
 
 Dashboard
 
 Schools
 ├── All Schools
-└── Add School
+├── Add School
+└── School Details
 
 Users
 ├── All Users
 └── Add User
 
 Reports
+├── School Reports
+├── User Reports
+├── Activity Reports
+├── Audit Reports
+└── Backup Reports
+
+Analytics
 
 Activity Logs
 
 Audit Logs
 
-Analytics
-
-System Settings
+Backup Management
+├── Backup Dashboard
+├── Create Backup
+├── Backup History
+└── Backup Details
 
 Profile
 
 ---
 
-# 7. SCHOOL ADMIN MENU
+# 9. SCHOOL ADMIN MENU
 
 Dashboard
 
 School Settings
+├── General Settings
+├── Academic Settings
+├── Attendance Settings
+├── Grading Settings
+└── Logo Management
 
 Users
+├── All Users
+└── Add User
 
 Academic Structure
 ├── Academic Years
@@ -210,7 +240,9 @@ Attendance
 Fees
 ├── Fee Categories
 ├── Fee Structures
+├── Student Fees
 ├── Fee Collection
+├── Payment History
 └── Fee Reports
 
 Examinations
@@ -220,21 +252,34 @@ Examinations
 └── Report Cards
 
 Reports
+├── Student Reports
+├── Attendance Reports
+├── Fee Reports
+├── Examination Reports
+├── Activity Reports
+└── Audit Reports
 
 Analytics
+
+Activity Logs
+
+Audit Logs
 
 Profile
 
 ---
 
-# 8. TEACHER MENU
+# 10. TEACHER MENU
 
 Dashboard
 
 Students
+├── Assigned Students
+└── Student Profiles
 
 Attendance
 ├── Mark Attendance
+├── Attendance History
 └── Attendance Reports
 
 Examinations
@@ -243,12 +288,15 @@ Examinations
 └── Report Cards
 
 Reports
+├── Assigned Student Reports
+├── Attendance Reports
+└── Examination Reports
 
 Profile
 
 ---
 
-# 9. ACCOUNTANT MENU
+# 11. ACCOUNTANT MENU
 
 Dashboard
 
@@ -256,15 +304,19 @@ Fees
 ├── Fee Collection
 ├── Receipts
 ├── Transactions
+├── Outstanding Fees
 └── Fee Reports
 
-Financial Reports
+Reports
+├── Fee Collection Reports
+├── Outstanding Fee Reports
+└── Transaction Reports
 
 Profile
 
 ---
 
-# 10. SCHOOL MANAGEMENT FLOW
+# 12. SCHOOL MANAGEMENT FLOW
 
 School List
 │
@@ -274,9 +326,50 @@ School List
 ├── Activate School
 └── Deactivate School
 
+Access:
+
+* Super Admin only
+
 ---
 
-# 11. ACADEMIC STRUCTURE FLOW
+# 13. SCHOOL SETTINGS FLOW
+
+General Settings
+│
+├── Edit School Profile
+├── Update Contact Information
+├── Upload School Logo
+├── Update Academic Settings
+├── Update Attendance Settings
+└── Update Grading Settings
+
+Access:
+
+* School Admin: full access for own school
+* Super Admin: view through School Details only
+
+---
+
+# 14. USER MANAGEMENT FLOW
+
+User List
+│
+├── Add User
+├── View User
+├── Edit User
+├── Assign Role
+├── Reset Password
+├── Activate User
+└── Deactivate User
+
+Access:
+
+* Super Admin: platform users and school users
+* School Admin: own school users only
+
+---
+
+# 15. ACADEMIC STRUCTURE FLOW
 
 Academic Years
 │
@@ -308,9 +401,14 @@ Subjects
 ├── Edit Subject
 └── View Subject
 
+Access:
+
+* School Admin: full access
+* Teacher: view assigned classes and subjects
+
 ---
 
-# 12. STUDENT MANAGEMENT FLOW
+# 16. STUDENT MANAGEMENT FLOW
 
 Student List
 │
@@ -324,9 +422,15 @@ Student List
 │
 └── Student Transfer
 
+Access:
+
+* School Admin: full access
+* Teacher: limited view for assigned classes
+* Accountant: limited student lookup inside fee workflows only
+
 ---
 
-# 13. STUDENT ENROLLMENT FLOW
+# 17. STUDENT ENROLLMENT FLOW
 
 Student
 │
@@ -340,11 +444,18 @@ Assign Class
 Assign Section
 │
 ▼
+Assign Roll Number
+│
+▼
 Save Enrollment
+
+Access:
+
+* School Admin only
 
 ---
 
-# 14. ATTENDANCE FLOW
+# 18. ATTENDANCE FLOW
 
 Attendance Dashboard
 │
@@ -353,9 +464,15 @@ Attendance Dashboard
 ├── Monthly Attendance
 └── Attendance Reports
 
+Access:
+
+* School Admin: all classes in own school
+* Teacher: assigned classes only
+* Super Admin: reports only
+
 ---
 
-# 15. ATTENDANCE ENTRY FLOW
+# 19. ATTENDANCE ENTRY FLOW
 
 Select Date
 │
@@ -376,7 +493,7 @@ Save Attendance
 
 ---
 
-# 16. FEE MANAGEMENT FLOW
+# 20. FEE MANAGEMENT FLOW
 
 Fee Categories
 │
@@ -384,11 +501,18 @@ Fee Categories
 ├── Student Fees
 ├── Fee Collection
 ├── Receipts
+├── Transactions
 └── Fee Reports
+
+Access:
+
+* School Admin: full access
+* Accountant: full access
+* Super Admin: reports only
 
 ---
 
-# 17. FEE COLLECTION FLOW
+# 21. FEE COLLECTION FLOW
 
 Search Student
 │
@@ -402,11 +526,14 @@ Collect Payment
 Generate Receipt
 │
 ▼
+Save Payment
+│
+▼
 Save Transaction
 
 ---
 
-# 18. EXAMINATION FLOW
+# 22. EXAMINATION FLOW
 
 Exams
 │
@@ -425,9 +552,15 @@ Result Processing
 ▼
 Report Card Generation
 
+Access:
+
+* School Admin: full access
+* Teacher: marks and results for assigned classes and subjects
+* Super Admin: reports only
+
 ---
 
-# 19. MARKS ENTRY FLOW
+# 23. MARKS ENTRY FLOW
 
 Select Exam
 │
@@ -448,7 +581,7 @@ Save Results
 
 ---
 
-# 20. REPORT CARD FLOW
+# 24. REPORT CARD FLOW
 
 Results
 │
@@ -462,11 +595,11 @@ Calculate Grades
 Generate Report Card
 │
 ▼
-Print / Export
+Print or Export
 
 ---
 
-# 21. REPORTING FLOW
+# 25. REPORTING FLOW
 
 Reports
 │
@@ -475,11 +608,26 @@ Reports
 ├── Fee Reports
 ├── Examination Reports
 ├── Activity Reports
-└── Audit Reports
+├── Audit Reports
+└── Backup Reports
+
+Role Visibility:
+
+| Report Category | Super Admin | School Admin | Teacher | Accountant |
+| --------------- | ----------- | ------------ | ------- | ---------- |
+| School Reports | Yes | No | No | No |
+| User Reports | Yes | Own school | No | No |
+| Student Reports | Platform summary | Own school | Assigned classes | Fee lookup only |
+| Attendance Reports | Platform summary | Own school | Assigned classes | No |
+| Fee Reports | Platform summary | Own school | No | Own school |
+| Examination Reports | Platform summary | Own school | Assigned classes | No |
+| Activity Reports | Platform-wide | Own school | No | No |
+| Audit Reports | Platform-wide | Own school | No | No |
+| Backup Reports | Platform-wide | No | No | No |
 
 ---
 
-# 22. REPORT SCREEN STRUCTURE
+# 26. REPORT SCREEN STRUCTURE
 
 Every report page must contain:
 
@@ -487,14 +635,14 @@ Every report page must contain:
 * Page Title
 * Filters
 * Summary Cards
-* Chart
+* Chart where useful
 * Data Table
 * Pagination
-* Export Button
+* Export Button where permitted
 
 ---
 
-# 23. ANALYTICS FLOW
+# 27. ANALYTICS FLOW
 
 Analytics Dashboard
 │
@@ -504,9 +652,16 @@ Analytics Dashboard
 ├── Examination Performance
 └── Activity Trends
 
+Access:
+
+* Super Admin: platform summaries
+* School Admin: own school summaries
+* Teacher: dashboard-only assigned class summaries
+* Accountant: dashboard-only fee summaries
+
 ---
 
-# 24. ACTIVITY LOG FLOW
+# 28. ACTIVITY LOG FLOW
 
 Activity Logs
 │
@@ -515,9 +670,14 @@ Activity Logs
 ├── Filters
 └── Export
 
+Access:
+
+* Super Admin: platform-wide
+* School Admin: own school only
+
 ---
 
-# 25. AUDIT LOG FLOW
+# 29. AUDIT LOG FLOW
 
 Audit Logs
 │
@@ -526,9 +686,14 @@ Audit Logs
 ├── Filters
 └── Export
 
+Access:
+
+* Super Admin: platform-wide
+* School Admin: own school only
+
 ---
 
-# 26. BACKUP MANAGEMENT FLOW
+# 30. BACKUP MANAGEMENT FLOW
 
 Backup Dashboard
 │
@@ -537,58 +702,54 @@ Backup Dashboard
 ├── Backup Details
 └── Download Backup
 
+Access:
+
+* Super Admin only
+
 ---
 
-# 27. BREADCRUMB STANDARDS
+# 31. BREADCRUMB STANDARDS
 
 Examples:
 
 Dashboard
 
-Dashboard
-
-Students
-
 Dashboard > Students
-
-Add Student
 
 Dashboard > Students > Add Student
 
-Attendance Entry
-
 Dashboard > Attendance > Mark Attendance
-
-Marks Entry
 
 Dashboard > Examinations > Marks Entry
 
-Report Card
-
 Dashboard > Examinations > Report Card
+
+Dashboard > Backup Management > Backup History
 
 ---
 
-# 28. SCREEN DESIGN REQUIREMENTS
+# 32. SCREEN DESIGN REQUIREMENTS
 
 Every screen must contain:
 
 * Breadcrumb
 * Page Title
-* Primary Action Button
-* Search (where applicable)
-* Filters (where applicable)
+* Primary Action Button where permitted
+* Search where applicable
+* Filters where applicable
 * Content Area
 
 ---
 
-# 29. SCREENSHOT PLANNING
+# 33. SCREENSHOT PLANNING
 
 Required Screenshot Categories:
 
 * Authentication
 * Dashboard
 * School Management
+* School Settings
+* User Management
 * Academic Structure
 * Students
 * Attendance
@@ -606,13 +767,13 @@ Required Screenshot Categories:
 
 Target Screenshots:
 
-40–60
+40-60
 
 ---
 
-# 30. PRIMARY DEMO FLOW
+# 34. PRIMARY DEMO FLOW
 
-Login
+Login As School Admin
 │
 ▼
 Dashboard
@@ -652,24 +813,18 @@ Generate Reports
 
 ---
 
-# 31. SUCCESS CRITERIA
+# 35. SUCCESS CRITERIA
 
 The screen flow is successful when:
 
-✓ Navigation Is Consistent
-
-✓ Menus Are Logical
-
-✓ Breadcrumbs Are Clear
-
-✓ User Journeys Are Simple
-
-✓ Reports Are Easy To Access
-
-✓ Screenshots Are Easy To Capture
-
-✓ Demonstrations Flow Smoothly
-
-✓ Suitable For MCA Evaluation
-
-✓ Easy To Explain During Viva
+* Navigation is consistent.
+* Menus match the canonical permission matrix.
+* Breadcrumbs are clear.
+* User journeys are simple.
+* Reports are easy to access.
+* Backup Management is Super Admin only.
+* Activity Logs and Audit Logs are tenant-scoped for School Admin.
+* Only School Settings appears as a settings area.
+* Screenshots are easy to capture.
+* Demonstrations flow smoothly.
+* The flow is suitable for MCA evaluation and viva.

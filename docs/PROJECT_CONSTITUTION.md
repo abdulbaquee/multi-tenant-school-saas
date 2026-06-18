@@ -1,6 +1,7 @@
 # PROJECT CONSTITUTION
 
-Version: 2.0
+Version: 1.0
+Status: Draft
 
 Project:
 Multi-Tenant School Administration Management SaaS Platform
@@ -17,14 +18,14 @@ PHP 8.4
 Database:
 MySQL 8
 
-Frontend:
+Planned Frontend:
 Blade Templates + Bootstrap 5
 
-Authentication:
+Planned Authentication:
 Laravel Breeze
 
 Multi-Tenancy:
-Stancl Tenancy
+Native Laravel Multi-Tenancy (school_id + Global Scopes)
 
 Architecture:
 Single Database Multi-Tenant SaaS
@@ -82,9 +83,9 @@ When complexity and simplicity conflict, simplicity wins.
 Responsibilities:
 
 * Manage Schools
-* Manage Platform Settings
 * Monitor System Activity
 * View Audit Logs
+* Manage Backups
 
 ## School Admin
 
@@ -104,15 +105,15 @@ Responsibilities:
 * Manage Attendance
 * Enter Examination Marks
 * View Students
-* Generate Reports
+* Generate Assigned Class Reports
 
 ## Accountant
 
 Responsibilities:
 
 * Manage Fee Collection
-* Generate Financial Reports
 * Track Transactions
+* Generate Financial Reports
 
 ---
 
@@ -134,6 +135,7 @@ Included In MVP:
 * Dashboard & Analytics
 * Activity Logs
 * Audit Logs
+* Backup Management
 
 Excluded From MVP:
 
@@ -175,12 +177,22 @@ Tenant Identifier:
 
 school_id
 
+Implementation:
+
+Native Laravel Multi-Tenancy using a BelongsToTenant trait, an Eloquent global
+scope, and a TenantContext middleware. No external tenancy package is used.
+
 Rules:
 
 * Every business record belongs to a school.
-* Every query must be tenant scoped.
+* Tenant scoping is applied automatically by a global scope (default-deny),
+  not by manual per-query filtering.
 * Tenant isolation is mandatory.
 * Cross-tenant data access is prohibited.
+* Super Admin (school_id = NULL) bypasses the tenant scope for platform-wide
+  access through authorized paths only.
+
+The authoritative tenancy reference is `TENANCY_DESIGN.md`.
 
 ---
 
@@ -279,6 +291,9 @@ Required Documentation:
 * UI/UX Design
 * Testing Strategy
 * Module Specifications
+
+Role permissions, dashboards, reports, and menus must follow the canonical
+matrix in `MODULE_SPECIFICATIONS.md`.
 
 ---
 

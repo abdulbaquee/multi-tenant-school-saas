@@ -1,6 +1,11 @@
 # MODULE SPECIFICATIONS
 
-Version: 2.0
+Version: 1.0
+Status: Draft
+
+> This document is the **canonical source of truth for the module list (15
+> modules)**. README.md, SYSTEM_ARCHITECTURE.md, SCREEN_FLOW.md, and
+> PROJECT_OVERVIEW.md must use these exact module names.
 
 Project:
 Multi-Tenant School Administration Management SaaS Platform
@@ -130,7 +135,9 @@ Screens:
 
 * General Settings
 * Academic Settings
-* System Settings
+* Attendance Settings
+* Grading Settings
+* Logo Management
 
 Accessible By:
 
@@ -489,6 +496,11 @@ Screens:
 * Activity Logs
 * Activity Details
 
+Accessible By:
+
+* Super Admin: platform-wide activity logs
+* School Admin: own school activity logs
+
 ---
 
 # 15. AUDIT TRAIL MODULE
@@ -514,6 +526,11 @@ Screens:
 Requirement:
 
 Audit records are immutable.
+
+Accessible By:
+
+* Super Admin: platform-wide audit logs
+* School Admin: own school audit logs
 
 ---
 
@@ -542,90 +559,110 @@ Super Admin
 
 # 17. DASHBOARD SPECIFICATIONS
 
-Super Admin Dashboard
+Dashboard visibility is role-specific.
+
+## Super Admin Dashboard
+
+Visible Widgets:
 
 * Total Schools
 * Active Schools
 * Total Users
-* System Activities
+* Recent Platform Activity
+* Audit Alerts
+* Backup Status
 
-School Admin Dashboard
+## School Admin Dashboard
 
-* Students
-* Attendance
-* Fees
-* Examinations
+Visible Widgets:
 
-Teacher Dashboard
+* Total Students
+* Attendance Summary
+* Fee Summary
+* Examination Summary
+* Recent School Activity
+
+## Teacher Dashboard
+
+Visible Widgets:
 
 * Assigned Classes
-* Attendance
-* Examinations
+* Today's Attendance
+* Pending Marks Entry
+* Recent Examination Results
 
-Accountant Dashboard
+## Accountant Dashboard
 
-* Fee Collections
+Visible Widgets:
+
+* Today's Fee Collections
 * Outstanding Fees
-* Transactions
+* Recent Transactions
+* Receipt Summary
 
 ---
 
-# 18. ROLE PERMISSION MATRIX
+# 18. CANONICAL ROLE PERMISSION MATRIX
 
-| Module     | Super Admin | School Admin | Teacher | Accountant |
-| ---------- | ----------- | ------------ | ------- | ---------- |
-| Schools    | Full        | No           | No      | No         |
-| Settings   | Full        | Full         | No      | No         |
-| Users      | Full        | Full         | No      | No         |
-| Students   | Full        | Full         | Limited | No         |
-| Attendance | Full        | Full         | Full    | No         |
-| Fees       | Full        | Full         | View    | Full       |
-| Exams      | Full        | Full         | Full    | No         |
-| Reports    | Full        | Full         | Limited | Limited    |
-| Audit Logs | Full        | View         | No      | No         |
-| Backups    | Full        | No           | No      | No         |
+This matrix is the canonical permission source for the MVP. `SCREEN_FLOW.md`, `PROJECT_CONSTITUTION.md`, and `PROJECT_OVERVIEW.md` must match this table.
+
+Permission Levels:
+
+* Full: view, create, update, deactivate or soft delete where allowed, export where applicable.
+* View: read-only access.
+* Limited: restricted to assigned classes, fee workflows, or role-specific reports.
+* No: no direct module access.
+
+| Module | Super Admin | School Admin | Teacher | Accountant |
+| ------ | ----------- | ------------ | ------- | ---------- |
+| Authentication & Profile | Own profile | Own profile | Own profile | Own profile |
+| Dashboard & Analytics | Platform dashboard | School dashboard | Teacher dashboard | Accountant dashboard |
+| School Management | Full | No | No | No |
+| School Settings | View via School Details | Full | No | No |
+| User Management | Full | Full for own school | No | No |
+| Role & Permission | Manage canonical mappings and role assignment | Assign school roles | No | No |
+| Academic Structure | View | Full | View assigned classes and subjects | No |
+| Student Management | View | Full | Limited view for assigned classes | Limited view for fee collection |
+| Attendance Management | View reports | Full | Full for assigned classes | No |
+| Fee Management | View reports | Full | No | Full |
+| Examination Management | View reports | Full | Full for assigned classes and subjects | No |
+| Reporting | Platform reports | School reports | Assigned class reports | Financial reports |
+| Activity Logs | Full | View own school logs | No | No |
+| Audit Trail | Full | View own school logs | No | No |
+| Backup Management | Full | No | No | No |
+
+## Permission Reconciliation Notes
+
+* Backup Management is Super Admin only.
+* Audit Logs are available to Super Admin platform-wide and School Admin for the active school only.
+* Reports must never expose data beyond the user's permitted module and tenant scope.
+* Fee screens are available to School Admin and Accountant. Teachers do not access Fee Management.
+* Dashboard widgets must only summarize data that the role is permitted to view.
+* Only School Settings is included as a settings module in the MVP.
 
 ---
 
 # 19. MODULE IMPLEMENTATION PRIORITY
 
-Phase 1
+The implementation order follows the canonical phase sequence in
+`DEVELOPMENT_ROADMAP.md`. To avoid conflicting roadmaps, this section maps modules
+to those phases rather than defining its own sequence:
 
-* Authentication
-* Roles & Permissions
+| Roadmap Phase | Modules |
+| ------------- | ------- |
+| Phase 2 — Authentication & User Management | Authentication, User Management |
+| Phase 3 — Multi-Tenant Foundation | School Management, School Settings |
+| Phase 4 — Roles & Permissions | Role & Permission Management |
+| Phase 5 — Academic Structure | Academic Structure |
+| Phase 6 — Student Management | Student Management |
+| Phase 7 — Attendance Management | Attendance Management |
+| Phase 8 — Fee Management | Fee Management |
+| Phase 9 — Examination Management | Examination Management |
+| Phase 10 — Reports & Analytics | Reporting, Dashboard & Analytics |
+| Phase 11 — Testing & QA | Activity Logs, Audit Trail, Backup Management (verification) |
 
-Phase 2
-
-* School Management
-* School Settings
-
-Phase 3
-
-* Academic Structure
-
-Phase 4
-
-* Student Management
-
-Phase 5
-
-* Attendance Management
-
-Phase 6
-
-* Fee Management
-
-Phase 7
-
-* Examination Management
-
-Phase 8
-
-* Reporting & Analytics
-
-Phase 9
-
-* Audit & Backup
+Activity logging and audit trail are implemented incrementally alongside each
+module and finalized during testing.
 
 ---
 

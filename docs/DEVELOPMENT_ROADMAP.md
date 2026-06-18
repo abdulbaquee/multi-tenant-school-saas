@@ -1,5 +1,13 @@
 # DEVELOPMENT ROADMAP
 
+Version: 1.0
+Status: Draft
+
+> This document is the **canonical phase sequence** for the project. All other
+> documents (PROJECT_GOVERNANCE.md, MODULE_SPECIFICATIONS.md, CHANGELOG.md) must
+> follow this phase order. If any document conflicts on phase ordering, this
+> document wins.
+
 ## Project Information
 
 Project Title:
@@ -12,13 +20,13 @@ MCA Major Project
 
 Technology Stack:
 
-* Laravel 13
+* Laravel 13 (Installed)
 * PHP 8.4
 * MySQL 8
-* Bootstrap 5
-* Laravel Breeze
-* Stancl Tenancy
-* Chart.js
+* Bootstrap 5 (Planned)
+* Laravel Breeze (Planned)
+* Native Laravel Multi-Tenancy (school_id + Global Scopes)
+* Chart.js (Planned)
 * Git & GitHub
 
 Architecture:

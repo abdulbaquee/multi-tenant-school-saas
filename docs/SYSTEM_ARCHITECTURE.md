@@ -1,6 +1,7 @@
 # SYSTEM ARCHITECTURE
 
-Version: 2.0
+Version: 1.0
+Status: Draft
 
 Project:
 Multi-Tenant School Administration Management SaaS Platform
@@ -17,14 +18,14 @@ PHP 8.4
 Database:
 MySQL 8
 
-Frontend:
+Planned Frontend:
 Blade Templates + Bootstrap 5
 
-Authentication:
+Planned Authentication:
 Laravel Breeze
 
 Multi-Tenancy:
-Stancl Tenancy
+Native Laravel Multi-Tenancy (school_id + Global Scopes)
 
 Architecture Style:
 Layered Monolithic Architecture
@@ -246,6 +247,12 @@ Architecture Type:
 * Shared Database
 * Shared Schema
 
+Implementation:
+
+Native Laravel Multi-Tenancy (no external tenancy package). Tenant isolation is
+provided by a BelongsToTenant trait, an Eloquent global scope, and a
+TenantContext middleware. See `TENANCY_DESIGN.md` for the authoritative design.
+
 Tenant Identifier:
 
 school_id
@@ -277,10 +284,19 @@ All records are isolated using:
 
 school_id
 
-Example:
+Isolation is **automatic and default-deny**. Tenant-owned models use a
+`BelongsToTenant` trait that registers an Eloquent global scope, so every query
+is filtered by the active `school_id` without any manual `where('school_id', ...)`
+clause. The trait also auto-fills `school_id` on creation from the tenant context.
+
+Conceptual reference (see `TENANCY_DESIGN.md` for full design):
 
 ```php
-Student::where('school_id', auth()->user()->school_id)
+// Automatic — no manual school_id filter required
+Student::query()->paginate();   // global scope applies school_id automatically
+
+// Explicit bypass is allowed only for Super Admin via authorized paths
+Student::withoutGlobalScope(TenantScope::class)->get();
 ```
 
 No tenant can access another tenant's data.
@@ -296,17 +312,24 @@ User Login
 Authenticated User
      │
      ▼
-Resolve Tenant
+TenantContextMiddleware
      │
      ▼
-Determine school_id
+Read user.school_id (NULL = Super Admin)
      │
      ▼
-Apply Tenant Scope
+Set Tenant Context
+     │
+     ▼
+Global Scope Auto-Filters Queries
      │
      ▼
 Load Authorized Data
 ```
+
+Tenant identity is resolved from the authenticated user's `school_id`, not from a
+domain, subdomain, or request parameter. Super Admin users have
+`school_id = NULL` and bypass the tenant scope.
 
 ---
 
@@ -314,7 +337,13 @@ Load Authorized Data
 
 Framework:
 
-Laravel Breeze
+Laravel Breeze (planned — not yet installed; see `DEVELOPMENT_ROADMAP.md`)
+
+Authentication Type:
+
+Session-based. Login is by email + password. Email is globally unique
+(see `TENANCY_DESIGN.md` §9 Email Strategy — Option A). The tenant is resolved
+from the authenticated user's `school_id`.
 
 Authentication Flow:
 
@@ -395,58 +424,24 @@ Super Admin
 
 # 10. MODULE ARCHITECTURE
 
-## Platform Module
+The canonical module list is defined in `MODULE_SPECIFICATIONS.md` (15 modules).
+The architecture groups them as follows:
 
-* School Management
-* User Management
-* Role Management
-* Settings Management
-
-## Academic Module
-
-* Academic Years
-* Academic Terms
-* Classes
-* Sections
-* Subjects
-* Student Enrollment
-
-## Student Module
-
-* Student Registration
-* Student Profiles
-* Student Records
-
-## Attendance Module
-
-* Daily Attendance
-* Attendance Reports
-
-## Fee Management Module
-
-* Fee Categories
-* Fee Structures
-* Fee Collection
-* Payment Tracking
-
-## Examination Module
-
-* Exams
-* Marks Entry
-* Grade Calculation
-* Report Cards
-
-## Reporting Module
-
-* Student Reports
-* Attendance Reports
-* Fee Reports
-* Examination Reports
-
-## Audit Module
-
-* Activity Logs
-* Audit Logs
+1. Authentication Module
+2. School Management Module
+3. School Settings Module
+4. User Management Module
+5. Role & Permission Module
+6. Academic Structure Module (Academic Years, Terms, Classes, Sections, Subjects, Enrollment)
+7. Student Management Module
+8. Attendance Management Module
+9. Fee Management Module
+10. Examination Management Module
+11. Reporting Module
+12. Dashboard & Analytics Module
+13. Activity Log Module
+14. Audit Trail Module
+15. Backup Management Module
 
 ---
 
@@ -646,11 +641,13 @@ Improved performance and future-proof development.
 
 Decision 3
 
-Use Single Database Multi-Tenancy
+Use Single Database Multi-Tenancy with Native Laravel Implementation
 
 Reason:
 
-Simpler implementation, easier maintenance, suitable for MCA scope.
+Simpler implementation, easier maintenance, suitable for MCA scope. Implemented
+with a BelongsToTenant trait, an Eloquent global scope, and a TenantContext
+middleware (no external tenancy package). See `TENANCY_DESIGN.md`.
 
 ---
 

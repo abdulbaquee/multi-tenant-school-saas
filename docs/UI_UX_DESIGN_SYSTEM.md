@@ -1,6 +1,7 @@
 # UI / UX DESIGN SYSTEM
 
-Version: 2.0
+Version: 1.0
+Status: Draft
 
 Project:
 Multi-Tenant School Administration Management SaaS Platform
@@ -10,11 +11,11 @@ Master of Computer Applications (MCA)
 
 Technology Stack:
 
-* Laravel 13
+* Laravel 13 (Installed)
 * PHP 8.4
-* Bootstrap 5
-* Blade Templates
-* Chart.js
+* Bootstrap 5 (Planned)
+* Blade Templates (Planned)
+* Chart.js (Planned)
 
 Purpose:
 

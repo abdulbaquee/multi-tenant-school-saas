@@ -1,6 +1,7 @@
 # PROJECT OVERVIEW
 
-Version: 2.0
+Version: 1.0
+Status: Draft
 
 Project Title:
 Multi-Tenant School Administration Management SaaS Platform
@@ -73,7 +74,7 @@ The project includes the following functional areas:
 * Role Management
 * School Settings
 
-### Academic Management
+### Academic Structure
 
 * Academic Years
 * Academic Terms
@@ -118,6 +119,8 @@ The project includes the following functional areas:
 * Audit Logs
 * Backup Logs
 
+The MVP includes no separate platform-wide or application-wide settings module. School-level configuration is handled only through School Settings.
+
 ---
 
 # 5. TECHNOLOGY STACK
@@ -127,7 +130,7 @@ The project includes the following functional areas:
 * Laravel 13
 * PHP 8.4
 
-## Frontend
+## Frontend (Planned)
 
 * Blade Templates
 * Bootstrap 5
@@ -138,13 +141,13 @@ The project includes the following functional areas:
 
 * MySQL 8
 
-## Authentication
+## Authentication (Planned)
 
 * Laravel Breeze
 
 ## Multi-Tenancy
 
-* Stancl Tenancy
+* Native Laravel Multi-Tenancy (school_id + Global Scopes) — see TENANCY_DESIGN.md
 
 ## Version Control
 
@@ -170,7 +173,15 @@ Tenant Identifier:
 
 school_id
 
-The system uses a shared database approach where all schools share the same infrastructure while maintaining complete data isolation through tenant-aware application design.
+The system uses a shared database approach where all schools share the same
+infrastructure while maintaining complete data isolation through native Laravel
+multi-tenancy (an Eloquent global scope via a BelongsToTenant trait, set from the
+authenticated user's `school_id`). No external tenancy package is used. See
+`TENANCY_DESIGN.md`.
+
+The canonical functional module list (15 modules) is defined in
+`MODULE_SPECIFICATIONS.md`. The scope groupings above are organized by functional
+area and map to those modules.
 
 ---
 
@@ -178,19 +189,21 @@ The system uses a shared database approach where all schools share the same infr
 
 ### Super Admin
 
-Responsible for platform-level management and monitoring.
+Responsible for school management, platform monitoring, audit visibility, reports, and backup management.
 
 ### School Admin
 
-Responsible for managing school operations, users, students, attendance, fees, and examinations.
+Responsible for managing school settings, users, academic structure, students, attendance, fees, examinations, school reports, and school-scoped logs.
 
 ### Teacher
 
-Responsible for attendance entry, marks entry, and student-related activities.
+Responsible for assigned class attendance, marks entry, report cards, and assigned class reports.
 
 ### Accountant
 
 Responsible for fee collection, payment tracking, and financial reporting.
+
+Role permissions and menu visibility follow the canonical matrix in `MODULE_SPECIFICATIONS.md`.
 
 ---
 
@@ -206,6 +219,7 @@ Responsible for fee collection, payment tracking, and financial reporting.
 * Reporting & Analytics
 * Activity Logging
 * Audit Trail
+* Backup Management
 * Responsive User Interface
 
 ---

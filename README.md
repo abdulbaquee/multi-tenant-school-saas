@@ -1,7 +1,10 @@
 # Multi-Tenant School Administration Management SaaS Platform
 
 > MCA Major Project 2026
-> Built with Laravel 13, PHP 8.4, MySQL 8, Bootstrap 5
+> Built with Laravel 13 and PHP 8.4 (planned UI: Bootstrap 5)
+
+Version: 1.0
+Status: Draft (Documentation Phase — approximately 3–5% implementation)
 
 ---
 
@@ -15,12 +18,14 @@ The platform follows a Single Database Multi-Tenant Architecture where multiple 
 
 ## Technology Stack
 
+> Status legend: **Installed** = present in the repository now; **Planned** = selected but not yet installed.
+
 ### Backend
 
-* Laravel 13
+* Laravel 13 (Installed)
 * PHP 8.4
 
-### Frontend
+### Frontend (Planned)
 
 * Blade Templates
 * Bootstrap 5
@@ -31,13 +36,13 @@ The platform follows a Single Database Multi-Tenant Architecture where multiple 
 
 * MySQL 8
 
-### Authentication
+### Authentication (Planned)
 
 * Laravel Breeze
 
 ### Multi-Tenancy
 
-* Stancl Tenancy
+* Native Laravel Multi-Tenancy (school_id + Global Scopes) — see `docs/TENANCY_DESIGN.md`
 
 ### Development Tools
 
@@ -58,54 +63,34 @@ Each school is isolated using:
 
 school_id
 
-Every business record belongs to a school tenant and all queries are automatically scoped to the active tenant.
+Every business record belongs to a school tenant. Queries are scoped to the
+active tenant **automatically** by an Eloquent global scope (BelongsToTenant
+trait) set from the authenticated user's `school_id`. Super Admin
+(`school_id = NULL`) bypasses the scope for platform-wide access. See
+`docs/TENANCY_DESIGN.md`.
 
 ---
 
 ## Core Modules
 
-### Platform Administration
+The canonical module list (15 modules) is defined in
+`docs/MODULE_SPECIFICATIONS.md`:
 
-* School Management
-* Tenant Management
-* User Management
-* Role Management
-* Activity Monitoring
-
-### Student Management
-
-* Student Registration
-* Student Profiles
-* Class Assignment
-* Section Assignment
-
-### Attendance Management
-
-* Daily Attendance
-* Attendance Tracking
-* Attendance Reports
-
-### Fee Management
-
-* Fee Structures
-* Fee Collection
-* Receipt Generation
-* Financial Reports
-
-### Examination Management
-
-* Subject Management
-* Marks Entry
-* Grade Calculation
-* Report Cards
-
-### Reporting & Analytics
-
-* Student Reports
-* Attendance Reports
-* Fee Reports
-* Examination Reports
-* Dashboard Analytics
+1. Authentication
+2. School Management
+3. School Settings
+4. User Management
+5. Role & Permission Management
+6. Academic Structure
+7. Student Management
+8. Attendance Management
+9. Fee Management
+10. Examination Management
+11. Reporting
+12. Dashboard & Analytics
+13. Activity Logs
+14. Audit Trail
+15. Backup Management
 
 ---
 
@@ -137,13 +122,15 @@ Every business record belongs to a school tenant and all queries are automatical
 
 ## Documentation
 
-| Document                    | Description                |
-| --------------------------- | -------------------------- |
-| docs/PROJECT_OVERVIEW.md    | Project Scope & Objectives |
-| docs/DEVELOPMENT_ROADMAP.md | Development Plan           |
-| docs/TESTING_STRATEGY.md    | Testing Approach           |
-| docs/DECISIONS_LOG.md       | Architectural Decisions    |
-| docs/CHANGELOG.md           | Project History            |
+| Document                      | Description                       |
+| ----------------------------- | --------------------------------- |
+| docs/PROJECT_OVERVIEW.md      | Project Scope & Objectives        |
+| docs/TENANCY_DESIGN.md        | Multi-Tenancy (Single Source)     |
+| docs/MODULE_SPECIFICATIONS.md | Module List (Single Source)       |
+| docs/DEVELOPMENT_ROADMAP.md   | Development Plan (Single Source)  |
+| docs/TESTING_STRATEGY.md      | Testing Approach                  |
+| docs/DECISIONS_LOG.md         | Architectural Decisions           |
+| docs/CHANGELOG.md             | Project History                   |
 
 ---
 

@@ -1,6 +1,7 @@
 # SECURITY GUIDELINES
 
-Version: 2.0
+Version: 1.0
+Status: Draft
 
 Project:
 Multi-Tenant School Administration Management SaaS Platform
@@ -17,11 +18,11 @@ PHP 8.4
 Database:
 MySQL 8
 
-Authentication:
+Planned Authentication:
 Laravel Breeze
 
 Multi-Tenancy:
-Stancl Tenancy
+Native Laravel Multi-Tenancy (school_id + Global Scopes)
 
 Architecture:
 Single Database Multi-Tenant SaaS
@@ -98,11 +99,17 @@ Every request must pass all security layers.
 
 Authentication System:
 
-Laravel Breeze
+Laravel Breeze (planned — not yet installed)
 
 Authentication Type:
 
 Session-Based Authentication
+
+Email Model:
+
+Email is globally unique across the platform (Option A). Login is by
+email + password; the tenant is resolved from the authenticated user's
+`school_id`. See `TENANCY_DESIGN.md` §9.
 
 Requirements:
 
@@ -212,6 +219,17 @@ Examples:
 * exams
 * report_cards
 
+Enforcement Mechanism:
+
+Isolation is **automatic and default-deny** via a `BelongsToTenant` trait that
+registers an Eloquent global scope on every tenant-owned model. The active tenant
+is set by `TenantContextMiddleware` from the authenticated user's `school_id`.
+Manual `where('school_id', ...)` filtering is NOT the primary protection
+mechanism and must not be relied upon. See `TENANCY_DESIGN.md`.
+
+Super Admin (school_id = NULL) bypasses the global scope for platform-wide access
+through authorized paths only.
+
 Rule:
 
 School A must never access School B data.
@@ -222,26 +240,30 @@ No exceptions.
 
 # 10. TENANT ISOLATION CONTROLS
 
-Enforce At:
+Primary Control:
 
-* Middleware
-* Policies
-* Services
-* Controllers
-* Reports
-* Queries
+* Automatic Eloquent global scope (BelongsToTenant trait) — default-deny
+
+Defense-in-Depth Layers:
+
+* TenantContext middleware (sets tenant per request)
+* Policies (authorize record ownership)
+* Services (enforce business rules within tenant)
+* Reports and Exports (inherit the same global scope as on-screen queries)
 
 Validation Checklist:
 
-✓ Record belongs to school
+✓ Tenant model uses BelongsToTenant trait (global scope active)
 
-✓ User belongs to school
+✓ User belongs to school (or is Super Admin with school_id = NULL)
 
-✓ Query filtered by school_id
+✓ Queries filtered automatically by the global scope
 
-✓ Reports filtered by school_id
+✓ Reports inherit the global scope
 
-✓ Exports filtered by school_id
+✓ Exports inherit the global scope
+
+✓ Super Admin scope bypass is explicit and authorized
 
 ---
 
@@ -365,25 +387,137 @@ Always validate MIME types.
 
 # 17. FILE STORAGE POLICY
 
-Store uploads in:
+Student Photos:
 
-storage/app/public
+* Store on a private storage disk.
+* Do not place student photos in a public web directory.
+* Serve photos only through an authorized controller action.
+* Validate the authenticated user's tenant before returning the file.
+* Validate the user's permission before returning the file.
+* Use unique generated filenames.
+* Never store uploads using original filenames.
 
-Use:
+Recommended private path:
 
-Storage::putFile()
+```text
+storage/app/private/student-photos
+```
 
-Requirements:
+School Logos:
 
-* Unique Filenames
-* Access Control
-* File Validation
+* Public storage is allowed.
+* Logos may be stored on the public disk because they are not student personal data.
+* Validate file type, MIME type, and file size.
+* Use unique generated filenames.
 
-Never store uploads using original filenames.
+Recommended public path:
+
+```text
+storage/app/public/school-logos
+```
+
+Backup Files:
+
+* Backup files must use private storage.
+* Backup files must never be publicly accessible.
+* Backup download access is Super Admin only.
+
+Allowed storage approach:
+
+```text
+Storage::disk('private')->putFile(...)
+Storage::disk('public')->putFile(...) for school logos only
+```
 
 ---
 
-# 18. MASS ASSIGNMENT PROTECTION
+# 18. STUDENT DATA PRIVACY
+
+Student records contain sensitive information because most students are minors.
+
+Sensitive student data includes:
+
+* Date of Birth
+* Guardian Name
+* Guardian Phone Number
+* Guardian Email
+* Mobile Numbers
+* Student Photos
+* Residential Address
+
+Privacy Requirements:
+
+* Collect only data required for school administration.
+* Display sensitive fields only to authorized roles.
+* Do not expose student photos through public URLs.
+* Do not include unnecessary personal data in reports.
+* Exports must follow the same permission and tenant rules as screens.
+* Logs must not store full sensitive payloads unless required for audit trail.
+
+---
+
+# 19. DATA ACCESS POLICY
+
+Data access must follow least privilege.
+
+Role-Based Access:
+
+* Super Admin can access platform-level summaries and authorized school records.
+* School Admin can access records for the active school only.
+* Teacher can access assigned class/student academic records only.
+* Accountant can access fee-related student information only.
+
+Tenant Access:
+
+* Every tenant-owned read must be scoped to `school_id`.
+* Every tenant-owned write must validate the active school context.
+* Cross-school access is prohibited.
+
+Report and Export Access:
+
+* Reports inherit screen permissions.
+* Exports inherit report permissions.
+* Exported files must not include fields outside the role's permission.
+
+---
+
+# 20. DATA RETENTION POLICY
+
+The project uses retention-first data handling.
+
+Retention Rules:
+
+* School deactivation is preferred over deletion.
+* School deletion means soft deletion only in the MVP.
+* Student, teacher, user, and appropriate fee setup records use soft deletes.
+* Attendance, payments, transactions, exam results, report cards, activity logs, and audit logs are retained as historical records.
+* Audit logs are immutable.
+* Financial corrections should use status changes or reversal records, not hard deletion.
+
+Tenant Data Retention:
+
+* Deactivated schools keep tenant data for reports, audits, and recovery.
+* Hard deletion of tenant data is outside the MVP.
+* Private files remain protected for inactive or soft-deleted records.
+
+---
+
+# 21. PRIVACY CONSIDERATIONS FOR MINORS
+
+Student privacy must be handled carefully because the system stores records for minors.
+
+Rules:
+
+* Student photos must be private.
+* DOB and guardian details must only be visible when needed for the user's role.
+* Public pages must never expose student personal data.
+* Reports should avoid unnecessary DOB, guardian, address, and photo fields.
+* Downloaded reports must be protected by the same authorization checks as the UI.
+* Demonstration data should use sample students, not real minor data.
+
+---
+
+# 22. MASS ASSIGNMENT PROTECTION
 
 Every Eloquent model must define:
 
@@ -397,7 +531,7 @@ Never leave models unprotected.
 
 ---
 
-# 19. DATABASE SECURITY
+# 23. DATABASE SECURITY
 
 Use:
 
@@ -413,9 +547,30 @@ Protect Against:
 * Invalid References
 * Data Corruption
 
+Deletion Rule:
+
+Use `restrictOnDelete()` for foreign keys by default. Do not use cascading deletes for tenant-owned data unless a documented exception is approved in `DECISIONS_LOG.md`.
+
 ---
 
-# 20. AUDIT TRAIL SECURITY
+# 24. DELETION SECURITY POLICY
+
+Deletion must preserve auditability and historical reporting.
+
+Rules:
+
+* Soft delete schools.
+* Soft delete students.
+* Soft delete teachers.
+* Soft delete users.
+* Soft delete fee categories, fee structures, and student fee assignments where appropriate.
+* Preserve fee payments, payment transactions, attendance, exam results, report cards, activity logs, and audit logs.
+* Prefer deactivation/status changes over deletion.
+* Hard deletion is outside the MVP.
+
+---
+
+# 25. AUDIT TRAIL SECURITY
 
 Audit Records Must Track:
 
@@ -433,7 +588,7 @@ Users must not modify audit history.
 
 ---
 
-# 21. ACTIVITY LOGGING SECURITY
+# 26. ACTIVITY LOGGING SECURITY
 
 Track:
 
@@ -450,23 +605,26 @@ Track:
 
 ---
 
-# 22. REPORT SECURITY
+# 27. REPORT SECURITY
 
 Reports must respect:
 
 * Tenant Isolation
 * User Permissions
 * Data Visibility Rules
+* Student Privacy Rules
 
 Never expose:
 
 * Other School Data
 * Hidden Fields
 * Internal Configuration
+* Student Photos
+* Unnecessary Minor Data
 
 ---
 
-# 23. EXPORT SECURITY
+# 28. EXPORT SECURITY
 
 Supported Exports:
 
@@ -479,10 +637,11 @@ Requirements:
 * Same permissions as screen view
 * Same tenant filters as screen view
 * Authorization validation before export
+* Privacy review for student DOB, guardian data, mobile numbers, and photos
 
 ---
 
-# 24. BACKUP SECURITY
+# 29. BACKUP SECURITY
 
 Backup Access:
 
@@ -497,9 +656,11 @@ Track:
 
 Backup files must never be publicly accessible.
 
+Backup downloads must pass authorization before file access.
+
 ---
 
-# 25. ERROR HANDLING
+# 30. ERROR HANDLING
 
 Never expose:
 
@@ -514,7 +675,7 @@ Developers should use logs for diagnostics.
 
 ---
 
-# 26. LOGGING POLICY
+# 31. LOGGING POLICY
 
 Logs must never contain:
 
@@ -528,7 +689,7 @@ Log only necessary operational information.
 
 ---
 
-# 27. SECURITY TESTING
+# 32. SECURITY TESTING
 
 Required Security Tests:
 
@@ -545,7 +706,7 @@ Security testing is mandatory before release.
 
 ---
 
-# 28. SECURITY INCIDENT SEVERITY
+# 33. SECURITY INCIDENT SEVERITY
 
 Critical
 
@@ -572,7 +733,7 @@ Critical issues must be fixed immediately.
 
 ---
 
-# 29. SECURITY REVIEW CHECKLIST
+# 34. SECURITY REVIEW CHECKLIST
 
 Before Release:
 
@@ -602,7 +763,7 @@ Before Release:
 
 ---
 
-# 30. SECURE DEVELOPMENT PRACTICES
+# 35. SECURE DEVELOPMENT PRACTICES
 
 Developers must:
 
@@ -617,7 +778,7 @@ Security must be considered during development, not after development.
 
 ---
 
-# 31. MCA VIVA QUESTIONS
+# 36. MCA VIVA QUESTIONS
 
 Be prepared to answer:
 
@@ -633,7 +794,7 @@ Be prepared to answer:
 
 ---
 
-# 32. SUCCESS CRITERIA
+# 37. SUCCESS CRITERIA
 
 Security implementation is successful when:
 

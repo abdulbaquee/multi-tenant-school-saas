@@ -1,6 +1,7 @@
 # DECISIONS LOG
 
-Version: 2.0
+Version: 1.0
+Status: Draft
 
 Project:
 Multi-Tenant School Administration Management SaaS Platform
@@ -166,7 +167,7 @@ Single Database Multi-Tenant Architecture selected.
 
 ---
 
-# DECISION-005
+# DECISION-005 (Superseded)
 
 Date:
 2026-06-18
@@ -175,27 +176,62 @@ Title:
 Use Stancl Tenancy
 
 Status:
+Superseded by DECISION-005-R (2026-06-19)
+
+Original Decision:
+
+Stancl Tenancy was initially proposed as the multi-tenancy foundation.
+
+Reason It Was Superseded:
+
+Stancl Tenancy is designed around a tenants table and domain/request-based
+tenant identification (commonly database-per-tenant). This conflicts with the
+project's Single Database + Shared Schema + `school_id` model (DECISION-004),
+where the tenant is resolved from the authenticated user's `school_id`. The
+package was also never installed. To remove the architectural contradiction, the
+project adopts native Laravel multi-tenancy instead.
+
+---
+
+# DECISION-005-R
+
+Date:
+2026-06-19
+
+Title:
+Use Native Laravel Multi-Tenancy (school_id + Global Scopes)
+
+Status:
 Approved
 
 Decision:
 
-Stancl Tenancy will be used as the multi-tenancy foundation.
+Multi-tenancy will be implemented using native Laravel features and no external
+tenancy package:
+
+* `school_id` tenant key on every business table
+* Eloquent Global Scope via a BelongsToTenant trait
+* TenantContext middleware
+* Policies and Services
 
 Reason:
 
-* Laravel-focused
-* Well documented
-* Production-proven
-* Simplifies tenant management
+* Resolves the DECISION-004 / DECISION-005 contradiction
+* Simplicity-first (Project Constitution): nothing extra to install or explain
+* Single-database shared-schema needs no connection switching
+* Automatic, default-deny tenant isolation via global scope
+* Easy to demonstrate and defend during MCA viva
 
 Alternatives Considered:
 
-* Custom Tenant Logic
+* Stancl Tenancy (superseded — see DECISION-005)
 * Spatie Multitenancy
+* Manual per-query filtering (rejected — error-prone, not default-deny)
 
 Outcome:
 
-Stancl Tenancy selected.
+Native Laravel Multi-Tenancy selected. Authoritative design in
+`TENANCY_DESIGN.md`.
 
 ---
 
@@ -670,6 +706,171 @@ Documentation phase completed before coding.
 
 ---
 
+# DECISION-021
+
+Date:
+2026-06-19
+
+Title:
+Global Unique Email For Authentication (Option A)
+
+Status:
+Approved
+
+Decision:
+
+`users.email` will be globally unique across the entire platform. Login is by
+email + password, and the tenant is resolved from the authenticated user's
+`school_id`. `users.school_id` is nullable (NULL = Super Admin).
+
+Reason:
+
+* Keeps the default Laravel Breeze login flow unchanged (no school selector or
+  subdomain required at login)
+* Simplicity-first; avoids composite-key login ambiguity
+* Each user belongs to exactly one school
+
+Alternatives Considered:
+
+* Unique (school_id, email) — rejected for MVP because it complicates login
+
+Trade-off:
+
+* A person working at two schools needs two separate accounts. Deferred to
+  Future Enhancements.
+
+Outcome:
+
+Global unique email adopted. Documented in `TENANCY_DESIGN.md` §9.
+
+---
+
+# DECISION-022
+
+Date:
+2026-06-19
+
+Title:
+Use MODULE_SPECIFICATIONS.md As Canonical Permission Matrix
+
+Status:
+Approved
+
+Decision:
+
+The canonical MVP permission matrix is defined in `MODULE_SPECIFICATIONS.md`.
+Menus, dashboards, reports, screen flows, and role responsibilities must match
+that matrix.
+
+Reason:
+
+* Prevents contradictions between module specifications and navigation
+* Keeps RBAC simple for MCA implementation
+* Makes role behavior easy to test and explain
+
+Outcome:
+
+Canonical permission matrix approved for Super Admin, School Admin, Teacher, and
+Accountant roles.
+
+---
+
+# DECISION-023
+
+Date:
+2026-06-19
+
+Title:
+Remove Orphan Settings Modules From MVP
+
+Status:
+Approved
+
+Decision:
+
+The only settings module retained in the MVP is School Settings for school-level
+configuration.
+
+Reason:
+
+* No database table exists for additional settings areas
+* No module specification exists for additional settings areas
+* Removing orphan references keeps the project simpler and implementation-ready
+
+Outcome:
+
+Orphan settings references removed from scope, menus, screen flows, and
+project-level documentation.
+
+---
+
+# DECISION-024
+
+Date:
+2026-06-19
+
+Title:
+Adopt Retention-First Deletion Strategy
+
+Status:
+Approved
+
+Decision:
+
+The project uses a retention-first deletion strategy:
+
+* Soft delete schools
+* Soft delete users
+* Soft delete teachers
+* Soft delete students
+* Soft delete fee categories, fee structures, and student fee assignments where appropriate
+* Preserve attendance, payments, transactions, exam results, report cards, activity logs, and audit logs
+* Use `restrictOnDelete()` for foreign keys by default
+* Do not use cascading deletes for tenant-owned data
+
+Reason:
+
+* Preserves audit history
+* Prevents accidental tenant data loss
+* Keeps historical reports valid
+* Matches financial and academic record retention expectations
+
+Outcome:
+
+Deletion policy standardized across database design, coding standards, and
+security guidelines.
+
+---
+
+# DECISION-025
+
+Date:
+2026-06-19
+
+Title:
+Use Private Storage For Student Photos And Backup Files
+
+Status:
+Approved
+
+Decision:
+
+Student photos and backup files must use private storage and be served only
+through authorized controller access. School logos may use public storage.
+
+Reason:
+
+* Student photos are personal data
+* The project stores records for minors
+* Backup files may contain sensitive tenant data
+* School logos are public branding assets and do not require private delivery
+
+Outcome:
+
+File storage and privacy policy standardized in `SECURITY_GUIDELINES.md`.
+
+---
+
 # DECISION CHANGE PROCESS
 
 New decisions must include:
@@ -708,4 +909,4 @@ Development Decisions:
 Completed
 
 Project Ready For:
-Implementation Phase
+Documentation Review Before Implementation

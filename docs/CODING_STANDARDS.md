@@ -1,6 +1,7 @@
 # CODING STANDARDS
 
 Version: 1.0
+Status: Draft
 
 Project:
 Multi-Tenant School Administration Management SaaS Platform
@@ -14,7 +15,7 @@ Laravel 13
 Language:
 PHP 8.4
 
-Frontend:
+Planned Frontend:
 Blade Templates + Bootstrap 5
 
 ---
@@ -308,7 +309,20 @@ exams
 fee_payments
 ```
 
-All queries must respect tenant isolation.
+Tenant isolation is enforced **automatically** by an Eloquent global scope via a
+`BelongsToTenant` trait — not by manual `where('school_id', ...)` clauses. Every
+tenant-owned model must use the trait so filtering is default-deny. The trait also
+auto-fills `school_id` on creation from the tenant context.
+
+```php
+class Student extends Model
+{
+    use BelongsToTenant; // adds global school_id scope automatically
+}
+```
+
+Do not rely on manual per-query filtering as the primary isolation mechanism.
+See `TENANCY_DESIGN.md`.
 
 ---
 
@@ -321,8 +335,14 @@ Example:
 ```php
 $table->foreignId('school_id')
       ->constrained()
-      ->cascadeOnDelete();
+      ->restrictOnDelete();
 ```
+
+Project Rule:
+
+Use `restrictOnDelete()` for foreign keys unless an exception is explicitly documented in `DATABASE_DESIGN.md` and `DECISIONS_LOG.md`.
+
+Do not use cascading deletes for tenant-owned data. Schools, users, teachers, students, and fee records must not cause child records to be deleted automatically.
 
 ---
 
@@ -338,6 +358,34 @@ Use Soft Deletes for:
 * Sections
 * Subjects
 * Exams
+* Fee Categories
+* Fee Structures
+* Student Fees
+
+Do not soft delete immutable historical records such as:
+
+* Attendance Records
+* Fee Payments
+* Payment Transactions
+* Exam Results
+* Report Cards
+* Activity Logs
+* Audit Logs
+* Backup Logs
+
+Use status changes, reversals, or deactivation workflows for historical records.
+
+---
+
+## Deletion Policy
+
+Deletion must follow the retention-first policy in `DATABASE_DESIGN.md`:
+
+* School Deactivation is preferred over deletion.
+* School Deletion means soft deletion only in the MVP.
+* Tenant data must remain available for reports and audit history.
+* Audit logs are immutable.
+* Financial records are preserved and corrected through reversal/status fields.
 
 ---
 

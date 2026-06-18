@@ -1,6 +1,7 @@
 # TESTING STRATEGY
 
-Version: 2.0
+Version: 1.0
+Status: Draft
 
 Project:
 Multi-Tenant School Administration Management SaaS Platform
@@ -265,17 +266,23 @@ No unauthorized access or privilege escalation.
 
 Purpose:
 
-Validate multi-tenant security.
+Validate multi-tenant security enforced by the automatic global scope
+(BelongsToTenant trait + TenantContext middleware). See `TENANCY_DESIGN.md` §10.
 
-Scenario:
+Scenarios:
 
-User from School A attempts to access School B records.
+* User from School A attempts to read School B records (index, show, search,
+  reports, exports) → empty result or 403/404, never another school's data.
+* User from School A attempts to update or delete School B records → denied.
+* Creating a record auto-assigns the acting user's school_id.
+* Super Admin (school_id = NULL) can access platform-wide data across schools.
+* A school user cannot escalate to platform-wide access.
+* The global scope filters queries automatically without an explicit
+  where('school_id') clause.
 
 Expected Result:
 
-Access denied.
-
-No data exposure.
+Access denied for cross-tenant attempts. No data exposure.
 
 Critical Requirement:
 
@@ -321,12 +328,12 @@ Development
 
 Technology Stack:
 
-* Laravel 13
+* Laravel 13 (installed)
 * PHP 8.4
 * MySQL 8
-* Bootstrap 5
-* Laravel Breeze
-* Stancl Tenancy
+* Bootstrap 5 (planned)
+* Laravel Breeze (planned)
+* Native Laravel Multi-Tenancy (school_id + Global Scopes)
 
 Browsers:
 
