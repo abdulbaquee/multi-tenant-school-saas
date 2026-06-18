@@ -1,0 +1,138 @@
+# Prompt Architecture V2
+
+This folder contains the active prompt system for the Multi-Tenant School Administration Management SaaS Platform.
+
+The V2 prompts replace the old Cursor-era `.docx` prompts as the maintainable prompt workflow for Codex and other AI agents.
+
+## Purpose
+
+Use these prompts to guide implementation, review, documentation, quality assurance, MCA report preparation, and final submission without drifting from project governance.
+
+The prompt system is designed to:
+
+- Minimize hallucinations.
+- Preserve architecture decisions.
+- Enforce tenant isolation.
+- Enforce security and authorization.
+- Require tests for implementation work.
+- Keep documentation aligned with code.
+- Support MCA report and viva preparation from real project evidence.
+
+## Instruction Precedence
+
+Every prompt in this folder must follow this order:
+
+1. System, developer, and direct user instructions.
+2. The nearest applicable `AGENTS.md`.
+3. Parent `AGENTS.md` files up to the root `AGENTS.md`.
+4. Authoritative project documentation.
+5. Existing repository conventions.
+
+Prompts must never override project governance.
+
+## Authoritative Documents
+
+Before using any prompt, read the relevant documents:
+
+- Root governance: `../AGENTS.md`
+- Application code: `../app/AGENTS.md`
+- Database work: `../database/AGENTS.md`
+- Tests: `../tests/AGENTS.md`
+- Documentation: `../docs/AGENTS.md`
+- UI and Blade views: `../resources/AGENTS.md`
+- Constitution: `../docs/PROJECT_CONSTITUTION.md`
+- Governance: `../docs/PROJECT_GOVERNANCE.md`
+- Decisions: `../docs/DECISIONS_LOG.md`
+- Roadmap: `../docs/DEVELOPMENT_ROADMAP.md`
+- Architecture: `../docs/SYSTEM_ARCHITECTURE.md`
+- Tenancy: `../docs/TENANCY_DESIGN.md`
+- Database: `../docs/DATABASE_DESIGN.md`
+- Modules and permissions: `../docs/MODULE_SPECIFICATIONS.md`
+- Screen flow: `../docs/SCREEN_FLOW.md`
+- Security: `../docs/SECURITY_GUIDELINES.md`
+- Testing: `../docs/TESTING_STRATEGY.md`
+- UI: `../docs/UI_UX_DESIGN_SYSTEM.md`
+
+## Folder Structure
+
+```text
+prompts/
+├── README.md
+├── templates/
+│   └── standard-prompt-template.md
+├── 00-governance/
+│   ├── 00-prompt-audit.md
+│   ├── 01-architecture-review.md
+│   ├── 02-security-review.md
+│   ├── 03-tenant-isolation-review.md
+│   ├── 04-documentation-review.md
+│   ├── 05-code-review.md
+│   └── 06-release-review.md
+└── 01-foundation/
+    ├── 00-phase-02-readiness-review.md
+    ├── 01-core-auth-schema.md
+    ├── 02-breeze-authentication.md
+    ├── 03-user-management.md
+    ├── 04-dashboard-navigation.md
+    ├── 05-phase-02-feature-tests.md
+    └── 06-phase-02-documentation-update.md
+```
+
+## Current Prompt Creation Status
+
+Created first:
+
+- Standard prompt template.
+- Governance review prompts.
+- Phase 2 foundation prompts.
+
+Future prompt groups should be added only when they are needed for the next roadmap phase.
+
+## Usage Workflow
+
+Use prompts in small increments:
+
+1. Run the relevant governance review prompt.
+2. Run the phase readiness prompt.
+3. Run one implementation prompt at a time.
+4. Run the matching test prompt.
+5. Run the documentation update prompt.
+6. Run the review gate before moving to the next phase.
+
+Do not combine unrelated modules into one prompt.
+
+## Global Prompt Rules
+
+- Use Laravel 13, PHP 8.4, MySQL 8.
+- Use Blade Templates, Bootstrap 5, Bootstrap Icons, and Chart.js.
+- Use Laravel Breeze only when executing the approved authentication phase.
+- Use Native Laravel Multi-Tenancy with `school_id`.
+- Do not introduce Stancl Tenancy, Spatie Multitenancy, React, Vue, Inertia, Livewire, Tailwind CSS, microservices, CQRS, or event sourcing without an approved decision in `../docs/DECISIONS_LOG.md`.
+- Keep controllers thin.
+- Put workflows in services.
+- Use Form Requests for validation.
+- Use Policies, Gates, and Middleware for authorization.
+- Use tenant-aware models and service-layer validation.
+- Require tenant isolation tests for tenant-owned modules.
+- Update documentation when implementation changes architecture, database design, permissions, security, tests, UI, roadmap status, or user-visible behavior.
+
+## Phase 2 Scope
+
+Phase 2 is defined by `../docs/DEVELOPMENT_ROADMAP.md` as:
+
+```text
+Phase 2 - Authentication & User Management
+```
+
+Phase 2 may create schema dependencies required by authentication and user management, but it must not implement later-phase module behavior:
+
+- School Management UI belongs to Phase 3.
+- Full Tenant Foundation belongs to Phase 3.
+- Full Role and Permission Management belongs to Phase 4.
+- Academic, student, attendance, fee, examination, reporting, backup, and MCA report generation belong to later phases.
+
+## Safety Notes
+
+Prompts in this folder may instruct future agents to implement code when they are explicitly used for implementation. Creating or editing these prompt files does not authorize implementation work.
+
+When in doubt, stop and run a governance review prompt before making changes.
