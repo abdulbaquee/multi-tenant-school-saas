@@ -141,6 +141,27 @@ Status: Completed
 
 ---
 
+# [0.3.2] - Codex Governance Migration
+
+Date: 2026-06-19
+
+Status: Completed
+
+## Changed
+
+* Migrated AI governance from Cursor Rules to Codex `AGENTS.md` files.
+* Added scoped instructions for root, application, database, tests, documentation, and resources.
+* Replaced tracked Cursor rule files with thin compatibility bridges to `AGENTS.md`.
+* Updated governance and tenancy documentation to reference the AGENTS hierarchy.
+
+## Notes
+
+* Documentation and governance only.
+* No application code generated.
+* No packages installed.
+
+---
+
 # [0.4.0] - Authentication & RBAC
 
 Status: Planned

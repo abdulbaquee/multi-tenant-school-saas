@@ -310,6 +310,9 @@ remain consistent with it:
 * TESTING_STRATEGY.md
 * DECISIONS_LOG.md
 * README.md
-* .cursor/rules/project-rules.md
-* .cursor/rules/ai-instructions.md
-* .cursor/rules/technology-governance.md
+* AGENTS.md
+* app/AGENTS.md
+* database/AGENTS.md
+* tests/AGENTS.md
+* docs/AGENTS.md
+* resources/AGENTS.md

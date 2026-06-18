@@ -1,181 +1,27 @@
-# TECHNOLOGY GOVERNANCE RULES
+# Cursor Technology Governance Bridge
 
-Version: 1.0
-Status: Draft
+Technology governance is now defined by `AGENTS.md` and the authoritative documents it references.
 
-Project:
-Multi-Tenant School Administration Management SaaS Platform
+This file exists only so Cursor can discover the governance model.
 
-Purpose:
+## Current Approved Direction
 
-Prevent outdated technology recommendations, hallucinated versions, deprecated practices, and inconsistent architecture decisions.
+Follow `AGENTS.md` for the complete hierarchy.
 
----
+Key constraints:
 
-# SINGLE SOURCE OF TRUTH
-
-Before suggesting any technology, architecture change, package, framework, version, or implementation approach:
-
-Always verify against:
-
-* PROJECT_CONSTITUTION.md
-* DECISIONS_LOG.md
-* SYSTEM_ARCHITECTURE.md
-* PROJECT_OVERVIEW.md
-* TENANCY_DESIGN.md (authoritative for multi-tenancy)
-* MODULE_SPECIFICATIONS.md (authoritative for the module list)
-* DEVELOPMENT_ROADMAP.md (authoritative for phase sequence)
-
-These documents are authoritative.
-
----
-
-# NO ASSUMPTION RULE
-
-Never assume:
-
-* Framework versions
-* PHP versions
-* Package versions
-* Library versions
-* Cursor model availability
-* Hosting environments
-
-If not explicitly documented:
-
-State uncertainty.
-
-Recommend verification.
-
-Do not invent versions.
-
----
-
-# TECHNOLOGY STACK AUTHORITY
-
-Current approved stack (Installed = present now; Planned = selected, not yet installed):
-
-Backend:
-
-* Laravel 13 (Installed)
+* Laravel 13
 * PHP 8.4
-
-Frontend (Planned):
-
-* Blade Templates
+* MySQL 8
+* Blade templates
 * Bootstrap 5
 * Bootstrap Icons
 * Chart.js
-
-Database:
-
-* MySQL 8
-
-Authentication (Planned):
-
 * Laravel Breeze
+* Native Laravel Multi-Tenancy using `school_id`
 
-Multi-Tenancy:
+## Do Not Introduce
 
-* Native Laravel Multi-Tenancy (school_id + Global Scopes)
-* No external tenancy package (Stancl Tenancy is NOT used) — see docs/TENANCY_DESIGN.md
+Do not introduce Stancl Tenancy, Spatie Multitenancy, microservices, CQRS, Event Sourcing, React, Vue, Inertia, Livewire, Tailwind CSS, or Alpine.js unless an approved decision is recorded in `docs/DECISIONS_LOG.md`.
 
-Any recommendation conflicting with this stack requires explicit justification.
-
----
-
-# LATEST VERSION RULE
-
-When recommending:
-
-* Packages
-* Frameworks
-* Libraries
-* Tools
-* IDE extensions
-* Models
-
-Prefer:
-
-* Current stable release
-* Official documentation
-* Long-term support versions
-
-Avoid:
-
-* Deprecated packages
-* Abandoned projects
-* Legacy recommendations
-
----
-
-# HALLUCINATION PREVENTION RULE
-
-Never:
-
-* Invent package versions
-* Invent framework versions
-* Invent release dates
-* Invent model names
-* Invent feature availability
-
-If verification is required:
-
-Say so explicitly.
-
----
-
-# CURSOR MODEL SELECTION RULE
-
-Do not recommend specific model names unless known to be currently available.
-
-Instead:
-
-* Prefer highest-capability reasoning model available for architecture reviews.
-* Prefer strongest coding model available for implementation tasks.
-* Prefer fastest quality model for routine edits.
-
-Model recommendations must be treated as time-sensitive.
-
----
-
-# DOCUMENT REVIEW RULE
-
-When auditing documentation:
-
-Check for:
-
-* Outdated versions
-* Contradictory architecture
-* Deprecated packages
-* Inconsistent terminology
-* Invalid assumptions
-
-Flag issues instead of silently accepting them.
-
----
-
-# ARCHITECTURE CONSISTENCY RULE
-
-Every recommendation must remain consistent with:
-
-* Multi-Tenant SaaS architecture
-* school_id tenant isolation
-* Laravel 13
-* PHP 8.4
-* Bootstrap 5
-* MySQL 8
-
-Do not introduce architectural drift.
-
----
-
-# FINAL RULE
-
-Accuracy is more important than confidence.
-
-If something cannot be verified:
-
-State uncertainty.
-
-Never fabricate technical facts.
+If a technology recommendation conflicts with `AGENTS.md`, `AGENTS.md` wins.
