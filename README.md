@@ -1,58 +1,254 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Multi-Tenant School Administration Management SaaS Platform
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+> MCA Major Project 2026
+> Built with Laravel 13, PHP 8.4, MySQL 8, Bootstrap 5
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Project Overview
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+A cloud-based Multi-Tenant School Administration Management SaaS Platform designed to help educational institutions manage academic and administrative operations through a centralized and secure system.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+The platform follows a Single Database Multi-Tenant Architecture where multiple schools share the same application infrastructure while maintaining complete data isolation through tenant-aware design.
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Technology Stack
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Backend
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+* Laravel 13
+* PHP 8.4
 
-## Agentic Development
+### Frontend
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+* Blade Templates
+* Bootstrap 5
+* Bootstrap Icons
+* Chart.js
+
+### Database
+
+* MySQL 8
+
+### Authentication
+
+* Laravel Breeze
+
+### Multi-Tenancy
+
+* Stancl Tenancy
+
+### Development Tools
+
+* Composer
+* Vite
+* Git
+* GitHub
+
+---
+
+## Architecture
+
+### Multi-Tenant Strategy
+
+Single Database + Shared Schema
+
+Each school is isolated using:
+
+school_id
+
+Every business record belongs to a school tenant and all queries are automatically scoped to the active tenant.
+
+---
+
+## Core Modules
+
+### Platform Administration
+
+* School Management
+* Tenant Management
+* User Management
+* Role Management
+* Activity Monitoring
+
+### Student Management
+
+* Student Registration
+* Student Profiles
+* Class Assignment
+* Section Assignment
+
+### Attendance Management
+
+* Daily Attendance
+* Attendance Tracking
+* Attendance Reports
+
+### Fee Management
+
+* Fee Structures
+* Fee Collection
+* Receipt Generation
+* Financial Reports
+
+### Examination Management
+
+* Subject Management
+* Marks Entry
+* Grade Calculation
+* Report Cards
+
+### Reporting & Analytics
+
+* Student Reports
+* Attendance Reports
+* Fee Reports
+* Examination Reports
+* Dashboard Analytics
+
+---
+
+## User Roles
+
+### Super Admin
+
+* Manage Schools
+* Manage Tenants
+* View Global Reports
+
+### School Admin
+
+* Manage School Operations
+* Manage Students
+* Manage Staff
+
+### Teacher
+
+* Attendance Entry
+* Marks Entry
+
+### Accountant
+
+* Fee Collection
+* Financial Reporting
+
+---
+
+## Documentation
+
+| Document                    | Description                |
+| --------------------------- | -------------------------- |
+| docs/PROJECT_OVERVIEW.md    | Project Scope & Objectives |
+| docs/DEVELOPMENT_ROADMAP.md | Development Plan           |
+| docs/TESTING_STRATEGY.md    | Testing Approach           |
+| docs/DECISIONS_LOG.md       | Architectural Decisions    |
+| docs/CHANGELOG.md           | Project History            |
+
+---
+
+## Project Structure
+
+app/
+bootstrap/
+config/
+database/
+docs/
+diagrams/
+reports/
+screenshots/
+resources/
+routes/
+storage/
+tests/
+
+---
+
+## Development Roadmap
+
+* [x] Project Planning
+* [x] Repository Setup
+* [x] Laravel 13 Installation
+* [ ] Authentication
+* [ ] Multi-Tenant Foundation
+* [ ] RBAC
+* [ ] Student Management
+* [ ] Attendance Management
+* [ ] Fee Management
+* [ ] Examination Management
+* [ ] Reports & Analytics
+* [ ] Testing
+* [ ] Deployment
+
+---
+
+## Installation
 
 ```bash
-composer require laravel/boost --dev
+git clone <repository-url>
 
-php artisan boost:install
+cd multi-tenant-school-saas
+
+composer install
+
+cp .env.example .env
+
+php artisan key:generate
+
+php artisan migrate
+
+php artisan serve
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+---
 
-## Contributing
+## MCA Project Information
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+**Project Title**
 
-## Code of Conduct
+Multi-Tenant School Administration Management SaaS Platform
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+**Program**
 
-## Security Vulnerabilities
+Master of Computer Applications (MCA)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+**University**
 
-## License
+Chandigarh University
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+**Project Type**
+
+Major Project
+
+**Domain**
+
+Education Technology (EdTech)
+
+**Architecture**
+
+Multi-Tenant SaaS
+
+---
+
+## Future Enhancements
+
+* Parent Portal
+* Student Portal
+* Mobile Application
+* Online Payments
+* SMS Notifications
+* Email Notifications
+* AI-Based Analytics
+* Cloud Deployment
+
+---
+
+## Author
+
+Mohammed Abdul Baquee
+
+Master of Computer Applications (MCA)
+
+Chandigarh University
+
+2026
