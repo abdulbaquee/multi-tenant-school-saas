@@ -18,6 +18,13 @@
                         <i class="bi bi-speedometer2 me-1"></i>{{ __('Dashboard') }}
                     </a>
                 </li>
+                @can('viewAny', \App\Models\User::class)
+                    <li class="nav-item">
+                        <a class="nav-link @if (request()->routeIs('users.*')) active @endif" href="{{ route('users.index') }}">
+                            <i class="bi bi-people me-1"></i>{{ __('Users') }}
+                        </a>
+                    </li>
+                @endcan
             </ul>
 
             <div class="dropdown">

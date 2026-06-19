@@ -108,12 +108,12 @@ Status: In Progress
 * Logout: Completed
 * Password Reset: Completed
 * User Profile Foundation: Completed
-* User Management: Pending
+* User Management Foundation: Completed
 
 ## Deliverables
 
 * Authentication Module: In Progress
-* User Management Module: Pending
+* User Management Module: In Progress
 
 ---
 

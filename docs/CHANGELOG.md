@@ -173,19 +173,19 @@ Status: In Progress
 * Core authentication schema for schools, roles, permissions, role permissions, users, password resets, and sessions.
 * Canonical role and permission seed data for Super Admin, School Admin, Teacher, and Accountant.
 * Laravel Breeze authentication foundation for login, logout, password reset, email verification, password confirmation, and profile updates.
+* User management foundation with policy-driven listing, create, edit, show, activation, and deactivation flows.
 * Bootstrap 5 and Bootstrap Icons integration for Blade authentication and profile views.
-* Authentication and profile feature tests, including inactive-user login rejection.
+* Authentication, profile, and user-management feature tests, including inactive-user login rejection and scope enforcement.
 
 ## Remaining
 
-* User Management foundation.
 * Role-based access control enforcement.
 * Role and permission management.
 
 ## Deliverables
 
 * Login System: Completed
-* User Management: Planned
+* User Management: In Progress
 * RBAC Foundation: In Progress
 
 ---
