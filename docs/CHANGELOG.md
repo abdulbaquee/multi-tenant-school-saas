@@ -174,6 +174,7 @@ Status: In Progress
 * Canonical role and permission seed data for Super Admin, School Admin, Teacher, and Accountant.
 * Laravel Breeze authentication foundation for login, logout, password reset, email verification, password confirmation, and profile updates.
 * User management foundation with policy-driven listing, create, edit, show, activation, and deactivation flows.
+* User forms with explicit required-field indicators, optional password-update guidance, and clear success messages.
 * Bootstrap 5 and Bootstrap Icons integration for Blade authentication and profile views.
 * Authentication, profile, and user-management feature tests, including inactive-user login rejection and scope enforcement.
 

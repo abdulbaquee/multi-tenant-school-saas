@@ -39,7 +39,7 @@ class UserController extends Controller
 
         $this->users->create($request->validated(), $request->user());
 
-        return redirect()->route('users.index')->with('status', 'user-created');
+        return redirect()->route('users.index')->with('status', 'User created successfully.');
     }
 
     public function show(User $user): View
@@ -67,7 +67,7 @@ class UserController extends Controller
 
         $this->users->update($user, $request->validated(), $request->user());
 
-        return redirect()->route('users.index')->with('status', 'user-updated');
+        return redirect()->route('users.index')->with('status', 'User updated successfully.');
     }
 
     public function activate(Request $request, User $user): RedirectResponse
@@ -76,7 +76,7 @@ class UserController extends Controller
 
         $this->users->activate($user, $request->user());
 
-        return redirect()->route('users.index')->with('status', 'user-activated');
+        return redirect()->route('users.index')->with('status', 'User activated successfully.');
     }
 
     public function deactivate(Request $request, User $user): RedirectResponse
@@ -85,6 +85,6 @@ class UserController extends Controller
 
         $this->users->deactivate($user, $request->user());
 
-        return redirect()->route('users.index')->with('status', 'user-deactivated');
+        return redirect()->route('users.index')->with('status', 'User deactivated successfully.');
     }
 }

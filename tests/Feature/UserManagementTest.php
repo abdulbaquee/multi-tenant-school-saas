@@ -110,6 +110,7 @@ class UserManagementTest extends TestCase
         ]);
 
         $response->assertRedirect(route('users.index'));
+        $response->assertSessionHas('status', 'User created successfully.');
         $this->assertDatabaseHas('users', [
             'email' => 'newteacher@example.com',
             'school_id' => $school->id,
@@ -214,6 +215,43 @@ class UserManagementTest extends TestCase
 
         $response->assertSessionHasErrors('role_id');
         $this->assertSame($this->roleId(Role::SCHOOL_ADMIN), $schoolAdmin->fresh()->role_id);
+    }
+
+    public function test_super_admin_can_update_optional_fields_without_changing_password(): void
+    {
+        $school = $this->school('One');
+        $user = $this->userWithRole(Role::TEACHER, $school, 'teacher@example.com');
+        $originalPassword = $user->password;
+
+        $response = $this->actingAs($this->superAdmin())->put(route('users.update', $user), [
+            'name' => $user->name,
+            'email' => $user->email,
+            'phone' => '9876543210',
+            'role_id' => $this->roleId(Role::TEACHER),
+            'school_id' => $school->id,
+            'password' => '',
+            'password_confirmation' => '',
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(route('users.index'));
+        $response->assertSessionHas('status', 'User updated successfully.');
+        $this->assertSame('9876543210', $user->fresh()->phone);
+        $this->assertSame($originalPassword, $user->fresh()->password);
+    }
+
+    public function test_edit_form_explains_that_password_is_optional(): void
+    {
+        $school = $this->school('One');
+        $user = $this->userWithRole(Role::TEACHER, $school, 'teacher@example.com');
+
+        $response = $this->actingAs($this->superAdmin())->get(route('users.edit', $user));
+
+        $response->assertOk();
+        $response->assertSee('New Password (optional)');
+        $response->assertSee('Leave blank to keep the current password.');
+        $response->assertSee('Required fields');
+        $response->assertSee('autocomplete="new-password"', false);
     }
 
     public function test_user_password_must_follow_documented_complexity_rules(): void

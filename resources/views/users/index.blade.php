@@ -15,7 +15,7 @@
     </x-slot>
 
     @if (session('status'))
-        <div class="alert alert-success">{{ __(str_replace('-', ' ', session('status'))) }}</div>
+        <div class="alert alert-success">{{ session('status') }}</div>
     @endif
 
     <div class="card border-0 shadow-sm">
