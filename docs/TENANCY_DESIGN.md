@@ -208,7 +208,7 @@ No exceptions.
 
 # 9. AUTHENTICATION & EMAIL STRATEGY
 
-Authentication: Laravel Breeze (planned — see `DEVELOPMENT_ROADMAP.md`).
+Authentication: Laravel Breeze (installed).
 
 Authentication Type: Session-based.
 

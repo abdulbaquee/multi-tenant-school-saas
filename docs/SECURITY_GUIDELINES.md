@@ -99,7 +99,7 @@ Every request must pass all security layers.
 
 Authentication System:
 
-Laravel Breeze (planned — not yet installed)
+Laravel Breeze (installed)
 
 Authentication Type:
 

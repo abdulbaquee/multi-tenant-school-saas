@@ -164,22 +164,29 @@ Status: Completed
 
 # [0.4.0] - Authentication & RBAC
 
-Status: Planned
+Date: 2026-06-19
 
-## Planned
+Status: In Progress
 
-* Laravel Breeze setup
-* Authentication module
-* Password reset functionality
-* User profile management
-* Role-based access control
-* Permission management
+## Added
+
+* Core authentication schema for schools, roles, permissions, role permissions, users, password resets, and sessions.
+* Canonical role and permission seed data for Super Admin, School Admin, Teacher, and Accountant.
+* Laravel Breeze authentication foundation for login, logout, password reset, email verification, password confirmation, and profile updates.
+* Bootstrap 5 and Bootstrap Icons integration for Blade authentication and profile views.
+* Authentication and profile feature tests, including inactive-user login rejection.
+
+## Remaining
+
+* User Management foundation.
+* Role-based access control enforcement.
+* Role and permission management.
 
 ## Deliverables
 
-* Login System
-* User Management
-* RBAC Foundation
+* Login System: Completed
+* User Management: Planned
+* RBAC Foundation: In Progress
 
 ---
 
@@ -397,16 +404,16 @@ Example:
 
 # Current Project Status
 
-Phase: Documentation Phase (Phase 1 — Architecture & Database Design, In Progress)
+Phase: Implementation Phase (Phase 2 — Authentication & User Management, In Progress)
 
 Repository Setup: Completed
 
 Laravel Installation: Completed
 
-Documentation Setup: Completed (Draft v1.0; Phase 2 remediation applied)
+Documentation Setup: Completed (Draft v1.0; maintained during implementation)
 
 Database Design Documentation: Remediated and implementation-ready draft (DATABASE_DESIGN.md, ER_DIAGRAM.md)
 
-Application Implementation: Laravel 13 installed; business modules not implemented
+Application Implementation: Core authentication schema and Laravel Breeze foundation implemented
 
-Development Progress: ~3–5%
+Next Task: Phase 2 User Management foundation

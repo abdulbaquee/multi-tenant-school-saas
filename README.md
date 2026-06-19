@@ -1,10 +1,10 @@
 # Multi-Tenant School Administration Management SaaS Platform
 
 > MCA Major Project 2026
-> Built with Laravel 13 and PHP 8.4 (planned UI: Bootstrap 5)
+> Built with Laravel 13, PHP 8.4, Blade, and Bootstrap 5
 
 Version: 1.0
-Status: Draft (Documentation Phase — approximately 3–5% implementation)
+Status: Draft (Implementation Phase - Phase 2 in progress)
 
 ---
 
@@ -25,20 +25,20 @@ The platform follows a Single Database Multi-Tenant Architecture where multiple 
 * Laravel 13 (Installed)
 * PHP 8.4
 
-### Frontend (Planned)
+### Frontend
 
-* Blade Templates
-* Bootstrap 5
-* Bootstrap Icons
-* Chart.js
+* Blade Templates (In Use)
+* Bootstrap 5 (Installed)
+* Bootstrap Icons (Installed)
+* Chart.js (Planned)
 
 ### Database
 
 * MySQL 8
 
-### Authentication (Planned)
+### Authentication
 
-* Laravel Breeze
+* Laravel Breeze (Installed)
 
 ### Multi-Tenancy
 

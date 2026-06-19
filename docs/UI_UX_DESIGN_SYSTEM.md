@@ -13,8 +13,8 @@ Technology Stack:
 
 * Laravel 13 (Installed)
 * PHP 8.4
-* Bootstrap 5 (Planned)
-* Blade Templates (Planned)
+* Bootstrap 5 (Installed)
+* Blade Templates (In Use)
 * Chart.js (Planned)
 
 Purpose:

@@ -331,8 +331,8 @@ Technology Stack:
 * Laravel 13 (installed)
 * PHP 8.4
 * MySQL 8
-* Bootstrap 5 (planned)
-* Laravel Breeze (planned)
+* Bootstrap 5 (installed)
+* Laravel Breeze (installed)
 * Native Laravel Multi-Tenancy (school_id + Global Scopes)
 
 Browsers:

@@ -337,7 +337,7 @@ domain, subdomain, or request parameter. Super Admin users have
 
 Framework:
 
-Laravel Breeze (planned — not yet installed; see `DEVELOPMENT_ROADMAP.md`)
+Laravel Breeze (installed)
 
 Authentication Type:
 
