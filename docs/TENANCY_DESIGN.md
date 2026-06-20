@@ -115,7 +115,8 @@ source of tenant identity.
 Implementation status: TenantContext state, request middleware, explicit
 Platform mode, active-school validation, middleware priority, request cleanup,
 `TenantScope`, and `BelongsToTenant` are implemented. `school_settings` is the
-first strict tenant-owned model using automatic isolation.
+first strict tenant-owned model using automatic isolation and now has a complete
+School Admin workflow with tenant-partitioned logo storage.
 
 Tenant context has exactly three states. A missing tenant id is not itself a
 platform bypass.

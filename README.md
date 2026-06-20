@@ -4,7 +4,7 @@
 > Built with Laravel 13, PHP 8.4, Blade, and Bootstrap 5
 
 Version: 1.0
-Status: Draft (Implementation Phase - Phase 3 in progress)
+Status: Draft (Phase 3 implementation complete - review gate pending)
 
 ---
 
@@ -66,7 +66,8 @@ school_id
 Tenant-owned records use the documented `BelongsToTenant` trait, TenantContext,
 and default-deny Eloquent global scope. Phase 3 currently includes automatic
 School Settings isolation and Super Admin School Management with retained-data
-activation and deactivation workflows. See `docs/TENANCY_DESIGN.md`.
+activation and deactivation workflows, plus tenant-bound School Settings and
+secure public school-logo management. See `docs/TENANCY_DESIGN.md`.
 
 ---
 

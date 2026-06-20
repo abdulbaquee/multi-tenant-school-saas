@@ -191,8 +191,8 @@ school deletion is not exposed.
 
 Stores one settings row per school.
 
-Implementation status: Phase 3 migration and automatically scoped model
-foundation completed; settings workflows remain pending.
+Implementation status: Phase 3 migration, automatically scoped model,
+tenant-bound update workflow, and secure public logo lifecycle completed.
 
 | Column Name | Data Type | Nullable | Default Value | Indexes | Unique Constraints | Foreign Keys | Description |
 | ----------- | --------- | -------- | ------------- | ------- | ------------------ | ------------ | ----------- |

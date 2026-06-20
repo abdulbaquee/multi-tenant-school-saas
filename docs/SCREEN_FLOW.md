@@ -27,7 +27,7 @@ The current implementation exposes only authorized navigation for completed
 Phase 2 and Phase 3 foundations:
 
 * Super Admin: Dashboard, Users, Schools, Profile.
-* School Admin: Dashboard, Users, Profile.
+* School Admin: Dashboard, School Settings, Users, Profile.
 * Teacher and Accountant: Dashboard, Profile.
 * Later-module menu items documented below remain the approved MVP target and
   must stay omitted from the application until their routes and authorization
@@ -37,6 +37,10 @@ School Management currently provides Super Admin-only listing, search, status
 filtering, registration, details, editing, activation, and deactivation. School
 deactivation requires a reason, revokes school-user sessions, and preserves all
 tenant records. Routine school deletion is not exposed.
+
+School Settings currently provides School Admin-only profile, contact, academic,
+attendance, grading, and logo controls for the active school. Super Admin keeps
+read-only settings visibility through School Details.
 
 ---
 

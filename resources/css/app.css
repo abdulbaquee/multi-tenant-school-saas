@@ -117,6 +117,25 @@ body {
     font-size: 1.25rem;
 }
 
+.school-logo-preview {
+    width: 120px;
+    height: 120px;
+}
+
+.settings-section-nav {
+    position: sticky;
+    top: 70px;
+    z-index: 1010;
+}
+
+.settings-section-nav .nav-link {
+    min-width: max-content;
+}
+
+.scroll-mt-3 {
+    scroll-margin-top: 150px;
+}
+
 @media (max-width: 575.98px) {
     .app-account-button {
         width: 52px;

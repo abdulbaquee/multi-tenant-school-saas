@@ -39,11 +39,11 @@ Single Database Multi-Tenant SaaS
 
 Current Phase:
 
-Phase 3 — Multi-Tenant Foundation
+Phase 3 — Multi-Tenant Foundation Review Gate
 
 Progress:
 
-Tenant infrastructure and School Management completed; School Settings workflows are next
+Phase 3 implementation completed; tenant-isolation and documentation review gates are next
 
 Repository:
 
@@ -122,16 +122,16 @@ Status: Completed
 
 # Phase 3 — Multi-Tenant Foundation
 
-Status: In Progress
+Status: Implementation Completed — Review Gate Pending
 
 ## Features
 
 * School Registration: Completed
 * School Management: Completed
-* School Settings: Schema and model foundation completed; workflows pending
+* School Settings: Completed
 * Tenant Middleware: Core lifecycle completed
 * Tenant Context Resolution: Completed
-* Tenant Data Isolation: Scope and trait foundation completed; module rollout ongoing
+* Tenant Data Isolation: Core scope and trait foundation completed; future modules adopt the pattern during their phases
 
 ## Deliverables
 
@@ -337,5 +337,5 @@ Project ready for final evaluation and submission.
 
 # Next Immediate Task
 
-Create and run the Phase 3 School Settings implementation prompt, followed by
-the Phase 3 tenant-isolation and documentation review gates.
+Run `prompts/00-governance/03-tenant-isolation-review.md`, followed by the Phase
+3 security and documentation review gates before starting Phase 4.

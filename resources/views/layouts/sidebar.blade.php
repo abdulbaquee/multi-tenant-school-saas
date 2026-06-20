@@ -49,6 +49,15 @@
                             </a>
                         </li>
                     @endcan
+
+                    @can('viewAny', \App\Models\SchoolSetting::class)
+                        <li class="nav-item">
+                            <a class="nav-link sidebar-link @if (request()->routeIs('school-settings.*')) active @endif" href="{{ route('school-settings.edit') }}" @if (request()->routeIs('school-settings.*')) aria-current="page" @endif>
+                                <i class="bi bi-sliders" aria-hidden="true"></i>
+                                <span>{{ __('School Settings') }}</span>
+                            </a>
+                        </li>
+                    @endcan
                 </ul>
 
                 <p class="sidebar-label px-2 mt-4 mb-2">{{ __('Account') }}</p>

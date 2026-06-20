@@ -799,6 +799,22 @@ Recorded on 2026-06-20:
   while a verified School Admin can manage it only for other users in the same
   school and cannot use administrative attestation to self-verify.
 
+## Phase 3 School Settings Baseline
+
+Recorded on 2026-06-20:
+
+* Full application suite: 110 tests and 529 assertions passed.
+* School Settings tests cover missing-row initialization, School Admin profile
+  and operating-settings updates, prohibited tenant/platform fields, role denial,
+  Super Admin read-only visibility, and permission-aware navigation.
+* Validation tests cover schema lengths, unique school email, timezone, currency,
+  academic month, attendance time, grading system, website, and logo controls.
+* Public-storage tests prove MIME and size rejection, generated tenant-partitioned
+  filenames, replacement cleanup, removal cleanup, and preservation of another
+  school's logo.
+* Existing automatic TenantScope and School Management lifecycle suites remain
+  green.
+
 Capture:
 
 * Test Cases

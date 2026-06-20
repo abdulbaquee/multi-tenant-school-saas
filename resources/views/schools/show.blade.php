@@ -64,6 +64,11 @@
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body">
                     <h2 class="h5 mb-3">{{ __('Default Settings') }}</h2>
+                    @if ($school->settings?->logo_path)
+                        <div class="school-logo-preview border rounded-2 bg-light d-flex align-items-center justify-content-center overflow-hidden mb-3">
+                            <img class="w-100 h-100 object-fit-contain" src="{{ url('storage/'.$school->settings->logo_path) }}" alt="{{ __(':school logo', ['school' => $school->name]) }}">
+                        </div>
+                    @endif
                     <dl class="mb-0">
                         <dt>{{ __('Timezone') }}</dt>
                         <dd>{{ $school->settings?->timezone ?? '—' }}</dd>
@@ -73,6 +78,9 @@
 
                         <dt>{{ __('Academic Year Starts') }}</dt>
                         <dd>{{ $school->settings ? \Carbon\Carbon::create()->month($school->settings->academic_year_start_month)->format('F') : '—' }}</dd>
+
+                        <dt>{{ __('Attendance Start Time') }}</dt>
+                        <dd>{{ $school->settings?->attendance_start_time ? substr($school->settings->attendance_start_time, 0, 5) : '—' }}</dd>
 
                         <dt>{{ __('Grading System') }}</dt>
                         <dd class="mb-0">{{ $school->settings ? ucfirst($school->settings->grading_system) : '—' }}</dd>

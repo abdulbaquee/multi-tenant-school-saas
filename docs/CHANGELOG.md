@@ -236,7 +236,7 @@ Status: Completed
 
 Date Started: 2026-06-20
 
-Status: In Progress
+Status: Implementation Completed — Review Gate Pending
 
 ## Added
 
@@ -272,10 +272,17 @@ Status: In Progress
 * Administrator-controlled email verification for managed users: Super Admin
   has platform scope, while verified School Admin users are restricted to other
   users in their own school and cannot self-verify.
+* School Admin-only School Settings workspace for profile, contact, academic,
+  attendance, grading, and logo configuration within the active tenant.
+* Automatic initialization of missing legacy School Settings rows under strict
+  Tenant context.
+* Public school-logo upload, display, replacement, and removal using generated,
+  tenant-partitioned paths with image MIME and 2 MB validation.
+* Super Admin read-only settings visibility through School Details.
 
 ## Verification
 
-* Full application suite: 98 tests and 441 assertions passed.
+* Full application suite: 110 tests and 529 assertions passed.
 * Laravel Pint formatting validation passed.
 * Composer configuration validation passed.
 * Route inspection confirmed tenant context on every authenticated web route.
@@ -285,9 +292,8 @@ Status: In Progress
 
 ## Planned
 
-* School Settings management workflow
-* Automatic tenant isolation rollout to later module models
-* Phase 3 isolation and documentation review gates
+* Phase 3 tenant-isolation, security, testing, and documentation review gates
+* Automatic tenant-isolation rollout to later module models in their roadmap phases
 
 ## Deliverables
 
