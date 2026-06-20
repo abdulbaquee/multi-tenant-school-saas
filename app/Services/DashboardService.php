@@ -5,10 +5,13 @@ namespace App\Services;
 use App\Models\Role;
 use App\Models\School;
 use App\Models\User;
+use App\Tenancy\TenantContext;
 use Illuminate\Auth\Access\AuthorizationException;
 
 class DashboardService
 {
+    public function __construct(private readonly TenantContext $tenantContext) {}
+
     /**
      * @return array{
      *     title: string,
@@ -18,6 +21,8 @@ class DashboardService
      */
     public function summaryFor(User $user): array
     {
+        $this->authorizeActorContext($user);
+
         if (! $user->can('dashboard.view')) {
             throw new AuthorizationException;
         }
@@ -134,5 +139,18 @@ class DashboardService
                 ],
             ],
         ];
+    }
+
+    private function authorizeActorContext(User $actor): void
+    {
+        $matchesContext = $actor->isSuperAdmin()
+            ? $this->tenantContext->isPlatform()
+            : $this->tenantContext->isTenant()
+                && filled($actor->school_id)
+                && (int) $this->tenantContext->schoolId() === (int) $actor->school_id;
+
+        if (! $matchesContext) {
+            throw new AuthorizationException;
+        }
     }
 }

@@ -279,20 +279,27 @@ Status: Implementation Completed — Review Gate Pending
 * Public school-logo upload, display, replacement, and removal using generated,
   tenant-partitioned paths with image MIME and 2 MB validation.
 * Super Admin read-only settings visibility through School Details.
+* Service-boundary tenant-context enforcement for User Management and Dashboard
+  workflows: Super Admin actors require explicit Platform context, while school
+  actors require matching Tenant context.
+* Direct service integration tests for Unresolved, mismatched, incorrect-mode,
+  matching Tenant, and matching Platform execution paths.
 
 ## Verification
 
-* Full application suite: 110 tests and 529 assertions passed.
+* Full application suite: 115 tests and 553 assertions passed.
 * Laravel Pint formatting validation passed.
 * Composer configuration validation passed.
 * Route inspection confirmed tenant context on every authenticated web route.
+* Tenant-isolation review confirmed UserService and DashboardService now fail
+  closed when invoked outside an authorized actor-aligned context.
 * Local SQLite development migration status confirms the School Settings
   migration is applied; live MySQL 8 validation remains a deployment-target
   verification step.
 
 ## Planned
 
-* Phase 3 tenant-isolation, security, testing, and documentation review gates
+* Phase 3 security, testing, and documentation review gates
 * Automatic tenant-isolation rollout to later module models in their roadmap phases
 
 ## Deliverables
@@ -507,6 +514,7 @@ Documentation Setup: Completed (Draft v1.0; maintained during implementation)
 
 Database Design Documentation: Remediated and implementation-ready draft (DATABASE_DESIGN.md, ER_DIAGRAM.md)
 
-Application Implementation: Phase 2 completed; Phase 3 TenantContext and authenticated middleware lifecycle implemented
+Application Implementation: Phase 2 completed; Phase 3 tenant infrastructure,
+School Management, and School Settings implemented with tenant-isolation review passed
 
-Next Task: Implement Phase 3 School Management for Super Admin
+Next Task: Run the Phase 3 security review gate

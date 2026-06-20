@@ -815,6 +815,19 @@ Recorded on 2026-06-20:
 * Existing automatic TenantScope and School Management lifecycle suites remain
   green.
 
+## Phase 3 Tenant-Isolation Review Baseline
+
+Recorded on 2026-06-21:
+
+* Full application suite: 115 tests and 553 assertions passed.
+* Direct service tests prove User Management and Dashboard workflows reject
+  Unresolved context, mismatched tenant context, school actors in Platform mode,
+  and Super Admin actors in Tenant mode.
+* Matching Tenant and Platform tests prove authorized service execution retains
+  school isolation and platform-wide behavior respectively.
+* User Management HTTP, Dashboard HTTP, TenantContext, TenantScope, School
+  Management, and School Settings regression suites remain green.
+
 Capture:
 
 * Test Cases

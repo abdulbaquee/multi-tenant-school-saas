@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Role;
 use App\Models\School;
 use App\Models\User;
+use App\Tenancy\TenantContext;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -14,11 +15,14 @@ use Illuminate\Validation\ValidationException;
 
 class UserService
 {
+    public function __construct(private readonly TenantContext $tenantContext) {}
+
     /**
      * @return LengthAwarePaginator<int, User>
      */
     public function listFor(User $actor): LengthAwarePaginator
     {
+        $this->authorizeActorContext($actor);
         $this->authorize($actor->can('viewAny', User::class));
 
         $query = User::query()->with(['role', 'school'])->orderBy('name');
@@ -35,6 +39,7 @@ class UserService
      */
     public function assignableRolesFor(User $actor): Collection
     {
+        $this->authorizeActorContext($actor);
         $this->authorize($actor->canManageUsers());
 
         return Role::query()
@@ -48,6 +53,8 @@ class UserService
      */
     public function availableSchoolsFor(User $actor, ?User $subject = null): Collection
     {
+        $this->authorizeActorContext($actor);
+
         if (! $actor->isSuperAdmin()) {
             return collect();
         }
@@ -66,6 +73,7 @@ class UserService
 
     public function create(array $data, User $actor): User
     {
+        $this->authorizeActorContext($actor);
         $this->authorize($actor->can('create', User::class));
 
         $verificationRequested = array_key_exists('email_verified', $data);
@@ -93,6 +101,7 @@ class UserService
 
     public function update(User $user, array $data, User $actor): User
     {
+        $this->authorizeActorContext($actor);
         $this->authorize($actor->can('update', $user));
 
         $emailChanged = strtolower($user->email) !== strtolower((string) $data['email']);
@@ -135,6 +144,7 @@ class UserService
 
     public function activate(User $user, User $actor): User
     {
+        $this->authorizeActorContext($actor);
         $this->authorize($actor->can('activate', $user));
 
         $user->status = User::STATUS_ACTIVE;
@@ -145,6 +155,7 @@ class UserService
 
     public function deactivate(User $user, User $actor): User
     {
+        $this->authorizeActorContext($actor);
         $this->authorize($actor->can('deactivate', $user));
 
         DB::transaction(function () use ($user): void {
@@ -227,5 +238,16 @@ class UserService
         if (! $allowed) {
             throw new AuthorizationException;
         }
+    }
+
+    private function authorizeActorContext(User $actor): void
+    {
+        $matchesContext = $actor->isSuperAdmin()
+            ? $this->tenantContext->isPlatform()
+            : $this->tenantContext->isTenant()
+                && filled($actor->school_id)
+                && (int) $this->tenantContext->schoolId() === (int) $actor->school_id;
+
+        $this->authorize($matchesContext);
     }
 }
