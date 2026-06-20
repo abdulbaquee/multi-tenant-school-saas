@@ -410,6 +410,16 @@ Full Application Source Code
 
 # 16. SCREENSHOT PLAN
 
+Phase 2 evidence available for later report assembly:
+
+* Login and email-verification screens.
+* Role-aware dashboard and authenticated navigation.
+* User list, details, create, edit, activation, and deactivation workflows.
+* Automated test baseline: 52 tests and 193 assertions passed on 2026-06-20.
+
+Screenshots remain to be selected and captured during the documentation and
+submission phases.
+
 Authentication
 
 * Login

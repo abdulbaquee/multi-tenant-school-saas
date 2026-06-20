@@ -93,9 +93,11 @@ Development environment ready.
 
 # [0.3.0] - Architecture & Database Design
 
-Status: In Progress
+Date: 2026-06-19
 
-## Planned
+Status: Completed
+
+## Completed
 
 * Multi-tenant database architecture
 * Entity Relationship Diagram (ERD)
@@ -162,11 +164,11 @@ Status: Completed
 
 ---
 
-# [0.4.0] - Authentication & RBAC
+# [0.4.0] - Authentication & User Management
 
-Date: 2026-06-19
+Date: 2026-06-20
 
-Status: In Progress
+Status: Completed
 
 ## Added
 
@@ -177,19 +179,26 @@ Status: In Progress
 * User forms with explicit required-field indicators, optional password-update guidance, and clear success messages.
 * Bootstrap 5 and Bootstrap Icons integration for Blade authentication and profile views.
 * Responsive authenticated application shell with sidebar, top bar, breadcrumbs, footer, role-aware dashboard summaries, and Phase 2 navigation.
-* Authentication, profile, and user-management feature tests, including inactive-user login rejection and scope enforcement.
+* Authentication, profile, and user-management feature tests, including inactive-user login rejection, guest protection, validation, authorization, role restrictions, deactivation, and cross-school scope enforcement.
 * Dashboard access and navigation tests for all four canonical roles.
 
-## Remaining
+## Deferred To Later Phases
 
-* Role-based access control enforcement.
-* Role and permission management.
+* Automatic tenant context and global-scope enforcement: Phase 3.
+* Full role and permission management: Phase 4.
 
 ## Deliverables
 
 * Login System: Completed
-* User Management: In Progress
-* RBAC Foundation: In Progress
+* User Management Foundation: Completed
+* Dashboard and Navigation Foundation: Completed
+* Phase 2 Automated Feature Tests: Completed
+
+## Verification
+
+* Phase 2 suite: 50 tests, 191 assertions passed.
+* Full application suite: 52 tests, 193 assertions passed.
+* No critical authentication, authorization, or cross-school access defect remained at the Phase 2 gate.
 
 ---
 
@@ -407,7 +416,7 @@ Example:
 
 # Current Project Status
 
-Phase: Implementation Phase (Phase 2 — Authentication & User Management, In Progress)
+Phase: Implementation Phase (Phase 2 completed; Phase 3 next)
 
 Repository Setup: Completed
 
@@ -419,4 +428,4 @@ Database Design Documentation: Remediated and implementation-ready draft (DATABA
 
 Application Implementation: Core authentication schema, Laravel Breeze, user management, and dashboard/navigation foundations implemented
 
-Next Task: Phase 2 feature test completion
+Next Task: Run the Phase 3 readiness review before implementing the Multi-Tenant Foundation

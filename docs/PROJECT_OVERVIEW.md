@@ -130,20 +130,20 @@ The MVP includes no separate platform-wide or application-wide settings module. 
 * Laravel 13
 * PHP 8.4
 
-## Frontend (Planned)
+## Frontend
 
 * Blade Templates
 * Bootstrap 5
 * Bootstrap Icons
-* Chart.js
+* Chart.js (Planned)
 
 ## Database
 
 * MySQL 8
 
-## Authentication (Planned)
+## Authentication
 
-* Laravel Breeze
+* Laravel Breeze (Installed)
 
 ## Multi-Tenancy
 

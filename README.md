@@ -4,7 +4,7 @@
 > Built with Laravel 13, PHP 8.4, Blade, and Bootstrap 5
 
 Version: 1.0
-Status: Draft (Implementation Phase - Phase 2 in progress)
+Status: Draft (Implementation Phase - Phase 2 completed)
 
 ---
 
@@ -63,11 +63,11 @@ Each school is isolated using:
 
 school_id
 
-Every business record belongs to a school tenant. Queries are scoped to the
-active tenant **automatically** by an Eloquent global scope (BelongsToTenant
-trait) set from the authenticated user's `school_id`. Super Admin
-(`school_id = NULL`) bypasses the scope for platform-wide access. See
-`docs/TENANCY_DESIGN.md`.
+Every business record will belong to a school tenant. Phase 3 will add automatic
+query scoping through the documented `BelongsToTenant` trait, tenant context,
+and Eloquent global scope. Phase 2 user-management access is protected by
+policies and service-layer school checks until that infrastructure is active.
+See `docs/TENANCY_DESIGN.md`.
 
 ---
 
@@ -156,7 +156,7 @@ tests/
 * [x] Project Planning
 * [x] Repository Setup
 * [x] Laravel 13 Installation
-* [ ] Authentication
+* [x] Authentication & User Management Foundation
 * [ ] Multi-Tenant Foundation
 * [ ] RBAC
 * [ ] Student Management

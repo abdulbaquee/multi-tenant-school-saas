@@ -18,8 +18,8 @@ PHP 8.4
 Database:
 MySQL 8
 
-Planned Authentication:
-Laravel Breeze
+Authentication:
+Laravel Breeze (Installed)
 
 Multi-Tenancy:
 Native Laravel Multi-Tenancy (school_id + Global Scopes)

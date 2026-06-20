@@ -20,6 +20,17 @@ class UserManagementTest extends TestCase
         $this->seed();
     }
 
+    public function test_guests_cannot_access_or_create_users(): void
+    {
+        $this->get(route('users.index'))
+            ->assertRedirect(route('login'));
+
+        $this->post(route('users.store'), $this->validUserPayload($this->roleId(Role::TEACHER)))
+            ->assertRedirect(route('login'));
+
+        $this->assertDatabaseMissing('users', ['email' => 'newuser@example.com']);
+    }
+
     public function test_super_admin_can_view_user_list(): void
     {
         $response = $this->actingAs($this->superAdmin())->get(route('users.index'));
@@ -40,6 +51,34 @@ class UserManagementTest extends TestCase
         $response->assertOk();
         $response->assertSee($visibleUser->email);
         $response->assertDontSee($hiddenUser->email);
+    }
+
+    public function test_school_admin_can_view_and_update_a_user_in_own_school(): void
+    {
+        $school = $this->school('One');
+        $schoolAdmin = $this->userWithRole(Role::SCHOOL_ADMIN, $school, 'admin1@example.com');
+        $teacher = $this->userWithRole(Role::TEACHER, $school, 'teacher1@example.com');
+
+        $this->actingAs($schoolAdmin)
+            ->get(route('users.show', $teacher))
+            ->assertOk()
+            ->assertSee($teacher->email);
+
+        $response = $this->actingAs($schoolAdmin)->put(route('users.update', $teacher), [
+            'name' => 'Updated Teacher',
+            'email' => $teacher->email,
+            'phone' => '9876543210',
+            'role_id' => $this->roleId(Role::TEACHER),
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(route('users.index'));
+        $this->assertDatabaseHas('users', [
+            'id' => $teacher->id,
+            'school_id' => $school->id,
+            'name' => 'Updated Teacher',
+            'phone' => '9876543210',
+        ]);
     }
 
     public function test_school_admin_cannot_access_another_schools_user_record(): void
@@ -268,6 +307,29 @@ class UserManagementTest extends TestCase
 
         $response->assertSessionHasErrors('password');
         $this->assertDatabaseMissing('users', ['email' => 'weakpassword@example.com']);
+    }
+
+    public function test_required_user_fields_are_validated(): void
+    {
+        $response = $this->actingAs($this->superAdmin())->post(route('users.store'), []);
+
+        $response->assertSessionHasErrors(['name', 'email', 'role_id', 'password']);
+        $this->assertDatabaseCount('users', 1);
+    }
+
+    public function test_user_email_must_be_globally_unique(): void
+    {
+        $school = $this->school('One');
+        $existingUser = $this->userWithRole(Role::TEACHER, $school, 'existing@example.com');
+
+        $response = $this->actingAs($this->superAdmin())->post(route('users.store'), [
+            ...$this->validUserPayload($this->roleId(Role::ACCOUNTANT)),
+            'email' => $existingUser->email,
+            'school_id' => $school->id,
+        ]);
+
+        $response->assertSessionHasErrors('email');
+        $this->assertDatabaseCount('users', 2);
     }
 
     public function test_user_can_be_deactivated_and_reactivated_without_deletion(): void

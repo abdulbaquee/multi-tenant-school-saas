@@ -15,7 +15,7 @@ Laravel 13
 Language:
 PHP 8.4
 
-Planned Frontend:
+Frontend:
 Blade Templates + Bootstrap 5
 
 ---

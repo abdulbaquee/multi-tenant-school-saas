@@ -729,6 +729,20 @@ A module is accepted when:
 
 # 34. MCA TESTING EVIDENCE
 
+## Phase 2 Completion Baseline
+
+Recorded on 2026-06-20:
+
+* Phase 2 feature suite: 50 tests and 191 assertions passed.
+* Full application suite: 52 tests and 193 assertions passed.
+* Covered login, logout, password reset, email verification, password and
+  profile updates, dashboard access, role-aware navigation, user-management
+  allowed and denied paths, validation, role restrictions, deactivation, and
+  cross-school user access denial.
+* The automatic tenant-context and global-scope test suite remains a Phase 3
+  requirement; Phase 2 verifies the implemented policy and service-layer school
+  boundaries only.
+
 Capture:
 
 * Test Cases

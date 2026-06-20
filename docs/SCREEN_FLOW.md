@@ -12,7 +12,7 @@ Master of Computer Applications (MCA)
 Framework:
 Laravel 13
 
-Planned Frontend:
+Frontend:
 Blade Templates + Bootstrap 5
 
 Purpose:
@@ -20,6 +20,16 @@ Purpose:
 Define application navigation, user journeys, menu hierarchy, screen relationships, breadcrumbs, and module navigation flows.
 
 The canonical permission matrix is defined in `MODULE_SPECIFICATIONS.md`. Every menu in this document must match that matrix.
+
+## Current Implementation Status
+
+Phase 2 implements only active, authorized navigation for completed foundations:
+
+* Super Admin and School Admin: Dashboard, Users, Profile.
+* Teacher and Accountant: Dashboard, Profile.
+* Later-module menu items documented below remain the approved MVP target and
+  must stay omitted from the application until their routes and authorization
+  are implemented.
 
 ---
 

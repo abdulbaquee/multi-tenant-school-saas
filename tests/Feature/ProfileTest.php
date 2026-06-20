@@ -10,6 +10,22 @@ class ProfileTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_guests_cannot_access_or_update_profiles(): void
+    {
+        $user = User::factory()->create();
+
+        $this->get(route('profile.edit'))
+            ->assertRedirect(route('login'));
+
+        $this->patch(route('profile.update'), [
+            'name' => 'Unauthorized Change',
+            'email' => 'unauthorized@example.com',
+        ])->assertRedirect(route('login'));
+
+        $this->assertNotSame('Unauthorized Change', $user->fresh()->name);
+        $this->assertNotSame('unauthorized@example.com', $user->fresh()->email);
+    }
+
     public function test_profile_page_is_displayed(): void
     {
         $user = User::factory()->create();
