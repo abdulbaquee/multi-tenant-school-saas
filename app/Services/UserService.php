@@ -145,6 +145,14 @@ class UserService
         $data = $this->applyRoleAndSchoolRules($data, $actor, $user);
         unset($data['status']);
 
+        $roleChanged = (int) $user->role_id !== (int) $data['role_id'];
+        $schoolOwnershipChanged = $this->normalizeSchoolId($oldValues['school_id'])
+            !== $this->normalizeSchoolId($data['school_id'] ?? null);
+
+        if ($roleChanged && ! $actor->hasPermission('roles.assign')) {
+            throw new AuthorizationException('You cannot assign user roles.');
+        }
+
         if ($passwordReset) {
             $data['password'] = Hash::make($data['password']);
         } else {
@@ -158,6 +166,8 @@ class UserService
             $markEmailVerified,
             $emailChanged,
             $passwordReset,
+            $roleChanged,
+            $schoolOwnershipChanged,
             $oldValues,
             $actor,
         ): User {
@@ -173,13 +183,13 @@ class UserService
                 $user->forceFill(['email_verified_at' => null]);
             }
 
-            if ($passwordReset) {
+            if ($passwordReset || $roleChanged || $schoolOwnershipChanged) {
                 $user->forceFill(['remember_token' => null]);
             }
 
             $user->save();
 
-            if ($passwordReset) {
+            if ($passwordReset || $roleChanged || $schoolOwnershipChanged) {
                 DB::table('sessions')->where('user_id', $user->id)->delete();
             }
 
@@ -190,26 +200,43 @@ class UserService
                 $newValues['password_changed'] = true;
             }
 
-            $schoolOwnershipChanged = $this->normalizeSchoolId($oldValues['school_id'])
-                !== $this->normalizeSchoolId($newValues['school_id']);
+            $activityEvents = [];
+
+            if ($passwordReset) {
+                $activityEvents['password_reset'] = 'User password reset by an administrator.';
+            }
+
+            if ($roleChanged) {
+                $activityEvents['role_assigned'] = 'User role assignment changed.';
+            }
+
+            if ($activityEvents === []) {
+                $activityEvents['updated'] = 'User account updated.';
+            }
 
             if ($schoolOwnershipChanged) {
-                $this->securityLogs->platformActivity(
-                    $actor,
-                    'user_management',
-                    $passwordReset ? 'password_reset' : 'updated',
-                    $user,
-                    $passwordReset ? 'User password reset by an administrator.' : 'User account updated.',
-                );
+                foreach ($activityEvents as $action => $description) {
+                    $this->securityLogs->platformActivity(
+                        $actor,
+                        'user_management',
+                        $action,
+                        $user,
+                        $description,
+                    );
+                }
+
                 $this->securityLogs->platformAudit($actor, $user, 'updated', $oldValues, $newValues);
             } else {
-                $this->securityLogs->activity(
-                    $actor,
-                    'user_management',
-                    $passwordReset ? 'password_reset' : 'updated',
-                    $user,
-                    $passwordReset ? 'User password reset by an administrator.' : 'User account updated.',
-                );
+                foreach ($activityEvents as $action => $description) {
+                    $this->securityLogs->activity(
+                        $actor,
+                        'user_management',
+                        $action,
+                        $user,
+                        $description,
+                    );
+                }
+
                 $this->securityLogs->audit($actor, $user, 'updated', $oldValues, $newValues);
             }
 

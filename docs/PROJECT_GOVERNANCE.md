@@ -132,7 +132,7 @@ Phase 3 — Multi-Tenant Foundation
 Status: Completed
 
 Phase 4 — Roles & Permissions
-Status: Design Remediation Completed — Readiness Review Pending
+Status: Core Foundation Completed — Mapping Management Pending
 
 Phase 5 — Academic Structure
 Status: Pending
@@ -179,11 +179,11 @@ Application Implementation: Phase 2 completed; Phase 3 tenant infrastructure,
 Super Admin School Management, tenant-bound School Settings, and security
 logging implemented
 
-Development Progress: Phase 3 release-approved; Phase 4 RBAC design remediation
-completed and awaiting readiness review
+Development Progress: Phase 3 release-approved; Phase 4 core native RBAC
+foundation implemented and mapping management pending
 
 ---
 
 # Next Milestone
 
-Rerun the Phase 4 Roles & Permissions readiness review before implementation.
+Implement the Phase 4 Role & Permission mapping-management workflow.

@@ -869,6 +869,25 @@ Recorded on 2026-06-21:
   security-log changes roll back together when logging cannot be persisted.
 * Composer and npm security advisory checks reported no known vulnerabilities.
 
+## Phase 4 Core RBAC Foundation Baseline
+
+Recorded on 2026-06-21:
+
+* Full application suite: 140 tests and 705 assertions passed.
+* Catalog tests prove four fixed roles, 57 canonical permissions, immutable Role
+  and Permission models, exact default mappings, maximum boundaries, and
+  essential-permission inclusion.
+* Seeder tests prove allowed school-role revocations survive reseeding,
+  out-of-bound mappings are removed, essentials are restored, Super Admin is
+  synchronized exactly, existing Super Admin passwords are preserved, and a
+  fresh install rejects a missing or weak bootstrap password.
+* Authorization tests prove database permission changes apply without cache;
+  Dashboard, School, School Settings, and User policies deny missing exact
+  permissions; and tenant scope remains enforced.
+* Role-assignment tests prove `roles.assign` enforcement, target-only session and
+  remember-token revocation, cross-school transfer revocation, and activity-log
+  evidence.
+
 Capture:
 
 * Test Cases

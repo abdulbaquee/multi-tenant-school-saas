@@ -52,23 +52,40 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->role?->code === $code;
     }
 
+    public function hasPermission(string $code): bool
+    {
+        if ($this->status !== self::STATUS_ACTIVE) {
+            return false;
+        }
+
+        return $this->role()
+            ->whereHas('permissions', fn ($query) => $query->where('code', $code))
+            ->exists();
+    }
+
     public function canManageUsers(): bool
     {
-        return $this->isSuperAdmin()
-            || ($this->hasRoleCode(Role::SCHOOL_ADMIN) && filled($this->school_id));
+        return $this->hasPermission('users.view')
+            && ($this->isSuperAdmin()
+                || ($this->hasRoleCode(Role::SCHOOL_ADMIN) && filled($this->school_id)));
     }
 
     public function canVerifyManagedUserEmails(): bool
     {
-        return $this->isSuperAdmin()
+        return $this->hasPermission('users.update')
+            && ($this->isSuperAdmin()
             || ($this->hasRoleCode(Role::SCHOOL_ADMIN)
                 && filled($this->school_id)
-                && $this->hasVerifiedEmail());
+                && $this->hasVerifiedEmail()));
     }
 
     public function canViewDashboard(): bool
     {
         if ($this->status !== self::STATUS_ACTIVE) {
+            return false;
+        }
+
+        if (! $this->hasPermission('dashboard.view')) {
             return false;
         }
 

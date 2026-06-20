@@ -252,10 +252,19 @@ RBAC Security Contract:
 * Permission results are not cached in the MVP and are resolved from the current
   database mapping on each request.
 * Mapping replacement and user role assignment are transactional and append
-  activity and audit records. Role changes revoke the target user's sessions and
-  remember token; mapping changes take effect on the next request.
+  activity and audit records. Role or school-ownership changes revoke the target
+  user's sessions and remember token; mapping changes take effect on the next
+  request.
 * Forged permission IDs, duplicate mappings, out-of-bound grants, essential-
   permission removal, and Super Admin mapping changes must fail validation.
+
+Implementation Status:
+
+* The fixed catalog, constrained seed synchronization, immutable catalog models,
+  database permission resolution, permission-aware current-module Policies, and
+  role-change session revocation are implemented.
+* Mapping-edit validation and management routes remain pending with the Phase 4
+  workspace.
 
 ---
 

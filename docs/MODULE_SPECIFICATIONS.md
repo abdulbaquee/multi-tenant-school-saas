@@ -236,12 +236,21 @@ Implementation Contract:
 * Activity records use module `role_permissions` and action `mapping_updated`.
   Audit records target the Role and store old/new permission-code arrays.
 * User role assignment continues through User Management. Its audit contains
-  old/new role IDs, and an actual role change clears the target user's sessions
-  and remember token.
+  old/new role IDs, and an actual role or school-ownership change clears the
+  target user's sessions and remember token.
 
 Security Requirement:
 
 Every protected action must pass authorization checks.
+
+Implementation Status:
+
+* Fixed catalog configuration, immutable Role and Permission models,
+  relationships, database-backed permission resolution, seed synchronization,
+  current-module Policy integration, and role-change session revocation are
+  implemented.
+* Role directory, effective-permission details, constrained mapping updates, and
+  read-only School Admin screens remain pending.
 
 ---
 

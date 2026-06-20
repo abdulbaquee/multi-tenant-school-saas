@@ -87,7 +87,8 @@ prompts/
 │   └── 07-phase-03-security-remediation.md
 └── 03-roles-permissions/
     ├── 00-phase-04-readiness-review.md
-    └── 01-phase-04-rbac-design-remediation.md
+    ├── 01-phase-04-rbac-design-remediation.md
+    └── 02-phase-04-core-rbac-foundation.md
 ```
 
 ## Current Prompt Creation Status
@@ -108,6 +109,7 @@ Created for the next roadmap gate:
 - Phase 3 School Settings workflow implementation.
 - Phase 4 Roles & Permissions readiness review.
 - Phase 4 RBAC design documentation remediation.
+- Phase 4 core native RBAC foundation implementation.
 
 Future prompt groups should be added only when they are needed for the next roadmap phase.
 

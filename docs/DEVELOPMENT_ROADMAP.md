@@ -43,8 +43,8 @@ Phase 4 — Roles & Permissions Readiness Gate
 
 Progress:
 
-Phase 3 completed and release-approved. Phase 4 RBAC design remediation is
-completed; readiness review is next.
+Phase 3 completed and release-approved. Phase 4 core RBAC foundation is
+implemented; mapping management is next.
 
 Repository:
 
@@ -146,14 +146,14 @@ Status: Completed
 
 # Phase 4 — Roles & Permissions
 
-Status: Design Remediation Completed — Readiness Review Pending
+Status: Core Foundation Completed — Mapping Management Pending
 
 ## Features
 
 * Role Management
 * Permission Management
-* Authorization Policies
-* Access Matrix
+* Authorization Policies: Core implemented for current modules
+* Access Matrix: Canonical configuration and seed synchronization implemented
 
 ## Roles
 
@@ -345,6 +345,5 @@ Project ready for final evaluation and submission.
 
 # Next Immediate Task
 
-Rerun `prompts/03-roles-permissions/00-phase-04-readiness-review.md`. If
-approved, create and execute the Phase 4 core RBAC implementation prompt before
-the mapping-management UI.
+Create and execute the Phase 4 Role & Permission mapping-management prompt,
+followed by focused feature tests and documentation review.

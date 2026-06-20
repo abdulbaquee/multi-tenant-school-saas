@@ -8,33 +8,41 @@ class UserPolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->canManageUsers();
+        return $user->canManageUsers() && $user->hasPermission('users.view');
     }
 
     public function view(User $user, User $model): bool
     {
-        return $user->canManageUsers() && $this->sameScope($user, $model);
+        return $user->canManageUsers()
+            && $user->hasPermission('users.view')
+            && $this->sameScope($user, $model);
     }
 
     public function create(User $user): bool
     {
-        return $user->canManageUsers();
+        return $user->canManageUsers()
+            && $user->hasPermission('users.create')
+            && $user->hasPermission('roles.assign');
     }
 
     public function update(User $user, User $model): bool
     {
-        return $user->canManageUsers() && $this->sameScope($user, $model);
+        return $user->canManageUsers()
+            && $user->hasPermission('users.update')
+            && $this->sameScope($user, $model);
     }
 
     public function activate(User $user, User $model): bool
     {
         return $this->canChangeStatus($user, $model)
+            && $user->hasPermission('users.update')
             && $model->status === User::STATUS_INACTIVE;
     }
 
     public function deactivate(User $user, User $model): bool
     {
         return $this->canChangeStatus($user, $model)
+            && $user->hasPermission('users.delete')
             && $model->status === User::STATUS_ACTIVE;
     }
 

@@ -446,6 +446,11 @@ class UserManagementTest extends TestCase
         $schoolOne = $this->school('One');
         $schoolTwo = $this->school('Two');
         $user = $this->userWithRole(Role::TEACHER, $schoolOne, 'teacher@example.com');
+        $otherUser = $this->userWithRole(Role::ACCOUNTANT, $schoolOne, 'accountant@example.com');
+        $user->forceFill(['remember_token' => 'moving-user-remember'])->save();
+        $otherUser->forceFill(['remember_token' => 'other-user-remember'])->save();
+        $this->sessionRecord('moving-user-session', $user);
+        $this->sessionRecord('other-user-session', $otherUser);
 
         $this->actingAs($this->superAdmin())->put(route('users.update', $user), [
             'name' => $user->name,
@@ -455,6 +460,10 @@ class UserManagementTest extends TestCase
         ])->assertRedirect(route('users.index'));
 
         $this->assertSame($schoolTwo->id, $user->fresh()->school_id);
+        $this->assertNull($user->fresh()->remember_token);
+        $this->assertSame('other-user-remember', $otherUser->fresh()->remember_token);
+        $this->assertDatabaseMissing('sessions', ['id' => 'moving-user-session']);
+        $this->assertDatabaseHas('sessions', ['id' => 'other-user-session']);
 
         $context = app(TenantContext::class);
         $context->setPlatform();
@@ -518,6 +527,36 @@ class UserManagementTest extends TestCase
             ->assertSessionHasErrors('password');
 
         $this->assertSame($originalPassword, $schoolAdmin->fresh()->password);
+    }
+
+    public function test_role_assignment_revokes_only_the_target_users_sessions_and_remember_token(): void
+    {
+        $school = $this->school('One');
+        $superAdmin = $this->superAdmin();
+        $target = $this->userWithRole(Role::TEACHER, $school, 'teacher@example.com');
+        $otherUser = $this->userWithRole(Role::ACCOUNTANT, $school, 'accountant@example.com');
+        $target->forceFill(['remember_token' => 'target-remember'])->save();
+        $otherUser->forceFill(['remember_token' => 'other-remember'])->save();
+        $this->sessionRecord('target-role-session', $target);
+        $this->sessionRecord('other-role-session', $otherUser);
+
+        $this->actingAs($superAdmin)->put(route('users.update', $target), [
+            'name' => $target->name,
+            'email' => $target->email,
+            'role_id' => $this->roleId(Role::ACCOUNTANT),
+            'school_id' => $school->id,
+        ])->assertRedirect(route('users.index'));
+
+        $this->assertSame($this->roleId(Role::ACCOUNTANT), $target->fresh()->role_id);
+        $this->assertNull($target->fresh()->remember_token);
+        $this->assertSame('other-remember', $otherUser->fresh()->remember_token);
+        $this->assertDatabaseMissing('sessions', ['id' => 'target-role-session']);
+        $this->assertDatabaseHas('sessions', ['id' => 'other-role-session']);
+        $this->assertDatabaseHas('activity_logs', [
+            'user_id' => $superAdmin->id,
+            'action' => 'role_assigned',
+            'subject_id' => $target->id,
+        ]);
     }
 
     public function test_administrative_password_reset_revokes_only_target_sessions_and_credentials_are_not_logged(): void

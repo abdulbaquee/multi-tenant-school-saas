@@ -11,7 +11,8 @@ class SchoolSettingPolicy
     public function viewAny(User $user): bool
     {
         return $user->hasRoleCode(Role::SCHOOL_ADMIN)
-            && filled($user->school_id);
+            && filled($user->school_id)
+            && $user->hasPermission('school_settings.view');
     }
 
     public function view(User $user, SchoolSetting $schoolSetting): bool
@@ -22,6 +23,7 @@ class SchoolSettingPolicy
 
     public function update(User $user, SchoolSetting $schoolSetting): bool
     {
-        return $this->view($user, $schoolSetting);
+        return $this->view($user, $schoolSetting)
+            && $user->hasPermission('school_settings.update');
     }
 }

@@ -428,12 +428,20 @@ request without cache invalidation.
 
 Phase 4 Components:
 
+Implemented foundation:
+
 * `config/rbac.php` - machine-readable fixed roles, permission catalog, default
   and maximum mappings, and essential permissions. It must mirror
   `MODULE_SPECIFICATIONS.md` and is shared by seeding, validation, and tests.
 * `Permission` model - role relationship and immutable catalog metadata.
 * `Role` model - permission relationship; role rows remain immutable.
 * `User::hasPermission()` - current database mapping resolution.
+* Permission-aware current-module Policies and dashboard Gate.
+* Safe seed synchronization and target-only session revocation after role or
+  school-ownership changes.
+
+Pending mapping-management workflow:
+
 * `RolePolicy` - platform edit and tenant read-only boundaries.
 * `RolePermissionService` - listing, constrained mapping replacement,
   transactions, and activity/audit recording.

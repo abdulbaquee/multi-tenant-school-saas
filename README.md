@@ -4,7 +4,7 @@
 > Built with Laravel 13, PHP 8.4, Blade, and Bootstrap 5
 
 Version: 1.0
-Status: Draft (Phase 3 completed; Phase 4 RBAC design remediation completed)
+Status: Draft (Phase 3 completed; Phase 4 core RBAC foundation implemented)
 
 ---
 
@@ -160,7 +160,7 @@ tests/
 * [x] Laravel 13 Installation
 * [x] Authentication & User Management Foundation
 * [x] Multi-Tenant Foundation
-* [ ] RBAC
+* [ ] RBAC (core foundation complete; management workspace pending)
 * [ ] Student Management
 * [ ] Attendance Management
 * [ ] Fee Management
