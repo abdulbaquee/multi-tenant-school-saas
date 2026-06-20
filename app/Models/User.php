@@ -58,6 +58,20 @@ class User extends Authenticatable implements MustVerifyEmail
             || ($this->hasRoleCode(Role::SCHOOL_ADMIN) && filled($this->school_id));
     }
 
+    public function canViewDashboard(): bool
+    {
+        if ($this->status !== self::STATUS_ACTIVE) {
+            return false;
+        }
+
+        if ($this->isSuperAdmin()) {
+            return true;
+        }
+
+        return filled($this->school_id)
+            && in_array($this->role?->code, [Role::SCHOOL_ADMIN, Role::TEACHER, Role::ACCOUNTANT], true);
+    }
+
     public function isSuperAdmin(): bool
     {
         return $this->hasRoleCode(Role::SUPER_ADMIN) && is_null($this->school_id);

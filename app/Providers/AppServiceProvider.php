@@ -24,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::policy(User::class, UserPolicy::class);
+        Gate::define('dashboard.view', fn (User $user): bool => $user->canViewDashboard());
         Paginator::useBootstrapFive();
     }
 }

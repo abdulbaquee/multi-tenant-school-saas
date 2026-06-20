@@ -1,17 +1,28 @@
 <x-app-layout>
     <x-slot name="header">
         <div>
-            <h1 class="h3 mb-1">{{ __('Dashboard') }}</h1>
-            <p class="text-body-secondary mb-0">{{ __('Authentication foundation is ready.') }}</p>
+            <h1 class="h3 mb-1">{{ $title }}</h1>
+            <p class="text-body-secondary mb-0">{{ $description }}</p>
         </div>
     </x-slot>
 
-    <div class="card border-0 shadow-sm">
-        <div class="card-body">
-            <h2 class="h5">{{ __('Welcome, :name', ['name' => auth()->user()->name]) }}</h2>
-            <p class="mb-0 text-body-secondary">
-                {{ __('You are signed in to the school administration platform.') }}
-            </p>
+    <section aria-label="{{ __('Dashboard summary') }}">
+        <div class="row g-3 g-xl-4">
+            @foreach ($metrics as $metric)
+                <div class="col-12 col-md-6 col-xl-4">
+                    <article class="metric-card h-100 bg-white border p-4">
+                        <div class="d-flex align-items-start justify-content-between gap-3">
+                            <div>
+                                <p class="small text-body-secondary mb-2">{{ $metric['label'] }}</p>
+                                <p class="h3 mb-0 text-break">{{ $metric['value'] }}</p>
+                            </div>
+                            <span class="metric-icon d-inline-flex align-items-center justify-content-center rounded-2 bg-{{ $metric['tone'] }}-subtle text-{{ $metric['tone'] }}">
+                                <i class="bi {{ $metric['icon'] }}" aria-hidden="true"></i>
+                            </span>
+                        </div>
+                    </article>
+                </div>
+            @endforeach
         </div>
-    </div>
+    </section>
 </x-app-layout>

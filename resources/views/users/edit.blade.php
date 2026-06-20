@@ -1,4 +1,8 @@
 <x-app-layout>
+    <x-slot name="breadcrumbParent">{{ __('Users') }}</x-slot>
+    <x-slot name="breadcrumbParentUrl">{{ route('users.index') }}</x-slot>
+    <x-slot name="breadcrumb">{{ __('Edit User') }}</x-slot>
+
     <x-slot name="header">
         <div>
             <h1 class="h3 mb-1">{{ __('Edit User') }}</h1>

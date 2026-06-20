@@ -1,12 +1,18 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
 
 :root {
-    --school-primary: #0d6efd;
-    --school-surface: #f8f9fa;
+    --school-primary: #2563eb;
+    --school-surface: #f8fafc;
+    --school-border: #e2e8f0;
+    --school-text: #0f172a;
+    --school-muted: #64748b;
+    --school-sidebar-width: 260px;
+    --school-content-width: 1400px;
 }
 
 body {
     background: var(--school-surface);
+    color: var(--school-text);
 }
 
 .auth-shell {
@@ -20,4 +26,122 @@ body {
 .brand-mark {
     width: 44px;
     height: 44px;
+    flex: 0 0 44px;
+}
+
+.app-main {
+    min-width: 0;
+}
+
+.app-sidebar {
+    --bs-offcanvas-width: var(--school-sidebar-width);
+    width: var(--school-sidebar-width);
+}
+
+.app-topbar {
+    min-height: 70px;
+    z-index: 1020;
+}
+
+.app-sidebar-brand {
+    min-height: 70px;
+}
+
+.app-content {
+    width: 100%;
+    max-width: var(--school-content-width);
+    margin-inline: auto;
+    padding-inline: 1rem;
+}
+
+.app-icon-button {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+}
+
+.app-account-button {
+    width: 160px;
+    min-width: 160px;
+    min-height: 44px;
+}
+
+.app-account-name {
+    min-width: 0;
+    flex: 1 1 auto;
+    text-align: left;
+}
+
+.sidebar-label {
+    color: var(--school-muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: uppercase;
+}
+
+.sidebar-link {
+    display: flex;
+    width: 100%;
+    min-height: 44px;
+    align-items: center;
+    gap: 0.75rem;
+    color: #334155;
+    border-radius: 8px;
+}
+
+.sidebar-link:hover {
+    color: var(--school-primary);
+    background: #eff6ff;
+}
+
+.sidebar-link.active {
+    background: var(--school-primary);
+}
+
+.page-header .breadcrumb a {
+    color: var(--school-muted);
+}
+
+.metric-card {
+    min-height: 136px;
+    border-color: var(--school-border) !important;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgb(15 23 42 / 5%);
+}
+
+.metric-icon {
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+    font-size: 1.25rem;
+}
+
+@media (max-width: 575.98px) {
+    .app-account-button {
+        width: 52px;
+        min-width: 52px;
+        justify-content: center;
+        padding-inline: 0.5rem;
+    }
+}
+
+@media (min-width: 992px) {
+    .app-sidebar {
+        position: sticky;
+        top: 0;
+        width: var(--school-sidebar-width) !important;
+        height: 100vh !important;
+        flex: 0 0 var(--school-sidebar-width);
+        background: #fff !important;
+        border-right: 1px solid var(--school-border) !important;
+    }
+
+    .app-sidebar .offcanvas-body {
+        overflow-y: auto;
+    }
+
+    .app-content {
+        padding-inline: 1.5rem;
+    }
 }

@@ -176,7 +176,9 @@ Status: In Progress
 * User management foundation with policy-driven listing, create, edit, show, activation, and deactivation flows.
 * User forms with explicit required-field indicators, optional password-update guidance, and clear success messages.
 * Bootstrap 5 and Bootstrap Icons integration for Blade authentication and profile views.
+* Responsive authenticated application shell with sidebar, top bar, breadcrumbs, footer, role-aware dashboard summaries, and Phase 2 navigation.
 * Authentication, profile, and user-management feature tests, including inactive-user login rejection and scope enforcement.
+* Dashboard access and navigation tests for all four canonical roles.
 
 ## Remaining
 
@@ -415,6 +417,6 @@ Documentation Setup: Completed (Draft v1.0; maintained during implementation)
 
 Database Design Documentation: Remediated and implementation-ready draft (DATABASE_DESIGN.md, ER_DIAGRAM.md)
 
-Application Implementation: Core authentication schema and Laravel Breeze foundation implemented
+Application Implementation: Core authentication schema, Laravel Breeze, user management, and dashboard/navigation foundations implemented
 
-Next Task: Phase 2 User Management foundation
+Next Task: Phase 2 feature test completion
