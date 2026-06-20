@@ -408,28 +408,64 @@ Request
 Authentication Check
    │
    ▼
-Role Check
+Permission Resolution
    │
    ▼
-Policy Validation
+Policy + Tenant/Record Scope Validation
+   │
+   ▼
+Service Context Validation
    │
    ▼
 Access Granted
 ```
 
+RBAC uses native Laravel models, Eloquent relationships, Gates, Policies,
+services, and Blade `@can` directives. `User::hasPermission(code)` resolves the
+authenticated user's current role-permission mapping from the database. The MVP
+does not cache permission results, so approved mapping changes apply on the next
+request without cache invalidation.
+
+Phase 4 Components:
+
+* `config/rbac.php` - machine-readable fixed roles, permission catalog, default
+  and maximum mappings, and essential permissions. It must mirror
+  `MODULE_SPECIFICATIONS.md` and is shared by seeding, validation, and tests.
+* `Permission` model - role relationship and immutable catalog metadata.
+* `Role` model - permission relationship; role rows remain immutable.
+* `User::hasPermission()` - current database mapping resolution.
+* `RolePolicy` - platform edit and tenant read-only boundaries.
+* `RolePermissionService` - listing, constrained mapping replacement,
+  transactions, and activity/audit recording.
+* Form Request - rejects Super Admin edits, essential removal, out-of-bound or
+  forged permission IDs, and duplicate values.
+
+No role or permission CRUD controller is permitted. The HTTP layer exposes only
+the fixed role directory, permission details, and constrained mapping update.
+
+Permission checks answer whether an action is available to the role. They never
+replace explicit Platform or Tenant context, Policy ownership checks,
+assigned-record restrictions, or service-layer validation. Denial at any layer
+denies the operation.
+
 ---
 
-# 9. ROLE HIERARCHY
+# 9. ROLE ADMINISTRATION BOUNDARIES
 
 ```text
-Super Admin
-│
-└── School Admin
-      │
-      ├── Teacher
-      │
-      └── Accountant
+Super Admin (Platform context)
+├── View all fixed roles and permissions
+├── Edit allowed mappings for school roles
+└── Assign any canonical role under User Management rules
+
+School Admin (Tenant context)
+├── View effective school-role permissions
+└── Assign School Admin, Teacher, or Accountant within own school
 ```
+
+This is an administration boundary, not permission inheritance. Teacher and
+Accountant cannot administer roles. Custom roles and per-user overrides are not
+part of the MVP.
 
 ---
 

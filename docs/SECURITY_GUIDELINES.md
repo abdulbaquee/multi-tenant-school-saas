@@ -234,6 +234,29 @@ Permissions must be validated before:
 
 Every protected action requires authorization.
 
+RBAC Security Contract:
+
+* Four fixed system roles and a fixed permission catalog are used for the MVP.
+* The Super Admin mapping is immutable and always retains every permission in
+  its matrix-approved set, including `roles.manage`; it does not exceed the
+  canonical module boundary.
+* School-role mappings cannot receive permissions outside their canonical
+  maximum, and essential permissions cannot be revoked.
+* Only an authenticated Super Admin in explicit Platform context can update
+  school-role mappings.
+* School Admin role assignment remains limited to assignable roles and users in
+  the active school. Super Admin assignment, cross-tenant assignment, and self
+  role changes are denied.
+* Permission checks are additive to TenantContext, Policies, and service-layer
+  validation; they never bypass record scope.
+* Permission results are not cached in the MVP and are resolved from the current
+  database mapping on each request.
+* Mapping replacement and user role assignment are transactional and append
+  activity and audit records. Role changes revoke the target user's sessions and
+  remember token; mapping changes take effect on the next request.
+* Forged permission IDs, duplicate mappings, out-of-bound grants, essential-
+  permission removal, and Super Admin mapping changes must fail validation.
+
 ---
 
 # 9. MULTI-TENANT SECURITY

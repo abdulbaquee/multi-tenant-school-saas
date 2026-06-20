@@ -69,20 +69,25 @@ prompts/
 │   ├── 05-code-review.md
 │   └── 06-release-review.md
 ├── 01-foundation/
-    ├── 00-phase-02-readiness-review.md
-    ├── 01-core-auth-schema.md
-    ├── 02-breeze-authentication.md
-    ├── 03-user-management.md
-    ├── 04-dashboard-navigation.md
-    ├── 05-phase-02-feature-tests.md
-    └── 06-phase-02-documentation-update.md
-└── 02-multi-tenant-foundation/
-    ├── 00-phase-03-readiness-review.md
-    ├── 01-phase-03-tenancy-design-remediation.md
-    ├── 02-core-tenant-context.md
-    ├── 03-tenant-scope-and-school-settings-schema.md
-    ├── 04-school-management.md
-    └── 05-school-settings.md
+│   ├── 00-phase-02-readiness-review.md
+│   ├── 01-core-auth-schema.md
+│   ├── 02-breeze-authentication.md
+│   ├── 03-user-management.md
+│   ├── 04-dashboard-navigation.md
+│   ├── 05-phase-02-feature-tests.md
+│   └── 06-phase-02-documentation-update.md
+├── 02-multi-tenant-foundation/
+│   ├── 00-phase-03-readiness-review.md
+│   ├── 01-phase-03-tenancy-design-remediation.md
+│   ├── 02-core-tenant-context.md
+│   ├── 03-tenant-scope-and-school-settings-schema.md
+│   ├── 04-school-management.md
+│   ├── 05-school-settings.md
+│   ├── 06-tenant-service-context-hardening.md
+│   └── 07-phase-03-security-remediation.md
+└── 03-roles-permissions/
+    ├── 00-phase-04-readiness-review.md
+    └── 01-phase-04-rbac-design-remediation.md
 ```
 
 ## Current Prompt Creation Status
@@ -101,6 +106,8 @@ Created for the next roadmap gate:
 - Phase 3 TenantScope and School Settings schema implementation.
 - Phase 3 School Management implementation.
 - Phase 3 School Settings workflow implementation.
+- Phase 4 Roles & Permissions readiness review.
+- Phase 4 RBAC design documentation remediation.
 
 Future prompt groups should be added only when they are needed for the next roadmap phase.
 

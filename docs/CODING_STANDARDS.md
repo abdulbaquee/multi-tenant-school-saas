@@ -463,6 +463,20 @@ Roles:
 
 Every protected action must be authorized.
 
+RBAC Implementation Rules:
+
+* Use the native Role and Permission Eloquent relationships and a single
+  `User::hasPermission(string $code)` permission-resolution contract.
+* Policies combine permission checks with tenant, ownership, assignment, and
+  lifecycle checks. A permission must never act as a tenant bypass.
+* Services revalidate Platform or Tenant context for sensitive workflows.
+* Blade uses `@can` for visibility, but server-side Policies and services remain
+  authoritative.
+* Do not cache permission results in the MVP.
+* Do not hard-code new role-only authorization where a canonical permission code
+  exists. Canonical-role checks remain valid only for identity invariants such as
+  establishing Super Admin Platform context.
+
 ---
 
 # 14. ERROR HANDLING

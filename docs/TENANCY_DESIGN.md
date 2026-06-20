@@ -181,6 +181,13 @@ Rules:
 | Strict tenant-owned | `school_settings`, all Academic tables, `attendances`, all Fee tables, and all Examination tables | Non-null `school_id`; must use `BelongsToTenant`. Tenant context supplies `school_id` on create. |
 | Contextual logs | `activity_logs`, `audit_logs`, `backup_logs` | Use tenant filtering in Tenant state. Platform events may use `school_id = NULL` only in explicit Platform state. |
 
+RBAC tables are shared platform catalogs and never receive `school_id`. Mapping
+updates require an authorized Super Admin in explicit Platform context. A School
+Admin may receive a Policy-filtered, read-only projection of School Admin,
+Teacher, and Accountant mappings but cannot query the Super Admin mapping or
+mutate any shared RBAC row. User role assignment remains tenant-bound through
+User Policy and User Service checks.
+
 The `users` exception exists only because authentication must retrieve a globally
 unique identity before tenant context can be resolved. It does not authorize
 unrestricted operational user queries. School Admin user creation always derives

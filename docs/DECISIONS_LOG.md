@@ -1008,6 +1008,69 @@ Platform context and denial in both Tenant contexts.
 
 ---
 
+# DECISION-029
+
+Date:
+2026-06-21
+
+Title:
+Use Fixed Roles With Constrained Canonical Permission Mappings
+
+Status:
+Approved
+
+Decision:
+
+The MVP uses exactly four system-managed roles and a fixed permission catalog.
+Custom roles, role deletion, role-code changes, tenant-defined permissions,
+permission inheritance, and per-user overrides are prohibited.
+
+The Super Admin mapping is immutable and always contains every permission in its
+matrix-approved set. An authorized Super Admin in explicit Platform context may grant or
+revoke non-essential permissions for School Admin, Teacher, and Accountant only
+within each role's canonical maximum set. Essential permissions remain locked.
+
+School Admin can view effective school-role mappings and assign School Admin,
+Teacher, or Accountant to users in the active school, but cannot edit mappings,
+view the Super Admin mapping, assign Super Admin, or cross tenant boundaries.
+
+Permission checks use native Laravel models, relationships, Gates, Policies,
+services, and Blade authorization. Permission results are not cached in the MVP.
+Tenant context, record ownership, assigned-record boundaries, and lifecycle
+checks remain mandatory independently of permission grants.
+
+`config/rbac.php` is the machine-readable mirror of the canonical matrix and is
+used by seed synchronization, mapping validation, and integrity tests. Runtime
+authorization still reads the current role-permission rows from the database.
+
+Reason:
+
+* Preserves a demonstrable Role & Permission module without custom-role
+  complexity.
+* Prevents privilege escalation and accidental platform lockout.
+* Keeps the canonical matrix authoritative while allowing controlled school-role
+  configuration.
+* Uses the existing database schema and native Laravel authorization stack.
+* Makes permission changes immediate and easy to test during the MCA viva.
+
+Alternatives Considered:
+
+* Fully immutable mappings - rejected because it would reduce Permission
+  Management to a read-only catalog.
+* Custom tenant roles - rejected as unnecessary complexity for the MCA scope.
+* Per-user overrides - rejected because they obscure the canonical role model.
+* External RBAC package - rejected because native Laravel is sufficient.
+* Cached permission resolution - deferred because the MVP data set is small and
+  immediate consistency is safer.
+
+Outcome:
+
+Phase 4 has an implementation-ready RBAC boundary, lockout policy, tenant model,
+screen contract, audit requirement, and testing strategy. No database schema
+change or external package is required.
+
+---
+
 # DECISION CHANGE PROCESS
 
 New decisions must include:
@@ -1046,4 +1109,4 @@ Development Decisions:
 Completed
 
 Project Ready For:
-Phase 3 Release Review Gate
+Phase 4 Roles & Permissions Readiness Review

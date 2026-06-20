@@ -398,6 +398,59 @@ Access:
 
 ---
 
+# 14A. ROLE & PERMISSION FLOW
+
+Roles & Permissions
+│
+├── Role List
+│   ├── Super Admin
+│   ├── School Admin
+│   ├── Teacher
+│   └── Accountant
+├── View Effective Permissions
+└── Edit Mapping
+    ├── Group Permissions By Module
+    ├── Show Essential Permissions As Checked And Disabled
+    ├── Prevent Permissions Outside The Role Maximum
+    ├── Review Changes
+    └── Save Mapping
+
+Route Contract:
+
+* `GET /roles` - role directory.
+* `GET /roles/{role}` - effective permission details.
+* `GET /roles/{role}/edit` - Super Admin edit form for an editable school role.
+* `PUT /roles/{role}/permissions` - transactional mapping replacement.
+
+Super Admin Access:
+
+* Sees Roles & Permissions in platform navigation.
+* Views all four roles and the complete permission catalog.
+* Super Admin mapping is read-only.
+* Edits only non-essential permissions for School Admin, Teacher, and
+  Accountant.
+
+School Admin Access:
+
+* Sees a read-only Roles & Permissions page when `roles.view` is effective.
+* Views School Admin, Teacher, and Accountant mappings only.
+* Assigns those roles through User Management when `roles.assign` and the
+  corresponding User Policy checks pass.
+* Cannot access mapping edit routes or view the Super Admin mapping.
+
+Teacher and Accountant Access:
+
+* No Roles & Permissions menu or route access.
+
+Mapping Save Behavior:
+
+* Server validation rejects forged, duplicate, essential-removal, Super Admin,
+  and out-of-bound permission changes.
+* A successful save is transactional, audited, and reflected in menus and
+  authorization on the next request.
+
+---
+
 # 15. ACADEMIC STRUCTURE FLOW
 
 Academic Years

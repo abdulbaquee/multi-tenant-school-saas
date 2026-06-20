@@ -129,10 +129,10 @@ Phase 2 — Authentication & User Management
 Status: Completed
 
 Phase 3 — Multi-Tenant Foundation
-Status: Implementation Through Code-Review Gates Completed — Release Review Pending
+Status: Completed
 
 Phase 4 — Roles & Permissions
-Status: Pending
+Status: Design Remediation Completed — Readiness Review Pending
 
 Phase 5 — Academic Structure
 Status: Pending
@@ -179,11 +179,11 @@ Application Implementation: Phase 2 completed; Phase 3 tenant infrastructure,
 Super Admin School Management, tenant-bound School Settings, and security
 logging implemented
 
-Development Progress: Phase 3 implementation, tenant-isolation, security,
-documentation, and code reviews completed; release review is next
+Development Progress: Phase 3 release-approved; Phase 4 RBAC design remediation
+completed and awaiting readiness review
 
 ---
 
 # Next Milestone
 
-Run the Phase 3 release review gate before Phase 4.
+Rerun the Phase 4 Roles & Permissions readiness review before implementation.

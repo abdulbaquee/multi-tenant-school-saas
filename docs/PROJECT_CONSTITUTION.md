@@ -297,7 +297,14 @@ Required Documentation:
 * Module Specifications
 
 Role permissions, dashboards, reports, and menus must follow the canonical
-matrix in `MODULE_SPECIFICATIONS.md`.
+matrix in `MODULE_SPECIFICATIONS.md`. For the three school roles, that matrix is
+both the default mapping and the maximum grant boundary; active mappings may be
+a subset only where the permission is not marked essential. The Super Admin
+mapping is immutable and always contains its complete matrix-approved set.
+
+Permission grants never bypass TenantContext, Policies, service-layer checks,
+or assigned-record restrictions. The MVP has no custom roles, tenant-defined
+permissions, permission inheritance, or per-user permission overrides.
 
 ---
 

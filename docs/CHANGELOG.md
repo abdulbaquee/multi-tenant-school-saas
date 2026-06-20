@@ -236,7 +236,7 @@ Status: Completed
 
 Date Started: 2026-06-20
 
-Status: Implementation Through Code-Review Gates Completed; Release Review Pending
+Status: Completed
 
 ## Added
 
@@ -317,6 +317,8 @@ Status: Implementation Through Code-Review Gates Completed; Release Review Pendi
   query-binding, storage, deletion, and tenant controls for implemented modules.
 * Code-review rerun found no remaining defects after cross-school audit ownership
   and password-workflow architecture remediation.
+* Phase 3 release review approved progression with a 9.1/10 overall score and no
+  blocking issues.
 * Composer and npm audits reported no known dependency vulnerabilities.
 * Clean temporary SQLite migration verification confirmed School Settings,
   activity logs, and audit logs migrate successfully; live MySQL 8 validation
@@ -324,7 +326,6 @@ Status: Implementation Through Code-Review Gates Completed; Release Review Pendi
 
 ## Planned
 
-* Phase 3 release review gate
 * Automatic tenant-isolation rollout to later module models in their roadmap phases
 
 ## Deliverables
@@ -334,7 +335,52 @@ Status: Implementation Through Code-Review Gates Completed; Release Review Pendi
 
 ---
 
-# [0.6.0] - Academic Management
+# [0.5.1] - Phase 4 RBAC Design Remediation
+
+Date: 2026-06-21
+
+Status: Completed
+
+## Added
+
+* DECISION-029 approving four fixed roles, a fixed permission catalog, and
+  constrained mappings for school roles.
+* Immutable matrix-approved Super Admin mapping, bootstrap-mapping reconciliation,
+  and essential-permission lockout protection.
+* Native Laravel permission-resolution, Policy, service, TenantContext, audit,
+  immediate-effect, and session-revocation contracts.
+* Role & Permission dashboard flow, menu visibility, read-only School Admin
+  access, and module-grouped mapping controls.
+* Phase 4 privilege-escalation, tenant-isolation, mapping-integrity, rollback,
+  audit, menu, and session testing requirements.
+
+## Notes
+
+* Documentation and prompt files only.
+* No application code, migration, route, view, test, or package changes.
+
+---
+
+# [0.6.0] - Role & Permission Management
+
+Status: Planned
+
+## Planned
+
+* Native Role and Permission models and relationships
+* Database-backed permission resolution
+* Permission-aware Policies, Gates, services, menus, and dashboards
+* Constrained school-role mapping management
+* Tenant-safe role assignment
+* Activity and audit recording
+
+## Deliverables
+
+* RBAC Module
+
+---
+
+# [0.7.0] - Academic Management
 
 Status: Planned
 
@@ -352,7 +398,7 @@ Status: Planned
 
 ---
 
-# [0.7.0] - Student Management
+# [0.8.0] - Student Management
 
 Status: Planned
 
@@ -369,7 +415,7 @@ Status: Planned
 
 ---
 
-# [0.8.0] - Attendance Management
+# [0.9.0] - Attendance Management
 
 Status: Planned
 
@@ -385,7 +431,7 @@ Status: Planned
 
 ---
 
-# [0.9.0] - Fee Management
+# [1.0.0] - Fee Management
 
 Status: Planned
 
@@ -403,7 +449,7 @@ Status: Planned
 
 ---
 
-# [1.0.0] - Examination Management
+# [1.1.0] - Examination Management
 
 Status: Planned
 
@@ -421,7 +467,7 @@ Status: Planned
 
 ---
 
-# [1.1.0] - Reports & Analytics
+# [1.2.0] - Reports & Analytics
 
 Status: Planned
 
@@ -441,7 +487,7 @@ Status: Planned
 
 ---
 
-# [1.2.0] - Testing & Quality Assurance
+# [1.3.0] - Testing & Quality Assurance
 
 Status: Planned
 
@@ -460,7 +506,7 @@ Status: Planned
 
 ---
 
-# [1.3.0] - Deployment & Documentation
+# [1.4.0] - Deployment & Documentation
 
 Status: Planned
 
@@ -529,7 +575,7 @@ Example:
 
 # Current Project Status
 
-Phase: Implementation Phase (Phase 3 — Multi-Tenant Foundation, In Progress)
+Phase: Implementation Phase (Phase 4 — Roles & Permissions, Design Remediated)
 
 Repository Setup: Completed
 
@@ -541,6 +587,6 @@ Database Design Documentation: Remediated and implementation-ready draft (DATABA
 
 Application Implementation: Phase 2 completed; Phase 3 tenant infrastructure,
 School Management, School Settings, security logging, tenant-isolation review,
-security review, documentation review, and code review completed
+security review, documentation review, code review, and release review completed
 
-Next Task: Run the Phase 3 release review gate
+Next Task: Rerun the Phase 4 Roles & Permissions readiness review

@@ -781,3 +781,18 @@ The UI/UX system is successful when:
 # 32. FINAL UI MISSION
 
 Build a professional school management SaaS interface that is realistic enough for real-world use while remaining achievable within the MCA project timeline and easy to demonstrate during evaluation.
+
+---
+
+# 33. ROLE & PERMISSION WORKSPACE
+
+The Phase 4 workspace uses a compact role list and a module-grouped permission
+matrix. Permission controls use Bootstrap checkboxes; essential permissions are
+checked, disabled, and labelled Essential. Permissions outside a role's maximum
+set are not rendered as interactive controls.
+
+The Super Admin role displays a read-only lock indicator. School Admin receives
+a read-only effective-permissions view. Teacher and Accountant receive no Role
+& Permission navigation. Save actions require an explicit Review Changes step
+and a confirmation modal summarizing grants and revocations without nested
+cards or custom JavaScript frameworks.

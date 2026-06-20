@@ -39,12 +39,12 @@ Single Database Multi-Tenant SaaS
 
 Current Phase:
 
-Phase 3 — Multi-Tenant Foundation Review Gate
+Phase 4 — Roles & Permissions Readiness Gate
 
 Progress:
 
-Phase 3 implementation, tenant-isolation, security, documentation, and code
-reviews completed; release review is next
+Phase 3 completed and release-approved. Phase 4 RBAC design remediation is
+completed; readiness review is next.
 
 Repository:
 
@@ -123,7 +123,7 @@ Status: Completed
 
 # Phase 3 — Multi-Tenant Foundation
 
-Status: Implementation Completed — Review Gate Pending
+Status: Completed
 
 ## Features
 
@@ -146,7 +146,7 @@ Status: Implementation Completed — Review Gate Pending
 
 # Phase 4 — Roles & Permissions
 
-Status: Pending
+Status: Design Remediation Completed — Readiness Review Pending
 
 ## Features
 
@@ -345,4 +345,6 @@ Project ready for final evaluation and submission.
 
 # Next Immediate Task
 
-Run `prompts/00-governance/06-release-review.md` before starting Phase 4.
+Rerun `prompts/03-roles-permissions/00-phase-04-readiness-review.md`. If
+approved, create and execute the Phase 4 core RBAC implementation prompt before
+the mapping-management UI.

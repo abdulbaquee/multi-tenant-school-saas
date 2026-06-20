@@ -71,7 +71,7 @@ The project includes the following functional areas:
 
 * School Management
 * User Management
-* Role Management
+* Fixed Role & Constrained Permission Management
 * School Settings
 
 ### Academic Structure
@@ -203,7 +203,10 @@ Responsible for assigned class attendance, marks entry, report cards, and assign
 
 Responsible for fee collection, payment tracking, and financial reporting.
 
-Role permissions and menu visibility follow the canonical matrix in `MODULE_SPECIFICATIONS.md`.
+Role permissions and menu visibility follow the canonical matrix in
+`MODULE_SPECIFICATIONS.md`. The MVP uses four fixed roles, a fixed permission
+catalog, constrained school-role mappings, and no custom roles or per-user
+permission overrides.
 
 ---
 

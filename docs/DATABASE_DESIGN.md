@@ -212,7 +212,9 @@ tenant-bound update workflow, and secure public logo lifecycle completed.
 
 ## 6.3 roles
 
-Stores canonical platform roles. Roles are fixed for the MVP.
+Stores the four canonical platform roles. Role rows are system-managed and fixed
+for the MVP: application workflows cannot create, delete, rename, or change role
+codes.
 
 | Column Name | Data Type | Nullable | Default Value | Indexes | Unique Constraints | Foreign Keys | Description |
 | ----------- | --------- | -------- | ------------- | ------- | ------------------ | ------------ | ----------- |
@@ -224,11 +226,16 @@ Stores canonical platform roles. Roles are fixed for the MVP.
 | created_at | TIMESTAMP | Yes | NULL | - | - | - | Creation timestamp. |
 | updated_at | TIMESTAMP | Yes | NULL | - | - | - | Last update timestamp. |
 
+All MVP role rows have `is_system = true`. Rows with `is_system = false` are not
+created or supported in this project version.
+
 ---
 
 ## 6.4 permissions
 
-Stores canonical permissions used by RBAC.
+Stores the fixed canonical permission catalog used by RBAC. Permission rows are
+system-managed and cannot be created, renamed, recoded, or deleted through the
+application UI.
 
 | Column Name | Data Type | Nullable | Default Value | Indexes | Unique Constraints | Foreign Keys | Description |
 | ----------- | --------- | -------- | ------------- | ------- | ------------------ | ------------ | ----------- |
@@ -244,7 +251,11 @@ Stores canonical permissions used by RBAC.
 
 ## 6.5 role_permissions
 
-Maps roles to permissions.
+Maps roles to permissions. The Super Admin mapping is immutable and contains its
+complete matrix-approved set. Authorized Platform-context workflows may update mappings for
+School Admin, Teacher, and Accountant only within the maximum and essential
+permission rules in `MODULE_SPECIFICATIONS.md`. Mapping replacement must be
+transactional and audited.
 
 | Column Name | Data Type | Nullable | Default Value | Indexes | Unique Constraints | Foreign Keys | Description |
 | ----------- | --------- | -------- | ------------- | ------- | ------------------ | ------------ | ----------- |

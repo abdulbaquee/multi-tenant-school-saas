@@ -413,6 +413,28 @@ Expected Result:
 
 Role restrictions work correctly.
 
+Phase 4 Required Coverage:
+
+* The four role rows and permission catalog remain fixed and seed idempotently.
+* The Super Admin mapping contains its exact matrix-approved set, excludes
+  out-of-bound operational permissions, and rejects all edits.
+* School-role mappings reject essential-permission removal and grants outside
+  the canonical maximum.
+* An authorized Super Admin in Platform context can revoke and restore an
+  allowed non-essential permission transactionally.
+* School Admin can view effective school-role mappings but cannot edit them,
+  access Super Admin mapping data, assign Super Admin, or cross tenant boundaries.
+* Teacher, Accountant, guests, malformed users, and incorrect TenantContext
+  states are denied every management route and direct service call.
+* Policies require both permission and tenant or record scope.
+* Sidebar links, dashboard widgets, direct URLs, controllers, Form Requests,
+  Policies, and services agree after a mapping change.
+* Forged IDs, duplicate mappings, stale form submissions, and empty payloads fail
+  safely without partial writes.
+* Mapping and role-assignment changes create sanitized activity and audit logs.
+* User role changes revoke only the target user's sessions and remember token.
+* A forced logging failure rolls back the mapping or role assignment.
+
 ---
 
 # 17. STUDENT MODULE TESTING

@@ -201,9 +201,43 @@ Roles:
 
 Features:
 
-* Role Assignment
+* Fixed Canonical Role Directory
+* Read-Only Permission Catalog
+* Constrained Role-Permission Mapping
+* Tenant-Safe Role Assignment
 * Permission Validation
 * Access Control
+
+MVP Contract:
+
+* The only roles are Super Admin, School Admin, Teacher, and Accountant.
+* Role and permission records are system-managed. The UI cannot create, delete,
+  rename, or change their stable codes.
+* Super Admin can view all mappings and edit non-essential mappings for School
+  Admin, Teacher, and Accountant within the canonical maximum boundary.
+* The Super Admin mapping is read-only and always contains every permission
+  assigned to Super Admin by the canonical matrix.
+* School Admin can view effective mappings for assignable school roles and can
+  assign School Admin, Teacher, or Accountant only to users in the active
+  school. Mapping edits and Super Admin assignment are prohibited.
+* Teacher and Accountant have no Role & Permission screens.
+* Permissions determine whether an action may be attempted. Tenant context,
+  record ownership, assigned-class or assigned-subject limits, and lifecycle
+  rules determine which records may be affected.
+
+Implementation Contract:
+
+* `config/rbac.php` is the machine-readable mirror of this canonical matrix and
+  supplies the seeder, mapping validator, and mapping-integrity tests.
+* The Phase 4 bootstrap synchronization updates existing role-permission rows to
+  the documented defaults before permission-aware Policies are enabled.
+* Mapping updates replace the selected school role's non-essential mappings in
+  one transaction while retaining every essential permission.
+* Activity records use module `role_permissions` and action `mapping_updated`.
+  Audit records target the Role and store old/new permission-code arrays.
+* User role assignment continues through User Management. Its audit contains
+  old/new role IDs, and an actual role change clears the target user's sessions
+  and remember token.
 
 Security Requirement:
 
@@ -613,6 +647,36 @@ Permission Levels:
 * Limited: restricted to assigned classes, fee workflows, or role-specific reports.
 * No: no direct module access.
 
+Matrix Semantics:
+
+* For Super Admin, the listed access is immutable. Permissions outside the
+  listed access remain unassigned even though they exist in the shared catalog.
+* For School Admin, Teacher, and Accountant, the matrix defines the default and
+  maximum permission set. A Super Admin may revoke or restore only non-essential
+  permissions inside that set and cannot grant access where the matrix says No.
+* Limited and assigned access always requires a Policy or service to enforce the
+  relevant record boundary; a permission code alone is insufficient.
+
+Permission-Level Translation:
+
+* Own profile: `profile.view` and `profile.update`.
+* Role-specific dashboard: `dashboard.view`; `analytics.view` is included only
+  where that dashboard exposes approved analytics.
+* Full: every canonical action code for the module.
+* View: the module `.view` code only.
+* View reports: the module `.report` code only.
+* Platform, school, assigned-class, or financial reports: `reports.view` and
+  `reports.export`, with Policy and tenant restrictions.
+* Manage canonical mappings and role assignment: `roles.view`, `roles.assign`,
+  and `roles.manage`.
+* View mappings and assign school roles: `roles.view` and `roles.assign`.
+* Limited student view: `students.view` with record-scope enforcement.
+* No: no permission code from that module.
+
+For retained-data workflows, a `.delete` permission authorizes the documented
+deactivation or soft-delete action only; it never authorizes hard deletion.
+Reactivation uses the corresponding `.update` permission plus Policy checks.
+
 | Module | Super Admin | School Admin | Teacher | Accountant |
 | ------ | ----------- | ------------ | ------- | ---------- |
 | Authentication & Profile | Own profile | Own profile | Own profile | Own profile |
@@ -620,7 +684,7 @@ Permission Levels:
 | School Management | Full | No | No | No |
 | School Settings | View via School Details | Full | No | No |
 | User Management | Full | Full for own school | No | No |
-| Role & Permission | Manage canonical mappings and role assignment | Assign school roles | No | No |
+| Role & Permission | Manage constrained canonical mappings and role assignment | View mappings and assign school roles | No | No |
 | Academic Structure | View | Full | View assigned classes and subjects | No |
 | Student Management | View | Full | Limited view for assigned classes | Limited view for fee collection |
 | Attendance Management | View reports | Full | Full for assigned classes | No |
@@ -630,6 +694,26 @@ Permission Levels:
 | Activity Logs | Full | View own school logs | No | No |
 | Audit Trail | Full | View own school logs | No | No |
 | Backup Management | Full | No | No | No |
+
+## Essential Permission Rules
+
+| Role | Locked Permissions | Reason |
+| ---- | ------------------ | ------ |
+| Super Admin | Every permission in the Super Admin matrix-approved set | Prevent platform lockout and preserve recovery authority without exceeding the canonical role boundary. |
+| School Admin | `profile.view`, `profile.update`, `dashboard.view`, `users.view`, `users.update`, `roles.view`, `roles.assign` | Preserve own-account access and the documented tenant user/role-assignment responsibility. |
+| Teacher | `profile.view`, `profile.update`, `dashboard.view` | Preserve own-account and dashboard access. |
+| Accountant | `profile.view`, `profile.update`, `dashboard.view` | Preserve own-account and dashboard access. |
+
+The permission catalog is fixed for the MVP. `roles.manage` is exclusive to the
+Super Admin role and cannot be removed. `roles.assign` permits role assignment
+only when User Policy, tenant context, assignable-role rules, and self-change
+protections also pass.
+
+The Phase 2 bootstrap seeder temporarily assigned the complete permission
+catalog to Super Admin before database-backed authorization existed. Phase 4
+must replace that bootstrap mapping with the matrix-approved immutable set before
+permissions become authoritative. No later-phase route is activated merely
+because its permission record exists.
 
 ## Permission Reconciliation Notes
 
