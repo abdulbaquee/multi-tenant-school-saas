@@ -116,7 +116,9 @@ Implementation status: TenantContext state, request middleware, explicit
 Platform mode, active-school validation, middleware priority, request cleanup,
 `TenantScope`, and `BelongsToTenant` are implemented. `school_settings` is the
 first strict tenant-owned model using automatic isolation and now has a complete
-School Admin workflow with tenant-partitioned logo storage.
+School Admin workflow with tenant-partitioned logo storage. Contextual
+`activity_logs` and `audit_logs` now use the same default-deny scope with
+append-only model enforcement.
 
 Tenant context has exactly three states. A missing tenant id is not itself a
 platform bypass.
@@ -125,7 +127,7 @@ platform bypass.
 | ----- | ------- | -------------- |
 | Unresolved | No authenticated and validated tenant mode has been established. This is the initial state. | `TenantScope` applies a deny-all predicate so reads return no rows; tenant-owned writes throw a controlled tenant-context exception. |
 | Tenant | An authenticated school user has a valid, active, non-deleted school. | Tenant-owned reads are filtered to one `school_id`; creates receive that `school_id`. |
-| Platform | An authenticated Super Admin has been validated and platform mode has been set explicitly. | Platform-wide reads are allowed only behind policies/services; tenant-owned creates still require an explicit target workflow. |
+| Platform | An authenticated Super Admin has been validated and platform mode has been set explicitly, or a trusted service is appending a narrowly defined system-origin security event. | Platform-wide reads are allowed only behind policies/services; tenant-owned creates still require an explicit target workflow. System-origin execution may append its security event but may not read tenant business data. |
 
 Rules:
 
@@ -133,6 +135,10 @@ Rules:
 * `users.school_id = NULL` is necessary for a Super Admin but is not sufficient
   to enter Platform state. The user must also hold the canonical Super Admin
   role, be active, be authenticated, and pass route authorization.
+* The only unauthenticated Platform-context exception is a temporary callback in
+  `SecurityLogService` that appends a credential-free failed or denied login
+  event. It cannot infer Platform access from a missing school id, cannot read
+  tenant business data, and restores the previous context in `finally`.
 * Unresolved context must never behave like Platform context.
 * Context is request or execution scoped and must be cleared after use even when
   an exception occurs.
@@ -182,6 +188,25 @@ the school from the actor. Super Admin creation of a school user validates an
 explicit active target school in the authorized User Service. Super Admin users
 must retain `school_id = NULL`.
 
+## Contextual Log Contract
+
+Implemented `activity_logs` and `audit_logs` use the default-deny `TenantScope`.
+Tenant execution derives `school_id` from TenantContext, while authorized
+Platform execution may record a target school or `NULL` for a platform event.
+Their models are append-only: normal Eloquent update and delete operations throw.
+
+Authenticated activity and audit records require actor-to-context alignment.
+Public login failures have no authenticated actor, so `SecurityLogService`
+temporarily enters Platform context solely to append a system activity record
+containing action, timestamp, IP address, and user agent. Attempted email,
+password, reset token, and other credentials are not recorded.
+
+A Super Admin operation that changes a record's school ownership spans two
+tenants. Its activity and audit records therefore use `school_id = NULL` in
+explicit Platform context. This preserves the old and new ownership evidence
+without exposing either school's values through the other school's scoped log
+queries.
+
 ## BelongsToTenant Contract
 
 Every strict tenant-owned model uses a reusable `BelongsToTenant` trait that:
@@ -226,7 +251,8 @@ Required middleware order for authenticated tenant-aware routes:
 Public authentication routes run without tenant context. The globally unique
 email locates the hybrid `users` identity. Login succeeds only when the user is
 active and either is a valid Super Admin or belongs to an active, non-deleted
-school.
+school. Failed or tenant-denied login activity uses the narrow trusted-system
+logging pathway defined above and restores Unresolved context immediately.
 
 ## Queue Jobs And Console Commands
 

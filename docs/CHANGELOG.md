@@ -236,7 +236,7 @@ Status: Completed
 
 Date Started: 2026-06-20
 
-Status: Implementation, Tenant-Isolation, and Security Gates Completed
+Status: Implementation Through Code-Review Gates Completed; Release Review Pending
 
 ## Added
 
@@ -292,12 +292,22 @@ Status: Implementation, Tenant-Isolation, and Security Gates Completed
   the documented data dictionary.
 * Current login, logout, password, user, school, and School Settings activity
   and audit coverage with sensitive-value filtering.
+* Platform-only audit ownership for Super Admin user transfers between schools,
+  preventing source-school history from becoming visible to the target school.
+* Dedicated password Form Requests and transactional `PasswordSecurityService`
+  workflows for profile changes and token-based resets.
 * Explicit CSRF, Blade escaping, bound-query, log immutability, and log-isolation
   security tests.
+* DECISION-027 documenting the narrow trusted-system Platform callback used for
+  credential-free failed-login activity recording.
+* DECISION-028 documenting Platform-only ownership for cross-school transition
+  history.
+* Cross-school audit isolation and security-log transaction rollback regression
+  tests added during the Phase 3 code-review remediation.
 
 ## Verification
 
-* Full application suite: 130 tests and 639 assertions passed.
+* Full application suite: 132 tests and 655 assertions passed.
 * Laravel Pint formatting validation passed.
 * Composer configuration validation passed.
 * Route inspection confirmed tenant context on every authenticated web route.
@@ -305,14 +315,16 @@ Status: Implementation, Tenant-Isolation, and Security Gates Completed
   closed when invoked outside an authorized actor-aligned context.
 * Security review confirmed password, session, recovery, logging, CSRF, output,
   query-binding, storage, deletion, and tenant controls for implemented modules.
+* Code-review rerun found no remaining defects after cross-school audit ownership
+  and password-workflow architecture remediation.
 * Composer and npm audits reported no known dependency vulnerabilities.
-* Local SQLite development migration status confirms the School Settings
-  migration is applied; live MySQL 8 validation remains a deployment-target
-  verification step.
+* Clean temporary SQLite migration verification confirmed School Settings,
+  activity logs, and audit logs migrate successfully; live MySQL 8 validation
+  remains a deployment-target verification step.
 
 ## Planned
 
-* Phase 3 documentation, code, and release review gates
+* Phase 3 release review gate
 * Automatic tenant-isolation rollout to later module models in their roadmap phases
 
 ## Deliverables
@@ -529,6 +541,6 @@ Database Design Documentation: Remediated and implementation-ready draft (DATABA
 
 Application Implementation: Phase 2 completed; Phase 3 tenant infrastructure,
 School Management, School Settings, security logging, tenant-isolation review,
-and security review completed
+security review, documentation review, and code review completed
 
-Next Task: Run the Phase 3 documentation review gate
+Next Task: Run the Phase 3 release review gate

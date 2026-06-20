@@ -36,8 +36,38 @@ class SecurityLogService
     ): ActivityLog {
         $this->authorizeActorContext($actor);
 
+        return $this->createActivity(
+            $actor,
+            $module,
+            $action,
+            $subject,
+            $description,
+            $this->resolveSchoolId($subject),
+        );
+    }
+
+    public function platformActivity(
+        User $actor,
+        string $module,
+        string $action,
+        ?Model $subject = null,
+        ?string $description = null,
+    ): ActivityLog {
+        $this->authorizePlatformActor($actor);
+
+        return $this->createActivity($actor, $module, $action, $subject, $description, null);
+    }
+
+    private function createActivity(
+        User $actor,
+        string $module,
+        string $action,
+        ?Model $subject,
+        ?string $description,
+        ?int $schoolId,
+    ): ActivityLog {
         return ActivityLog::create([
-            'school_id' => $this->resolveSchoolId($subject),
+            'school_id' => $schoolId,
             'user_id' => $actor->id,
             'module' => $module,
             'action' => $action,
@@ -63,8 +93,46 @@ class SecurityLogService
     ): AuditLog {
         $this->authorizeActorContext($actor);
 
+        return $this->createAudit(
+            $actor,
+            $auditable,
+            $event,
+            $oldValues,
+            $newValues,
+            $this->resolveSchoolId($auditable),
+        );
+    }
+
+    /**
+     * @param  array<string, mixed>  $oldValues
+     * @param  array<string, mixed>  $newValues
+     */
+    public function platformAudit(
+        User $actor,
+        Model $auditable,
+        string $event,
+        array $oldValues = [],
+        array $newValues = [],
+    ): AuditLog {
+        $this->authorizePlatformActor($actor);
+
+        return $this->createAudit($actor, $auditable, $event, $oldValues, $newValues, null);
+    }
+
+    /**
+     * @param  array<string, mixed>  $oldValues
+     * @param  array<string, mixed>  $newValues
+     */
+    private function createAudit(
+        User $actor,
+        Model $auditable,
+        string $event,
+        array $oldValues,
+        array $newValues,
+        ?int $schoolId,
+    ): AuditLog {
         return AuditLog::create([
-            'school_id' => $this->resolveSchoolId($auditable),
+            'school_id' => $schoolId,
             'user_id' => $actor->id,
             'auditable_type' => $auditable->getMorphClass(),
             'auditable_id' => $auditable->getKey(),
@@ -140,6 +208,13 @@ class SecurityLogService
                 && (int) $this->tenantContext->schoolId() === (int) $actor->school_id;
 
         if (! $matchesContext) {
+            throw new AuthorizationException;
+        }
+    }
+
+    private function authorizePlatformActor(User $actor): void
+    {
+        if (! $actor->isSuperAdmin() || ! $this->tenantContext->isPlatform()) {
             throw new AuthorizationException;
         }
     }

@@ -832,7 +832,7 @@ Recorded on 2026-06-21:
 
 Recorded on 2026-06-21:
 
-* Full application suite: 130 tests and 639 assertions passed.
+* Full application suite: 132 tests and 655 assertions passed.
 * Canonical password-policy tests cover user creation, administrative reset,
   profile change, and forgot-password reset.
 * Security tests prove administrator self-reset denial, current-password
@@ -841,6 +841,10 @@ Recorded on 2026-06-21:
 * Activity and audit tests prove login/logout and current mutation coverage,
   tenant filtering, explicit Platform visibility, sensitive-value removal,
   Unresolved denial, and Eloquent immutability.
+* Cross-school user reassignment tests prove transition history is Platform-only
+  and invisible in both the source and target Tenant contexts.
+* Transaction-failure tests prove password, remember-token, session, and
+  security-log changes roll back together when logging cannot be persisted.
 * Composer and npm security advisory checks reported no known vulnerabilities.
 
 Capture:

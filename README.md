@@ -4,7 +4,7 @@
 > Built with Laravel 13, PHP 8.4, Blade, and Bootstrap 5
 
 Version: 1.0
-Status: Draft (Phase 3 implementation, tenant-isolation, and security gates complete)
+Status: Draft (Phase 3 implementation through code-review gates complete; release review pending)
 
 ---
 

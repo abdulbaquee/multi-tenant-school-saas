@@ -191,14 +191,22 @@ Responsibilities:
 
 Services:
 
+Implemented foundations:
+
 * SchoolService
+* SchoolSettingService
+* UserService
+* DashboardService
+* SecurityLogService
+* PasswordSecurityService
+
+Planned module services:
+
 * StudentService
 * AttendanceService
 * FeeService
 * ExamService
 * ReportService
-* ActivityLogService
-* AuditService
 
 Location:
 
@@ -329,7 +337,10 @@ Clear Context After Response or Exception
 Tenant identity is resolved from the authenticated user's `school_id`, not from a
 domain, subdomain, or request parameter. A validated Super Admin enters explicit
 Platform context; a null school id alone does not bypass tenant scope. Context is
-established before route-model binding and cleared after every execution.
+established before route-model binding and cleared after every execution. The
+only anonymous exception is the trusted `SecurityLogService` callback approved
+in DECISION-027, which temporarily enters Platform context solely to append a
+credential-free failed-login activity event and then restores Unresolved state.
 
 ---
 

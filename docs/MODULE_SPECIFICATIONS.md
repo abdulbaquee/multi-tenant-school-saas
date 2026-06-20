@@ -658,11 +658,13 @@ to those phases rather than defining its own sequence:
 | Phase 7 — Attendance Management | Attendance Management |
 | Phase 8 — Fee Management | Fee Management |
 | Phase 9 — Examination Management | Examination Management |
-| Phase 10 — Reports & Analytics | Reporting, Dashboard & Analytics |
-| Phase 11 — Testing & QA | Activity Logs, Audit Trail, Backup Management (verification) |
+| Phase 10 — Reports, Analytics & System Operations | Reporting, Dashboard & Analytics, Activity Logs, Audit Trail, Backup Management |
+| Phase 11 — Testing & QA | All implemented modules (verification only) |
 
 Activity logging and audit trail are implemented incrementally alongside each
-module and finalized during testing.
+module. Their review screens and Backup Management workflow are delivered with
+Phase 10 system operations, then all modules are finalized during Phase 11
+testing.
 
 ---
 

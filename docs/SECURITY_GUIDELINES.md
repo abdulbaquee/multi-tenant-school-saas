@@ -158,6 +158,9 @@ Implementation:
   numeric rule for every password-setting path.
 * User creation, administrative reset, profile change, and forgot-password reset
   must all use the canonical rule.
+* Profile changes and token-based resets use dedicated Form Requests and the
+  transactional `PasswordSecurityService`; credential, session-revocation, and
+  security-log writes must succeed or roll back together.
 * Administrators cannot reset their own password through User Management; they
   must use Profile and provide their current password.
 
@@ -632,6 +635,9 @@ Implementation Status:
 
 * The append-only `audit_logs` recording foundation is implemented for current
   user, school, School Settings, and password mutations.
+* A Super Admin reassignment that moves a user between schools is recorded with
+  `school_id = NULL` in explicit Platform context. Neither the source nor target
+  school may inherit audit values belonging to the other tenant.
 * Audit list/detail screens remain deferred to the documented system-operations
   delivery in Phase 10.
 
@@ -657,6 +663,9 @@ Implementation Status:
 * Login, logout, failed or tenant-denied login, password, user, school, and
   School Settings activity recording is implemented without storing attempted
   credentials.
+* Anonymous failed-login events use only the narrow trusted-system Platform
+  callback approved in DECISION-027; it can append the event but cannot read
+  tenant business data and always restores Unresolved context.
 * Activity list/detail screens remain deferred to Phase 10.
 
 ---

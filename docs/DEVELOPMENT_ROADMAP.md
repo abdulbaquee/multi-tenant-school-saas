@@ -43,8 +43,8 @@ Phase 3 — Multi-Tenant Foundation Review Gate
 
 Progress:
 
-Phase 3 implementation, tenant-isolation review, and security review completed;
-documentation review is next
+Phase 3 implementation, tenant-isolation, security, documentation, and code
+reviews completed; release review is next
 
 Repository:
 
@@ -345,5 +345,4 @@ Project ready for final evaluation and submission.
 
 # Next Immediate Task
 
-Run `prompts/00-governance/04-documentation-review.md`, followed by the remaining
-Phase 3 code and release review gates before starting Phase 4.
+Run `prompts/00-governance/06-release-review.md` before starting Phase 4.

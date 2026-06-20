@@ -2,9 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Models\ActivityLog;
+use App\Models\AuditLog;
 use App\Models\Role;
 use App\Models\School;
 use App\Models\User;
+use App\Tenancy\TenantContext;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -436,6 +439,47 @@ class UserManagementTest extends TestCase
         $response->assertSessionHas('status', 'User updated successfully.');
         $this->assertSame('9876543210', $user->fresh()->phone);
         $this->assertSame($originalPassword, $user->fresh()->password);
+    }
+
+    public function test_cross_school_user_reassignment_history_is_visible_only_in_platform_context(): void
+    {
+        $schoolOne = $this->school('One');
+        $schoolTwo = $this->school('Two');
+        $user = $this->userWithRole(Role::TEACHER, $schoolOne, 'teacher@example.com');
+
+        $this->actingAs($this->superAdmin())->put(route('users.update', $user), [
+            'name' => $user->name,
+            'email' => $user->email,
+            'role_id' => $this->roleId(Role::TEACHER),
+            'school_id' => $schoolTwo->id,
+        ])->assertRedirect(route('users.index'));
+
+        $this->assertSame($schoolTwo->id, $user->fresh()->school_id);
+
+        $context = app(TenantContext::class);
+        $context->setPlatform();
+
+        $activity = ActivityLog::query()
+            ->where('subject_type', User::class)
+            ->where('subject_id', $user->id)
+            ->latest('id')
+            ->firstOrFail();
+        $audit = AuditLog::query()
+            ->where('auditable_type', User::class)
+            ->where('auditable_id', $user->id)
+            ->latest('id')
+            ->firstOrFail();
+
+        $this->assertNull($activity->school_id);
+        $this->assertNull($audit->school_id);
+        $this->assertSame($schoolOne->id, $audit->old_values['school_id']);
+        $this->assertSame($schoolTwo->id, $audit->new_values['school_id']);
+
+        foreach ([$schoolOne, $schoolTwo] as $school) {
+            $context->setTenant($school->id);
+            $this->assertFalse(ActivityLog::query()->whereKey($activity->id)->exists());
+            $this->assertFalse(AuditLog::query()->whereKey($audit->id)->exists());
+        }
     }
 
     public function test_edit_form_explains_that_password_is_optional(): void

@@ -929,6 +929,85 @@ roadmap, and coding documentation.
 
 ---
 
+# DECISION-027
+
+Date:
+2026-06-21
+
+Title:
+Allow Narrow Trusted-System Platform Context For Security Activity Recording
+
+Status:
+Approved
+
+Decision:
+
+Unauthenticated failed or tenant-denied login attempts may enter Platform
+context temporarily only inside `SecurityLogService` and only for the callback
+that appends a credential-free platform activity record.
+
+This pathway cannot infer Platform access from a missing `school_id`, cannot
+read tenant business data, and must restore the previous context after success
+or exception. Authenticated activity and audit records continue to require an
+actor whose role and `school_id` match explicit Tenant or Platform context.
+
+Reason:
+
+* Failed login attempts have no authenticated actor or trusted tenant id.
+* Security operations require queryable unauthorized-access evidence.
+* A centralized append-only callback is narrower than granting public routes a
+  general tenant-scope bypass.
+* Credential fields remain prohibited from activity and audit records.
+
+Alternatives Considered:
+
+* Treat Unresolved context as Platform for logs - rejected because it weakens
+  default-deny semantics.
+* Add a fourth System context state - rejected as unnecessary complexity for the
+  MCA scope.
+* Record failed login attempts only in application text logs - rejected because
+  it would not support the documented activity-log review workflow.
+
+Outcome:
+
+Phase 3 security activity recording can capture anonymous login failures without
+changing tenant isolation for business models. The exception is centralized,
+append-only, tested for context restoration, and documented in
+`TENANCY_DESIGN.md` and `SECURITY_GUIDELINES.md`.
+
+---
+
+# DECISION-028
+
+Date:
+2026-06-21
+
+Title:
+Keep Cross-School Ownership Transition Logs In Platform Context
+
+Status:
+Approved
+
+Decision:
+
+When an authorized Super Admin moves a user from one school to another, the
+corresponding activity and audit records use `school_id = NULL` and are written
+only in explicit Platform context.
+
+Reason:
+
+The audit values contain both the source and target school ownership. Assigning
+that history to either school would expose information from the other tenant in
+a future tenant-scoped audit screen.
+
+Outcome:
+
+The platform retains complete transfer evidence while both source-school and
+target-school log queries remain isolated. Regression tests verify visibility in
+Platform context and denial in both Tenant contexts.
+
+---
+
 # DECISION CHANGE PROCESS
 
 New decisions must include:
@@ -967,4 +1046,4 @@ Development Decisions:
 Completed
 
 Project Ready For:
-Phase 3 School Management Implementation
+Phase 3 Release Review Gate

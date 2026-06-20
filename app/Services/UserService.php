@@ -190,14 +190,28 @@ class UserService
                 $newValues['password_changed'] = true;
             }
 
-            $this->securityLogs->activity(
-                $actor,
-                'user_management',
-                $passwordReset ? 'password_reset' : 'updated',
-                $user,
-                $passwordReset ? 'User password reset by an administrator.' : 'User account updated.',
-            );
-            $this->securityLogs->audit($actor, $user, 'updated', $oldValues, $newValues);
+            $schoolOwnershipChanged = $this->normalizeSchoolId($oldValues['school_id'])
+                !== $this->normalizeSchoolId($newValues['school_id']);
+
+            if ($schoolOwnershipChanged) {
+                $this->securityLogs->platformActivity(
+                    $actor,
+                    'user_management',
+                    $passwordReset ? 'password_reset' : 'updated',
+                    $user,
+                    $passwordReset ? 'User password reset by an administrator.' : 'User account updated.',
+                );
+                $this->securityLogs->platformAudit($actor, $user, 'updated', $oldValues, $newValues);
+            } else {
+                $this->securityLogs->activity(
+                    $actor,
+                    'user_management',
+                    $passwordReset ? 'password_reset' : 'updated',
+                    $user,
+                    $passwordReset ? 'User password reset by an administrator.' : 'User account updated.',
+                );
+                $this->securityLogs->audit($actor, $user, 'updated', $oldValues, $newValues);
+            }
 
             return $user;
         });
@@ -360,5 +374,10 @@ class UserService
             'status',
             'email_verified_at',
         ]);
+    }
+
+    private function normalizeSchoolId(mixed $schoolId): ?int
+    {
+        return filled($schoolId) ? (int) $schoolId : null;
     }
 }
