@@ -259,10 +259,23 @@ Status: In Progress
 * SchoolSetting model and one-to-one School relationships.
 * Automatic isolation tests for Unresolved, Tenant, Platform, forged ownership,
   sequential schools, and route-model binding behavior.
+* Super Admin School Management with listing, search, status filters,
+  registration, details, editing, activation, and deactivation.
+* Policy, Form Request, service-layer, and navigation enforcement that denies
+  School Management to School Admin, Teacher, and Accountant roles.
+* Required deactivation reasons, timestamps, selective school-user session and
+  remember-token revocation, retained tenant records, and safe reactivation.
+* Automatic default School Settings creation for every newly registered school.
+* Temporary tenant-context execution with exact prior-state restoration,
+  including exception paths.
+* Active-school enforcement for new school-user assignments.
+* Administrator-controlled email verification for managed users: Super Admin
+  has platform scope, while verified School Admin users are restricted to other
+  users in their own school and cannot self-verify.
 
 ## Verification
 
-* Full application suite: 76 tests and 285 assertions passed.
+* Full application suite: 98 tests and 441 assertions passed.
 * Laravel Pint formatting validation passed.
 * Composer configuration validation passed.
 * Route inspection confirmed tenant context on every authenticated web route.
@@ -272,10 +285,9 @@ Status: In Progress
 
 ## Planned
 
-* School management module
-* School Settings foundation
+* School Settings management workflow
 * Automatic tenant isolation rollout to later module models
-* School onboarding workflow
+* Phase 3 isolation and documentation review gates
 
 ## Deliverables
 

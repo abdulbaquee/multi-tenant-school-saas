@@ -56,7 +56,7 @@ class UserController extends Controller
         $this->authorize('update', $user);
 
         $roles = $this->users->assignableRolesFor($request->user());
-        $schools = $this->users->availableSchoolsFor($request->user());
+        $schools = $this->users->availableSchoolsFor($request->user(), $user);
 
         return view('users.edit', compact('user', 'roles', 'schools'));
     }

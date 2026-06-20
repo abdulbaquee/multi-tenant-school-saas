@@ -67,6 +67,21 @@
             @enderror
             <div class="form-text">{{ __('Required for School Admin, Teacher, and Accountant roles. Leave blank only for Super Admin.') }}</div>
         </div>
+
+    @endif
+
+    @if (auth()->user()->canVerifyManagedUserEmails() && (auth()->user()->isSuperAdmin() || ! isset($user) || ! auth()->user()->is($user)))
+        <div class="col-md-6 d-flex align-items-end">
+            <div class="form-check mb-2">
+                <input name="email_verified" type="hidden" value="0">
+                <input id="email_verified" name="email_verified" type="checkbox" class="form-check-input @error('email_verified') is-invalid @enderror" value="1" @checked((bool) old('email_verified', isset($user) && $user->email_verified_at !== null))>
+                <label class="form-check-label" for="email_verified">{{ __('Mark email as verified') }}</label>
+                <div class="form-text">{{ __('Use only when an authorized administrator has confirmed the address or for controlled demonstration accounts.') }}</div>
+                @error('email_verified')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+        </div>
     @endif
 
     <div class="col-md-6">

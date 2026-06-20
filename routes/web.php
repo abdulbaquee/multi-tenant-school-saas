@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +17,10 @@ Route::middleware(['auth', 'tenant.context'])->group(function () {
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+    Route::patch('/schools/{school}/activate', [SchoolController::class, 'activate'])->name('schools.activate');
+    Route::patch('/schools/{school}/deactivate', [SchoolController::class, 'deactivate'])->name('schools.deactivate');
+    Route::resource('schools', SchoolController::class)->except(['destroy']);
 
     Route::patch('/users/{user}/activate', [UserController::class, 'activate'])->name('users.activate');
     Route::patch('/users/{user}/deactivate', [UserController::class, 'deactivate'])->name('users.deactivate');

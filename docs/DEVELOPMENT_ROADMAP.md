@@ -43,7 +43,7 @@ Phase 3 — Multi-Tenant Foundation
 
 Progress:
 
-TenantContext, default-deny global scope, and School Settings schema completed; School Management is next
+Tenant infrastructure and School Management completed; School Settings workflows are next
 
 Repository:
 
@@ -126,8 +126,8 @@ Status: In Progress
 
 ## Features
 
-* School Registration: Pending
-* School Management: Pending
+* School Registration: Completed
+* School Management: Completed
 * School Settings: Schema and model foundation completed; workflows pending
 * Tenant Middleware: Core lifecycle completed
 * Tenant Context Resolution: Completed
@@ -337,14 +337,5 @@ Project ready for final evaluation and submission.
 
 # Next Immediate Task
 
-Create:
-
-docs/DATABASE_DESIGN.md
-
-Then prepare:
-
-* ER Diagram
-* Database Schema
-* Migration Strategy
-
-These documents will serve as the foundation for all future development.
+Create and run the Phase 3 School Settings implementation prompt, followed by
+the Phase 3 tenant-isolation and documentation review gates.

@@ -175,7 +175,7 @@ Architecture Design Documentation: Approved (SYSTEM_ARCHITECTURE.md, TENANCY_DES
 
 Database Design Documentation: Remediated and implementation-ready draft (DATABASE_DESIGN.md, ER_DIAGRAM.md)
 
-Application Implementation: Phase 2 completed; Phase 3 TenantContext, TenantScope, BelongsToTenant, and School Settings schema/model foundations implemented
+Application Implementation: Phase 2 completed; Phase 3 tenant infrastructure and Super Admin School Management implemented
 
 Development Progress: Phase 3 in progress
 
@@ -183,6 +183,5 @@ Development Progress: Phase 3 in progress
 
 # Next Milestone
 
-Implement Phase 3 School Management for Super Admin, including school listing,
-registration, editing, activation, deactivation, lifecycle session revocation,
-authorization, validation, and feature tests.
+Implement the remaining Phase 3 School Settings workflow, then run the tenant
+isolation, security, testing, and documentation review gates before Phase 4.

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Role;
+use App\Models\School;
 use App\Models\User;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -40,8 +41,24 @@ class UserUpdateRequest extends FormRequest
                 Rule::exists('roles', 'id')->whereIn('code', $assignableRoleCodes),
             ],
             'school_id' => $actor?->isSuperAdmin()
-                ? ['nullable', 'integer', Rule::exists('schools', 'id')->whereNull('deleted_at')]
+                ? [
+                    'nullable',
+                    'integer',
+                    Rule::exists('schools', 'id')
+                        ->whereNull('deleted_at')
+                        ->where(function ($query) use ($user): void {
+                            $query->where('status', School::STATUS_ACTIVE);
+
+                            if ($user->school_id) {
+                                $query->orWhere('id', $user->school_id);
+                            }
+                        }),
+                ]
                 : ['prohibited'],
+            'email_verified' => $actor?->canVerifyManagedUserEmails()
+                && ($actor->isSuperAdmin() || ! $actor->is($user))
+                    ? ['sometimes', 'boolean']
+                    : ['prohibited'],
             'password' => ['nullable', 'confirmed', Password::min(8)->mixedCase()->numbers()],
         ];
     }

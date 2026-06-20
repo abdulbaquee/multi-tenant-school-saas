@@ -776,8 +776,28 @@ Recorded on 2026-06-20:
   cross-tenant route-model binding as 404.
 * The additive School Settings migration ran successfully with its one-to-one
   unique constraint, index, and `restrictOnDelete()` foreign key.
-* School Management lifecycle and authorization tests remain required by the
-  next Phase 3 prompt.
+* School Management lifecycle and authorization tests were the next Phase 3
+  requirement and are recorded in the baseline below.
+
+## Phase 3 School Management Baseline
+
+Recorded on 2026-06-20:
+
+* Full application suite: 98 tests and 441 assertions passed.
+* School Management tests cover guest protection, denied School Admin, Teacher,
+  and Accountant paths, Super Admin listing, search, status filtering,
+  registration, editing, validation, and role-aware navigation.
+* Lifecycle tests prove required deactivation reasons, selective remember-token
+  and database-session revocation, retained tenant records, next-request logout,
+  reactivation behavior, invalid-transition denial, and the absence of a normal
+  delete endpoint.
+* TenantContext unit tests prove temporary tenant execution restores Unresolved,
+  Tenant, and Platform state, including after callback exceptions.
+* User Management regression coverage proves inactive schools cannot receive
+  new user assignments.
+* User Management tests prove Super Admin can manage verification platform-wide,
+  while a verified School Admin can manage it only for other users in the same
+  school and cannot use administrative attestation to self-verify.
 
 Capture:
 

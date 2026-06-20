@@ -23,13 +23,20 @@ The canonical permission matrix is defined in `MODULE_SPECIFICATIONS.md`. Every 
 
 ## Current Implementation Status
 
-Phase 2 implements only active, authorized navigation for completed foundations:
+The current implementation exposes only authorized navigation for completed
+Phase 2 and Phase 3 foundations:
 
-* Super Admin and School Admin: Dashboard, Users, Profile.
+* Super Admin: Dashboard, Users, Schools, Profile.
+* School Admin: Dashboard, Users, Profile.
 * Teacher and Accountant: Dashboard, Profile.
 * Later-module menu items documented below remain the approved MVP target and
   must stay omitted from the application until their routes and authorization
   are implemented.
+
+School Management currently provides Super Admin-only listing, search, status
+filtering, registration, details, editing, activation, and deactivation. School
+deactivation requires a reason, revokes school-user sessions, and preserves all
+tenant records. Routine school deletion is not exposed.
 
 ---
 

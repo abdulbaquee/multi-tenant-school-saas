@@ -160,6 +160,10 @@ Common examples:
 
 Stores tenant school records. Schools are soft deleted or deactivated, not cascaded.
 
+Implementation status: Phase 3 Super Admin registration, editing, activation,
+deactivation, retention, and session-revocation workflows completed. Routine
+school deletion is not exposed.
+
 | Column Name | Data Type | Nullable | Default Value | Indexes | Unique Constraints | Foreign Keys | Description |
 | ----------- | --------- | -------- | ------------- | ------- | ------------------ | ------------ | ----------- |
 | id | BIGINT UNSIGNED | No | AUTO_INCREMENT | PRIMARY | - | - | Primary key. |

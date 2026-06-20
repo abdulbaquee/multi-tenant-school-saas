@@ -68,4 +68,42 @@ final class TenantContext
     {
         return $this->state === TenantContextState::Platform;
     }
+
+    /**
+     * @template TResult
+     *
+     * @param  callable(): TResult  $callback
+     * @return TResult
+     */
+    public function runAsTenant(int $schoolId, callable $callback): mixed
+    {
+        $previousState = $this->state;
+        $previousSchoolId = $this->schoolId;
+
+        $this->setTenant($schoolId);
+
+        try {
+            return $callback();
+        } finally {
+            $this->restore($previousState, $previousSchoolId);
+        }
+    }
+
+    private function restore(TenantContextState $state, ?int $schoolId): void
+    {
+        if ($state === TenantContextState::Tenant) {
+            $this->setTenant($schoolId
+                ?? throw new LogicException('A tenant state must have a school id.'));
+
+            return;
+        }
+
+        if ($state === TenantContextState::Platform) {
+            $this->setPlatform();
+
+            return;
+        }
+
+        $this->clear();
+    }
 }

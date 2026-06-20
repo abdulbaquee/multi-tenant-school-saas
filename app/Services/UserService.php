@@ -46,30 +46,66 @@ class UserService
     /**
      * @return Collection<int, School>
      */
-    public function availableSchoolsFor(User $actor): Collection
+    public function availableSchoolsFor(User $actor, ?User $subject = null): Collection
     {
         if (! $actor->isSuperAdmin()) {
             return collect();
         }
 
-        return School::query()->orderBy('name')->get();
+        return School::query()
+            ->where(function ($query) use ($subject): void {
+                $query->where('status', School::STATUS_ACTIVE);
+
+                if ($subject?->school_id) {
+                    $query->orWhere('id', $subject->school_id);
+                }
+            })
+            ->orderBy('name')
+            ->get();
     }
 
     public function create(array $data, User $actor): User
     {
         $this->authorize($actor->can('create', User::class));
 
+        $verificationRequested = array_key_exists('email_verified', $data);
+
+        if ($verificationRequested && ! $actor->canVerifyManagedUserEmails()) {
+            throw new AuthorizationException('You cannot verify managed user emails.');
+        }
+
+        $markEmailVerified = (bool) ($data['email_verified'] ?? false);
+        unset($data['email_verified']);
+
         $data = $this->applyRoleAndSchoolRules($data, $actor);
 
         $data['password'] = Hash::make($data['password']);
         $data['status'] = User::STATUS_ACTIVE;
 
-        return User::create($data);
+        $user = User::create($data);
+
+        if ($markEmailVerified) {
+            $user->forceFill(['email_verified_at' => now()])->save();
+        }
+
+        return $user;
     }
 
     public function update(User $user, array $data, User $actor): User
     {
         $this->authorize($actor->can('update', $user));
+
+        $emailChanged = strtolower($user->email) !== strtolower((string) $data['email']);
+        $verificationRequested = array_key_exists('email_verified', $data);
+        $canManageVerification = $actor->canVerifyManagedUserEmails()
+            && ($actor->isSuperAdmin() || ! $actor->is($user));
+
+        if ($verificationRequested && ! $canManageVerification) {
+            throw new AuthorizationException('You cannot verify this email address.');
+        }
+
+        $markEmailVerified = (bool) ($data['email_verified'] ?? false);
+        unset($data['email_verified']);
 
         $data = $this->applyRoleAndSchoolRules($data, $actor, $user);
         unset($data['status']);
@@ -81,6 +117,17 @@ class UserService
         }
 
         $user->fill($data);
+
+        if ($verificationRequested) {
+            $user->forceFill([
+                'email_verified_at' => $markEmailVerified
+                    ? ($emailChanged || ! $user->email_verified_at ? now() : $user->email_verified_at)
+                    : null,
+            ]);
+        } elseif ($emailChanged) {
+            $user->forceFill(['email_verified_at' => null]);
+        }
+
         $user->save();
 
         return $user;
@@ -158,10 +205,17 @@ class UserService
             return $data;
         }
 
-        if (! filled($data['school_id'] ?? null)
-            || ! School::query()->whereKey($data['school_id'])->exists()) {
+        $school = filled($data['school_id'] ?? null)
+            ? School::query()->find($data['school_id'])
+            : null;
+
+        $isExistingAssignment = $subject
+            && $school
+            && (int) $subject->school_id === (int) $school->id;
+
+        if (! $school || ($school->status !== School::STATUS_ACTIVE && ! $isExistingAssignment)) {
             throw ValidationException::withMessages([
-                'school_id' => 'A valid school is required for this role.',
+                'school_id' => 'An active school is required for this role.',
             ]);
         }
 

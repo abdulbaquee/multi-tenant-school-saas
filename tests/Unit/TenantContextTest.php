@@ -7,6 +7,7 @@ use App\Tenancy\TenantContextState;
 use InvalidArgumentException;
 use LogicException;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 class TenantContextTest extends TestCase
 {
@@ -62,5 +63,46 @@ class TenantContextTest extends TestCase
 
         $this->expectException(LogicException::class);
         $context->tenantId();
+    }
+
+    public function test_temporary_tenant_execution_restores_every_previous_state(): void
+    {
+        $context = new TenantContext;
+
+        $result = $context->runAsTenant(7, function () use ($context): string {
+            $this->assertSame(7, $context->tenantId());
+
+            return 'completed';
+        });
+
+        $this->assertSame('completed', $result);
+        $this->assertTrue($context->isUnresolved());
+
+        $context->setPlatform();
+        $context->runAsTenant(8, fn (): int => $context->tenantId());
+        $this->assertTrue($context->isPlatform());
+
+        $context->setTenant(9);
+        $context->runAsTenant(10, fn (): int => $context->tenantId());
+        $this->assertTrue($context->isTenant());
+        $this->assertSame(9, $context->tenantId());
+    }
+
+    public function test_temporary_tenant_execution_restores_context_after_an_exception(): void
+    {
+        $context = new TenantContext;
+        $context->setPlatform();
+
+        try {
+            $context->runAsTenant(7, function (): never {
+                throw new RuntimeException('Temporary tenant failure.');
+            });
+            $this->fail('The callback exception was not thrown.');
+        } catch (RuntimeException $exception) {
+            $this->assertSame('Temporary tenant failure.', $exception->getMessage());
+        }
+
+        $this->assertTrue($context->isPlatform());
+        $this->assertNull($context->schoolId());
     }
 }

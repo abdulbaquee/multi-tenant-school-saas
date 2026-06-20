@@ -92,6 +92,7 @@ class UserManagementTest extends TestCase
             'name' => 'Changed Name',
             'email' => $otherUser->email,
             'role_id' => $this->roleId(Role::TEACHER),
+            'email_verified' => '1',
         ])->assertForbidden();
         $this->actingAs($schoolAdmin)->patch(route('users.deactivate', $otherUser))->assertForbidden();
 
@@ -207,6 +208,147 @@ class UserManagementTest extends TestCase
             'school_id' => $school->id,
             'role_id' => $this->roleId(Role::TEACHER),
         ]);
+    }
+
+    public function test_super_admin_can_control_email_verification_for_managed_users(): void
+    {
+        $school = $this->school('One');
+        $superAdmin = $this->superAdmin();
+
+        $this->actingAs($superAdmin)->post(route('users.store'), [
+            ...$this->validUserPayload($this->roleId(Role::TEACHER)),
+            'email' => 'verified-teacher@example.com',
+            'school_id' => $school->id,
+            'email_verified' => '1',
+        ])->assertRedirect(route('users.index'));
+
+        $user = User::query()->where('email', 'verified-teacher@example.com')->firstOrFail();
+        $this->assertNotNull($user->email_verified_at);
+
+        $this->actingAs($superAdmin)->put(route('users.update', $user), [
+            'name' => $user->name,
+            'email' => $user->email,
+            'role_id' => $this->roleId(Role::TEACHER),
+            'school_id' => $school->id,
+            'email_verified' => '0',
+        ])->assertRedirect(route('users.index'));
+
+        $this->assertNull($user->fresh()->email_verified_at);
+
+        $this->actingAs($superAdmin)->put(route('users.update', $user), [
+            'name' => $user->name,
+            'email' => $user->email,
+            'role_id' => $this->roleId(Role::TEACHER),
+            'school_id' => $school->id,
+            'email_verified' => '1',
+        ])->assertRedirect(route('users.index'));
+
+        $this->assertNotNull($user->fresh()->email_verified_at);
+    }
+
+    public function test_super_admin_can_create_an_unverified_user(): void
+    {
+        $school = $this->school('One');
+
+        $this->actingAs($this->superAdmin())->post(route('users.store'), [
+            ...$this->validUserPayload($this->roleId(Role::ACCOUNTANT)),
+            'email' => 'unverified-accountant@example.com',
+            'school_id' => $school->id,
+            'email_verified' => '0',
+        ])->assertRedirect(route('users.index'));
+
+        $user = User::query()->where('email', 'unverified-accountant@example.com')->firstOrFail();
+        $this->assertNull($user->email_verified_at);
+    }
+
+    public function test_school_admin_can_control_email_verification_within_own_school(): void
+    {
+        $school = $this->school('One');
+        $schoolAdmin = $this->userWithRole(Role::SCHOOL_ADMIN, $school, 'admin@example.com');
+        $teacher = $this->userWithRole(Role::TEACHER, $school, 'teacher@example.com');
+        $teacher->forceFill(['email_verified_at' => null])->save();
+
+        $this->actingAs($schoolAdmin)->put(route('users.update', $teacher), [
+            'name' => $teacher->name,
+            'email' => $teacher->email,
+            'role_id' => $this->roleId(Role::TEACHER),
+            'email_verified' => '1',
+        ])->assertRedirect(route('users.index'));
+
+        $this->assertNotNull($teacher->fresh()->email_verified_at);
+
+        $this->actingAs($schoolAdmin)->put(route('users.update', $teacher), [
+            'name' => $teacher->name,
+            'email' => 'changed-teacher@example.com',
+            'role_id' => $this->roleId(Role::TEACHER),
+            'email_verified' => '0',
+        ])->assertRedirect(route('users.index'));
+
+        $teacher->refresh();
+        $this->assertSame('changed-teacher@example.com', $teacher->email);
+        $this->assertNull($teacher->email_verified_at);
+
+        $this->actingAs($schoolAdmin)->post(route('users.store'), [
+            ...$this->validUserPayload($this->roleId(Role::ACCOUNTANT)),
+            'email' => 'verified-accountant@example.com',
+            'email_verified' => '1',
+        ])->assertRedirect(route('users.index'));
+
+        $createdUser = User::query()->where('email', 'verified-accountant@example.com')->firstOrFail();
+        $this->assertSame($school->id, $createdUser->school_id);
+        $this->assertNotNull($createdUser->email_verified_at);
+    }
+
+    public function test_email_verification_checkbox_is_visible_to_both_administrator_roles(): void
+    {
+        $school = $this->school('One');
+        $schoolAdmin = $this->userWithRole(Role::SCHOOL_ADMIN, $school, 'admin@example.com');
+
+        $this->actingAs($this->superAdmin())
+            ->get(route('users.create'))
+            ->assertOk()
+            ->assertSee('Mark email as verified');
+
+        $this->actingAs($schoolAdmin)
+            ->get(route('users.create'))
+            ->assertOk()
+            ->assertSee('Mark email as verified');
+    }
+
+    public function test_unverified_school_admin_cannot_attest_emails_or_self_verify(): void
+    {
+        $school = $this->school('One');
+        $schoolAdmin = $this->userWithRole(Role::SCHOOL_ADMIN, $school, 'admin@example.com');
+        $teacher = $this->userWithRole(Role::TEACHER, $school, 'teacher@example.com');
+        $schoolAdmin->forceFill(['email_verified_at' => null])->save();
+
+        $this->actingAs($schoolAdmin)
+            ->get(route('users.create'))
+            ->assertOk()
+            ->assertDontSee('Mark email as verified');
+
+        $this->actingAs($schoolAdmin)->put(route('users.update', $teacher), [
+            'name' => $teacher->name,
+            'email' => $teacher->email,
+            'role_id' => $this->roleId(Role::TEACHER),
+            'email_verified' => '1',
+        ])->assertSessionHasErrors('email_verified');
+
+        $schoolAdmin->forceFill(['email_verified_at' => now()])->save();
+
+        $this->actingAs($schoolAdmin)
+            ->get(route('users.edit', $schoolAdmin))
+            ->assertOk()
+            ->assertDontSee('Mark email as verified');
+
+        $this->actingAs($schoolAdmin)->put(route('users.update', $schoolAdmin), [
+            'name' => $schoolAdmin->name,
+            'email' => $schoolAdmin->email,
+            'role_id' => $this->roleId(Role::SCHOOL_ADMIN),
+            'email_verified' => '0',
+        ])->assertSessionHasErrors('email_verified');
+
+        $this->assertNotNull($schoolAdmin->fresh()->email_verified_at);
     }
 
     public function test_role_and_school_combinations_are_validated(): void

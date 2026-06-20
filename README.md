@@ -63,11 +63,10 @@ Each school is isolated using:
 
 school_id
 
-Every business record will belong to a school tenant. Phase 3 will add automatic
-query scoping through the documented `BelongsToTenant` trait, tenant context,
-and Eloquent global scope. Phase 2 user-management access is protected by
-policies and service-layer school checks until that infrastructure is active.
-See `docs/TENANCY_DESIGN.md`.
+Tenant-owned records use the documented `BelongsToTenant` trait, TenantContext,
+and default-deny Eloquent global scope. Phase 3 currently includes automatic
+School Settings isolation and Super Admin School Management with retained-data
+activation and deactivation workflows. See `docs/TENANCY_DESIGN.md`.
 
 ---
 

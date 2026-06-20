@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\School;
 use App\Models\User;
+use App\Policies\SchoolPolicy;
 use App\Policies\UserPolicy;
 use App\Tenancy\TenantContext;
 use Illuminate\Pagination\Paginator;
@@ -24,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Gate::policy(School::class, SchoolPolicy::class);
         Gate::policy(User::class, UserPolicy::class);
         Gate::define('dashboard.view', fn (User $user): bool => $user->canViewDashboard());
         Paginator::useBootstrapFive();

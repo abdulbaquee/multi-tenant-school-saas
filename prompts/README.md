@@ -80,7 +80,8 @@ prompts/
     ├── 00-phase-03-readiness-review.md
     ├── 01-phase-03-tenancy-design-remediation.md
     ├── 02-core-tenant-context.md
-    └── 03-tenant-scope-and-school-settings-schema.md
+    ├── 03-tenant-scope-and-school-settings-schema.md
+    └── 04-school-management.md
 ```
 
 ## Current Prompt Creation Status
@@ -97,6 +98,7 @@ Created for the next roadmap gate:
 - Phase 3 tenancy-design documentation remediation.
 - Phase 3 core TenantContext implementation.
 - Phase 3 TenantScope and School Settings schema implementation.
+- Phase 3 School Management implementation.
 
 Future prompt groups should be added only when they are needed for the next roadmap phase.
 

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Role;
+use App\Models\School;
 use App\Models\User;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -35,7 +36,16 @@ class UserStoreRequest extends FormRequest
                 Rule::exists('roles', 'id')->whereIn('code', $assignableRoleCodes),
             ],
             'school_id' => $actor?->isSuperAdmin()
-                ? ['nullable', 'integer', Rule::exists('schools', 'id')->whereNull('deleted_at')]
+                ? [
+                    'nullable',
+                    'integer',
+                    Rule::exists('schools', 'id')
+                        ->whereNull('deleted_at')
+                        ->where('status', School::STATUS_ACTIVE),
+                ]
+                : ['prohibited'],
+            'email_verified' => $actor?->canVerifyManagedUserEmails()
+                ? ['sometimes', 'boolean']
                 : ['prohibited'],
             'password' => ['required', 'confirmed', Password::min(8)->mixedCase()->numbers()],
         ];
