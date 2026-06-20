@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Role;
 use App\Models\School;
+use App\Models\SchoolSetting;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -101,6 +102,19 @@ class SchoolSettingsManagementTest extends TestCase
             'attendance_start_time' => '08:45',
             'grading_system' => 'letter',
             'settings_json' => json_encode(['week_starts_on' => 'monday']),
+        ]);
+        $settingsId = DB::table('school_settings')->where('school_id', $school->id)->value('id');
+        $this->assertDatabaseHas('activity_logs', [
+            'school_id' => $school->id,
+            'module' => 'school_settings',
+            'action' => 'updated',
+            'subject_id' => $settingsId,
+        ]);
+        $this->assertDatabaseHas('audit_logs', [
+            'school_id' => $school->id,
+            'auditable_type' => SchoolSetting::class,
+            'auditable_id' => $settingsId,
+            'event' => 'updated',
         ]);
     }
 

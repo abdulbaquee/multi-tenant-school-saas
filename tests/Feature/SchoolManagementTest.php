@@ -100,6 +100,19 @@ class SchoolManagementTest extends TestCase
             'grading_system' => 'percentage',
         ]);
         $this->assertDatabaseCount('school_settings', 1);
+        $this->assertDatabaseHas('activity_logs', [
+            'school_id' => $school->id,
+            'module' => 'school_management',
+            'action' => 'created',
+            'subject_type' => School::class,
+            'subject_id' => $school->id,
+        ]);
+        $this->assertDatabaseHas('audit_logs', [
+            'school_id' => $school->id,
+            'auditable_type' => School::class,
+            'auditable_id' => $school->id,
+            'event' => 'created',
+        ]);
     }
 
     public function test_required_unique_and_lifecycle_fields_are_validated(): void

@@ -12,7 +12,10 @@ use Illuminate\Support\Facades\DB;
 
 class SchoolService
 {
-    public function __construct(private readonly TenantContext $tenantContext) {}
+    public function __construct(
+        private readonly TenantContext $tenantContext,
+        private readonly SecurityLogService $securityLogs,
+    ) {}
 
     /**
      * @param  array{search?: string|null, status?: string|null}  $filters
@@ -47,7 +50,7 @@ class SchoolService
     {
         $this->authorizePlatform($actor->can('create', School::class));
 
-        return DB::transaction(function () use ($data): School {
+        return DB::transaction(function () use ($data, $actor): School {
             $school = School::create([
                 ...$data,
                 'status' => School::STATUS_ACTIVE,
@@ -55,9 +58,36 @@ class SchoolService
                 'deactivation_reason' => null,
             ]);
 
-            $this->tenantContext->runAsTenant(
+            $settings = $this->tenantContext->runAsTenant(
                 $school->id,
                 fn (): SchoolSetting => SchoolSetting::create(),
+            );
+
+            $this->securityLogs->activity(
+                $actor,
+                'school_management',
+                'created',
+                $school,
+                'School created.',
+            );
+            $this->securityLogs->audit(
+                $actor,
+                $school,
+                'created',
+                newValues: $this->auditValues($school),
+            );
+            $this->securityLogs->audit(
+                $actor,
+                $settings,
+                'created',
+                newValues: $settings->only([
+                    'school_id',
+                    'timezone',
+                    'currency',
+                    'academic_year_start_month',
+                    'attendance_start_time',
+                    'grading_system',
+                ]),
             );
 
             return $school;
@@ -71,17 +101,36 @@ class SchoolService
     {
         $this->authorizePlatform($actor->can('update', $school));
 
-        $school->fill($data);
-        $school->save();
+        return DB::transaction(function () use ($school, $data, $actor): School {
+            $oldValues = $this->auditValues($school);
+            $school->fill($data);
+            $school->save();
 
-        return $school;
+            $this->securityLogs->activity(
+                $actor,
+                'school_management',
+                'updated',
+                $school,
+                'School profile updated.',
+            );
+            $this->securityLogs->audit(
+                $actor,
+                $school,
+                'updated',
+                $oldValues,
+                $this->auditValues($school),
+            );
+
+            return $school;
+        });
     }
 
     public function deactivate(School $school, string $reason, User $actor): School
     {
         $this->authorizePlatform($actor->can('deactivate', $school));
 
-        DB::transaction(function () use ($school, $reason): void {
+        DB::transaction(function () use ($school, $reason, $actor): void {
+            $oldValues = $this->auditValues($school);
             $school->forceFill([
                 'status' => School::STATUS_INACTIVE,
                 'deactivated_at' => now(),
@@ -97,6 +146,21 @@ class SchoolService
                 ->update(['remember_token' => null]);
 
             DB::table('sessions')->whereIn('user_id', $userIds)->delete();
+
+            $this->securityLogs->activity(
+                $actor,
+                'school_management',
+                'deactivated',
+                $school,
+                'School deactivated.',
+            );
+            $this->securityLogs->audit(
+                $actor,
+                $school,
+                'status_changed',
+                $oldValues,
+                $this->auditValues($school),
+            );
         });
 
         return $school->refresh();
@@ -106,13 +170,31 @@ class SchoolService
     {
         $this->authorizePlatform($actor->can('activate', $school));
 
-        $school->forceFill([
-            'status' => School::STATUS_ACTIVE,
-            'deactivated_at' => null,
-            'deactivation_reason' => null,
-        ])->save();
+        return DB::transaction(function () use ($school, $actor): School {
+            $oldValues = $this->auditValues($school);
+            $school->forceFill([
+                'status' => School::STATUS_ACTIVE,
+                'deactivated_at' => null,
+                'deactivation_reason' => null,
+            ])->save();
 
-        return $school;
+            $this->securityLogs->activity(
+                $actor,
+                'school_management',
+                'activated',
+                $school,
+                'School activated.',
+            );
+            $this->securityLogs->audit(
+                $actor,
+                $school,
+                'status_changed',
+                $oldValues,
+                $this->auditValues($school),
+            );
+
+            return $school;
+        });
     }
 
     private function authorizePlatform(bool $allowed): void
@@ -120,5 +202,28 @@ class SchoolService
         if (! $allowed || ! $this->tenantContext->isPlatform()) {
             throw new AuthorizationException;
         }
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function auditValues(School $school): array
+    {
+        return $school->only([
+            'name',
+            'code',
+            'email',
+            'phone',
+            'address',
+            'city',
+            'state',
+            'country',
+            'postal_code',
+            'principal_name',
+            'website',
+            'status',
+            'deactivated_at',
+            'deactivation_reason',
+        ]);
     }
 }

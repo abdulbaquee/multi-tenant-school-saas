@@ -47,7 +47,7 @@ class UserStoreRequest extends FormRequest
             'email_verified' => $actor?->canVerifyManagedUserEmails()
                 ? ['sometimes', 'boolean']
                 : ['prohibited'],
-            'password' => ['required', 'confirmed', Password::min(8)->mixedCase()->numbers()],
+            'password' => ['required', 'confirmed', Password::defaults()],
         ];
     }
 

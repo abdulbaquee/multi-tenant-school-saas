@@ -10,6 +10,7 @@ use App\Services\UserService;
 use App\Tenancy\TenantContext;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class TenantAwareServiceTest extends TestCase
@@ -87,6 +88,26 @@ class TenantAwareServiceTest extends TestCase
 
         $this->assertTrue($platformUserIds->contains($schoolOneTeacher->id));
         $this->assertTrue($platformUserIds->contains($schoolTwoTeacher->id));
+    }
+
+    public function test_user_service_rejects_direct_administrator_self_password_reset(): void
+    {
+        $school = $this->school('One');
+        $schoolAdmin = $this->schoolUser(Role::SCHOOL_ADMIN, $school, 'admin@example.com');
+        app(TenantContext::class)->setTenant($school->id);
+
+        $this->assertAuthorizationDenied(fn () => app(UserService::class)->update(
+            $schoolAdmin,
+            [
+                'name' => $schoolAdmin->name,
+                'email' => $schoolAdmin->email,
+                'role_id' => $schoolAdmin->role_id,
+                'password' => 'ChangedPassword123',
+            ],
+            $schoolAdmin,
+        ));
+
+        $this->assertTrue(Hash::check('password', $schoolAdmin->fresh()->password));
     }
 
     public function test_dashboard_service_rejects_unresolved_mismatched_and_incorrect_context_modes(): void

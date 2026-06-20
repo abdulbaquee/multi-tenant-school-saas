@@ -15,7 +15,10 @@ use Throwable;
 
 class SchoolSettingService
 {
-    public function __construct(private readonly TenantContext $tenantContext) {}
+    public function __construct(
+        private readonly TenantContext $tenantContext,
+        private readonly SecurityLogService $securityLogs,
+    ) {}
 
     public function for(User $actor): SchoolSetting
     {
@@ -24,7 +27,25 @@ class SchoolSettingService
         $settings = SchoolSetting::query()->first();
 
         if (! $settings) {
-            $settings = SchoolSetting::create();
+            $settings = DB::transaction(function () use ($actor): SchoolSetting {
+                $settings = SchoolSetting::create();
+
+                $this->securityLogs->activity(
+                    $actor,
+                    'school_settings',
+                    'initialized',
+                    $settings,
+                    'Missing school settings initialized.',
+                );
+                $this->securityLogs->audit(
+                    $actor,
+                    $settings,
+                    'created',
+                    newValues: $this->settingsAuditValues($settings),
+                );
+
+                return $settings;
+            });
         }
 
         $this->authorize($actor->can('view', $settings));
@@ -48,9 +69,20 @@ class SchoolSettingService
             ? $this->storeLogo($logo, $settings->school_id)
             : null;
         $oldLogoPath = $settings->logo_path;
+        $oldSchoolValues = $this->schoolAuditValues($school);
+        $oldSettingsValues = $this->settingsAuditValues($settings);
 
         try {
-            DB::transaction(function () use ($school, $settings, $data, $newLogoPath, $removeLogo): void {
+            DB::transaction(function () use (
+                $school,
+                $settings,
+                $data,
+                $newLogoPath,
+                $removeLogo,
+                $oldSchoolValues,
+                $oldSettingsValues,
+                $actor,
+            ): void {
                 $school->fill([
                     'name' => $data['school_name'],
                     'email' => $data['school_email'],
@@ -79,6 +111,28 @@ class SchoolSettingService
                 }
 
                 $settings->save();
+
+                $this->securityLogs->activity(
+                    $actor,
+                    'school_settings',
+                    'updated',
+                    $settings,
+                    'School settings updated.',
+                );
+                $this->securityLogs->audit(
+                    $actor,
+                    $school,
+                    'updated',
+                    $oldSchoolValues,
+                    $this->schoolAuditValues($school),
+                );
+                $this->securityLogs->audit(
+                    $actor,
+                    $settings,
+                    'updated',
+                    $oldSettingsValues,
+                    $this->settingsAuditValues($settings),
+                );
             });
         } catch (Throwable $exception) {
             if ($newLogoPath) {
@@ -125,5 +179,40 @@ class SchoolSettingService
         if (! $allowed) {
             throw new AuthorizationException;
         }
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function schoolAuditValues(School $school): array
+    {
+        return $school->only([
+            'name',
+            'email',
+            'phone',
+            'address',
+            'city',
+            'state',
+            'country',
+            'postal_code',
+            'principal_name',
+            'website',
+        ]);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function settingsAuditValues(SchoolSetting $settings): array
+    {
+        return $settings->only([
+            'school_id',
+            'logo_path',
+            'timezone',
+            'currency',
+            'academic_year_start_month',
+            'attendance_start_time',
+            'grading_system',
+        ]);
     }
 }

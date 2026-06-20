@@ -84,31 +84,39 @@
         </div>
     @endif
 
-    <div class="col-md-6">
-        <label for="password" class="form-label">
-            {{ isset($user) ? __('New Password (optional)') : __('Password') }}
-            @if (! isset($user))
-                <span class="text-danger" aria-hidden="true">*</span><span class="visually-hidden">{{ __('required') }}</span>
+    @if (! isset($user) || ! auth()->user()->is($user))
+        <div class="col-md-6">
+            <label for="password" class="form-label">
+                {{ isset($user) ? __('New Password (optional)') : __('Password') }}
+                @if (! isset($user))
+                    <span class="text-danger" aria-hidden="true">*</span><span class="visually-hidden">{{ __('required') }}</span>
+                @endif
+            </label>
+            <input id="password" name="password" type="password" class="form-control @error('password') is-invalid @enderror" autocomplete="new-password" @if (! isset($user)) required @endif>
+            @error('password')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+            @if (isset($user))
+                <div class="form-text">{{ __('Leave blank to keep the current password.') }}</div>
             @endif
-        </label>
-        <input id="password" name="password" type="password" class="form-control @error('password') is-invalid @enderror" autocomplete="new-password" @if (! isset($user)) required @endif>
-        @error('password')
-            <div class="invalid-feedback">{{ $message }}</div>
-        @enderror
-        @if (isset($user))
-            <div class="form-text">{{ __('Leave blank to keep the current password.') }}</div>
-        @endif
-    </div>
+        </div>
 
-    <div class="col-md-6">
-        <label for="password_confirmation" class="form-label">
-            {{ isset($user) ? __('Confirm New Password') : __('Confirm Password') }}
-            @if (! isset($user))
-                <span class="text-danger" aria-hidden="true">*</span><span class="visually-hidden">{{ __('required') }}</span>
-            @endif
-        </label>
-        <input id="password_confirmation" name="password_confirmation" type="password" class="form-control" autocomplete="new-password" @if (! isset($user)) required @endif>
-    </div>
+        <div class="col-md-6">
+            <label for="password_confirmation" class="form-label">
+                {{ isset($user) ? __('Confirm New Password') : __('Confirm Password') }}
+                @if (! isset($user))
+                    <span class="text-danger" aria-hidden="true">*</span><span class="visually-hidden">{{ __('required') }}</span>
+                @endif
+            </label>
+            <input id="password_confirmation" name="password_confirmation" type="password" class="form-control" autocomplete="new-password" @if (! isset($user)) required @endif>
+        </div>
+    @else
+        <div class="col-12">
+            <div class="alert alert-info mb-0">
+                {{ __('Use your Profile page to change your own password with current-password confirmation.') }}
+            </div>
+        </div>
+    @endif
 </div>
 
 @if (auth()->user()->isSuperAdmin())

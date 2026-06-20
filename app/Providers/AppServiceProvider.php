@@ -12,6 +12,7 @@ use App\Tenancy\TenantContext;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Validation\Rules\Password;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,6 +29,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Password::defaults(fn (): Password => Password::min(8)->mixedCase()->numbers());
+
         Gate::policy(School::class, SchoolPolicy::class);
         Gate::policy(SchoolSetting::class, SchoolSettingPolicy::class);
         Gate::policy(User::class, UserPolicy::class);

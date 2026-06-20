@@ -4,18 +4,21 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\SecurityLogService;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class NewPasswordController extends Controller
 {
+    public function __construct(private readonly SecurityLogService $securityLogs) {}
+
     /**
      * Display the password reset view.
      */
@@ -42,11 +45,28 @@ class NewPasswordController extends Controller
         // database. Otherwise we will parse the error and return the response.
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
-            function (User $user) use ($request) {
-                $user->forceFill([
-                    'password' => Hash::make($request->password),
-                    'remember_token' => Str::random(60),
-                ])->save();
+            function (User $user) use ($request): void {
+                DB::transaction(function () use ($user, $request): void {
+                    $user->forceFill([
+                        'password' => Hash::make($request->string('password')->toString()),
+                        'remember_token' => null,
+                    ])->save();
+
+                    DB::table('sessions')->where('user_id', $user->id)->delete();
+
+                    $this->securityLogs->authenticationActivity(
+                        $user,
+                        'password_reset',
+                        description: 'User reset their password using a verified reset token.',
+                    );
+                    $this->securityLogs->authenticationAudit(
+                        $user,
+                        $user,
+                        'updated',
+                        ['password_changed' => false],
+                        ['password_changed' => true],
+                    );
+                });
 
                 event(new PasswordReset($user));
             }

@@ -7,6 +7,7 @@ use App\Models\School;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class UserManagementTest extends TestCase
@@ -155,6 +156,19 @@ class UserManagementTest extends TestCase
             'email' => 'newteacher@example.com',
             'school_id' => $school->id,
             'role_id' => $this->roleId(Role::TEACHER),
+        ]);
+        $createdUser = User::query()->where('email', 'newteacher@example.com')->firstOrFail();
+        $this->assertDatabaseHas('activity_logs', [
+            'school_id' => $school->id,
+            'module' => 'user_management',
+            'action' => 'created',
+            'subject_id' => $createdUser->id,
+        ]);
+        $this->assertDatabaseHas('audit_logs', [
+            'school_id' => $school->id,
+            'auditable_type' => User::class,
+            'auditable_id' => $createdUser->id,
+            'event' => 'created',
         ]);
     }
 
@@ -438,6 +452,87 @@ class UserManagementTest extends TestCase
         $response->assertSee('autocomplete="new-password"', false);
     }
 
+    public function test_administrator_cannot_reset_own_password_through_user_management(): void
+    {
+        $schoolAdmin = $this->userWithRole(Role::SCHOOL_ADMIN, $this->school('One'), 'admin@example.com');
+        $originalPassword = $schoolAdmin->password;
+
+        $this->actingAs($schoolAdmin)
+            ->get(route('users.edit', $schoolAdmin))
+            ->assertOk()
+            ->assertDontSee('name="password"', false)
+            ->assertSee('Use your Profile page to change your own password');
+
+        $this->actingAs($schoolAdmin)
+            ->put(route('users.update', $schoolAdmin), [
+                'name' => $schoolAdmin->name,
+                'email' => $schoolAdmin->email,
+                'role_id' => $this->roleId(Role::SCHOOL_ADMIN),
+                'password' => 'ChangedPassword123',
+                'password_confirmation' => 'ChangedPassword123',
+            ])
+            ->assertSessionHasErrors('password');
+
+        $this->assertSame($originalPassword, $schoolAdmin->fresh()->password);
+    }
+
+    public function test_administrative_password_reset_revokes_only_target_sessions_and_credentials_are_not_logged(): void
+    {
+        $school = $this->school('One');
+        $superAdmin = $this->superAdmin();
+        $target = $this->userWithRole(Role::TEACHER, $school, 'teacher@example.com');
+        $otherUser = $this->userWithRole(Role::ACCOUNTANT, $school, 'accountant@example.com');
+        $target->forceFill(['remember_token' => 'target-remember'])->save();
+        $otherUser->forceFill(['remember_token' => 'other-remember'])->save();
+        $this->sessionRecord('target-session', $target);
+        $this->sessionRecord('other-session', $otherUser);
+
+        $this->actingAs($superAdmin)
+            ->put(route('users.update', $target), [
+                'name' => $target->name,
+                'email' => $target->email,
+                'role_id' => $this->roleId(Role::TEACHER),
+                'school_id' => $school->id,
+                'password' => 'ResetPassword123',
+                'password_confirmation' => 'ResetPassword123',
+            ])
+            ->assertSessionHasNoErrors()
+            ->assertRedirect(route('users.index'));
+
+        $this->assertTrue(Hash::check('ResetPassword123', $target->fresh()->password));
+        $this->assertNull($target->fresh()->remember_token);
+        $this->assertSame('other-remember', $otherUser->fresh()->remember_token);
+        $this->assertDatabaseMissing('sessions', ['id' => 'target-session']);
+        $this->assertDatabaseHas('sessions', ['id' => 'other-session']);
+
+        $auditValues = DB::table('audit_logs')
+            ->where('auditable_type', User::class)
+            ->where('auditable_id', $target->id)
+            ->latest('id')
+            ->value('new_values');
+
+        $this->assertIsString($auditValues);
+        $this->assertStringNotContainsStringIgnoringCase('password123', $auditValues);
+        $this->assertStringNotContainsStringIgnoringCase('remember', $auditValues);
+    }
+
+    public function test_weak_administrative_password_reset_is_rejected(): void
+    {
+        $school = $this->school('One');
+        $target = $this->userWithRole(Role::TEACHER, $school, 'teacher@example.com');
+
+        $this->actingAs($this->superAdmin())
+            ->put(route('users.update', $target), [
+                'name' => $target->name,
+                'email' => $target->email,
+                'role_id' => $this->roleId(Role::TEACHER),
+                'school_id' => $school->id,
+                'password' => 'weakpassword',
+                'password_confirmation' => 'weakpassword',
+            ])
+            ->assertSessionHasErrors('password');
+    }
+
     public function test_user_password_must_follow_documented_complexity_rules(): void
     {
         $school = $this->school('One');
@@ -517,6 +612,18 @@ class UserManagementTest extends TestCase
             ->assertForbidden();
 
         $this->assertSame(User::STATUS_ACTIVE, $schoolAdmin->fresh()->status);
+    }
+
+    private function sessionRecord(string $id, User $user): void
+    {
+        DB::table('sessions')->insert([
+            'id' => $id,
+            'user_id' => $user->id,
+            'ip_address' => '127.0.0.1',
+            'user_agent' => 'PHPUnit',
+            'payload' => 'test-payload',
+            'last_activity' => now()->timestamp,
+        ]);
     }
 
     /**

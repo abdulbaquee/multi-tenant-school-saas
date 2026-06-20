@@ -15,7 +15,10 @@ use Illuminate\Validation\ValidationException;
 
 class UserService
 {
-    public function __construct(private readonly TenantContext $tenantContext) {}
+    public function __construct(
+        private readonly TenantContext $tenantContext,
+        private readonly SecurityLogService $securityLogs,
+    ) {}
 
     /**
      * @return LengthAwarePaginator<int, User>
@@ -90,13 +93,29 @@ class UserService
         $data['password'] = Hash::make($data['password']);
         $data['status'] = User::STATUS_ACTIVE;
 
-        $user = User::create($data);
+        return DB::transaction(function () use ($data, $markEmailVerified, $actor): User {
+            $user = User::create($data);
 
-        if ($markEmailVerified) {
-            $user->forceFill(['email_verified_at' => now()])->save();
-        }
+            if ($markEmailVerified) {
+                $user->forceFill(['email_verified_at' => now()])->save();
+            }
 
-        return $user;
+            $this->securityLogs->activity(
+                $actor,
+                'user_management',
+                'created',
+                $user,
+                'User account created.',
+            );
+            $this->securityLogs->audit(
+                $actor,
+                $user,
+                'created',
+                newValues: $this->auditValues($user),
+            );
+
+            return $user;
+        });
     }
 
     public function update(User $user, array $data, User $actor): User
@@ -105,6 +124,7 @@ class UserService
         $this->authorize($actor->can('update', $user));
 
         $emailChanged = strtolower($user->email) !== strtolower((string) $data['email']);
+        $passwordReset = filled($data['password'] ?? null);
         $verificationRequested = array_key_exists('email_verified', $data);
         $canManageVerification = $actor->canVerifyManagedUserEmails()
             && ($actor->isSuperAdmin() || ! $actor->is($user));
@@ -113,33 +133,74 @@ class UserService
             throw new AuthorizationException('You cannot verify this email address.');
         }
 
+        if ($passwordReset && $actor->is($user)) {
+            throw new AuthorizationException('Use your profile to change your own password.');
+        }
+
+        $oldValues = $this->auditValues($user);
+
         $markEmailVerified = (bool) ($data['email_verified'] ?? false);
         unset($data['email_verified']);
 
         $data = $this->applyRoleAndSchoolRules($data, $actor, $user);
         unset($data['status']);
 
-        if (array_key_exists('password', $data) && filled($data['password'])) {
+        if ($passwordReset) {
             $data['password'] = Hash::make($data['password']);
         } else {
             unset($data['password']);
         }
 
-        $user->fill($data);
+        return DB::transaction(function () use (
+            $user,
+            $data,
+            $verificationRequested,
+            $markEmailVerified,
+            $emailChanged,
+            $passwordReset,
+            $oldValues,
+            $actor,
+        ): User {
+            $user->fill($data);
 
-        if ($verificationRequested) {
-            $user->forceFill([
-                'email_verified_at' => $markEmailVerified
-                    ? ($emailChanged || ! $user->email_verified_at ? now() : $user->email_verified_at)
-                    : null,
-            ]);
-        } elseif ($emailChanged) {
-            $user->forceFill(['email_verified_at' => null]);
-        }
+            if ($verificationRequested) {
+                $user->forceFill([
+                    'email_verified_at' => $markEmailVerified
+                        ? ($emailChanged || ! $user->email_verified_at ? now() : $user->email_verified_at)
+                        : null,
+                ]);
+            } elseif ($emailChanged) {
+                $user->forceFill(['email_verified_at' => null]);
+            }
 
-        $user->save();
+            if ($passwordReset) {
+                $user->forceFill(['remember_token' => null]);
+            }
 
-        return $user;
+            $user->save();
+
+            if ($passwordReset) {
+                DB::table('sessions')->where('user_id', $user->id)->delete();
+            }
+
+            $newValues = $this->auditValues($user);
+
+            if ($passwordReset) {
+                $oldValues['password_changed'] = false;
+                $newValues['password_changed'] = true;
+            }
+
+            $this->securityLogs->activity(
+                $actor,
+                'user_management',
+                $passwordReset ? 'password_reset' : 'updated',
+                $user,
+                $passwordReset ? 'User password reset by an administrator.' : 'User account updated.',
+            );
+            $this->securityLogs->audit($actor, $user, 'updated', $oldValues, $newValues);
+
+            return $user;
+        });
     }
 
     public function activate(User $user, User $actor): User
@@ -147,10 +208,28 @@ class UserService
         $this->authorizeActorContext($actor);
         $this->authorize($actor->can('activate', $user));
 
-        $user->status = User::STATUS_ACTIVE;
-        $user->save();
+        return DB::transaction(function () use ($user, $actor): User {
+            $oldValues = ['status' => $user->status];
+            $user->status = User::STATUS_ACTIVE;
+            $user->save();
 
-        return $user;
+            $this->securityLogs->activity(
+                $actor,
+                'user_management',
+                'activated',
+                $user,
+                'User account activated.',
+            );
+            $this->securityLogs->audit(
+                $actor,
+                $user,
+                'status_changed',
+                $oldValues,
+                ['status' => $user->status],
+            );
+
+            return $user;
+        });
     }
 
     public function deactivate(User $user, User $actor): User
@@ -158,13 +237,29 @@ class UserService
         $this->authorizeActorContext($actor);
         $this->authorize($actor->can('deactivate', $user));
 
-        DB::transaction(function () use ($user): void {
+        DB::transaction(function () use ($user, $actor): void {
+            $oldValues = ['status' => $user->status];
             $user->forceFill([
                 'status' => User::STATUS_INACTIVE,
                 'remember_token' => null,
             ])->save();
 
             DB::table('sessions')->where('user_id', $user->id)->delete();
+
+            $this->securityLogs->activity(
+                $actor,
+                'user_management',
+                'deactivated',
+                $user,
+                'User account deactivated.',
+            );
+            $this->securityLogs->audit(
+                $actor,
+                $user,
+                'status_changed',
+                $oldValues,
+                ['status' => $user->status],
+            );
         });
 
         return $user;
@@ -249,5 +344,21 @@ class UserService
                 && (int) $this->tenantContext->schoolId() === (int) $actor->school_id;
 
         $this->authorize($matchesContext);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function auditValues(User $user): array
+    {
+        return $user->only([
+            'school_id',
+            'role_id',
+            'name',
+            'email',
+            'phone',
+            'status',
+            'email_verified_at',
+        ]);
     }
 }

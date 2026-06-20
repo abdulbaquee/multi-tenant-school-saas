@@ -236,7 +236,7 @@ Status: Completed
 
 Date Started: 2026-06-20
 
-Status: Implementation Completed — Review Gate Pending
+Status: Implementation, Tenant-Isolation, and Security Gates Completed
 
 ## Added
 
@@ -284,22 +284,35 @@ Status: Implementation Completed — Review Gate Pending
   actors require matching Tenant context.
 * Direct service integration tests for Unresolved, mismatched, incorrect-mode,
   matching Tenant, and matching Platform execution paths.
+* Canonical password complexity across every password-setting workflow.
+* Administrator self-reset protection and target-only session revocation after
+  authorized password reset.
+* Generic, throttled forgot-password responses.
+* Append-only, tenant-aware activity and audit recording foundations matching
+  the documented data dictionary.
+* Current login, logout, password, user, school, and School Settings activity
+  and audit coverage with sensitive-value filtering.
+* Explicit CSRF, Blade escaping, bound-query, log immutability, and log-isolation
+  security tests.
 
 ## Verification
 
-* Full application suite: 115 tests and 553 assertions passed.
+* Full application suite: 130 tests and 639 assertions passed.
 * Laravel Pint formatting validation passed.
 * Composer configuration validation passed.
 * Route inspection confirmed tenant context on every authenticated web route.
 * Tenant-isolation review confirmed UserService and DashboardService now fail
   closed when invoked outside an authorized actor-aligned context.
+* Security review confirmed password, session, recovery, logging, CSRF, output,
+  query-binding, storage, deletion, and tenant controls for implemented modules.
+* Composer and npm audits reported no known dependency vulnerabilities.
 * Local SQLite development migration status confirms the School Settings
   migration is applied; live MySQL 8 validation remains a deployment-target
   verification step.
 
 ## Planned
 
-* Phase 3 security, testing, and documentation review gates
+* Phase 3 documentation, code, and release review gates
 * Automatic tenant-isolation rollout to later module models in their roadmap phases
 
 ## Deliverables
@@ -515,6 +528,7 @@ Documentation Setup: Completed (Draft v1.0; maintained during implementation)
 Database Design Documentation: Remediated and implementation-ready draft (DATABASE_DESIGN.md, ER_DIAGRAM.md)
 
 Application Implementation: Phase 2 completed; Phase 3 tenant infrastructure,
-School Management, and School Settings implemented with tenant-isolation review passed
+School Management, School Settings, security logging, tenant-isolation review,
+and security review completed
 
-Next Task: Run the Phase 3 security review gate
+Next Task: Run the Phase 3 documentation review gate

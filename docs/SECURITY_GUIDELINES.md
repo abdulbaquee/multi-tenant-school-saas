@@ -119,6 +119,8 @@ Requirements:
 * Session Protection
 * Remember Me Support
 * Active school validation for every non-Super-Admin login
+* Generic forgot-password responses that do not disclose account existence
+* Request throttling for login, forgot-password, and verification endpoints
 
 Never:
 
@@ -150,6 +152,15 @@ Hash::make()
 
 Passwords must never be stored in plain text.
 
+Implementation:
+
+* `Password::defaults()` defines the canonical minimum-eight, mixed-case, and
+  numeric rule for every password-setting path.
+* User creation, administrative reset, profile change, and forgot-password reset
+  must all use the canonical rule.
+* Administrators cannot reset their own password through User Management; they
+  must use Profile and provide their current password.
+
 ---
 
 # 6. SESSION SECURITY
@@ -172,6 +183,17 @@ School Lifecycle Requirements:
   or soft deleted.
 * Reactivation restores login eligibility only for users whose own status is
   active.
+* Administrative and token-based password resets clear remember tokens and
+  revoke the affected user's database sessions.
+* Self-service password changes retain the current session but revoke other
+  database sessions for the same user.
+
+Production Cookie Requirements:
+
+* Use HTTPS and set `SESSION_SECURE_COOKIE=true`.
+* Keep `SESSION_HTTP_ONLY=true`.
+* Keep `SESSION_SAME_SITE=lax` or use a stricter reviewed value.
+* Set `APP_DEBUG=false` in production.
 
 ---
 
@@ -606,6 +628,13 @@ Audit logs are immutable.
 
 Users must not modify audit history.
 
+Implementation Status:
+
+* The append-only `audit_logs` recording foundation is implemented for current
+  user, school, School Settings, and password mutations.
+* Audit list/detail screens remain deferred to the documented system-operations
+  delivery in Phase 10.
+
 ---
 
 # 26. ACTIVITY LOGGING SECURITY
@@ -622,6 +651,13 @@ Track:
 * Marks Entry
 * Report Generation
 * Unauthorized Access Attempts
+
+Implementation Status:
+
+* Login, logout, failed or tenant-denied login, password, user, school, and
+  School Settings activity recording is implemented without storing attempted
+  credentials.
+* Activity list/detail screens remain deferred to Phase 10.
 
 ---
 

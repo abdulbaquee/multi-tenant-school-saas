@@ -828,6 +828,21 @@ Recorded on 2026-06-21:
 * User Management HTTP, Dashboard HTTP, TenantContext, TenantScope, School
   Management, and School Settings regression suites remain green.
 
+## Phase 3 Security Remediation Baseline
+
+Recorded on 2026-06-21:
+
+* Full application suite: 130 tests and 639 assertions passed.
+* Canonical password-policy tests cover user creation, administrative reset,
+  profile change, and forgot-password reset.
+* Security tests prove administrator self-reset denial, current-password
+  confirmation, target-only session revocation, generic and throttled recovery,
+  CSRF rejection, Blade escaping, and bound search input.
+* Activity and audit tests prove login/logout and current mutation coverage,
+  tenant filtering, explicit Platform visibility, sensitive-value removal,
+  Unresolved denial, and Eloquent immutability.
+* Composer and npm security advisory checks reported no known vulnerabilities.
+
 Capture:
 
 * Test Cases

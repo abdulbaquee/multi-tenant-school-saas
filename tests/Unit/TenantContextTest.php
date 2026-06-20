@@ -105,4 +105,30 @@ class TenantContextTest extends TestCase
         $this->assertTrue($context->isPlatform());
         $this->assertNull($context->schoolId());
     }
+
+    public function test_temporary_platform_execution_restores_context_and_exceptions(): void
+    {
+        $context = new TenantContext;
+        $context->setTenant(42);
+
+        $result = $context->runAsPlatform(function () use ($context): string {
+            $this->assertTrue($context->isPlatform());
+
+            return 'completed';
+        });
+
+        $this->assertSame('completed', $result);
+        $this->assertSame(42, $context->tenantId());
+
+        try {
+            $context->runAsPlatform(function (): never {
+                throw new RuntimeException('Temporary platform failure.');
+            });
+            $this->fail('The callback exception was not thrown.');
+        } catch (RuntimeException $exception) {
+            $this->assertSame('Temporary platform failure.', $exception->getMessage());
+        }
+
+        $this->assertSame(42, $context->tenantId());
+    }
 }

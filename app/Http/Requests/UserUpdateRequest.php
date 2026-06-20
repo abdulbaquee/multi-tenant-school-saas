@@ -59,7 +59,9 @@ class UserUpdateRequest extends FormRequest
                 && ($actor->isSuperAdmin() || ! $actor->is($user))
                     ? ['sometimes', 'boolean']
                     : ['prohibited'],
-            'password' => ['nullable', 'confirmed', Password::min(8)->mixedCase()->numbers()],
+            'password' => $actor?->is($user)
+                ? ['prohibited']
+                : ['nullable', 'confirmed', Password::defaults()],
         ];
     }
 

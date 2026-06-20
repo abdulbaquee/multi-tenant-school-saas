@@ -89,6 +89,26 @@ final class TenantContext
         }
     }
 
+    /**
+     * @template TResult
+     *
+     * @param  callable(): TResult  $callback
+     * @return TResult
+     */
+    public function runAsPlatform(callable $callback): mixed
+    {
+        $previousState = $this->state;
+        $previousSchoolId = $this->schoolId;
+
+        $this->setPlatform();
+
+        try {
+            return $callback();
+        } finally {
+            $this->restore($previousState, $previousSchoolId);
+        }
+    }
+
     private function restore(TenantContextState $state, ?int $schoolId): void
     {
         if ($state === TenantContextState::Tenant) {
