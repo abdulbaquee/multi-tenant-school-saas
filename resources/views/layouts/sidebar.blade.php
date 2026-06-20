@@ -41,6 +41,15 @@
                         </li>
                     @endcan
 
+                    @can('viewAny', \App\Models\Role::class)
+                        <li class="nav-item">
+                            <a class="nav-link sidebar-link @if (request()->routeIs('roles.*')) active @endif" href="{{ route('roles.index') }}" @if (request()->routeIs('roles.*')) aria-current="page" @endif>
+                                <i class="bi bi-shield-lock" aria-hidden="true"></i>
+                                <span>{{ __('Roles & Permissions') }}</span>
+                            </a>
+                        </li>
+                    @endcan
+
                     @can('viewAny', \App\Models\School::class)
                         <li class="nav-item">
                             <a class="nav-link sidebar-link @if (request()->routeIs('schools.*')) active @endif" href="{{ route('schools.index') }}" @if (request()->routeIs('schools.*')) aria-current="page" @endif>

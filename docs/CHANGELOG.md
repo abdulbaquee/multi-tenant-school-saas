@@ -363,7 +363,9 @@ Status: Completed
 
 # [0.6.0] - Role & Permission Management
 
-Status: Core Foundation Completed — Mapping Management Pending
+Date: 2026-06-21
+
+Status: Completed
 
 ## Added
 
@@ -377,19 +379,37 @@ Status: Core Foundation Completed — Mapping Management Pending
 * Role-assignment activity and audit evidence
 * Explicit complex bootstrap-password configuration with no known production fallback
 * Target-only session revocation when a user moves between schools
+* Fixed role directory and module-grouped effective-permission details
+* Read-only school-role visibility for School Admin without Super Admin exposure
+* Super Admin-only constrained mapping editor for School Admin, Teacher, and Accountant
+* Server-enforced maximum and essential permission boundaries
+* Transactional mapping replacement with deterministic stale-write fingerprints
+* Platform-owned mapping activity and audit records containing sorted permission codes
+* Permission-aware Roles & Permissions sidebar navigation and responsive Bootstrap views
 
 ## Verification
 
-* Full application suite: 140 tests and 705 assertions passed.
+* Full application suite: 154 tests and 830 assertions passed.
 * Local database synchronization confirmed four roles, 57 permissions, and the
   exact 31-permission Super Admin mapping.
 * Laravel Pint and Composer configuration validation passed.
+* Mapping tests cover allowed and denied routes, direct service context,
+  immutable Super Admin mapping, essential retention, forged and duplicate IDs,
+  out-of-bound grants, essential removal, empty payloads, stale submissions,
+  logging rollback, audit payloads,
+  immediate permission effects, menu visibility, and responsive markup.
 
-## Planned
+## Review Gate
 
-* Role directory and effective-permission screens
-* Constrained school-role mapping management
-* Mapping activity and audit recording
+* Tenant-isolation review: approved after expanded direct-service context and
+  inactive-school denial coverage.
+* Security review: approved with route-specific CSRF evidence and clean Composer
+  and npm advisory audits.
+* Documentation review: approved after reconciling README, architecture, menu,
+  security-log, roadmap, and testing evidence.
+* Code review: no findings; Pint, production asset build, Composer validation,
+  and the full regression suite passed.
+* Release review: READY, overall 9.8/10, with no blocking issues.
 
 ## Deliverables
 
@@ -592,7 +612,7 @@ Example:
 
 # Current Project Status
 
-Phase: Implementation Phase (Phase 4 — Core RBAC Foundation Completed)
+Phase: Implementation Phase (Phase 4 — Completed and Release-Approved)
 
 Repository Setup: Completed
 
@@ -606,4 +626,4 @@ Application Implementation: Phase 2 completed; Phase 3 tenant infrastructure,
 School Management, School Settings, security logging, tenant-isolation review,
 security review, documentation review, code review, and release review completed
 
-Next Task: Implement Phase 4 Role & Permission mapping management
+Next Task: Create and execute the Phase 5 Academic Structure readiness review

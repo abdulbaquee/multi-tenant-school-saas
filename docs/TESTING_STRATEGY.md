@@ -888,6 +888,30 @@ Recorded on 2026-06-21:
   remember-token revocation, cross-school transfer revocation, and activity-log
   evidence.
 
+## Phase 4 Role & Permission Dashboard Baseline
+
+Recorded on 2026-06-21:
+
+* Full application suite: 154 tests and 830 assertions passed.
+* Role workspace tests prove Super Admin can view all fixed roles and edit only
+  school-role mappings, while School Admin has read-only access to the three
+  school roles and cannot infer the Super Admin mapping.
+* Denied-path tests cover guests, Teacher, Accountant, malformed actors,
+  mismatched and unresolved context, direct service calls, Super Admin mapping
+  edits, forged IDs, duplicate IDs, and out-of-bound grants.
+* Mapping-integrity tests prove essential removal and empty payloads are rejected
+  server-side, retained essentials remain locked, stale fingerprints cannot
+  overwrite newer mappings, and logging failures roll back permission changes
+  and both log records.
+* Audit tests prove Platform-owned activity and audit records target the edited
+  Role and contain sorted old/new permission-code arrays only.
+* Immediate-effect tests prove a revoked permission changes menu and direct-route
+  authorization on the next request and restoration returns access.
+* Responsive-view assertions cover the role table, grouped permission controls,
+  confirmation modal, navigation visibility, and active state.
+* The Phase 4 tenant-isolation, security, documentation, code, and release
+  reviews completed with no blocking findings.
+
 Capture:
 
 * Test Cases

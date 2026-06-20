@@ -39,12 +39,12 @@ Single Database Multi-Tenant SaaS
 
 Current Phase:
 
-Phase 4 — Roles & Permissions Readiness Gate
+Phase 5 — Academic Structure Readiness Gate
 
 Progress:
 
-Phase 3 completed and release-approved. Phase 4 core RBAC foundation is
-implemented; mapping management is next.
+Phase 4 Roles & Permissions is completed and release-approved. Phase 5 Academic
+Structure readiness review is next.
 
 Repository:
 
@@ -146,14 +146,16 @@ Status: Completed
 
 # Phase 4 — Roles & Permissions
 
-Status: Core Foundation Completed — Mapping Management Pending
+Status: Completed
 
 ## Features
 
-* Role Management
-* Permission Management
-* Authorization Policies: Core implemented for current modules
+* Fixed Role Directory: Completed
+* Effective Permission Views: Completed
+* Constrained School-Role Mapping Management: Completed
+* Authorization Policies: Completed for current modules
 * Access Matrix: Canonical configuration and seed synchronization implemented
+* Mapping Activity and Audit Evidence: Completed
 
 ## Roles
 
@@ -345,5 +347,5 @@ Project ready for final evaluation and submission.
 
 # Next Immediate Task
 
-Create and execute the Phase 4 Role & Permission mapping-management prompt,
-followed by focused feature tests and documentation review.
+Create and execute the Phase 5 Academic Structure readiness-review prompt before
+implementing academic years, terms, classes, sections, subjects, or teachers.

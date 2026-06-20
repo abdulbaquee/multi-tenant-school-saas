@@ -88,7 +88,8 @@ prompts/
 └── 03-roles-permissions/
     ├── 00-phase-04-readiness-review.md
     ├── 01-phase-04-rbac-design-remediation.md
-    └── 02-phase-04-core-rbac-foundation.md
+    ├── 02-phase-04-core-rbac-foundation.md
+    └── 03-role-permission-dashboard-management.md
 ```
 
 ## Current Prompt Creation Status
@@ -110,6 +111,7 @@ Created for the next roadmap gate:
 - Phase 4 Roles & Permissions readiness review.
 - Phase 4 RBAC design documentation remediation.
 - Phase 4 core native RBAC foundation implementation.
+- Phase 4 Role & Permission dashboard-management implementation (executed).
 
 Future prompt groups should be added only when they are needed for the next roadmap phase.
 

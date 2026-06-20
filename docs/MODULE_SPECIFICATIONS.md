@@ -249,8 +249,9 @@ Implementation Status:
   relationships, database-backed permission resolution, seed synchronization,
   current-module Policy integration, and role-change session revocation are
   implemented.
-* Role directory, effective-permission details, constrained mapping updates, and
-  read-only School Admin screens remain pending.
+* Role directory, effective-permission details, constrained mapping updates,
+  stale-write protection, Platform audit evidence, and read-only School Admin
+  screens are implemented. Phase 4 is completed and release-approved.
 
 ---
 

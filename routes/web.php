@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\SchoolSettingController;
 use App\Http\Controllers\UserController;
@@ -29,6 +30,11 @@ Route::middleware(['auth', 'tenant.context'])->group(function () {
     Route::patch('/users/{user}/activate', [UserController::class, 'activate'])->name('users.activate');
     Route::patch('/users/{user}/deactivate', [UserController::class, 'deactivate'])->name('users.deactivate');
     Route::resource('users', UserController::class)->except(['destroy']);
+
+    Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
+    Route::get('/roles/{role}', [RoleController::class, 'show'])->name('roles.show');
+    Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
+    Route::put('/roles/{role}/permissions', [RoleController::class, 'update'])->name('roles.permissions.update');
 });
 
 require __DIR__.'/auth.php';

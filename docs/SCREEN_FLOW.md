@@ -24,10 +24,10 @@ The canonical permission matrix is defined in `MODULE_SPECIFICATIONS.md`. Every 
 ## Current Implementation Status
 
 The current implementation exposes only authorized navigation for completed
-Phase 2 and Phase 3 foundations:
+Phase 2 and Phase 3 work and the implemented Phase 4 RBAC workspace:
 
-* Super Admin: Dashboard, Users, Schools, Profile.
-* School Admin: Dashboard, School Settings, Users, Profile.
+* Super Admin: Dashboard, Users, Roles & Permissions, Schools, Profile.
+* School Admin: Dashboard, Users, Roles & Permissions, School Settings, Profile.
 * Teacher and Accountant: Dashboard, Profile.
 * Later-module menu items documented below remain the approved MVP target and
   must stay omitted from the application until their routes and authorization

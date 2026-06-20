@@ -263,8 +263,10 @@ Implementation Status:
 * The fixed catalog, constrained seed synchronization, immutable catalog models,
   database permission resolution, permission-aware current-module Policies, and
   role-change session revocation are implemented.
-* Mapping-edit validation and management routes remain pending with the Phase 4
-  workspace.
+* Mapping routes and validation enforce explicit Platform context, immutable
+  Super Admin access, maximum boundaries, essential retention, duplicate and
+  forged-ID rejection, stale-write detection, transactional logging, and
+  rollback on failure. The Phase 4 security and release reviews are approved.
 
 ---
 
@@ -666,7 +668,8 @@ Users must not modify audit history.
 Implementation Status:
 
 * The append-only `audit_logs` recording foundation is implemented for current
-  user, school, School Settings, and password mutations.
+  user, school, School Settings, password, and role-permission mapping
+  mutations.
 * A Super Admin reassignment that moves a user between schools is recorded with
   `school_id = NULL` in explicit Platform context. Neither the source nor target
   school may inherit audit values belonging to the other tenant.
@@ -692,9 +695,9 @@ Track:
 
 Implementation Status:
 
-* Login, logout, failed or tenant-denied login, password, user, school, and
-  School Settings activity recording is implemented without storing attempted
-  credentials.
+* Login, logout, failed or tenant-denied login, password, user, school, School
+  Settings, and role-permission mapping activity recording is implemented
+  without storing attempted credentials.
 * Anonymous failed-login events use only the narrow trusted-system Platform
   callback approved in DECISION-027; it can append the event but cannot read
   tenant business data and always restores Unresolved context.

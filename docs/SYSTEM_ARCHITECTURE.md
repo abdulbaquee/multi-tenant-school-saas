@@ -428,7 +428,7 @@ request without cache invalidation.
 
 Phase 4 Components:
 
-Implemented foundation:
+Implemented components:
 
 * `config/rbac.php` - machine-readable fixed roles, permission catalog, default
   and maximum mappings, and essential permissions. It must mirror
@@ -439,14 +439,13 @@ Implemented foundation:
 * Permission-aware current-module Policies and dashboard Gate.
 * Safe seed synchronization and target-only session revocation after role or
   school-ownership changes.
-
-Pending mapping-management workflow:
-
 * `RolePolicy` - platform edit and tenant read-only boundaries.
 * `RolePermissionService` - listing, constrained mapping replacement,
-  transactions, and activity/audit recording.
+  stale-write protection, transactions, and activity/audit recording.
 * Form Request - rejects Super Admin edits, essential removal, out-of-bound or
   forged permission IDs, and duplicate values.
+* `RoleController` and Bootstrap views - fixed role directory, grouped effective
+  permissions, read-only School Admin access, and constrained school-role edits.
 
 No role or permission CRUD controller is permitted. The HTTP layer exposes only
 the fixed role directory, permission details, and constrained mapping update.
