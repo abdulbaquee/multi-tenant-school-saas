@@ -39,11 +39,11 @@ Single Database Multi-Tenant SaaS
 
 Current Phase:
 
-Phase 2 — Authentication & User Management (Completed)
+Phase 3 — Multi-Tenant Foundation
 
 Progress:
 
-Phase 2 completed; Phase 3 is the next implementation milestone
+TenantContext, default-deny global scope, and School Settings schema completed; School Management is next
 
 Repository:
 
@@ -122,19 +122,21 @@ Status: Completed
 
 # Phase 3 — Multi-Tenant Foundation
 
-Status: Pending
+Status: In Progress
 
 ## Features
 
-* School Registration
-* School Management
-* Tenant Middleware
-* Tenant Context Resolution
-* Tenant Data Isolation
+* School Registration: Pending
+* School Management: Pending
+* School Settings: Schema and model foundation completed; workflows pending
+* Tenant Middleware: Core lifecycle completed
+* Tenant Context Resolution: Completed
+* Tenant Data Isolation: Scope and trait foundation completed; module rollout ongoing
 
 ## Deliverables
 
 * Schools Module
+* School Settings Foundation
 * Multi-Tenant Infrastructure
 
 ---

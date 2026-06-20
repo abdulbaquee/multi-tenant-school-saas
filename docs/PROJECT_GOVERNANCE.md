@@ -129,7 +129,7 @@ Phase 2 — Authentication & User Management
 Status: Completed
 
 Phase 3 — Multi-Tenant Foundation
-Status: Pending
+Status: In Progress
 
 Phase 4 — Roles & Permissions
 Status: Pending
@@ -175,14 +175,14 @@ Architecture Design Documentation: Approved (SYSTEM_ARCHITECTURE.md, TENANCY_DES
 
 Database Design Documentation: Remediated and implementation-ready draft (DATABASE_DESIGN.md, ER_DIAGRAM.md)
 
-Application Implementation: Phase 2 authentication, user management, dashboard, navigation, and automated test foundations completed
+Application Implementation: Phase 2 completed; Phase 3 TenantContext, TenantScope, BelongsToTenant, and School Settings schema/model foundations implemented
 
-Development Progress: Phase 2 completed; Phase 3 pending
+Development Progress: Phase 3 in progress
 
 ---
 
 # Next Milestone
 
-Begin Phase 3 Multi-Tenant Foundation: School Management, tenant context
-middleware, the `BelongsToTenant` global-scope pattern, and automated tenant
-isolation tests.
+Implement Phase 3 School Management for Super Admin, including school listing,
+registration, editing, activation, deactivation, lifecycle session revocation,
+authorization, validation, and feature tests.

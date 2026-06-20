@@ -124,7 +124,9 @@ class DashboardTest extends TestCase
 
         $this->actingAs($teacherWithoutSchool)
             ->get(route('dashboard'))
-            ->assertForbidden();
+            ->assertRedirect(route('login'));
+
+        $this->assertGuest();
     }
 
     private function school(string $suffix): School

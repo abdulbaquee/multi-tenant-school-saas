@@ -284,20 +284,16 @@ All records are isolated using:
 
 school_id
 
-Isolation is **automatic and default-deny**. Tenant-owned models use a
+Isolation is **automatic and default-deny**. Strict tenant-owned models use a
 `BelongsToTenant` trait that registers an Eloquent global scope, so every query
 is filtered by the active `school_id` without any manual `where('school_id', ...)`
 clause. The trait also auto-fills `school_id` on creation from the tenant context.
 
-Conceptual reference (see `TENANCY_DESIGN.md` for full design):
-
-```php
-// Automatic — no manual school_id filter required
-Student::query()->paginate();   // global scope applies school_id automatically
-
-// Explicit bypass is allowed only for Super Admin via authorized paths
-Student::withoutGlobalScope(TenantScope::class)->get();
-```
+Tenant context has three explicit states: Unresolved (deny), Tenant (scope to one
+school), and Platform (authorized Super Admin access). Unresolved context never
+acts as an implicit bypass. The hybrid `users` identity table is the documented
+pre-authentication exception and remains policy- and service-scoped for
+operational workflows.
 
 No tenant can access another tenant's data.
 
@@ -315,21 +311,25 @@ Authenticated User
 TenantContextMiddleware
      │
      ▼
-Read user.school_id (NULL = Super Admin)
+Validate role, status, school_id, and school state
      │
      ▼
-Set Tenant Context
+Set explicit Tenant or Platform Context
      │
      ▼
-Global Scope Auto-Filters Queries
+Route Binding and Global Scope Apply Context
      │
      ▼
 Load Authorized Data
+     │
+     ▼
+Clear Context After Response or Exception
 ```
 
 Tenant identity is resolved from the authenticated user's `school_id`, not from a
-domain, subdomain, or request parameter. Super Admin users have
-`school_id = NULL` and bypass the tenant scope.
+domain, subdomain, or request parameter. A validated Super Admin enters explicit
+Platform context; a null school id alone does not bypass tenant scope. Context is
+established before route-model binding and cleared after every execution.
 
 ---
 

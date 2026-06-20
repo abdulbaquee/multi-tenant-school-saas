@@ -91,9 +91,16 @@ Tenant isolation is achieved using:
 school_id
 ```
 
-Every tenant-owned business record contains `school_id`. Super Admin records and platform-level logs may use `school_id = NULL`.
+Every strict tenant-owned business record contains a non-null `school_id`.
+Super Admin identity records and explicit platform-level logs may use
+`school_id = NULL`.
 
 Tenant-owned queries are automatically scoped through the planned `BelongsToTenant` global scope. Manual tenant filtering is not the primary protection.
+
+Table tenancy categories are defined in `TENANCY_DESIGN.md`: `schools` is the
+tenant registry; roles and permissions are platform tables; `users` is a hybrid
+pre-authentication identity table protected operationally by Policies and
+Services; strict tenant-owned tables use the global scope.
 
 ---
 
@@ -179,6 +186,9 @@ Stores tenant school records. Schools are soft deleted or deactivated, not casca
 ## 6.2 school_settings
 
 Stores one settings row per school.
+
+Implementation status: Phase 3 migration and automatically scoped model
+foundation completed; settings workflows remain pending.
 
 | Column Name | Data Type | Nullable | Default Value | Indexes | Unique Constraints | Foreign Keys | Description |
 | ----------- | --------- | -------- | ------------- | ------- | ------------------ | ------------ | ----------- |
@@ -793,13 +803,20 @@ School deactivation is the normal administrative action.
 
 * Set `schools.status = inactive`.
 * Set `schools.deactivated_at`.
+* Require and store `schools.deactivation_reason`.
 * Keep all related users and records.
 * Prevent school users from logging into inactive schools.
+* Clear remember tokens and revoke database sessions for all school users.
+* Revalidate school status on every authenticated request.
 * Preserve reports, logs, fee history, and examination history.
+
+Reactivation sets status to active, clears deactivation fields, and permits
+otherwise-active users to authenticate again. It does not restore a soft-deleted
+school or alter individual user status.
 
 ## School Deletion Policy
 
-Schools are soft deleted only when they are no longer required for demonstration or administration.
+Schools are soft deleted only when they are inactive and no longer required for demonstration or administration.
 
 * Use `schools.deleted_at`.
 * Do not cascade delete tenant data.

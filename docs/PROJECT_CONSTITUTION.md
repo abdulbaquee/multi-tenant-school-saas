@@ -184,13 +184,17 @@ scope, and a TenantContext middleware. No external tenancy package is used.
 
 Rules:
 
-* Every business record belongs to a school.
+* Every strict tenant-owned business record belongs to a school.
 * Tenant scoping is applied automatically by a global scope (default-deny),
-  not by manual per-query filtering.
+  not by manual per-query filtering. Unresolved context cannot return tenant
+  data.
 * Tenant isolation is mandatory.
 * Cross-tenant data access is prohibited.
-* Super Admin (school_id = NULL) bypasses the tenant scope for platform-wide
-  access through authorized paths only.
+* Super Admin requires the canonical role, `school_id = NULL`, active status,
+  explicit Platform context, and policy authorization for platform-wide access.
+* The hybrid `users` identity table is loaded before tenant resolution and is
+  operationally isolated by Policies and Services as documented in
+  `TENANCY_DESIGN.md`.
 
 The authoritative tenancy reference is `TENANCY_DESIGN.md`.
 

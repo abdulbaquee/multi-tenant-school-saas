@@ -340,6 +340,14 @@ Access:
 
 * Super Admin only
 
+Lifecycle Rules:
+
+* Deactivation requires a reason and revokes school-user sessions and remember
+  tokens while retaining users and tenant data.
+* Inactive or soft-deleted schools cannot authenticate or continue sessions.
+* Reactivation restores access only for otherwise-active users and does not
+  restore a soft-deleted school.
+
 ---
 
 # 13. SCHOOL SETTINGS FLOW

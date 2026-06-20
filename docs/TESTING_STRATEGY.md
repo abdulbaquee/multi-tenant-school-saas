@@ -271,14 +271,23 @@ Validate multi-tenant security enforced by the automatic global scope
 
 Scenarios:
 
-* User from School A attempts to read School B records (index, show, search,
-  reports, exports) → empty result or 403/404, never another school's data.
-* User from School A attempts to update or delete School B records → denied.
-* Creating a record auto-assigns the acting user's school_id.
-* Super Admin (school_id = NULL) can access platform-wide data across schools.
-* A school user cannot escalate to platform-wide access.
-* The global scope filters queries automatically without an explicit
-  where('school_id') clause.
+* School A cannot list, search, view, route-bind, update, deactivate, or delete
+  School B tenant-owned records.
+* Cross-tenant route-model binding returns 404 without exposing existence.
+* Creating a strict tenant-owned record derives `school_id` from Tenant context
+  and rejects or ignores a forged tenant id.
+* Unresolved context cannot read or create tenant-owned data.
+* A validated Super Admin receives explicit Platform context; malformed users
+  cannot obtain platform access.
+* Inactive, missing, or soft-deleted schools cannot log in or continue sessions.
+* Deactivation revokes school-user sessions and remember tokens while retaining
+  users and tenant data.
+* Sequential requests, exceptions, queued jobs, console commands, and repeated
+  tests do not leak context.
+* Tenant jobs require a trusted school id; platform jobs and commands opt into
+  Platform context explicitly.
+* The global scope filters automatically without an explicit per-query
+  `where('school_id')` clause.
 
 Expected Result:
 
@@ -742,6 +751,33 @@ Recorded on 2026-06-20:
 * The automatic tenant-context and global-scope test suite remains a Phase 3
   requirement; Phase 2 verifies the implemented policy and service-layer school
   boundaries only.
+
+## Phase 3 Core Tenant Context Baseline
+
+Recorded on 2026-06-20:
+
+* Full application suite: 68 tests and 256 assertions passed.
+* TenantContext unit tests cover Unresolved, Tenant, Platform, reset, invalid
+  tenant id, and tenant-id access behavior.
+* Middleware feature tests cover school and platform setup, request cleanup,
+  exception cleanup, sequential schools, malformed users, inactive and deleted
+  schools, login denial, and middleware ordering before route-model binding.
+* `TenantScope`, `BelongsToTenant`, and strict tenant-owned model isolation tests
+  remain required by the next Phase 3 implementation prompt.
+
+## Phase 3 Tenant Scope Baseline
+
+Recorded on 2026-06-20:
+
+* Full application suite: 76 tests and 285 assertions passed.
+* School Settings isolation tests cover Unresolved deny-all reads, rejected
+  Unresolved and Platform creates, Tenant filtering, Platform reads, forged
+  school-id overwrite, immutable ownership, sequential tenants, and
+  cross-tenant route-model binding as 404.
+* The additive School Settings migration ran successfully with its one-to-one
+  unique constraint, index, and `restrictOnDelete()` foreign key.
+* School Management lifecycle and authorization tests remain required by the
+  next Phase 3 prompt.
 
 Capture:
 

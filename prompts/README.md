@@ -68,7 +68,7 @@ prompts/
 │   ├── 04-documentation-review.md
 │   ├── 05-code-review.md
 │   └── 06-release-review.md
-└── 01-foundation/
+├── 01-foundation/
     ├── 00-phase-02-readiness-review.md
     ├── 01-core-auth-schema.md
     ├── 02-breeze-authentication.md
@@ -76,6 +76,11 @@ prompts/
     ├── 04-dashboard-navigation.md
     ├── 05-phase-02-feature-tests.md
     └── 06-phase-02-documentation-update.md
+└── 02-multi-tenant-foundation/
+    ├── 00-phase-03-readiness-review.md
+    ├── 01-phase-03-tenancy-design-remediation.md
+    ├── 02-core-tenant-context.md
+    └── 03-tenant-scope-and-school-settings-schema.md
 ```
 
 ## Current Prompt Creation Status
@@ -85,6 +90,13 @@ Created first:
 - Standard prompt template.
 - Governance review prompts.
 - Phase 2 foundation prompts.
+
+Created for the next roadmap gate:
+
+- Phase 3 Multi-Tenant Foundation readiness review.
+- Phase 3 tenancy-design documentation remediation.
+- Phase 3 core TenantContext implementation.
+- Phase 3 TenantScope and School Settings schema implementation.
 
 Future prompt groups should be added only when they are needed for the next roadmap phase.
 

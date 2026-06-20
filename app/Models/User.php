@@ -76,4 +76,24 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasRoleCode(Role::SUPER_ADMIN) && is_null($this->school_id);
     }
+
+    public function canEstablishTenantContext(): bool
+    {
+        if ($this->status !== self::STATUS_ACTIVE) {
+            return false;
+        }
+
+        if ($this->isSuperAdmin()) {
+            return true;
+        }
+
+        if (! filled($this->school_id)
+            || ! in_array($this->role?->code, [Role::SCHOOL_ADMIN, Role::TEACHER, Role::ACCOUNTANT], true)) {
+            return false;
+        }
+
+        return $this->school()
+            ->where('status', School::STATUS_ACTIVE)
+            ->exists();
+    }
 }

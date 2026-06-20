@@ -1,7 +1,7 @@
 # TENANCY DESIGN
 
-Version: 1.0
-Status: Draft
+Version: 1.1
+Status: Draft - Core Context And Scope Implemented
 
 Project:
 Multi-Tenant School Administration Management SaaS Platform
@@ -110,99 +110,174 @@ source of tenant identity.
 
 ---
 
-# 4. SUPER ADMIN STRATEGY
+# 4. TENANT CONTEXT STATE MODEL
 
-* `users.school_id` is **nullable**.
-* A Super Admin has `school_id = NULL`.
-* The Super Admin **bypasses the tenant global scope** and has platform-wide
-  access (manage schools, view global reports, platform settings, backups).
-* The tenant scope bypass is centralized in the `BelongsToTenant` trait /
-  `TenantContext` resolution: when no tenant context is set (Super Admin), the
-  global scope is not applied.
-* Super Admin actions are still subject to authorization (Policies/Gates) and
-  are recorded in activity and audit logs.
+Implementation status: TenantContext state, request middleware, explicit
+Platform mode, active-school validation, middleware priority, request cleanup,
+`TenantScope`, and `BelongsToTenant` are implemented. `school_settings` is the
+first strict tenant-owned model using automatic isolation.
 
----
+Tenant context has exactly three states. A missing tenant id is not itself a
+platform bypass.
 
-# 5. SCHOOL USER STRATEGY
+| State | Meaning | Query Behavior |
+| ----- | ------- | -------------- |
+| Unresolved | No authenticated and validated tenant mode has been established. This is the initial state. | `TenantScope` applies a deny-all predicate so reads return no rows; tenant-owned writes throw a controlled tenant-context exception. |
+| Tenant | An authenticated school user has a valid, active, non-deleted school. | Tenant-owned reads are filtered to one `school_id`; creates receive that `school_id`. |
+| Platform | An authenticated Super Admin has been validated and platform mode has been set explicitly. | Platform-wide reads are allowed only behind policies/services; tenant-owned creates still require an explicit target workflow. |
 
-* School Admin, Teacher, and Accountant always operate within exactly one
-  school.
-* `school_id` is **required** (NOT NULL) for these users.
-* Every query they trigger is **automatically** scoped to their `school_id`
-  by the global scope.
-* Cross-tenant access is impossible by default, not by developer discipline.
+Rules:
 
----
-
-# 6. GLOBAL SCOPE DESIGN
-
-## BelongsToTenant Trait
-
-Every tenant-owned model uses a `BelongsToTenant` trait that:
-
-1. Registers an Eloquent **global scope** adding
-   `where school_id = <current tenant>` to every query automatically.
-2. Auto-fills `school_id` on model creation from the current tenant context.
-3. Is skipped when there is no tenant context (Super Admin / console).
-
-Conceptual shape (documentation reference only — not implementation):
-
-```php
-trait BelongsToTenant
-{
-    protected static function bootBelongsToTenant(): void
-    {
-        if (Tenant::check()) {
-            static::addGlobalScope(new TenantScope());
-
-            static::creating(function ($model) {
-                $model->school_id ??= Tenant::id();
-            });
-        }
-    }
-}
-```
-
-## TenantScope
-
-A dedicated `TenantScope` (implements `Illuminate\Database\Eloquent\Scope`)
-applies the `school_id` constraint. Queries that legitimately need to bypass the
-scope (e.g., Super Admin platform reports) use `withoutGlobalScope(TenantScope::class)`
-inside an authorized Service or Policy-protected path only.
+* Context starts as Unresolved for every request, job, command, and test.
+* `users.school_id = NULL` is necessary for a Super Admin but is not sufficient
+  to enter Platform state. The user must also hold the canonical Super Admin
+  role, be active, be authenticated, and pass route authorization.
+* Unresolved context must never behave like Platform context.
+* Context is request or execution scoped and must be cleared after use even when
+  an exception occurs.
 
 ---
 
-# 7. MIDDLEWARE DESIGN
+# 5. USER AND SCHOOL STRATEGY
 
-## TenantContextMiddleware
+## Super Admin
 
-Responsibilities:
+* A Super Admin has the canonical Super Admin role and `school_id = NULL`.
+* Authenticated middleware may establish explicit Platform context only after
+  validating both conditions and active user status.
+* Platform context removes tenant filtering, but Policies and Services still
+  authorize every school, user, report, export, and bypass operation.
+* Controllers and Blade templates cannot create platform context or remove a
+  tenant scope directly.
 
-* Run after authentication.
-* If the user is a school user, set the tenant context to `user.school_id`.
-* If the user is a Super Admin (`school_id = NULL`), leave the tenant context
-  unset so the global scope is not applied.
-* Make the active tenant available application-wide for the request lifecycle.
+## School Users
 
-The middleware is registered on all authenticated web routes.
+* School Admin, Teacher, and Accountant operate within exactly one school.
+* Their `school_id` is required and the referenced school must be active and not
+  soft deleted.
+* Middleware establishes Tenant context from the authenticated user record,
+  never from request input, a URL, a header, or a subdomain.
+* A missing school, inactive school, deleted school, null `school_id`, or invalid
+  role/school combination fails closed.
 
 ---
 
-# 8. SECURITY GUARANTEES
+# 6. MODEL AND GLOBAL SCOPE DESIGN
 
-* **Default-deny isolation:** tenant filtering is applied automatically by the
-  global scope, so a forgotten `where('school_id', ...)` cannot leak data.
-* **Defense in depth:** isolation is enforced at the model layer (global scope),
-  the request layer (middleware), and the authorization layer (policies).
-* **Mass-assignment safe:** `school_id` is set by the trait from tenant context,
-  not from user input.
-* **Super Admin bypass is explicit and centralized,** never ad hoc.
-* **Reports and exports** inherit the same global scope as on-screen queries, so
-  they cannot expose other schools' data.
+## Model Classification
+
+| Category | Tables | Tenancy Rule |
+| -------- | ------ | ------------ |
+| Tenant registry | `schools` | Platform-managed root record. It does not use `BelongsToTenant`; access is Super Admin only through `SchoolPolicy` and `SchoolService`. |
+| Platform | `roles`, `permissions`, `role_permissions` and Laravel infrastructure tables | No tenant scope. Mutation is limited to its documented module and authorization. |
+| Hybrid identity | `users` | Globally unique identity must be loaded before tenant resolution. It does not use the generic tenant global scope; all operational listing, viewing, updates, role assignment, activation, and deactivation remain policy- and service-scoped. |
+| Strict tenant-owned | `school_settings`, all Academic tables, `attendances`, all Fee tables, and all Examination tables | Non-null `school_id`; must use `BelongsToTenant`. Tenant context supplies `school_id` on create. |
+| Contextual logs | `activity_logs`, `audit_logs`, `backup_logs` | Use tenant filtering in Tenant state. Platform events may use `school_id = NULL` only in explicit Platform state. |
+
+The `users` exception exists only because authentication must retrieve a globally
+unique identity before tenant context can be resolved. It does not authorize
+unrestricted operational user queries. School Admin user creation always derives
+the school from the actor. Super Admin creation of a school user validates an
+explicit active target school in the authorized User Service. Super Admin users
+must retain `school_id = NULL`.
+
+## BelongsToTenant Contract
+
+Every strict tenant-owned model uses a reusable `BelongsToTenant` trait that:
+
+1. Registers `TenantScope` for all queries.
+2. In Tenant state, filters by the context `school_id`.
+3. In Platform state, permits an authorized platform-wide query.
+4. In Unresolved state, applies a deny-all query predicate so reads return no
+   tenant rows; it never returns unscoped rows.
+5. On creation in Tenant state, overwrites or rejects submitted `school_id` and
+   assigns the context school.
+6. Rejects tenant-owned creation in Unresolved state with a controlled
+   tenant-context exception.
+
+Controllers must not call `withoutGlobalScope(TenantScope::class)`. Any unusual
+platform workflow that removes a scope must live in an authorized Service and
+must require explicit Platform context.
+
+## Route-Model Binding
+
+Tenant context must be established before implicit or explicit route-model
+binding for tenant-owned records. A record belonging to another school resolves
+as not found (HTTP 404), preventing record-existence disclosure. Policies remain
+required after binding as defense in depth.
+
+---
+
+# 7. MIDDLEWARE AND EXECUTION LIFECYCLE
+
+## Web Requests
+
+Required middleware order for authenticated tenant-aware routes:
+
+1. Session and authentication middleware resolve the authenticated identity.
+2. `TenantContextMiddleware` clears any prior context, validates the user and
+   school, and establishes Tenant or Platform state.
+3. Route-model binding runs with the established context.
+4. Authorization middleware and controller policies run.
+5. Context is cleared in a `finally`-equivalent step after the response or
+   exception.
+
+Public authentication routes run without tenant context. The globally unique
+email locates the hybrid `users` identity. Login succeeds only when the user is
+active and either is a valid Super Admin or belongs to an active, non-deleted
+school.
+
+## Queue Jobs And Console Commands
+
+* Queue jobs are Unresolved by default and must carry a trusted `school_id` when
+  processing tenant data.
+* A job establishes Tenant context inside its handler and clears it in a
+  `finally`-equivalent step.
+* Platform jobs and commands must opt into Platform context explicitly through
+  a dedicated authorized application service; a missing school id is not an
+  automatic bypass.
+* Tenant-aware commands require a validated school argument or iterate schools
+  by establishing and clearing one Tenant context per school.
+* Long-running workers, sequential feature tests, and repeated requests must
+  prove that context does not leak from one execution to the next.
+
+---
+
+# 8. SCHOOL ACCESS LIFECYCLE AND SECURITY GUARANTEES
+
+## School Activation State
+
+Normal Phase 3 states are `active` and `inactive`.
+
+* New schools default to `active` unless an approved onboarding workflow later
+  introduces another documented state.
+* Deactivation requires a reason, sets `status = inactive` and
+  `deactivated_at`, preserves users and tenant data, clears remember tokens for
+  school users, and removes their database sessions.
+* Every authenticated request revalidates the school state, so a surviving or
+  copied session cannot continue after deactivation or soft deletion.
+* Login for a user whose school is inactive, missing, or soft deleted is denied
+  with a generic authentication response.
+* Reactivation sets `status = active`, clears deactivation fields, and allows
+  otherwise-active school users to authenticate again. It does not restore a
+  soft-deleted school or change individual user status.
+* Soft deletion is not a routine Phase 3 UI action. If later exposed, the school
+  must first be inactive; tenant data remains retained and access remains denied.
+
+## Security Guarantees
+
+* **Default deny:** Unresolved context cannot read or write tenant-owned data.
+* **Defense in depth:** scope, middleware, Policies, Form Requests, and Services
+  all participate in isolation.
+* **Mass-assignment safety:** strict tenant-owned `school_id` values come from
+  context, not browser input.
+* **Explicit platform access:** only validated Platform context can bypass
+  tenant filtering.
+* **No lifecycle leakage:** context is cleared after requests, jobs, commands,
+  exceptions, and per-school iterations.
+* **Reports and exports:** future reports inherit the same context and scope.
 
 Rule: A school user must never read or write another school's records.
-No exceptions.
 
 ---
 
@@ -251,13 +326,25 @@ verified by automated tests.
 
 Required test scenarios:
 
-* A School A user cannot read School B records (index, show, search, reports,
-  exports) — expect empty results or 403/404, never another school's data.
-* A School A user cannot update or delete School B records.
-* Creating a record auto-assigns the acting user's `school_id`.
-* A Super Admin can access platform-wide data across schools.
-* A school user cannot escalate to platform-wide access.
-* The global scope is applied automatically without explicit `where('school_id')`.
+* School A cannot list, search, view, bind, update, deactivate, or delete School
+  B tenant-owned records.
+* Cross-tenant route-model binding returns 404 and does not reveal existence.
+* Creating a strict tenant-owned record ignores or rejects submitted
+  `school_id` and assigns the Tenant context school.
+* Unresolved context returns no tenant data and rejects tenant-owned writes.
+* A validated Super Admin receives explicit Platform context and can use only
+  policy-authorized platform workflows.
+* A null-school non-Super-Admin and a school-scoped Super Admin are denied.
+* An inactive, missing, or soft-deleted school cannot log in or continue an
+  existing session.
+* Deactivation revokes school-user sessions and remember tokens while retaining
+  records.
+* Sequential requests for School A then School B do not reuse context.
+* Exceptions do not leave context active for the next request or test.
+* Tenant jobs require a trusted school id and clear context after handling.
+* Commands and platform jobs remain Unresolved unless they opt into an explicit
+  validated context.
+* The global scope works without an explicit per-query `where('school_id')`.
 
 Tenant isolation tests must pass 100%. A tenant isolation failure is a
 **Critical** defect (see `TESTING_STRATEGY.md`).
@@ -286,11 +373,17 @@ model, so filtering is automatic and default-deny. Manual filtering is not relie
 upon.
 
 **Q: How does the Super Admin see all schools?**
-A: Super Admin has `school_id = NULL`; when no tenant context is set the global
-scope is not applied, granting platform-wide access through authorized paths.
+A: After authentication validates the canonical Super Admin role,
+`school_id = NULL`, and active status, middleware establishes explicit Platform
+context. Unresolved context remains default-deny.
 
 **Q: How is `school_id` set on new records?**
 A: Automatically by the trait from the tenant context, never from user input.
+
+**Q: Why is the User model a tenancy exception?**
+A: Login must locate the globally unique user before tenant context exists.
+Operational user management is therefore isolated by Policies and the User
+Service, while strict tenant business models use the automatic global scope.
 
 **Q: Can the same email exist in two schools?**
 A: No. Email is globally unique (Option A); each account belongs to one school.

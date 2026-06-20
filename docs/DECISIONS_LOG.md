@@ -871,6 +871,64 @@ File storage and privacy policy standardized in `SECURITY_GUIDELINES.md`.
 
 ---
 
+# DECISION-026
+
+Date:
+2026-06-20
+
+Title:
+Use Explicit Tenant Context States And Default-Deny Lifecycle
+
+Status:
+Approved
+
+Decision:
+
+Native Laravel Multi-Tenancy uses three explicit execution states:
+
+* Unresolved: deny tenant-owned reads and writes.
+* Tenant: scope to one validated active school.
+* Platform: explicit authenticated Super Admin access protected by Policies and
+  Services.
+
+A null `school_id` alone never grants a bypass. Context is established before
+route-model binding and cleared after every request, exception, job, command,
+test, or per-school iteration.
+
+The `users` table is a documented hybrid identity exception because login must
+retrieve a globally unique user before tenant resolution. Operational user
+management remains policy- and service-scoped. `schools` is the platform tenant
+registry. Strict tenant-owned business models use `BelongsToTenant`.
+
+School deactivation revokes school-user sessions and remember tokens, blocks
+future login and authenticated requests, and retains tenant data. School
+Settings is included in Phase 3 with School Management and tenant infrastructure.
+
+Reason:
+
+* Removes the unsafe ambiguity where missing context could imply either deny or
+  platform access.
+* Prevents context leakage in long-running workers and sequential requests.
+* Preserves simple globally unique email authentication.
+* Defines inactive-school behavior before School Management implementation.
+* Reconciles roadmap scope with the canonical module-to-phase mapping.
+
+Alternatives Considered:
+
+* Treat missing context as an implicit Super Admin bypass - rejected as unsafe.
+* Apply the generic global scope to pre-authentication User lookup - rejected as
+  unnecessary complexity for the MCA scope.
+* Defer School Settings to an unspecified later phase - rejected because the
+  canonical module mapping places it in Phase 3.
+
+Outcome:
+
+Phase 3 tenancy lifecycle and scope are implementation-ready in
+`TENANCY_DESIGN.md` and aligned across security, testing, database, architecture,
+roadmap, and coding documentation.
+
+---
+
 # DECISION CHANGE PROCESS
 
 New decisions must include:
@@ -909,4 +967,4 @@ Development Decisions:
 Completed
 
 Project Ready For:
-Documentation Review Before Implementation
+Phase 3 School Management Implementation

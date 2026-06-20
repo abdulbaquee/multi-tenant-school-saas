@@ -311,8 +311,9 @@ fee_payments
 
 Tenant isolation is enforced **automatically** by an Eloquent global scope via a
 `BelongsToTenant` trait — not by manual `where('school_id', ...)` clauses. Every
-tenant-owned model must use the trait so filtering is default-deny. The trait also
-auto-fills `school_id` on creation from the tenant context.
+strict tenant-owned model must use the trait so filtering is default-deny. The
+trait auto-fills `school_id` on creation from Tenant context. Unresolved context
+must deny reads and writes; Platform context must be explicit and authorized.
 
 ```php
 class Student extends Model
@@ -323,6 +324,17 @@ class Student extends Model
 
 Do not rely on manual per-query filtering as the primary isolation mechanism.
 See `TENANCY_DESIGN.md`.
+
+Documented exceptions:
+
+* `schools` is the platform tenant registry and is protected by School Policy
+  and Service authorization.
+* `users` is a hybrid identity table loaded before tenant resolution; all
+  operational user-management queries remain Policy- and Service-scoped.
+* Contextual logs may use `school_id = NULL` only in explicit Platform context.
+
+Tenant context must be established before route-model binding and cleared after
+requests, jobs, commands, exceptions, and per-school iterations.
 
 ---
 

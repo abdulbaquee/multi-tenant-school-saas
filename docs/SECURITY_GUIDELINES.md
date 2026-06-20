@@ -118,6 +118,7 @@ Requirements:
 * Password Reset
 * Session Protection
 * Remember Me Support
+* Active school validation for every non-Super-Admin login
 
 Never:
 
@@ -162,6 +163,15 @@ Requirements:
 * SameSite Protection
 
 Laravel security defaults must remain enabled.
+
+School Lifecycle Requirements:
+
+* Deactivating a school revokes database sessions and remember tokens for its
+  users without deleting their accounts.
+* Every authenticated request rejects users whose school is inactive, missing,
+  or soft deleted.
+* Reactivation restores login eligibility only for users whose own status is
+  active.
 
 ---
 
@@ -222,13 +232,17 @@ Examples:
 Enforcement Mechanism:
 
 Isolation is **automatic and default-deny** via a `BelongsToTenant` trait that
-registers an Eloquent global scope on every tenant-owned model. The active tenant
-is set by `TenantContextMiddleware` from the authenticated user's `school_id`.
+registers an Eloquent global scope on strict tenant-owned models. The active
+tenant is set by `TenantContextMiddleware` from the authenticated user's
+validated `school_id` and active school.
 Manual `where('school_id', ...)` filtering is NOT the primary protection
 mechanism and must not be relied upon. See `TENANCY_DESIGN.md`.
 
-Super Admin (school_id = NULL) bypasses the global scope for platform-wide access
-through authorized paths only.
+Unresolved context returns no tenant records and rejects tenant writes. Super
+Admin platform access requires explicit Platform context after role, null
+`school_id`, active status, authentication, and policy checks. The hybrid
+`users` identity table is the documented pre-authentication exception and its
+operational workflows remain Policy- and Service-scoped.
 
 Rule:
 
@@ -246,7 +260,7 @@ Primary Control:
 
 Defense-in-Depth Layers:
 
-* TenantContext middleware (sets tenant per request)
+* TenantContext middleware (sets explicit Tenant or Platform context per request)
 * Policies (authorize record ownership)
 * Services (enforce business rules within tenant)
 * Reports and Exports (inherit the same global scope as on-screen queries)
@@ -255,7 +269,7 @@ Validation Checklist:
 
 ✓ Tenant model uses BelongsToTenant trait (global scope active)
 
-✓ User belongs to school (or is Super Admin with school_id = NULL)
+✓ User belongs to an active, non-deleted school, or is a validated Super Admin
 
 ✓ Queries filtered automatically by the global scope
 
@@ -264,6 +278,12 @@ Validation Checklist:
 ✓ Exports inherit the global scope
 
 ✓ Super Admin scope bypass is explicit and authorized
+
+✓ Unresolved context is default-deny
+
+✓ Context is established before route-model binding and always cleared
+
+✓ Tenant jobs and commands establish and clear trusted context explicitly
 
 ---
 

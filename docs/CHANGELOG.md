@@ -202,16 +202,79 @@ Status: Completed
 
 ---
 
+# [0.4.1] - Phase 3 Tenancy Design Remediation
+
+Date: 2026-06-20
+
+Status: Completed
+
+## Changed
+
+* Replaced implicit null-context bypass behavior with explicit Unresolved,
+  Tenant, and Platform context states.
+* Defined default-deny reads and writes when tenant context is unresolved.
+* Defined middleware ordering before route-model binding and mandatory context
+  cleanup after requests, jobs, commands, exceptions, and tests.
+* Classified tenant registry, platform, hybrid identity, strict tenant-owned,
+  and contextual-log tables.
+* Documented the pre-authentication `users` exception and its Policy/Service
+  isolation requirements.
+* Defined school deactivation, session revocation, login denial, reactivation,
+  and soft-deletion behavior.
+* Reconciled School Settings as a Phase 3 deliverable.
+* Expanded the mandatory tenant-isolation and lifecycle test contract.
+* Added DECISION-026 for architectural traceability.
+
+## Notes
+
+* Documentation and prompt files only.
+* No application code, migration, test, route, view, or package changes.
+
+---
+
 # [0.5.0] - Multi-Tenant Foundation
 
-Status: Planned
+Date Started: 2026-06-20
+
+Status: In Progress
+
+## Added
+
+* Type-safe Unresolved, Tenant, and Platform context states.
+* Execution-scoped TenantContext service with deterministic reset behavior.
+* Authenticated TenantContext middleware registered after authentication and
+  before route-model binding.
+* Explicit Platform mode for valid active Super Admin users only.
+* Active, missing, inactive, soft-deleted, and malformed school-user checks.
+* Generic login denial and current-session invalidation for invalid school
+  access.
+* Foundational tests for transitions, request setup, cleanup, exceptions,
+  sequential requests, malformed users, school lifecycle, and middleware order.
+* Stateless default-deny TenantScope that resolves the active context for every
+  query.
+* Reusable BelongsToTenant trait with context-derived creation and immutable
+  tenant ownership.
+* Additive School Settings migration with documented defaults, one-to-one
+  uniqueness, index, and `restrictOnDelete()` foreign key.
+* SchoolSetting model and one-to-one School relationships.
+* Automatic isolation tests for Unresolved, Tenant, Platform, forged ownership,
+  sequential schools, and route-model binding behavior.
+
+## Verification
+
+* Full application suite: 76 tests and 285 assertions passed.
+* Laravel Pint formatting validation passed.
+* Composer configuration validation passed.
+* Route inspection confirmed tenant context on every authenticated web route.
+* Local SQLite development migration status confirms the School Settings
+  migration is applied; live MySQL 8 validation remains a deployment-target
+  verification step.
 
 ## Planned
 
 * School management module
-* Tenant identification
-* Tenant middleware
-* Tenant data isolation
+* School Settings foundation
+* Automatic tenant isolation rollout to later module models
 * School onboarding workflow
 
 ## Deliverables
@@ -416,7 +479,7 @@ Example:
 
 # Current Project Status
 
-Phase: Implementation Phase (Phase 2 completed; Phase 3 next)
+Phase: Implementation Phase (Phase 3 — Multi-Tenant Foundation, In Progress)
 
 Repository Setup: Completed
 
@@ -426,6 +489,6 @@ Documentation Setup: Completed (Draft v1.0; maintained during implementation)
 
 Database Design Documentation: Remediated and implementation-ready draft (DATABASE_DESIGN.md, ER_DIAGRAM.md)
 
-Application Implementation: Core authentication schema, Laravel Breeze, user management, and dashboard/navigation foundations implemented
+Application Implementation: Phase 2 completed; Phase 3 TenantContext and authenticated middleware lifecycle implemented
 
-Next Task: Run the Phase 3 readiness review before implementing the Multi-Tenant Foundation
+Next Task: Implement Phase 3 School Management for Super Admin

@@ -238,7 +238,10 @@ class UserManagementTest extends TestCase
         );
 
         $this->assertFalse($scopedSuperAdmin->isSuperAdmin());
-        $this->actingAs($scopedSuperAdmin)->get(route('users.index'))->assertForbidden();
+        $this->actingAs($scopedSuperAdmin)
+            ->get(route('users.index'))
+            ->assertRedirect(route('login'));
+        $this->assertGuest();
     }
 
     public function test_user_cannot_change_own_role(): void

@@ -9,11 +9,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', DashboardController::class)
-    ->middleware(['auth', 'verified', 'can:dashboard.view'])
-    ->name('dashboard');
+Route::middleware(['auth', 'tenant.context'])->group(function () {
+    Route::get('/dashboard', DashboardController::class)
+        ->middleware(['verified', 'can:dashboard.view'])
+        ->name('dashboard');
 
-Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
