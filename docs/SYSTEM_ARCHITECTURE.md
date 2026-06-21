@@ -561,7 +561,10 @@ Implementation Status:
 * Teacher Profile eligible-user linking, immutable identity, dependency-safe
   lifecycle, retained-record routing, tenant-safe HTTP/UI, and activity/audit
   workflows are implemented.
-* Class, Section, Subject, and assigned-Teacher read workflows remain pending.
+* Class lifecycle, retained-record routing, tenant-safe HTTP/UI, Platform
+  read-only access, assigned-Teacher reads, and activity/audit workflows are
+  implemented.
+* Section and Subject management workflows remain pending.
 
 ---
 

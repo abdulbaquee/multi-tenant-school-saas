@@ -5,6 +5,7 @@ use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SchoolClassController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\SchoolSettingController;
 use App\Http\Controllers\TeacherController;
@@ -64,6 +65,17 @@ Route::middleware(['auth', 'tenant.context'])->group(function () {
         ->name('teacher-profiles.restore');
     Route::resource('teacher-profiles', TeacherController::class)
         ->parameters(['teacher-profiles' => 'teacher_profile'])
+        ->withTrashed(['show'])
+        ->except(['destroy']);
+
+    Route::patch('/classes/{school_class}/activate', [SchoolClassController::class, 'activate'])->name('classes.activate');
+    Route::patch('/classes/{school_class}/deactivate', [SchoolClassController::class, 'deactivate'])->name('classes.deactivate');
+    Route::patch('/classes/{school_class}/archive', [SchoolClassController::class, 'archive'])->name('classes.archive');
+    Route::patch('/classes/{school_class}/restore', [SchoolClassController::class, 'restore'])
+        ->withTrashed()
+        ->name('classes.restore');
+    Route::resource('classes', SchoolClassController::class)
+        ->parameters(['classes' => 'school_class'])
         ->withTrashed(['show'])
         ->except(['destroy']);
 });

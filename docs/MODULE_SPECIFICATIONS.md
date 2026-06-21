@@ -405,11 +405,12 @@ Implementation Status:
 * The six-table schema, canonical tenant-aware models, inverse relationships,
   casts, soft-delete boundaries, and retained Teacher Profile user identity
   safeguard are implemented.
-* Academic Year, Academic Term, and Teacher Profile services, Policies, Form
-  Requests, controllers, routes, menus, views, lifecycle rules, and mutation
+* Academic Year, Academic Term, Teacher Profile, and Class services, Policies,
+  Form Requests, controllers, routes, menus, views, lifecycle rules, and mutation
   activity/audit workflows are implemented.
-* Class, Section, Subject, assigned-Teacher reads, and Academic Structure exports
-  remain pending.
+* Teacher Class reads are limited to active related Classes and the actor's own
+  active Section or Subject assignments.
+* Section, Subject, and Academic Structure export workflows remain pending.
 
 ---
 

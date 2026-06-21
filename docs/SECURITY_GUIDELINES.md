@@ -308,8 +308,11 @@ Implementation Status:
   immutable linked identity, retained archived uniqueness, active-assignment
   lifecycle guards, restore-time revalidation, exact permissions, and
   transaction-coupled logs.
-* Class, Section, Subject, and assigned-record authorization workflows remain
-  pending.
+* Class services enforce tenant-derived ownership, retained uniqueness,
+  dependency-safe lifecycle transitions, exact permissions, and transaction-
+  coupled logs. Teacher reads are restricted to active Classes related through
+  the actor's own active Teacher Profile and active assignments.
+* Section and Subject management workflows remain pending.
 
 ---
 

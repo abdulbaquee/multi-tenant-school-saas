@@ -135,7 +135,7 @@ Phase 4 — Roles & Permissions
 Status: Completed
 
 Phase 5 — Academic Structure
-Status: In Progress — Teacher Profile Management Completed
+Status: In Progress — Class Management Completed
 
 Phase 6 — Student Management
 Status: Pending
@@ -178,15 +178,15 @@ Database Design Documentation: Remediated and implementation-ready draft (DATABA
 Application Implementation: Phase 2 completed; Phase 3 tenant infrastructure,
 Super Admin School Management, tenant-bound School Settings, security logging,
 Phase 4 RBAC, the Phase 5 core Academic Structure schema/model foundation, and
-Academic Year, Academic Term, and Teacher Profile management implemented
+Academic Year, Academic Term, Teacher Profile, and Class management implemented
 
 Development Progress: Phase 4 completed and release-approved; Phase 5 Academic
 Structure design, core schema/model foundation, and Academic Year and Academic
 Term workflows completed, with Teacher Profile management also completed and
-Class, Section, and Subject management pending
+Class management completed; Section and Subject management remains pending
 
 ---
 
 # Next Milestone
 
-Create and execute the Phase 5 Class management prompt.
+Create and execute the Phase 5 Section and Subject management prompt.

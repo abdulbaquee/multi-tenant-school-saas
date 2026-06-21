@@ -454,8 +454,9 @@ Teacher Profile rules:
 
 Class, Section, Subject, and Teacher Profile rules:
 
-* Deactivation is the normal removal workflow and is blocked while a Teacher
-  Profile has an active Section or Subject assignment.
+* Deactivation is the normal removal workflow. A Teacher Profile is blocked
+  while it has an active Section or Subject assignment, and a Class is blocked
+  while it has an active, nonarchived Section or Subject.
 * Soft deletion requires inactive status and no active downstream assignments or
   records. Future modules may add stricter history checks before archival.
 * Teacher Profile restoration requires its linked User to remain active,
@@ -477,8 +478,8 @@ Implementation Status:
 * The six Phase 5 tables, documented named indexes, unique constraints,
   restricted foreign keys, soft-delete columns, tenant-aware models,
   relationships, and casts are implemented.
-* Academic Year, Academic Term, and Teacher Profile management workflows are
-  implemented. Class, Section, and Subject management remain pending.
+* Academic Year, Academic Term, Teacher Profile, and Class management workflows
+  are implemented. Section and Subject management remain pending.
 
 ---
 

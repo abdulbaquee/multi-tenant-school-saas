@@ -552,6 +552,9 @@ Lifecycle Rules:
 * Academic Years and Terms use status only. Classes, Sections, Subjects, and
   Teacher Profiles prefer deactivation and require an inactive, dependency-safe
   record before archive.
+* A Class cannot deactivate or archive while it has an active, nonarchived
+  Section or Subject. Restoring a Class returns it inactive before a separate
+  activation action.
 * A Teacher Profile cannot deactivate or archive while an active Section or
   Subject assignment remains. Restore revalidates the immutable linked Teacher
   user and returns the profile inactive before separate activation.

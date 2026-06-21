@@ -223,7 +223,11 @@ Implementation Status:
 * Teacher Profile services enforce same-school eligible User linking,
   tenant-derived ownership, immutable identity, retained archived-profile
   isolation, Platform read-only access, and tenant-owned mutation logs.
-* Class, Section, Subject, and assigned-record workflows remain pending.
+* Class services enforce tenant-derived immutable ownership, tenant-safe route
+  binding, Platform read-only access, and tenant-owned mutation logs. Teacher
+  Class reads derive assignment visibility from the actor's own active Teacher
+  Profile and active Section or Subject relationships.
+* Section and Subject management workflows remain pending.
 
 The `users` exception exists only because authentication must retrieve a globally
 unique identity before tenant context can be resolved. It does not authorize

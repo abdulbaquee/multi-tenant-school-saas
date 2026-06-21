@@ -1054,6 +1054,31 @@ Recorded on 2026-06-21:
   school changes, linked identity and tenant input remain immutable, and no
   normal DELETE route exists.
 
+## Phase 5 Class Management Baseline
+
+Recorded on 2026-06-21:
+
+* Focused Class management suite: 15 tests and 136 assertions passed.
+* Full application suite: 210 tests and 1,449 assertions passed.
+* Platform tests prove Super Admin can read current and archived Classes across
+  schools while every mutation remains denied.
+* Tenant tests prove School A cannot list, search, bind, update, activate,
+  deactivate, archive, or restore School B Classes, including archived records.
+* Teacher tests prove read-only access is limited to active Classes related
+  through the actor's active Teacher Profile and active Section or Subject
+  assignments; unrelated Class and assignment existence remains concealed.
+* Lifecycle tests prove active nonarchived Section or Subject dependencies block
+  deactivation and archival, dependency-safe Classes archive, restore inactive,
+  and require separate activation.
+* Validation tests prove names and normalized uppercase codes remain unique per
+  school and reserved after archival, while sort order stays within its database
+  range and tenant ownership cannot be forged.
+* Authorization tests cover exact `academic.view`, `academic.create`,
+  `academic.update`, and `academic.delete` revocation plus Accountant, inactive,
+  malformed, guest, wrong-context, and Platform-mutation denial.
+* Transaction tests prove logging failures roll back Class creation and archival
+  without partial domain or evidence records; no normal DELETE route exists.
+
 Capture:
 
 * Test Cases

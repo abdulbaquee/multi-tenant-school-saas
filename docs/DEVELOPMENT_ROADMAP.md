@@ -45,8 +45,8 @@ Progress:
 
 Phase 4 Roles & Permissions is completed and release-approved. Phase 5 Academic
 Structure design, core schema, tenant-aware models, Academic Year management,
-Academic Term management, and Teacher Profile management are implemented.
-Class, Section, and Subject workflows remain pending.
+Academic Term management, Teacher Profile management, and Class management are
+implemented. Section and Subject workflows remain pending.
 
 Repository:
 
@@ -174,7 +174,7 @@ Status: Completed
 
 # Phase 5 — Academic Structure
 
-Status: In Progress — Teacher Profile Management Completed
+Status: In Progress — Class Management Completed
 
 ## Features
 
@@ -194,7 +194,11 @@ Policies, tenant-safe routes, UI, activity/audit evidence, and tests: Completed.
 Teacher Profile identity linking, profile fields, lifecycle services, retained
 history, tenant-safe UI, activity/audit evidence, and tests: Completed.
 
-Class, Section, and Subject management workflows: Pending.
+Class directory, forms, role-aware assigned-Teacher reads, dependency-safe
+lifecycle services, tenant-safe routes, UI, activity/audit evidence, and tests:
+Completed.
+
+Section and Subject management workflows: Pending.
 
 Student registration and Student Enrollment remain Phase 6.
 
@@ -364,4 +368,4 @@ Project ready for final evaluation and submission.
 
 # Next Immediate Task
 
-Create and execute the Phase 5 Class management prompt.
+Create and execute the Phase 5 Section and Subject management prompt.

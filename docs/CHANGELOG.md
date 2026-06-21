@@ -463,7 +463,7 @@ Status: Completed
 
 Date: 2026-06-21
 
-Status: In Progress — Teacher Profile Management Completed
+Status: In Progress — Class Management Completed
 
 ## Added
 
@@ -501,14 +501,23 @@ Status: In Progress — Teacher Profile Management Completed
   Class relationship rendering, and Section/Subject assignment visibility.
 * Teacher Profile allowed, denied, tenant-isolation, exact-permission,
   eligibility, lifecycle, dependency, rollback, navigation, and retention tests.
+* Class Policy, Form Requests, service, thin controller, retained-record routes,
+  and responsive Blade workspace.
+* Platform-wide Super Admin read-only Class visibility, own-tenant School Admin
+  management, and Teacher read-only visibility limited to active assigned Classes.
+* Normalized and retained unique Class names and codes, dependency-safe
+  deactivation and archival, inactive restoration, and explicit activation.
+* Class mutation activity/audit evidence and allowed, denied, isolation,
+  exact-permission, lifecycle, rollback, navigation, and no-delete coverage.
 
 ## Verification
 
-* Full application suite: 195 tests and 1,313 assertions passed.
+* Full application suite: 210 tests and 1,449 assertions passed.
 * Focused Academic Structure schema suite: 7 tests and 159 assertions passed.
 * Focused Academic Year and Term management suite: 17 tests and 175 assertions
   passed.
 * Focused Teacher Profile management suite: 17 tests and 149 assertions passed.
+* Focused Class management suite: 15 tests and 136 assertions passed.
 * Isolated in-memory migration and canonical seed completed successfully.
 * Academic routes and Blade compilation validated successfully.
 * Laravel Pint, frontend production build, Composer validation, and whitespace
@@ -516,7 +525,7 @@ Status: In Progress — Teacher Profile Management Completed
 
 ## Planned
 
-* Class, Section, and Subject management
+* Section and Subject management
 * Remaining Phase 5 feature, authorization, lifecycle, audit, and UI tests
 
 ## Deliverables
@@ -702,7 +711,7 @@ Example:
 
 # Current Project Status
 
-Phase: Phase 5 Teacher Profile Management Completed — Class, Section, And Subject Workflows Pending
+Phase: Phase 5 Class Management Completed — Section And Subject Workflows Pending
 
 Repository Setup: Completed
 
@@ -716,4 +725,4 @@ Application Implementation: Phase 2 completed; Phase 3 tenant infrastructure,
 School Management, School Settings, security logging, tenant-isolation review,
 security review, documentation review, code review, and release review completed
 
-Next Task: Create and execute the Phase 5 Class management prompt
+Next Task: Create and execute the Phase 5 Section and Subject management prompt
