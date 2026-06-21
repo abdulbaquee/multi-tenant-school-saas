@@ -1083,8 +1083,8 @@ Recorded on 2026-06-21:
 
 Recorded on 2026-06-21:
 
-* Focused Section and Subject suite: 16 tests and 154 assertions passed.
-* Full application suite: 226 tests and 1,603 assertions passed.
+* Focused Section and Subject suite: 17 tests and 170 assertions passed.
+* Full application suite: 227 tests and 1,619 assertions passed.
 * Platform tests prove Super Admin can read current and archived records across
   schools while every Section and Subject mutation remains denied.
 * Tenant tests prove School A cannot list, bind, update, activate, deactivate,
@@ -1104,6 +1104,25 @@ Recorded on 2026-06-21:
 * Transaction tests prove logging failures roll back Section creation and
   Subject archival without partial domain or evidence records; no normal DELETE
   route exists for either entity.
+* Retention tests prove archived Teacher Profile identity remains visible on
+  retained Sections and Subjects while activation and restoration still reject
+  that archived profile.
+
+## Phase 5 Governance Review Evidence
+
+Recorded on 2026-06-21:
+
+* Tenant-isolation review: 10/10, approved with no critical defects, missing
+  enforcement points, or missing tests for implemented modules.
+* Security review: 10/10, approved with no critical, high-risk, or medium-risk
+  findings after local credential-file hygiene remediation.
+* Documentation review rerun: 10/10, approved after status, navigation,
+  implementation evidence, and next-step consistency remediation.
+* Code review rerun: approved with no remaining findings after archived Teacher
+  identity retention and lifecycle regression remediation.
+* Security-focused suite: 138 tests and 1,057 assertions passed.
+* Locked PHP dependencies reported no advisories or abandoned packages; the
+  JavaScript production dependency audit reported no vulnerabilities.
 
 Capture:
 

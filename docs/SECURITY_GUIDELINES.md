@@ -315,6 +315,10 @@ Implementation Status:
 * Section and Subject services enforce active same-tenant Class and optional
   Teacher Profile relationships, retained identity, lifecycle revalidation,
   exact permissions, assigned-Teacher concealment, and transaction-coupled logs.
+* The Phase 5 security review passed at 10/10 after the local dummy-login file
+  was made root-specifically ignored. PHP and JavaScript dependency audits
+  reported no advisories, and 138 security-focused tests with 1,057 assertions
+  passed.
 
 ---
 

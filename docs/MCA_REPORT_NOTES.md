@@ -410,12 +410,17 @@ Full Application Source Code
 
 # 16. SCREENSHOT PLAN
 
-Phase 2 evidence available for later report assembly:
+Phase 2 through Phase 5 evidence available for later report assembly:
 
 * Login and email-verification screens.
 * Role-aware dashboard and authenticated navigation.
 * User list, details, create, edit, activation, and deactivation workflows.
-* Automated test baseline: 52 tests and 193 assertions passed on 2026-06-20.
+* School registration, lifecycle, settings, and public-logo management.
+* Roles & Permissions directory, effective mappings, and constrained management.
+* Academic Years, Terms, Teacher Profiles, Classes, Sections, and Subjects.
+* Role-aware Super Admin, School Admin, Teacher, and Accountant navigation.
+* Automated test baseline: 227 tests and 1,619 assertions passed on 2026-06-21.
+* Phase 5 tenant-isolation and security reviews: 10/10 and approved.
 
 Screenshots remain to be selected and captured during the documentation and
 submission phases.

@@ -135,7 +135,7 @@ Phase 4 — Roles & Permissions
 Status: Completed
 
 Phase 5 — Academic Structure
-Status: Implementation Completed — Review Gate Pending
+Status: Implementation Completed — Code Review Approved
 
 Phase 6 — Student Management
 Status: Pending
@@ -186,8 +186,14 @@ Structure design, core schema/model foundation, and Academic Year and Academic
 Term workflows completed, with Teacher Profile management also completed and
 Class, Section, and Subject management completed; Phase 5 review gate pending
 
+Review Progress: Tenant-isolation review approved at 10/10; security review
+approved at 10/10 after local credential-file hygiene remediation;
+documentation review approved at 10/10 after consistency remediation; code
+review approved after archived Teacher identity retention remediation; release
+review remains.
+
 ---
 
 # Next Milestone
 
-Run the Phase 5 tenant-isolation review and remediate every finding.
+Run the Phase 5 release review.

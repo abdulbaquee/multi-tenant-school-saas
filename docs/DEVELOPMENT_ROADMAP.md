@@ -46,8 +46,9 @@ Progress:
 Phase 4 Roles & Permissions is completed and release-approved. Phase 5 Academic
 Structure design, core schema, tenant-aware models, Academic Year management,
 Academic Term management, Teacher Profile management, and Class management are
-implemented. Section and Subject management is also implemented; the Phase 5
-governance review gate remains pending.
+implemented. Section and Subject management is also implemented. Tenant-
+isolation, security, documentation, and code reviews are approved; the release
+review remains in the Phase 5 gate.
 
 Repository:
 
@@ -175,7 +176,7 @@ Status: Completed
 
 # Phase 5 — Academic Structure
 
-Status: Implementation Completed — Review Gate Pending
+Status: Implementation Completed — Code Review Approved
 
 ## Features
 
@@ -374,4 +375,4 @@ Project ready for final evaluation and submission.
 
 # Next Immediate Task
 
-Run the Phase 5 tenant-isolation review and remediate every finding.
+Run the Phase 5 release review.

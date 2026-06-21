@@ -95,7 +95,9 @@ Every strict tenant-owned business record contains a non-null `school_id`.
 Super Admin identity records and explicit platform-level logs may use
 `school_id = NULL`.
 
-Tenant-owned queries are automatically scoped through the planned `BelongsToTenant` global scope. Manual tenant filtering is not the primary protection.
+Tenant-owned queries are automatically scoped through the implemented
+`BelongsToTenant` global scope. Manual tenant filtering is not the primary
+protection.
 
 Table tenancy categories are defined in `TENANCY_DESIGN.md`: `schools` is the
 tenant registry; roles and permissions are platform tables; `users` is a hybrid

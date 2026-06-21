@@ -521,17 +521,31 @@ Status: Implementation Completed — Review Gate Pending
 * Section and Subject transaction-coupled activity/audit evidence and allowed,
   denied, isolation, exact-permission, relationship, lifecycle, rollback,
   navigation, and no-delete coverage.
+* Retained Section and Subject relationships continue displaying an archived
+  Teacher Profile's historical identity while lifecycle reentry still requires
+  an active, nonarchived Teacher Profile.
 
 ## Verification
 
-* Full application suite: 226 tests and 1,603 assertions passed.
+* Full application suite: 227 tests and 1,619 assertions passed.
 * Focused Academic Structure schema suite: 7 tests and 159 assertions passed.
 * Focused Academic Year and Term management suite: 17 tests and 175 assertions
   passed.
 * Focused Teacher Profile management suite: 17 tests and 149 assertions passed.
 * Focused Class management suite: 15 tests and 136 assertions passed.
-* Focused Section and Subject management suite: 16 tests and 154 assertions
+* Focused Section and Subject management suite: 17 tests and 170 assertions
   passed.
+* Phase 5 tenant-isolation review: 10/10, approved with no defects or missing
+  enforcement points for implemented modules.
+* Phase 5 security review: 10/10, approved after root-specifically ignoring the
+  local dummy-login credential file.
+* Phase 5 documentation review rerun: 10/10, approved after synchronizing
+  implementation navigation, review status, MCA evidence, and next-step records.
+* Phase 5 code review rerun: approved with no remaining findings after retaining
+  archived Teacher identity on historical Section and Subject records and adding
+  lifecycle regression coverage.
+* Security-focused suite: 138 tests and 1,057 assertions passed.
+* PHP and JavaScript dependency audits reported no advisories.
 * Isolated in-memory migration and canonical seed completed successfully.
 * Academic routes and Blade compilation validated successfully.
 * Laravel Pint, frontend production build, Composer validation, and whitespace
@@ -539,7 +553,7 @@ Status: Implementation Completed — Review Gate Pending
 
 ## Planned
 
-* Phase 5 tenant-isolation, security, documentation, code, and release reviews
+* Phase 5 release review
 * Academic Structure exports in the reporting phase
 
 ## Deliverables
@@ -725,7 +739,7 @@ Example:
 
 # Current Project Status
 
-Phase: Phase 5 Academic Structure Implementation Completed — Review Gate Pending
+Phase: Phase 5 Academic Structure Implementation Completed — Code Review Approved
 
 Repository Setup: Completed
 
@@ -736,7 +750,7 @@ Documentation Setup: Completed (Draft v1.0; maintained during implementation)
 Database Design Documentation: Remediated and implementation-ready draft (DATABASE_DESIGN.md, ER_DIAGRAM.md)
 
 Application Implementation: Phase 2 completed; Phase 3 tenant infrastructure,
-School Management, School Settings, security logging, tenant-isolation review,
-security review, documentation review, code review, and release review completed
+School Management, School Settings, and security logging completed; Phase 3
+tenant-isolation, security, documentation, code, and release reviews completed
 
-Next Task: Run the Phase 5 tenant-isolation review and remediate every finding
+Next Task: Run the Phase 5 release review

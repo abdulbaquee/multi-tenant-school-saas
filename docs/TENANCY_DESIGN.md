@@ -230,6 +230,8 @@ Implementation Status:
 * Section and Subject services derive ownership from TenantContext, revalidate
   active same-tenant Classes and optional Teacher Profiles, preserve retained
   uniqueness, and restrict Teacher reads to the actor's own active assignments.
+* The Phase 5 tenant-isolation review passed at 10/10 with no critical defects,
+  missing enforcement points, or missing tests for implemented modules.
 
 The `users` exception exists only because authentication must retrieve a globally
 unique identity before tenant context can be resolved. It does not authorize

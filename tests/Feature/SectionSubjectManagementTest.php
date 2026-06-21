@@ -346,6 +346,44 @@ class SectionSubjectManagementTest extends TestCase
         $this->actingAs($admin)->patch(route('subjects.restore', $subject))->assertNotFound();
     }
 
+    public function test_archived_teacher_identity_remains_visible_but_cannot_authorize_lifecycle_reentry(): void
+    {
+        $school = $this->school('One');
+        $admin = $this->schoolUser(Role::SCHOOL_ADMIN, $school, 'admin@example.com');
+        $teacherUser = $this->schoolUser(Role::TEACHER, $school, 'teacher@example.com');
+        $teacher = $this->teacher($school, $teacherUser, 'T-1');
+        $class = $this->schoolClass($school);
+        $section = $this->section($school, $class, $teacher, [
+            'name' => 'Historical Section',
+            'status' => Section::STATUS_INACTIVE,
+        ]);
+        $subject = $this->subject($school, $class, $teacher, [
+            'name' => 'Historical Subject',
+            'code' => 'HISTORY',
+            'status' => Subject::STATUS_INACTIVE,
+        ]);
+
+        $this->actingAs($admin)->patch(route('teacher-profiles.deactivate', $teacher))->assertRedirect();
+        $this->actingAs($admin)->patch(route('teacher-profiles.archive', $teacher))->assertRedirect();
+
+        $this->actingAs($admin)->get(route('sections.show', $section))
+            ->assertOk()->assertSee($teacherUser->name)->assertDontSee('Not assigned');
+        $this->actingAs($admin)->get(route('subjects.show', $subject))
+            ->assertOk()->assertSee($teacherUser->name)->assertDontSee('Not assigned');
+        $this->actingAs($admin)->get(route('sections.index'))->assertOk()->assertSee($teacherUser->name);
+        $this->actingAs($admin)->get(route('subjects.index'))->assertOk()->assertSee($teacherUser->name);
+
+        $this->actingAs($admin)->patch(route('sections.activate', $section))->assertNotFound();
+        $this->actingAs($admin)->patch(route('subjects.activate', $subject))->assertNotFound();
+
+        $this->tenant($school, function () use ($section, $subject): void {
+            $section->delete();
+            $subject->delete();
+        });
+        $this->actingAs($admin)->patch(route('sections.restore', $section))->assertNotFound();
+        $this->actingAs($admin)->patch(route('subjects.restore', $subject))->assertNotFound();
+    }
+
     public function test_cross_tenant_current_and_archived_route_binding_returns_not_found(): void
     {
         $schoolA = $this->school('A');

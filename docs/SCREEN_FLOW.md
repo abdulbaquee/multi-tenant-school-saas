@@ -24,14 +24,16 @@ The canonical permission matrix is defined in `MODULE_SPECIFICATIONS.md`. Every 
 ## Current Implementation Status
 
 The current implementation exposes only authorized navigation for completed
-Phase 2 and Phase 3 work and the implemented Phase 4 RBAC workspace:
+Phases 2 through 4 and the implemented Phase 5 Academic Structure workspace:
 
-* Super Admin: Dashboard, Users, Roles & Permissions, Schools, Profile.
-* School Admin: Dashboard, Users, Roles & Permissions, School Settings, Profile.
-* Teacher and Accountant: Dashboard, Profile.
-* Later-module menu items documented below remain the approved MVP target and
-  must stay omitted from the application until their routes and authorization
-  are implemented.
+* Super Admin: Dashboard, Users, Roles & Permissions, Academic Structure,
+  Schools, Profile.
+* School Admin: Dashboard, Users, Roles & Permissions, Academic Structure,
+  School Settings, Profile.
+* Teacher: Dashboard, assigned Academic Structure, Profile.
+* Accountant: Dashboard, Profile.
+* Phase 6 and later module items documented below remain the approved MVP target
+  and must stay omitted until their routes and authorization are implemented.
 
 School Management currently provides Super Admin-only listing, search, status
 filtering, registration, details, editing, activation, and deactivation. School
@@ -41,6 +43,11 @@ tenant records. Routine school deletion is not exposed.
 School Settings currently provides School Admin-only profile, contact, academic,
 attendance, grading, and logo controls for the active school. Super Admin keeps
 read-only settings visibility through School Details.
+
+Academic Structure currently provides Academic Year, Academic Term, Teacher
+Profile, Class, Section, and Subject workflows. Super Admin access is Platform-
+context read-only, School Admin management is own-tenant and permission-bound,
+Teacher access is limited to active assignments, and Accountant access is denied.
 
 ---
 
