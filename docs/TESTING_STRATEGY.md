@@ -1079,6 +1079,32 @@ Recorded on 2026-06-21:
 * Transaction tests prove logging failures roll back Class creation and archival
   without partial domain or evidence records; no normal DELETE route exists.
 
+## Phase 5 Section And Subject Management Baseline
+
+Recorded on 2026-06-21:
+
+* Focused Section and Subject suite: 16 tests and 154 assertions passed.
+* Full application suite: 226 tests and 1,603 assertions passed.
+* Platform tests prove Super Admin can read current and archived records across
+  schools while every Section and Subject mutation remains denied.
+* Tenant tests prove School A cannot list, bind, update, activate, deactivate,
+  archive, or restore School B records, including archived records and forged
+  Class or Teacher Profile relationships.
+* Teacher tests prove read-only access is limited to the actor's own active
+  Section and Subject assignments under active Classes; unassigned, inactive,
+  archived, and unrelated records remain concealed.
+* Relationship tests prove create, update, activation, and restoration require
+  an active, nonarchived, same-school Class and optional Teacher Profile.
+* Lifecycle tests prove deactivation, inactive-only archival, inactive
+  restoration, separate activation, and retained Section-name and Subject-code
+  reservation.
+* Authorization tests cover exact `academic.view`, `academic.create`,
+  `academic.update`, and `academic.delete` revocation plus Accountant, inactive,
+  malformed, guest, wrong-context, and Platform-mutation denial.
+* Transaction tests prove logging failures roll back Section creation and
+  Subject archival without partial domain or evidence records; no normal DELETE
+  route exists for either entity.
+
 Capture:
 
 * Test Cases

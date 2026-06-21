@@ -52,7 +52,7 @@
 
                     @if (auth()->user()->can('viewAny', \App\Models\AcademicYear::class) || auth()->user()->can('viewAny', \App\Models\SchoolClass::class))
                         <li class="nav-item">
-                            <a class="nav-link sidebar-link @if (request()->routeIs('academic-years.*') || request()->routeIs('academic-terms.*') || request()->routeIs('teacher-profiles.*') || request()->routeIs('classes.*')) active @endif" href="{{ auth()->user()->can('viewAny', \App\Models\AcademicYear::class) ? route('academic-years.index') : route('classes.index') }}" @if (request()->routeIs('academic-years.*') || request()->routeIs('academic-terms.*') || request()->routeIs('teacher-profiles.*') || request()->routeIs('classes.*')) aria-current="page" @endif>
+                            <a class="nav-link sidebar-link @if (request()->routeIs('academic-years.*') || request()->routeIs('academic-terms.*') || request()->routeIs('teacher-profiles.*') || request()->routeIs('classes.*') || request()->routeIs('sections.*') || request()->routeIs('subjects.*')) active @endif" href="{{ auth()->user()->can('viewAny', \App\Models\AcademicYear::class) ? route('academic-years.index') : route('classes.index') }}" @if (request()->routeIs('academic-years.*') || request()->routeIs('academic-terms.*') || request()->routeIs('teacher-profiles.*') || request()->routeIs('classes.*') || request()->routeIs('sections.*') || request()->routeIs('subjects.*')) aria-current="page" @endif>
                                 <i class="bi bi-diagram-3" aria-hidden="true"></i>
                                 <span>{{ __('Academic Structure') }}</span>
                             </a>

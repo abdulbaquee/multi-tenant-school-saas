@@ -125,6 +125,7 @@ Created for the next roadmap gate:
 - Phase 5 Academic Year and Academic Term management (executed).
 - Phase 5 Teacher Profile management (executed).
 - Phase 5 Class management (executed).
+- Phase 5 Section and Subject management (executed).
 
 Future prompt groups should be added only when they are needed for the next roadmap phase.
 

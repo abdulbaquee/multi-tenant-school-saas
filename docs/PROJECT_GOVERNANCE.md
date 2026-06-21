@@ -135,7 +135,7 @@ Phase 4 — Roles & Permissions
 Status: Completed
 
 Phase 5 — Academic Structure
-Status: In Progress — Class Management Completed
+Status: Implementation Completed — Review Gate Pending
 
 Phase 6 — Student Management
 Status: Pending
@@ -179,14 +179,15 @@ Application Implementation: Phase 2 completed; Phase 3 tenant infrastructure,
 Super Admin School Management, tenant-bound School Settings, security logging,
 Phase 4 RBAC, the Phase 5 core Academic Structure schema/model foundation, and
 Academic Year, Academic Term, Teacher Profile, and Class management implemented
+with Section and Subject management also implemented
 
 Development Progress: Phase 4 completed and release-approved; Phase 5 Academic
 Structure design, core schema/model foundation, and Academic Year and Academic
 Term workflows completed, with Teacher Profile management also completed and
-Class management completed; Section and Subject management remains pending
+Class, Section, and Subject management completed; Phase 5 review gate pending
 
 ---
 
 # Next Milestone
 
-Create and execute the Phase 5 Section and Subject management prompt.
+Run the Phase 5 tenant-isolation review and remediate every finding.

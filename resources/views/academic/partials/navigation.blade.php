@@ -26,5 +26,19 @@
                 </a>
             </li>
         @endcan
+        @can('viewAny', \App\Models\Section::class)
+            <li class="nav-item">
+                <a class="nav-link @if (request()->routeIs('sections.*')) active @endif" href="{{ route('sections.index') }}" @if (request()->routeIs('sections.*')) aria-current="page" @endif>
+                    <i class="bi bi-layout-three-columns me-1" aria-hidden="true"></i>{{ auth()->user()->hasRoleCode(\App\Models\Role::TEACHER) ? __('Assigned Sections') : __('Sections') }}
+                </a>
+            </li>
+        @endcan
+        @can('viewAny', \App\Models\Subject::class)
+            <li class="nav-item">
+                <a class="nav-link @if (request()->routeIs('subjects.*')) active @endif" href="{{ route('subjects.index') }}" @if (request()->routeIs('subjects.*')) aria-current="page" @endif>
+                    <i class="bi bi-book me-1" aria-hidden="true"></i>{{ auth()->user()->hasRoleCode(\App\Models\Role::TEACHER) ? __('Assigned Subjects') : __('Subjects') }}
+                </a>
+            </li>
+        @endcan
     </ul>
 </nav>

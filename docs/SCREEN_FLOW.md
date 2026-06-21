@@ -555,6 +555,9 @@ Lifecycle Rules:
 * A Class cannot deactivate or archive while it has an active, nonarchived
   Section or Subject. Restoring a Class returns it inactive before a separate
   activation action.
+* Section and Subject activation or restoration revalidates an active,
+  nonarchived, same-school parent Class and any retained Teacher assignment.
+  Restoration returns the record inactive before a separate activation action.
 * A Teacher Profile cannot deactivate or archive while an active Section or
   Subject assignment remains. Restore revalidates the immutable linked Teacher
   user and returns the profile inactive before separate activation.

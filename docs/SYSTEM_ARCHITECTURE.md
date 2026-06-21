@@ -564,7 +564,9 @@ Implementation Status:
 * Class lifecycle, retained-record routing, tenant-safe HTTP/UI, Platform
   read-only access, assigned-Teacher reads, and activity/audit workflows are
   implemented.
-* Section and Subject management workflows remain pending.
+* Section and Subject lifecycle, assignment validation, retained-record routing,
+  tenant-safe HTTP/UI, Platform read-only access, assigned-Teacher reads, and
+  activity/audit workflows are implemented.
 
 ---
 

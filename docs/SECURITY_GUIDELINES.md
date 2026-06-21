@@ -312,7 +312,9 @@ Implementation Status:
   dependency-safe lifecycle transitions, exact permissions, and transaction-
   coupled logs. Teacher reads are restricted to active Classes related through
   the actor's own active Teacher Profile and active assignments.
-* Section and Subject management workflows remain pending.
+* Section and Subject services enforce active same-tenant Class and optional
+  Teacher Profile relationships, retained identity, lifecycle revalidation,
+  exact permissions, assigned-Teacher concealment, and transaction-coupled logs.
 
 ---
 

@@ -39,14 +39,15 @@ Single Database Multi-Tenant SaaS
 
 Current Phase:
 
-Phase 5 — Academic Structure Foundation
+Phase 5 — Academic Structure Review Gate
 
 Progress:
 
 Phase 4 Roles & Permissions is completed and release-approved. Phase 5 Academic
 Structure design, core schema, tenant-aware models, Academic Year management,
 Academic Term management, Teacher Profile management, and Class management are
-implemented. Section and Subject workflows remain pending.
+implemented. Section and Subject management is also implemented; the Phase 5
+governance review gate remains pending.
 
 Repository:
 
@@ -174,7 +175,7 @@ Status: Completed
 
 # Phase 5 — Academic Structure
 
-Status: In Progress — Class Management Completed
+Status: Implementation Completed — Review Gate Pending
 
 ## Features
 
@@ -198,7 +199,12 @@ Class directory, forms, role-aware assigned-Teacher reads, dependency-safe
 lifecycle services, tenant-safe routes, UI, activity/audit evidence, and tests:
 Completed.
 
-Section and Subject management workflows: Pending.
+Section and Subject directories, forms, optional Teacher assignments, retained
+lifecycle services, role-aware Teacher reads, tenant-safe routes, UI,
+activity/audit evidence, and tests: Completed.
+
+Academic Structure exports are deferred to the reporting phase and do not block
+the Phase 5 implementation gate.
 
 Student registration and Student Enrollment remain Phase 6.
 
@@ -368,4 +374,4 @@ Project ready for final evaluation and submission.
 
 # Next Immediate Task
 
-Create and execute the Phase 5 Section and Subject management prompt.
+Run the Phase 5 tenant-isolation review and remediate every finding.

@@ -8,6 +8,8 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SchoolClassController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\SchoolSettingController;
+use App\Http\Controllers\SectionController;
+use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -76,6 +78,26 @@ Route::middleware(['auth', 'tenant.context'])->group(function () {
         ->name('classes.restore');
     Route::resource('classes', SchoolClassController::class)
         ->parameters(['classes' => 'school_class'])
+        ->withTrashed(['show'])
+        ->except(['destroy']);
+
+    Route::patch('/sections/{section}/activate', [SectionController::class, 'activate'])->name('sections.activate');
+    Route::patch('/sections/{section}/deactivate', [SectionController::class, 'deactivate'])->name('sections.deactivate');
+    Route::patch('/sections/{section}/archive', [SectionController::class, 'archive'])->name('sections.archive');
+    Route::patch('/sections/{section}/restore', [SectionController::class, 'restore'])
+        ->withTrashed()
+        ->name('sections.restore');
+    Route::resource('sections', SectionController::class)
+        ->withTrashed(['show'])
+        ->except(['destroy']);
+
+    Route::patch('/subjects/{subject}/activate', [SubjectController::class, 'activate'])->name('subjects.activate');
+    Route::patch('/subjects/{subject}/deactivate', [SubjectController::class, 'deactivate'])->name('subjects.deactivate');
+    Route::patch('/subjects/{subject}/archive', [SubjectController::class, 'archive'])->name('subjects.archive');
+    Route::patch('/subjects/{subject}/restore', [SubjectController::class, 'restore'])
+        ->withTrashed()
+        ->name('subjects.restore');
+    Route::resource('subjects', SubjectController::class)
         ->withTrashed(['show'])
         ->except(['destroy']);
 });

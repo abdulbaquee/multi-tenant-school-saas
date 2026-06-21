@@ -463,7 +463,7 @@ Status: Completed
 
 Date: 2026-06-21
 
-Status: In Progress — Class Management Completed
+Status: Implementation Completed — Review Gate Pending
 
 ## Added
 
@@ -509,15 +509,29 @@ Status: In Progress — Class Management Completed
   deactivation and archival, inactive restoration, and explicit activation.
 * Class mutation activity/audit evidence and allowed, denied, isolation,
   exact-permission, lifecycle, rollback, navigation, and no-delete coverage.
+* Section and Subject Policies, relationship-aware Form Requests, dedicated
+  services, thin controllers, retained-record routes, and responsive Blade
+  workspaces.
+* Active same-tenant Class and optional Teacher Profile validation at create,
+  update, activation, and restoration boundaries.
+* Platform-wide Super Admin read-only visibility, own-tenant School Admin
+  management, and Teacher read-only directories limited to active assignments.
+* Retained Section-name and Subject-code uniqueness, optional assignment
+  clearing, inactive restoration, separate activation, and no hard deletion.
+* Section and Subject transaction-coupled activity/audit evidence and allowed,
+  denied, isolation, exact-permission, relationship, lifecycle, rollback,
+  navigation, and no-delete coverage.
 
 ## Verification
 
-* Full application suite: 210 tests and 1,449 assertions passed.
+* Full application suite: 226 tests and 1,603 assertions passed.
 * Focused Academic Structure schema suite: 7 tests and 159 assertions passed.
 * Focused Academic Year and Term management suite: 17 tests and 175 assertions
   passed.
 * Focused Teacher Profile management suite: 17 tests and 149 assertions passed.
 * Focused Class management suite: 15 tests and 136 assertions passed.
+* Focused Section and Subject management suite: 16 tests and 154 assertions
+  passed.
 * Isolated in-memory migration and canonical seed completed successfully.
 * Academic routes and Blade compilation validated successfully.
 * Laravel Pint, frontend production build, Composer validation, and whitespace
@@ -525,8 +539,8 @@ Status: In Progress — Class Management Completed
 
 ## Planned
 
-* Section and Subject management
-* Remaining Phase 5 feature, authorization, lifecycle, audit, and UI tests
+* Phase 5 tenant-isolation, security, documentation, code, and release reviews
+* Academic Structure exports in the reporting phase
 
 ## Deliverables
 
@@ -711,7 +725,7 @@ Example:
 
 # Current Project Status
 
-Phase: Phase 5 Class Management Completed — Section And Subject Workflows Pending
+Phase: Phase 5 Academic Structure Implementation Completed — Review Gate Pending
 
 Repository Setup: Completed
 
@@ -725,4 +739,4 @@ Application Implementation: Phase 2 completed; Phase 3 tenant infrastructure,
 School Management, School Settings, security logging, tenant-isolation review,
 security review, documentation review, code review, and release review completed
 
-Next Task: Create and execute the Phase 5 Section and Subject management prompt
+Next Task: Run the Phase 5 tenant-isolation review and remediate every finding

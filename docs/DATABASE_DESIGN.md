@@ -478,8 +478,8 @@ Implementation Status:
 * The six Phase 5 tables, documented named indexes, unique constraints,
   restricted foreign keys, soft-delete columns, tenant-aware models,
   relationships, and casts are implemented.
-* Academic Year, Academic Term, Teacher Profile, and Class management workflows
-  are implemented. Section and Subject management remain pending.
+* Academic Year, Academic Term, Teacher Profile, Class, Section, and Subject
+  management workflows are implemented on the documented schema.
 
 ---
 
