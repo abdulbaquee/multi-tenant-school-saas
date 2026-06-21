@@ -39,14 +39,15 @@ Single Database Multi-Tenant SaaS
 
 Current Phase:
 
-Phase 6 — Student Profile Management Preparation
+Phase 6 — Enrollment Management Preparation
 
 Progress:
 
 Phase 5 Academic Structure is completed and release-approved. Phase 6 Student
 Management design remediation defines the Student, Enrollment, privacy, role,
-and retention boundaries. The readiness rerun passed at 10/10, and the core
-Student/Enrollment schema and tenant-aware model foundation are implemented.
+and retention boundaries. The readiness rerun passed at 10/10. The core schema,
+Student registration, profiles, role-scoped reads, lifecycle, and private-photo
+workflows are implemented; Enrollment creation remains next.
 
 Repository:
 
@@ -215,7 +216,7 @@ Student registration and Student Enrollment remain Phase 6.
 
 # Phase 6 — Student Management
 
-Status: Core Schema And Model Foundation Completed
+Status: Student Profile Management Completed — Enrollment Workflow Pending
 
 ## Features
 
@@ -230,6 +231,10 @@ Student Reports and exports are deferred to Phase 10 Reporting.
 The Student and Enrollment migration, tenant-aware models, inverse
 relationships, immutable identity safeguards, and focused schema/isolation
 tests are completed.
+
+Student registration, own-tenant School Admin management, assigned-record
+Teacher reads, school-selected Super Admin reads, lifecycle controls, private
+photos, privacy-safe logs, and read-only Enrollment history are completed.
 
 ## Deliverables
 
@@ -380,4 +385,4 @@ Project ready for final evaluation and submission.
 
 # Next Immediate Task
 
-Create and execute the Phase 6 Student profile-management prompt.
+Create and execute the Phase 6 Enrollment-management prompt.

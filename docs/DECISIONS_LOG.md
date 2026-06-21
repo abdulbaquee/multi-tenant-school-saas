@@ -1244,7 +1244,9 @@ Outcome:
 The Student and Enrollment schema, role matrix, menus, privacy rules, tenant
 contract, and Phase 6 test requirements are aligned. The readiness rerun passed
 at 10/10, and the core schema/model foundation is implemented with automatic
-tenant isolation and immutable identity safeguards.
+tenant isolation and immutable identity safeguards. Student registration,
+profiles, assigned/school-selected read projections, lifecycle, private photos,
+and privacy-safe logging are implemented; Enrollment creation remains pending.
 
 ---
 
@@ -1269,4 +1271,4 @@ Development Decisions:
 Completed
 
 Project Ready For:
-Phase 6 Student Profile Management
+Phase 6 Enrollment Management

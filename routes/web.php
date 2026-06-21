@@ -9,6 +9,8 @@ use App\Http\Controllers\SchoolClassController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\SchoolSettingController;
 use App\Http\Controllers\SectionController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\StudentPhotoController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserController;
@@ -98,6 +100,19 @@ Route::middleware(['auth', 'tenant.context'])->group(function () {
         ->withTrashed()
         ->name('subjects.restore');
     Route::resource('subjects', SubjectController::class)
+        ->withTrashed(['show'])
+        ->except(['destroy']);
+
+    Route::patch('/students/{student}/activate', [StudentController::class, 'activate'])->name('students.activate');
+    Route::patch('/students/{student}/deactivate', [StudentController::class, 'deactivate'])->name('students.deactivate');
+    Route::patch('/students/{student}/archive', [StudentController::class, 'archive'])->name('students.archive');
+    Route::patch('/students/{student}/restore', [StudentController::class, 'restore'])
+        ->withTrashed()
+        ->name('students.restore');
+    Route::get('/students/{student}/photo', [StudentPhotoController::class, 'show'])->name('students.photo.show');
+    Route::put('/students/{student}/photo', [StudentPhotoController::class, 'update'])->name('students.photo.update');
+    Route::delete('/students/{student}/photo', [StudentPhotoController::class, 'destroy'])->name('students.photo.destroy');
+    Route::resource('students', StudentController::class)
         ->withTrashed(['show'])
         ->except(['destroy']);
 });

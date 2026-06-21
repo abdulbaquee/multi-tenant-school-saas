@@ -586,8 +586,11 @@ Implementation Status:
   constraints, restricted foreign keys, soft-delete boundary, tenant-aware
   models, relationships, casts, lifecycle constants, and immutable identity
   safeguards are implemented.
-* Student registration, profile, photo, lifecycle, and Enrollment workflows
-  remain for later Phase 6 prompts.
+* Student registration, profile updates, role-scoped reads, active/inactive
+  lifecycle, archival/restoration, private photos, and retained Enrollment
+  history are implemented.
+* Enrollment creation, Enrollment lifecycle, Student transfer, and graduation
+  coupling remain for the next Phase 6 prompt.
 
 ---
 

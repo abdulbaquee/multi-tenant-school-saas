@@ -59,6 +59,15 @@
                         </li>
                     @endif
 
+                    @can('viewAny', \App\Models\Student::class)
+                        <li class="nav-item">
+                            <a class="nav-link sidebar-link @if (request()->routeIs('students.*')) active @endif" href="{{ route('students.index') }}" @if (request()->routeIs('students.*')) aria-current="page" @endif>
+                                <i class="bi bi-person-vcard" aria-hidden="true"></i>
+                                <span>{{ __('Students') }}</span>
+                            </a>
+                        </li>
+                    @endcan
+
                     @can('viewAny', \App\Models\School::class)
                         <li class="nav-item">
                             <a class="nav-link sidebar-link @if (request()->routeIs('schools.*')) active @endif" href="{{ route('schools.index') }}" @if (request()->routeIs('schools.*')) aria-current="page" @endif>

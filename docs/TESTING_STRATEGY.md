@@ -506,6 +506,26 @@ Implemented on 2026-06-21:
   and restricted-parent deletion behavior are covered.
 * The full application suite passes 233 tests and 1,711 assertions.
 
+## Phase 6 Student Profile Management Baseline
+
+Implemented on 2026-06-21:
+
+* 11 focused tests and 165 assertions cover Student registration, profile
+  updates, validation, search/navigation access, lifecycle, archival,
+  restoration, and retained Enrollment history.
+* School A/B route isolation, direct-service context denial, exact permission
+  revocation, Accountant denial, and no hard-delete route are covered.
+* Teacher Section and Subject assignment paths and Super Admin selected-school
+  paths prove privacy-minimized HTML with sensitive Student fields omitted.
+* Private-photo validation, generated tenant paths, protected delivery,
+  replacement, removal, inactive/archived denial, retained archived files, and
+  transaction/log-failure cleanup are covered with fake private storage.
+* Privacy-safe activity/audit evidence and domain rollback are verified.
+  Teacher-visible enrollment history is also restricted to the Teacher's active
+  Section or Subject assignments.
+* The combined Phase 6 Student suite passes 17 tests and 257 assertions.
+* The full application suite passes 244 tests and 1,876 assertions.
+
 ---
 
 # 18. ATTENDANCE MODULE TESTING

@@ -430,6 +430,10 @@ Phase 2 through Phase 5 evidence available for later report assembly:
 * Phase 6 core Student/Enrollment schema evidence: migration, two tenant-aware
   models, retained-history safeguards, 6 focused tests with 92 assertions, and
   233 full-suite tests with 1,711 assertions passing.
+* Phase 6 Student Profile Management evidence: School Admin management,
+  assignment-scoped Teacher reads, school-selected Super Admin reads, private
+  photos, privacy-safe logs, 11 focused tests with 165 assertions, and 244
+  full-suite tests with 1,876 assertions passing.
 
 Screenshots remain to be selected and captured during the documentation and
 submission phases.

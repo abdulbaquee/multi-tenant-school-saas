@@ -623,6 +623,17 @@ Student logging rules:
   image contents in activity descriptions, audit old/new values, exceptions, or
   validation messages.
 
+Implementation Status:
+
+* Student Policy and Service enforcement cover own-tenant School Admin
+  management, assigned-record Teacher reads, selected-school Super Admin reads,
+  Accountant denial, default-deny service contexts, and cross-tenant 404s.
+* Student photos use generated names under tenant-separated paths on the private
+  local disk and are streamed only through an authorized controller. Public
+  paths and URLs are not used.
+* Photo replacement/removal, transaction rollback cleanup, archived-file
+  retention, inactive/archived denial, and privacy-safe logs are tested.
+
 ---
 
 # 19. DATA ACCESS POLICY

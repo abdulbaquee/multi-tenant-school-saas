@@ -469,6 +469,18 @@ Phase 6 Enrollment Boundary:
 * A transferred Student means departure from the current school only. The MVP
   does not transfer data between tenants.
 
+Implementation Status:
+
+* Student registration, profile updates, search, state filters, activation,
+  deactivation, archival, restoration, and read-only Enrollment history are
+  implemented for authorized School Admins.
+* Teacher assigned-record and Super Admin school-selected reads use
+  privacy-minimized projections. Accountant has no direct route.
+* Private Student photo upload, replacement, removal, archival retention, and
+  protected School Admin-only delivery are implemented on private storage.
+* Enrollment creation, completion, transfer, and Student transfer/graduation
+  coupling remain pending within Phase 6.
+
 ---
 
 # 9. ATTENDANCE MANAGEMENT MODULE

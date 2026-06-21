@@ -271,9 +271,12 @@ Implementation Status:
 * Student and StudentEnrollment use `BelongsToTenant`, derive ownership from
   TenantContext, default deny in Unresolved context, allow model-foundation reads
   in explicit Platform context, and reject ownership mutation.
-* Focused tests cover School A, School B, Platform, Unresolved, forged ownership,
-  immutable ownership, and retained Enrollment identity. HTTP, assigned-record,
-  parent-alignment, and private-photo controls remain for later Phase 6 prompts.
+* Student Profile Management adds tenant-safe route binding, School A/B HTTP
+  isolation, own-tenant School Admin mutations, assigned-record Teacher reads,
+  school-selected Platform projections, private-photo controls, and direct
+  service context denial.
+* Enrollment parent alignment, creation, and lifecycle controls remain for the
+  next Phase 6 prompt.
 
 The `users` exception exists only because authentication must retrieve a globally
 unique identity before tenant context can be resolved. It does not authorize

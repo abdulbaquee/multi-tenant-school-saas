@@ -94,16 +94,16 @@ class DashboardTest extends TestCase
         $response->assertDontSee(route('users.index'), false);
     }
 
-    public function test_dashboard_navigation_omits_later_modules_and_removed_settings(): void
+    public function test_dashboard_navigation_includes_students_and_omits_later_modules_and_removed_settings(): void
     {
         $response = $this->actingAs($this->superAdmin())->get(route('dashboard'));
 
         $response->assertOk();
+        $response->assertSee(route('students.index'), false);
 
         foreach ([
             'Platform Settings',
             'System Settings',
-            'Students',
             'Attendance',
             'Fees',
             'Examinations',

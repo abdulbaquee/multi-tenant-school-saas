@@ -122,6 +122,12 @@ body {
     height: 120px;
 }
 
+.student-photo-preview {
+    width: 180px;
+    max-width: 100%;
+    aspect-ratio: 4 / 5;
+}
+
 .settings-section-nav {
     position: sticky;
     top: 70px;

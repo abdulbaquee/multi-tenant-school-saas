@@ -27,13 +27,14 @@ The current implementation exposes only authorized navigation for completed
 Phases 2 through 4 and the implemented Phase 5 Academic Structure workspace:
 
 * Super Admin: Dashboard, Users, Roles & Permissions, Academic Structure,
-  Schools, Profile.
+  Students, Schools, Profile.
 * School Admin: Dashboard, Users, Roles & Permissions, Academic Structure,
-  School Settings, Profile.
-* Teacher: Dashboard, assigned Academic Structure, Profile.
+  Students, School Settings, Profile.
+* Teacher: Dashboard, assigned Academic Structure, assigned Students, Profile.
 * Accountant: Dashboard, Profile.
-* Phase 6 and later module items documented below remain the approved MVP target
-  and must stay omitted until their routes and authorization are implemented.
+* Student Management now provides the implemented Phase 6 profile workflows.
+  Enrollment mutation and Phase 7 or later module items documented below remain
+  omitted until their routes and authorization are implemented.
 
 School Management currently provides Super Admin-only listing, search, status
 filtering, registration, details, editing, activation, and deactivation. School
@@ -48,6 +49,12 @@ Academic Structure currently provides Academic Year, Academic Term, Teacher
 Profile, Class, Section, and Subject workflows. Super Admin access is Platform-
 context read-only, School Admin management is own-tenant and permission-bound,
 Teacher access is limited to active assignments, and Accountant access is denied.
+
+Student Management currently provides School Admin registration, profile
+updates, search, lifecycle controls, private photos, and retained Enrollment
+history. Teacher reads are assignment-scoped and privacy-minimized; Super Admin
+reads require one selected school and are privacy-minimized; Accountant access
+is denied.
 
 ---
 
