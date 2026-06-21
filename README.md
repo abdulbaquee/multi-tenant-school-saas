@@ -4,7 +4,7 @@
 > Built with Laravel 13, PHP 8.4, Blade, and Bootstrap 5
 
 Version: 1.0
-Status: Draft (Phase 4 completed and release-approved; Phase 5 readiness next)
+Status: Draft (Phase 5 Teacher Profile management completed; Class, Section, and Subject workflows pending)
 
 ---
 

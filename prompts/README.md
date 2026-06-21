@@ -85,11 +85,17 @@ prompts/
 │   ├── 05-school-settings.md
 │   ├── 06-tenant-service-context-hardening.md
 │   └── 07-phase-03-security-remediation.md
-└── 03-roles-permissions/
+├── 03-roles-permissions/
     ├── 00-phase-04-readiness-review.md
     ├── 01-phase-04-rbac-design-remediation.md
     ├── 02-phase-04-core-rbac-foundation.md
     └── 03-role-permission-dashboard-management.md
+└── 04-academic-structure/
+    ├── 00-phase-05-readiness-review.md
+    ├── 01-phase-05-academic-design-remediation.md
+    ├── 02-phase-05-core-academic-schema.md
+    ├── 03-phase-05-academic-year-term-management.md
+    └── 04-phase-05-teacher-profile-management.md
 ```
 
 ## Current Prompt Creation Status
@@ -112,6 +118,11 @@ Created for the next roadmap gate:
 - Phase 4 RBAC design documentation remediation.
 - Phase 4 core native RBAC foundation implementation.
 - Phase 4 Role & Permission dashboard-management implementation (executed).
+- Phase 5 Academic Structure readiness review (executed and approved).
+- Phase 5 Academic Structure design remediation (executed).
+- Phase 5 core Academic Structure schema and tenant-model foundation (executed).
+- Phase 5 Academic Year and Academic Term management (executed).
+- Phase 5 Teacher Profile management (executed).
 
 Future prompt groups should be added only when they are needed for the next roadmap phase.
 

@@ -796,3 +796,30 @@ a read-only effective-permissions view. Teacher and Accountant receive no Role
 & Permission navigation. Save actions require an explicit Review Changes step
 and a confirmation modal summarizing grants and revocations without nested
 cards or custom JavaScript frameworks.
+
+---
+
+# 34. ACADEMIC STRUCTURE WORKSPACE
+
+The Phase 5 workspace is an operational interface, not a landing page. Use a
+compact Academic Structure navigation group for Academic Years, Academic Terms,
+Teacher Profiles, Classes, Sections, and Subjects.
+
+* Lists use responsive semantic tables, status badges, concise filters, and one
+  clear create action when authorized.
+* Academic Year screens make the current year visually distinct and require a
+  confirmation before replacing it.
+* Academic Term forms show the parent-year date range beside term dates.
+* Teacher Profile selectors display only eligible active same-school
+  Teacher-role users.
+* Class selectors constrain Section and Subject workflows; Teacher Profile
+  selectors show only active same-school profiles.
+* Deactivate, archive, and restore are distinct lifecycle commands with clear
+  confirmation text. Hard-delete language must not appear.
+* Super Admin screens display a read-only Platform badge and school identity.
+* Teacher screens are labelled Assigned Academic Structure and contain only
+  assigned Sections, assigned Subjects, and related Classes, without disabled
+  mutation controls.
+* Accountant receives no Academic Structure navigation.
+* Every screen includes empty, validation, inactive, and archived states where
+  applicable. Controls must remain stable and readable on mobile and desktop.

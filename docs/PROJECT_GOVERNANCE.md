@@ -135,7 +135,7 @@ Phase 4 — Roles & Permissions
 Status: Completed
 
 Phase 5 — Academic Structure
-Status: Pending
+Status: In Progress — Teacher Profile Management Completed
 
 Phase 6 — Student Management
 Status: Pending
@@ -176,15 +176,17 @@ Architecture Design Documentation: Approved (SYSTEM_ARCHITECTURE.md, TENANCY_DES
 Database Design Documentation: Remediated and implementation-ready draft (DATABASE_DESIGN.md, ER_DIAGRAM.md)
 
 Application Implementation: Phase 2 completed; Phase 3 tenant infrastructure,
-Super Admin School Management, tenant-bound School Settings, and security
-logging implemented
+Super Admin School Management, tenant-bound School Settings, security logging,
+Phase 4 RBAC, the Phase 5 core Academic Structure schema/model foundation, and
+Academic Year, Academic Term, and Teacher Profile management implemented
 
-Development Progress: Phase 4 native RBAC foundation and constrained dashboard
-mapping management completed and release-approved; Phase 5 readiness is next
+Development Progress: Phase 4 completed and release-approved; Phase 5 Academic
+Structure design, core schema/model foundation, and Academic Year and Academic
+Term workflows completed, with Teacher Profile management also completed and
+Class, Section, and Subject management pending
 
 ---
 
 # Next Milestone
 
-Create and execute the Phase 5 Academic Structure readiness-review prompt before
-any Phase 5 implementation.
+Create and execute the Phase 5 Class management prompt.

@@ -50,6 +50,15 @@
                         </li>
                     @endcan
 
+                    @can('viewAny', \App\Models\AcademicYear::class)
+                        <li class="nav-item">
+                            <a class="nav-link sidebar-link @if (request()->routeIs('academic-years.*') || request()->routeIs('academic-terms.*') || request()->routeIs('teacher-profiles.*')) active @endif" href="{{ route('academic-years.index') }}" @if (request()->routeIs('academic-years.*') || request()->routeIs('academic-terms.*') || request()->routeIs('teacher-profiles.*')) aria-current="page" @endif>
+                                <i class="bi bi-diagram-3" aria-hidden="true"></i>
+                                <span>{{ __('Academic Structure') }}</span>
+                            </a>
+                        </li>
+                    @endcan
+
                     @can('viewAny', \App\Models\School::class)
                         <li class="nav-item">
                             <a class="nav-link sidebar-link @if (request()->routeIs('schools.*')) active @endif" href="{{ route('schools.index') }}" @if (request()->routeIs('schools.*')) aria-current="page" @endif>

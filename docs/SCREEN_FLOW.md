@@ -113,6 +113,8 @@ Dashboard
 │
 ├── Schools
 ├── Users
+├── Roles & Permissions
+├── Academic Structure (Read Only)
 ├── Reports
 ├── Analytics
 ├── Activity Logs
@@ -161,6 +163,7 @@ Visible Widgets:
 Dashboard
 │
 ├── Students
+├── Academic Structure
 ├── Attendance
 ├── Examinations
 └── Reports
@@ -203,6 +206,16 @@ Users
 ├── All Users
 └── Add User
 
+Roles & Permissions
+
+Academic Structure
+├── Academic Years
+├── Academic Terms
+├── Teacher Profiles
+├── Classes
+├── Sections
+└── Subjects
+
 Reports
 ├── School Reports
 ├── User Reports
@@ -241,9 +254,12 @@ Users
 ├── All Users
 └── Add User
 
+Roles & Permissions
+
 Academic Structure
 ├── Academic Years
 ├── Academic Terms
+├── Teacher Profiles
 ├── Classes
 ├── Sections
 └── Subjects
@@ -293,6 +309,11 @@ Profile
 # 10. TEACHER MENU
 
 Dashboard
+
+Academic Structure
+├── Assigned Classes
+├── Assigned Sections
+└── Assigned Subjects
 
 Students
 ├── Assigned Students
@@ -457,36 +478,85 @@ Academic Years
 │
 ├── Create Academic Year
 ├── Edit Academic Year
-└── Activate Academic Year
+├── Activate Academic Year
+├── Deactivate Non-Current Academic Year
+└── Reactivate Academic Year as Non-Current
 
 Academic Terms
 │
 ├── Create Term
 ├── Edit Term
-└── Manage Term
+├── Activate Term
+├── Deactivate Term
+└── Reactivate Term under an Active Academic Year
+
+Teacher Profiles
+│
+├── Link Teacher User
+├── Edit Academic Profile
+├── Activate or Deactivate
+└── Archive or Restore
 
 Classes
 │
 ├── Create Class
 ├── Edit Class
-└── View Class
+├── View Class
+├── Deactivate Class
+└── Archive or Restore
 
 Sections
 │
 ├── Create Section
 ├── Edit Section
-└── View Section
+├── Assign Class Teacher
+├── View Section
+├── Deactivate Section
+└── Archive or Restore
 
 Subjects
 │
 ├── Create Subject
 ├── Edit Subject
-└── View Subject
+├── Assign Teacher
+├── View Subject
+├── Deactivate Subject
+└── Archive or Restore
 
 Access:
 
-* School Admin: full access
-* Teacher: view assigned classes and subjects
+* Super Admin: Platform-context read-only lists and details across schools.
+* School Admin: own-school management subject to exact `academic.*` permissions.
+* Teacher: read-only assigned Sections, assigned Subjects, and related Classes
+  through their own active Teacher Profile. No Academic Year or Term management.
+* Accountant: denied.
+
+Route Families:
+
+* `/academic-years`
+* `/academic-terms`
+* `/teacher-profiles`
+* `/classes`
+* `/sections`
+* `/subjects`
+
+Lifecycle Rules:
+
+* Academic years cannot overlap. Activating an active year transactionally
+  replaces the school's previous current year; a current year cannot be
+  deactivated, and all Terms must be inactive before a non-current year is
+  deactivated. Reactivation restores active status without making the year
+  current.
+* Terms must be ordered, non-overlapping, and contained within their parent
+  Academic Year. Reactivation requires an active parent year.
+* Academic Years and Terms use status only. Classes, Sections, Subjects, and
+  Teacher Profiles prefer deactivation and require an inactive, dependency-safe
+  record before archive.
+* A Teacher Profile cannot deactivate or archive while an active Section or
+  Subject assignment remains. Restore revalidates the immutable linked Teacher
+  user and returns the profile inactive before separate activation.
+* Cross-tenant route binding and forged parent or Teacher Profile IDs are denied
+  without exposing record existence.
 
 ---
 

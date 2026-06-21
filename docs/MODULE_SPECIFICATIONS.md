@@ -261,17 +261,40 @@ Purpose:
 
 Manage academic organization.
 
+Canonical Phase 5 Scope:
+
+* Academic Years
+* Academic Terms
+* Minimal Teacher Profiles
+* Classes
+* Sections
+* Subjects
+
+"Academic Sessions" means the combined Academic Year and Academic Term
+lifecycle. Student Enrollment is part of Student Management in Phase 6.
+
 Features:
 
 Academic Years
 
 * Create Academic Year
+* Edit Academic Year
 * Activate Academic Year
+* Deactivate or Reactivate Non-Current Academic Year
 
 Academic Terms
 
 * Create Terms
-* Manage Terms
+* Edit Terms
+* Activate or Deactivate Terms
+* Reactivate Terms under an active Academic Year
+
+Teacher Profiles
+
+* Link an existing same-school Teacher-role user
+* Maintain employee code and academic profile fields
+* Activate, Deactivate, Archive, and Restore
+* Support Section and Subject assignments only
 
 Classes
 
@@ -281,17 +304,20 @@ Classes
 Sections
 
 * Create Section
-* Assign Teacher
+* Edit Section
+* Assign an active same-school Teacher Profile
 
 Subjects
 
 * Create Subject
-* Assign Subject
+* Edit Subject
+* Assign an active same-school Teacher Profile
 
 Screens:
 
 * Academic Years
 * Academic Terms
+* Teacher Profiles
 * Classes
 * Sections
 * Subjects
@@ -301,6 +327,89 @@ Reports:
 * Class Directory
 * Section Directory
 * Subject Directory
+
+Access Contract:
+
+* Super Admin: read-only Platform-context lists and details across schools when
+  `academic.view` is effective. No academic mutation is permitted.
+* School Admin: own-school management only. Each action requires its exact
+  effective `academic.view`, `academic.create`, `academic.update`,
+  `academic.delete`, or `academic.export` permission.
+* Teacher: read-only access when `academic.view` is effective, limited to
+  Sections and Subjects assigned to their own active Teacher Profile and the
+  related Classes. No unassigned directory, mutation, export, Academic Year, or
+  Academic Term administration access is permitted.
+* Accountant: no Academic Structure screen, menu, service, or route access.
+
+Tenant And Relationship Contract:
+
+* Every Phase 5 model uses `BelongsToTenant`; TenantContext supplies
+  `school_id`.
+* Requests cannot submit or change tenant ownership.
+* Services verify same-school Academic Year, Term, Class, Teacher Profile,
+  Section, Subject, and linked User relationships independently of validation.
+* Cross-tenant route-model binding returns 404. Forged cross-tenant parent IDs
+  fail without revealing record existence.
+* A Teacher Profile requires an active, non-deleted, same-school Teacher-role
+  User and remains one-to-one with that User.
+* The linked User is immutable after profile creation. Archived profiles remain
+  retained and prevent a second profile for that User.
+* A User linked to any retained Teacher Profile cannot change role or school in
+  the MVP.
+
+Lifecycle Contract:
+
+* Academic Years cannot overlap within a school. Activation transactionally
+  locks the owning School and its Academic Years, clears the previous current
+  flag, and marks one active target current. A current year cannot be
+  deactivated, and a non-current year with active Terms cannot be deactivated.
+  Reactivation restores active, non-current status.
+* Academic Terms must be ordered, non-overlapping, and contained inside their
+  parent year. A Term cannot be active or reactivated when its parent year is
+  inactive.
+* Academic Years and Terms use status lifecycle only; no soft-delete route is
+  permitted.
+* Classes, Sections, Subjects, and Teacher Profiles prefer deactivation and may
+  be archived only when inactive and free of active downstream dependencies.
+  Teacher Profile deactivation is also blocked by active Section or Subject
+  assignments. Restoration returns the profile inactive after revalidating its
+  linked Teacher user.
+* Soft-deleted unique names, codes, and employee codes remain reserved;
+  restoration reuses the original record.
+* `academic.delete` authorizes only the documented deactivation or archive
+  transition, never hard deletion.
+
+Activity And Audit Contract:
+
+* Activity module: `academic_structure`.
+* Allowed activity actions: `created`, `updated`, `activated`, `deactivated`,
+  `archived`, and `restored`.
+* Audit records target the mutated model and contain sanitized changed fields.
+* Tenant mutations derive log ownership from TenantContext and commit their
+  activity and audit records inside the same transaction.
+
+Implementation Boundary:
+
+* Use thin controllers, dedicated Form Requests, Policies, and service-layer
+  workflows.
+* Canonical models are `AcademicYear`, `AcademicTerm`, `Teacher`, `SchoolClass`,
+  `Section`, and `Subject`. `SchoolClass` maps to `classes`; Teacher Profile is
+  the UI label for `Teacher`.
+* Student registration, Student Enrollment, attendance, fees, examinations,
+  timetable, HR, payroll, and staff attendance remain out of scope.
+* No Phase 5 route becomes active solely because an `academic.*` permission
+  exists.
+
+Implementation Status:
+
+* The six-table schema, canonical tenant-aware models, inverse relationships,
+  casts, soft-delete boundaries, and retained Teacher Profile user identity
+  safeguard are implemented.
+* Academic Year, Academic Term, and Teacher Profile services, Policies, Form
+  Requests, controllers, routes, menus, views, lifecycle rules, and mutation
+  activity/audit workflows are implemented.
+* Class, Section, Subject, assigned-Teacher reads, and Academic Structure exports
+  remain pending.
 
 ---
 

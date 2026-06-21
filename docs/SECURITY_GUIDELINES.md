@@ -268,6 +268,49 @@ Implementation Status:
   forged-ID rejection, stale-write detection, transactional logging, and
   rollback on failure. The Phase 4 security and release reviews are approved.
 
+## Phase 5 Academic Structure Security Contract
+
+* Academic Structure models are strict tenant-owned and must use automatic
+  `BelongsToTenant` scope enforcement.
+* Tenant ownership is derived from TenantContext. `school_id` is prohibited in
+  create and update requests.
+* Services revalidate same-school Academic Year, Term, Class, Teacher Profile,
+  Section, Subject, and linked User relationships. A valid foreign key from a
+  different school is a denied forged-parent attempt.
+* Super Admin access is Platform-context and read-only. School Admin mutations
+  require matching Tenant context and the exact `academic.*` permission.
+* Teacher access is read-only and derives assignments from the authenticated
+  user's active Teacher Profile. Request parameters cannot select another
+  teacher's assignment scope. Accountant access is denied.
+* Academic-year activation is transactional and serialized by locking the
+  owning School and tenant year rows. Overlapping years and multiple current
+  years are rejected. Current years and non-current years with active Terms
+  cannot be deactivated.
+* Terms must remain inside the parent year and cannot overlap another term in
+  that year.
+* Teacher-role or school changes are denied while any retained Teacher Profile
+  exists. Cross-school Teacher Profile transfer is not supported.
+* Deactivation and dependency-safe archival replace hard deletion. Every foreign
+  key remains `restrictOnDelete()`.
+* Academic mutations and their sanitized activity/audit records commit or roll
+  back together under the tenant school.
+
+Implementation Status:
+
+* Core Phase 5 schema/models enforce automatic tenant scope, tenant-derived and
+  immutable ownership, restricted foreign keys, approved soft deletes, and the
+  retained Teacher Profile role/school-change guard.
+* Academic Year and Academic Term services enforce actor-context alignment,
+  exact permissions, Platform read-only access, tenant-safe parent validation,
+  serialized current-year activation, retained status lifecycle, and
+  transaction-coupled activity/audit records.
+* Teacher Profile services enforce same-school active Teacher-user eligibility,
+  immutable linked identity, retained archived uniqueness, active-assignment
+  lifecycle guards, restore-time revalidation, exact permissions, and
+  transaction-coupled logs.
+* Class, Section, Subject, and assigned-record authorization workflows remain
+  pending.
+
 ---
 
 # 9. MULTI-TENANT SECURITY

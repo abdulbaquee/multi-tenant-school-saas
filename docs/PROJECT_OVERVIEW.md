@@ -78,6 +78,7 @@ The project includes the following functional areas:
 
 * Academic Years
 * Academic Terms
+* Minimal Teacher Profiles for academic assignments
 * Classes
 * Sections
 * Subjects

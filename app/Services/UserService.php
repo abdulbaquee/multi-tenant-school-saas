@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Role;
 use App\Models\School;
+use App\Models\Teacher;
 use App\Models\User;
 use App\Tenancy\TenantContext;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -148,6 +149,14 @@ class UserService
         $roleChanged = (int) $user->role_id !== (int) $data['role_id'];
         $schoolOwnershipChanged = $this->normalizeSchoolId($oldValues['school_id'])
             !== $this->normalizeSchoolId($data['school_id'] ?? null);
+
+        if ($roleChanged || $schoolOwnershipChanged) {
+            $this->ensureTeacherProfileAllowsIdentityChange(
+                $user,
+                $roleChanged,
+                $schoolOwnershipChanged,
+            );
+        }
 
         if ($roleChanged && ! $actor->hasPermission('roles.assign')) {
             throw new AuthorizationException('You cannot assign user roles.');
@@ -374,6 +383,28 @@ class UserService
         if (! $allowed) {
             throw new AuthorizationException;
         }
+    }
+
+    private function ensureTeacherProfileAllowsIdentityChange(
+        User $user,
+        bool $roleChanged,
+        bool $schoolOwnershipChanged,
+    ): void {
+        if (! Teacher::withTrashed()->where('user_id', $user->id)->exists()) {
+            return;
+        }
+
+        $errors = [];
+
+        if ($roleChanged) {
+            $errors['role_id'] = 'A user with a retained Teacher Profile cannot change roles.';
+        }
+
+        if ($schoolOwnershipChanged) {
+            $errors['school_id'] = 'A user with a retained Teacher Profile cannot change schools.';
+        }
+
+        throw ValidationException::withMessages($errors);
     }
 
     private function authorizeActorContext(User $actor): void

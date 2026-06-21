@@ -417,17 +417,107 @@ Status: Completed
 
 ---
 
+# [0.6.1] - Phase 5 Academic Design Remediation
+
+Date: 2026-06-21
+
+Status: Completed
+
+## Added
+
+* DECISION-030 defining the six-entity Phase 5 boundary and keeping Student
+  Enrollment in Phase 6.
+* Minimal Teacher Profile scope for same-tenant Section and Subject assignments.
+* Transaction-safe current Academic Year lifecycle and non-overlapping Year and
+  Term date rules.
+* Explicit Super Admin read-only, School Admin management, Teacher assigned-read,
+  and Accountant-denied access contracts.
+* Tenant-safe parent, linked-user, and Teacher Profile relationship validation.
+* Deactivation, dependency-safe archive, restore, reserved-unique-value, and
+  historical-retention rules.
+* Academic Structure activity/audit vocabulary and mandatory Phase 5 test
+  coverage.
+
+## Changed
+
+* Removed Student Enrollment from the Academic Structure architecture grouping.
+* Added Sections to the approved soft-delete decision.
+* Reconciled roadmap, architecture, database, tenancy, modules, screens,
+  security, testing, UI, governance, and project overview documentation.
+
+## Notes
+
+* Documentation and prompt files only.
+* No migration, model, controller, service, route, view, test, package, or
+  application file was created or changed.
+
+## Verification
+
+* Phase 5 readiness rerun: READY at 9.7/10 with no blocking issues.
+* Existing application suite: 154 tests and 830 assertions passed.
+* Documentation consistency and whitespace validation passed.
+
+---
+
 # [0.7.0] - Academic Management
 
-Status: Planned
+Date: 2026-06-21
+
+Status: In Progress — Teacher Profile Management Completed
+
+## Added
+
+* Academic Years, Academic Terms, Classes, Teachers, Sections, and Subjects
+  migrations with documented named indexes and restricted foreign keys.
+* Canonical `AcademicYear`, `AcademicTerm`, `SchoolClass`, `Teacher`, `Section`,
+  and `Subject` models.
+* Automatic `BelongsToTenant` isolation, tenant-derived ownership, immutable
+  ownership, relationships, casts, and approved soft-delete boundaries.
+* School and User inverse Academic Structure relationships.
+* User Management validation preventing role or school changes while an active
+  or soft-deleted Teacher Profile is retained.
+* Core schema, relationship, constraint, isolation, ownership, casting,
+  soft-delete, and User safeguard tests.
+* Academic Year and Academic Term Policies, Form Requests, services,
+  controllers, routes, and responsive Blade workspaces.
+* Platform-wide Super Admin read-only directories and details with school
+  context, plus own-tenant School Admin management.
+* Academic Year overlap prevention, retained-Term date protection,
+  transactional single-current-year activation, deactivation guards, and
+  non-current reactivation.
+* Academic Term parent alignment, positive unique ordering, parent-range and
+  overlap validation, deactivation, and parent-aware reactivation.
+* Transaction-coupled `academic_structure` activity and sanitized audit
+  evidence for every Year and Term mutation.
+* Allowed, denied, tenant-isolation, exact-permission, lifecycle, rollback,
+  navigation, and no-delete feature coverage.
+* Teacher Profile Policy, scoped eligibility Requests, tenant-aware service,
+  thin controller, retained-record routes, and responsive Blade workspace.
+* Existing-user linking limited to active, non-deleted, same-school, unlinked
+  Teacher-role users with immutable profile identity.
+* Active, inactive, and archived directories; dependency-aware deactivation and
+  archival; inactive restoration; and explicit activation.
+* Reserved employee codes, retained-profile User safeguards, historical User and
+  Class relationship rendering, and Section/Subject assignment visibility.
+* Teacher Profile allowed, denied, tenant-isolation, exact-permission,
+  eligibility, lifecycle, dependency, rollback, navigation, and retention tests.
+
+## Verification
+
+* Full application suite: 195 tests and 1,313 assertions passed.
+* Focused Academic Structure schema suite: 7 tests and 159 assertions passed.
+* Focused Academic Year and Term management suite: 17 tests and 175 assertions
+  passed.
+* Focused Teacher Profile management suite: 17 tests and 149 assertions passed.
+* Isolated in-memory migration and canonical seed completed successfully.
+* Academic routes and Blade compilation validated successfully.
+* Laravel Pint, frontend production build, Composer validation, and whitespace
+  checks passed.
 
 ## Planned
 
-* Classes
-* Sections
-* Subjects
-* Academic sessions
-* Student enrollment
+* Class, Section, and Subject management
+* Remaining Phase 5 feature, authorization, lifecycle, audit, and UI tests
 
 ## Deliverables
 
@@ -612,7 +702,7 @@ Example:
 
 # Current Project Status
 
-Phase: Implementation Phase (Phase 4 — Completed and Release-Approved)
+Phase: Phase 5 Teacher Profile Management Completed — Class, Section, And Subject Workflows Pending
 
 Repository Setup: Completed
 
@@ -626,4 +716,4 @@ Application Implementation: Phase 2 completed; Phase 3 tenant infrastructure,
 School Management, School Settings, security logging, tenant-isolation review,
 security review, documentation review, code review, and release review completed
 
-Next Task: Create and execute the Phase 5 Academic Structure readiness review
+Next Task: Create and execute the Phase 5 Class management prompt

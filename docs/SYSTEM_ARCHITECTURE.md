@@ -486,7 +486,8 @@ The architecture groups them as follows:
 3. School Settings Module
 4. User Management Module
 5. Role & Permission Module
-6. Academic Structure Module (Academic Years, Terms, Classes, Sections, Subjects, Enrollment)
+6. Academic Structure Module (Academic Years, Terms, minimal Teacher Profiles,
+   Classes, Sections, and Subjects)
 7. Student Management Module
 8. Attendance Management Module
 9. Fee Management Module
@@ -496,6 +497,71 @@ The architecture groups them as follows:
 13. Activity Log Module
 14. Audit Trail Module
 15. Backup Management Module
+
+---
+
+## Phase 5 Academic Structure Architecture
+
+Phase 5 owns Academic Years, Academic Terms, minimal Teacher Profiles, Classes,
+Sections, and Subjects. Student Enrollment remains in Student Management.
+
+Dependency order:
+
+1. Academic Years
+2. Academic Terms
+3. Classes
+4. Teacher Profiles linked to existing Users
+5. Sections linked to Classes and optional Teacher Profiles
+6. Subjects linked to Classes and optional Teacher Profiles
+
+Canonical Laravel names:
+
+| Table | Model | Service | Notes |
+| ----- | ----- | ------- | ----- |
+| `academic_years` | `AcademicYear` | `AcademicYearService` | Academic-year lifecycle and current activation. |
+| `academic_terms` | `AcademicTerm` | `AcademicTermService` | Parent-range and term-order lifecycle. |
+| `teachers` | `Teacher` | `TeacherService` | UI label is Teacher Profile. |
+| `classes` | `SchoolClass` | `SchoolClassService` | Uses `$table = 'classes'`; `Class` is a PHP reserved keyword. |
+| `sections` | `Section` | `SectionService` | Class and optional Teacher relationship. |
+| `subjects` | `Subject` | `SubjectService` | Class and optional Teacher relationship. |
+
+Controllers, Form Requests, and Policies use these model names consistently.
+Routes retain the user-facing `/classes` and `/teacher-profiles` paths.
+
+All six models are strict tenant-owned and use `BelongsToTenant`. Controllers
+remain thin; Form Requests validate shape and tenant-scoped existence; Policies
+combine exact `academic.*` permissions with role and record boundaries; services
+revalidate TenantContext, same-school relationships, lifecycle transitions,
+transactions, and activity/audit writes.
+
+The Academic Year activation service serializes changes by locking the owning
+School and tenant Academic Year rows in one transaction. Academic Term services
+enforce parent range and non-overlap. Class, Section, Subject, and Teacher
+Profile services enforce dependency-safe deactivation, archive, and restore.
+User Management must reject role or school changes for a User linked to any
+retained Teacher Profile.
+
+Super Admin execution is explicit Platform-context and read-only. School Admin
+execution is Tenant-context management. Teacher execution resolves the actor's
+active Teacher Profile and restricts reads to assigned Sections, assigned
+Subjects, and related Classes. Accountant execution is denied.
+
+Activity and audit records use module `academic_structure`, inherit tenant
+ownership, and participate in the domain transaction. No Phase 5 service may
+remove `TenantScope` or accept request-selected `school_id`.
+
+Implementation Status:
+
+* Core migration, six canonical models, automatic TenantScope behavior,
+  relationships, casts, soft-delete boundaries, and retained Teacher Profile
+  User safeguards are implemented.
+* Academic Year and Academic Term Policies, Form Requests, services,
+  transactional lifecycle rules, tenant-safe HTTP/UI workflows, and
+  activity/audit evidence are implemented.
+* Teacher Profile eligible-user linking, immutable identity, dependency-safe
+  lifecycle, retained-record routing, tenant-safe HTTP/UI, and activity/audit
+  workflows are implemented.
+* Class, Section, Subject, and assigned-Teacher read workflows remain pending.
 
 ---
 

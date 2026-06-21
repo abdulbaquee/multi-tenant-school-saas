@@ -39,12 +39,14 @@ Single Database Multi-Tenant SaaS
 
 Current Phase:
 
-Phase 5 — Academic Structure Readiness Gate
+Phase 5 — Academic Structure Foundation
 
 Progress:
 
 Phase 4 Roles & Permissions is completed and release-approved. Phase 5 Academic
-Structure readiness review is next.
+Structure design, core schema, tenant-aware models, Academic Year management,
+Academic Term management, and Teacher Profile management are implemented.
+Class, Section, and Subject workflows remain pending.
 
 Repository:
 
@@ -172,14 +174,29 @@ Status: Completed
 
 # Phase 5 — Academic Structure
 
-Status: Pending
+Status: In Progress — Teacher Profile Management Completed
 
 ## Features
 
-* Academic Sessions
+* Academic Years
+* Academic Terms
+* Minimal Teacher Profiles
 * Classes
 * Sections
 * Subjects
+
+Core schema, tenant-aware models, relationships, and Teacher Profile user
+identity safeguards: Completed.
+
+Academic Year and Academic Term directories, forms, lifecycle services,
+Policies, tenant-safe routes, UI, activity/audit evidence, and tests: Completed.
+
+Teacher Profile identity linking, profile fields, lifecycle services, retained
+history, tenant-safe UI, activity/audit evidence, and tests: Completed.
+
+Class, Section, and Subject management workflows: Pending.
+
+Student registration and Student Enrollment remain Phase 6.
 
 ## Deliverables
 
@@ -347,5 +364,4 @@ Project ready for final evaluation and submission.
 
 # Next Immediate Task
 
-Create and execute the Phase 5 Academic Structure readiness-review prompt before
-implementing academic years, terms, classes, sections, subjects, or teachers.
+Create and execute the Phase 5 Class management prompt.

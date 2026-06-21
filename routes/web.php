@@ -1,10 +1,13 @@
 <?php
 
+use App\Http\Controllers\AcademicTermController;
+use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\SchoolSettingController;
+use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +38,34 @@ Route::middleware(['auth', 'tenant.context'])->group(function () {
     Route::get('/roles/{role}', [RoleController::class, 'show'])->name('roles.show');
     Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
     Route::put('/roles/{role}/permissions', [RoleController::class, 'update'])->name('roles.permissions.update');
+
+    Route::patch('/academic-years/{academic_year}/activate', [AcademicYearController::class, 'activate'])
+        ->name('academic-years.activate');
+    Route::patch('/academic-years/{academic_year}/deactivate', [AcademicYearController::class, 'deactivate'])
+        ->name('academic-years.deactivate');
+    Route::patch('/academic-years/{academic_year}/reactivate', [AcademicYearController::class, 'reactivate'])
+        ->name('academic-years.reactivate');
+    Route::resource('academic-years', AcademicYearController::class)->except(['destroy']);
+
+    Route::patch('/academic-terms/{academic_term}/deactivate', [AcademicTermController::class, 'deactivate'])
+        ->name('academic-terms.deactivate');
+    Route::patch('/academic-terms/{academic_term}/reactivate', [AcademicTermController::class, 'reactivate'])
+        ->name('academic-terms.reactivate');
+    Route::resource('academic-terms', AcademicTermController::class)->except(['destroy']);
+
+    Route::patch('/teacher-profiles/{teacher_profile}/activate', [TeacherController::class, 'activate'])
+        ->name('teacher-profiles.activate');
+    Route::patch('/teacher-profiles/{teacher_profile}/deactivate', [TeacherController::class, 'deactivate'])
+        ->name('teacher-profiles.deactivate');
+    Route::patch('/teacher-profiles/{teacher_profile}/archive', [TeacherController::class, 'archive'])
+        ->name('teacher-profiles.archive');
+    Route::patch('/teacher-profiles/{teacher_profile}/restore', [TeacherController::class, 'restore'])
+        ->withTrashed()
+        ->name('teacher-profiles.restore');
+    Route::resource('teacher-profiles', TeacherController::class)
+        ->parameters(['teacher-profiles' => 'teacher_profile'])
+        ->withTrashed(['show'])
+        ->except(['destroy']);
 });
 
 require __DIR__.'/auth.php';

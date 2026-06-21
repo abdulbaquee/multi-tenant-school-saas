@@ -523,6 +523,7 @@ Applies To:
 * Teachers
 * Users
 * Classes
+* Sections
 * Subjects
 * Exams
 
@@ -1074,6 +1075,103 @@ gate approved Phase 4 with no blocking issues.
 
 ---
 
+# DECISION-030
+
+Date:
+2026-06-21
+
+Title:
+Define Phase 5 Academic Structure And Lifecycle Boundaries
+
+Status:
+Approved
+
+Decision:
+
+Phase 5 implements Academic Years, Academic Terms, minimal Teacher Profiles,
+Classes, Sections, and Subjects as one tenant-owned Academic Structure module.
+"Academic Sessions" is documentation shorthand for the combined academic-year
+and academic-term lifecycle; implementation uses the canonical entity names.
+Student registration and Student Enrollment remain Phase 6.
+
+Teacher Profiles exist only to link an existing active Teacher-role user to
+academic identity and section/subject assignments. Payroll, staff attendance,
+HR, timetable, and general staff-management features are excluded. A Teacher
+Profile must belong to the same school as its user, and the user cannot change
+role or school while any retained Teacher Profile exists. This deliberately
+avoids cross-tenant profile transfer and preserves the one-profile-per-user
+history in the MVP.
+
+Every Phase 5 model uses `BelongsToTenant`; TenantContext supplies `school_id`.
+Services and Policies must verify that every parent, linked user, and teacher
+assignment belongs to the same active school. Request input never chooses the
+tenant.
+
+Academic years cannot overlap within one school. Creation produces a non-current
+year unless an authorized activation workflow is executed. Activation runs in
+one transaction, locks the owning school and its academic years, clears the
+previous current flag, and marks one active target current. At most one current
+year is allowed per school. A current year cannot be deactivated; activate its
+replacement first. A non-current year cannot be deactivated until all of its
+Terms are inactive. Reactivating an inactive year restores active, non-current
+status; making it current remains a separate authorized activation.
+
+Academic terms must have positive unique ordering within their year, dates
+inside the parent academic-year range, and no date overlap with another term in
+that year. An inactive Term may be reactivated only while its parent year is
+active and its dates remain valid. Academic years and terms use status lifecycle
+only and are never soft deleted in the MVP.
+
+Classes, Sections, Subjects, and Teacher Profiles prefer deactivation. They may
+be soft deleted only when inactive and free of active downstream assignments or
+records. Their tenant-scoped unique names, codes, and employee codes remain
+reserved after soft deletion; restoration reuses the original record. Teacher
+Profile deactivation is also blocked while active Section or Subject assignments
+remain. Its linked User is immutable, and restoration requires that User to
+remain an active, non-deleted, same-school Teacher. Restoration returns the
+profile inactive so activation remains an explicit authorized transition.
+
+Super Admin receives explicit Platform-context read-only Academic Structure
+access. School Admin manages Academic Structure inside the active tenant when
+the exact `academic.*` permission is effective. Teacher receives read-only
+access only to Sections and Subjects assigned through their own active Teacher
+Profile and to the related Classes. Accountant has no Academic Structure access.
+
+Academic mutations use activity module `academic_structure` with the action
+vocabulary `created`, `updated`, `activated`, `deactivated`, `archived`, and
+`restored`. Audit records target the mutated model, contain sanitized changed
+fields, inherit the tenant school from TenantContext, and are written in the
+same transaction as the mutation.
+
+Reason:
+
+* Removes scope conflicts between Academic Structure and Student Enrollment.
+* Makes teacher assignment and assigned-record authorization implementable.
+* Prevents cross-tenant parent and teacher references.
+* Defines deterministic academic-year and term lifecycle behavior.
+* Preserves history without introducing scheduling or HR complexity.
+* Keeps the Phase 5 design demonstrable and explainable for MCA evaluation.
+
+Alternatives Considered:
+
+* Defer Teacher Profiles - rejected because Section/Subject assignment and
+  Teacher read scope would remain undefined.
+* Include Student Enrollment - rejected because it belongs to Student
+  Management in Phase 6.
+* Permit overlapping years or terms - rejected because current context and
+  reporting would become ambiguous.
+* Transfer Teacher Profiles across schools - rejected as unnecessary
+  cross-tenant lifecycle complexity for the MVP.
+* Hard-delete academic structure - rejected because later academic history must
+  remain reportable.
+
+Outcome:
+
+Phase 5 has one canonical scope, lifecycle model, role boundary, tenant contract,
+retention strategy, audit vocabulary, and testable implementation sequence.
+
+---
+
 # DECISION CHANGE PROCESS
 
 New decisions must include:
@@ -1112,4 +1210,4 @@ Development Decisions:
 Completed
 
 Project Ready For:
-Phase 5 Academic Structure Readiness Review
+Phase 5 Class Management Prompt

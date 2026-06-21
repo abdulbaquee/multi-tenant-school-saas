@@ -407,6 +407,81 @@ Stores teacher profile records linked to users.
 
 ---
 
+## Phase 5 Academic Integrity Contract
+
+All six Phase 5 tables are strict tenant-owned tables. Their models must use
+`BelongsToTenant`; `school_id` is derived from TenantContext and is never trusted
+from request input. Foreign keys enforce existence, while Policies and Services
+must additionally enforce same-school ownership for every relationship.
+
+Canonical Eloquent models are `AcademicYear`, `AcademicTerm`, `Teacher`,
+`SchoolClass`, `Section`, and `Subject`. `SchoolClass` explicitly maps to the
+`classes` table because `Class` is a PHP reserved keyword. The `Teacher` model is
+presented as Teacher Profile in the UI.
+
+Academic Year rules:
+
+* `start_date` must be before `end_date`.
+* Date ranges cannot overlap another academic year in the same school.
+* New years are non-current by default. Current-year activation is a dedicated
+  transaction that locks the owning `schools` row and tenant academic-year rows,
+  clears any previous `is_current` value, and marks the active target current.
+* At most one year per school may be current. A current year cannot be
+  deactivated; another year must be activated first.
+* A non-current year cannot be deactivated while it has an active Academic Term.
+* Academic years use `status` lifecycle only and are not soft deleted.
+
+Academic Term rules:
+
+* `start_date` must be before `end_date` and both dates must fall inside the
+  parent academic year.
+* `term_order` must be a positive integer and remains unique within the year.
+* Term names and date ranges cannot duplicate or overlap inside one academic
+  year.
+* A term cannot be activated when its parent year is inactive.
+* Academic terms use `status` lifecycle only and are not soft deleted.
+
+Teacher Profile rules:
+
+* `user_id` must identify an active, non-deleted Teacher-role user from the same
+  school. One retained profile is allowed per user.
+* `user_id` is immutable after profile creation; a different linked identity
+  requires no transfer workflow in the MVP.
+* A user linked to any retained Teacher Profile cannot change role or school;
+  cross-school Teacher Profile transfer is not supported in the MVP.
+* Only active, non-deleted Teacher Profiles may receive new Section or Subject
+  assignments.
+
+Class, Section, Subject, and Teacher Profile rules:
+
+* Deactivation is the normal removal workflow and is blocked while a Teacher
+  Profile has an active Section or Subject assignment.
+* Soft deletion requires inactive status and no active downstream assignments or
+  records. Future modules may add stricter history checks before archival.
+* Teacher Profile restoration requires its linked User to remain active,
+  non-deleted, same-school, and Teacher-role. Restoration returns the original
+  profile inactive; activation remains a separate workflow.
+* Other restoration workflows require parent records to remain active and
+  tenant-aligned.
+* Existing tenant-scoped unique names, codes, and employee codes stay reserved
+  after soft deletion. Reuse requires restoration of the original record.
+* Section `class_id`, Subject `class_id`, and optional `teacher_id` values must
+  resolve inside the active tenant. Database foreign keys alone do not prove
+  tenant alignment.
+
+All Phase 5 foreign keys use `restrictOnDelete()`. No hard-delete or cascading
+workflow is permitted.
+
+Implementation Status:
+
+* The six Phase 5 tables, documented named indexes, unique constraints,
+  restricted foreign keys, soft-delete columns, tenant-aware models,
+  relationships, and casts are implemented.
+* Academic Year, Academic Term, and Teacher Profile management workflows are
+  implemented. Class, Section, and Subject management remain pending.
+
+---
+
 ## 7.7 students
 
 Stores student master records. Student photos must use private storage.

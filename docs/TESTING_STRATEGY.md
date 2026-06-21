@@ -912,6 +912,148 @@ Recorded on 2026-06-21:
 * The Phase 4 tenant-isolation, security, documentation, code, and release
   reviews completed with no blocking findings.
 
+## Phase 5 Academic Structure Required Coverage
+
+Before Phase 5 release, tests must prove:
+
+Tenant and relationship isolation:
+
+* Every Academic Year, Academic Term, Teacher Profile, Class, Section, and
+  Subject model applies `BelongsToTenant` automatically.
+* Unresolved context returns no tenant records and cannot create them.
+* Tenant creation derives `school_id`; forged ownership input is rejected or
+  overwritten by context.
+* School A cannot list, search, view, route-bind, update, deactivate, archive,
+  restore, export, or assign any School B academic record.
+* Forged same-table and parent IDs from another school fail without exposing
+  record existence.
+* Direct services reject Unresolved, Platform-for-school-actor, mismatched
+  Tenant, Tenant-for-Super-Admin, inactive-school, and malformed-user contexts.
+
+Authorization:
+
+* Super Admin receives Platform-context read-only access and every mutation is
+  denied.
+* School Admin actions require the exact effective `academic.view`,
+  `academic.create`, `academic.update`, `academic.delete`, and
+  `academic.export` permission plus matching Tenant context.
+* Teacher sees only Sections and Subjects assigned through their own active
+  Teacher Profile and related Classes; unassigned records, directories,
+  Academic Year/Term administration, exports, and mutations are denied.
+* Accountant, guests, inactive users, and malformed users receive no Academic
+  Structure menu or route access.
+* Menu visibility, buttons, Policies, Form Requests, controllers, services, and
+  direct URLs agree after a permission mapping changes.
+
+Academic lifecycle and validation:
+
+* Academic Year names are tenant-unique, dates are ordered, and ranges do not
+  overlap inside a school.
+* Activation permits at most one current year per school, clears the previous
+  current year transactionally, rejects inactive targets, and prevents current-
+  year deactivation. A non-current year with active Terms also rejects
+  deactivation. Sequential activation and forced rollback preserve a valid
+  current-year state.
+* Academic Terms have tenant-aligned parents, positive unique order, unique
+  names, ordered dates inside the parent year, no overlap, and cannot activate
+  under an inactive year.
+* Teacher Profiles require a unique active same-school Teacher-role User.
+  Wrong-role, cross-school, inactive, deleted, duplicate, and forged users are
+  denied. Role or school reassignment is denied while a retained profile exists.
+* Sections and Subjects accept only same-school active Classes and active
+  Teacher Profiles. Optional teacher assignment can be cleared safely.
+* Schema lengths, status values, subject types, capacity, sort order, employee
+  code, phone, and date fields receive boundary validation.
+
+Retention, audit, and rollback:
+
+* Academic Years and Terms have no soft-delete or hard-delete route.
+* Class, Section, Subject, and Teacher Profile archival requires inactive status
+  and no active dependency; restoration preserves reserved unique identity.
+* Hard deletes and cascades are unavailable, and downstream historical records
+  remain intact.
+* Each mutation writes tenant-owned `academic_structure` activity plus sanitized
+  audit old/new values in the same transaction.
+* Forced activity or audit failure rolls back both the domain mutation and all
+  log records.
+
+UI and workflow:
+
+* Lists are responsive, searchable where specified, tenant-safe, and include
+  empty, success, validation, inactive, and archived states.
+* Academic Year, Term, Teacher Profile, Class, Section, and Subject forms have
+  labels, required indicators, accessible errors, stable controls, and
+  confirmation for destructive lifecycle transitions.
+* Super Admin and Teacher read-only screens render no mutation controls.
+
+## Phase 5 Core Academic Schema Baseline
+
+Recorded on 2026-06-21:
+
+* Full application suite: 161 tests and 989 assertions passed.
+* Schema tests verify all six tables, documented columns, named indexes, unique
+  constraints, and representative restricted foreign-key enforcement.
+* Automatic-isolation tests cover every Phase 5 model across School A, School B,
+  explicit Platform, and Unresolved context.
+* Creation tests prove TenantContext supplies ownership, forged `school_id`
+  cannot override context, and Unresolved or Platform state cannot create strict
+  tenant-owned records.
+* Ownership tests prove `school_id` is immutable on every Phase 5 model.
+* Relationship and cast tests cover Academic Year/Term, Class/Section/Subject,
+  Teacher/User assignments, date, boolean, integer, and subject metadata.
+* Soft-delete tests prove only SchoolClass, Teacher, Section, and Subject are
+  archivable; Academic Year and Academic Term remain status-only.
+* User Management tests prove active and soft-deleted Teacher Profiles block
+  role and school reassignment without partial writes or log records.
+* An isolated in-memory migration and canonical seed completed successfully.
+
+## Phase 5 Academic Year And Term Management Baseline
+
+Recorded on 2026-06-21:
+
+* Focused workflow suite: 17 tests and 175 assertions passed.
+* Full application suite: 178 tests and 1,164 assertions passed.
+* Platform tests prove Super Admin can read records across schools while every
+  Academic Year and Term mutation remains denied.
+* School-role tests prove School Admin own-tenant management, Teacher and
+  Accountant denial, malformed-user denial, and immediate menu/route changes
+  after exact permission revocation.
+* Tenant tests prove School A cannot list, filter, route-bind, update,
+  deactivate, or submit School B Academic Year, Term, or parent identifiers.
+* Lifecycle tests cover tenant-unique years, inclusive overlap rejection, Term
+  ordering and containment, single-current-year replacement, current-year and
+  active-Term deactivation guards, and parent-aware reactivation.
+* Transaction tests prove activity and audit failures roll back Year creation,
+  current-year replacement, and Term creation without partial writes.
+* Route and UI tests prove no Year or Term delete endpoint exists, lifecycle
+  confirmation controls are authorized, and one Academic Structure navigation
+  entry remains active across both workspaces.
+
+## Phase 5 Teacher Profile Management Baseline
+
+Recorded on 2026-06-21:
+
+* Focused Teacher Profile suite: 17 tests and 149 assertions passed.
+* Full application suite: 195 tests and 1,313 assertions passed.
+* Platform tests prove Super Admin can read current and archived profiles across
+  schools while every mutation remains denied.
+* Eligibility tests prove only active, non-deleted, same-school, unlinked
+  Teacher-role Users appear or validate; retained archived profiles prevent
+  relinking and keep employee codes reserved.
+* Tenant tests prove School A cannot list, search, bind, update, deactivate,
+  archive, or restore School B profiles, including archived records.
+* Lifecycle tests prove active Section or Subject assignments block both
+  deactivation and archival, dependency-safe profiles archive, restore inactive,
+  and activate only while the linked User remains eligible.
+* Authorization tests cover exact `academic.view`, `academic.create`,
+  `academic.update`, and `academic.delete` revocation plus Teacher, Accountant,
+  inactive, malformed, guest, wrong-context, and Platform-mutation denial.
+* Transaction tests prove audit failure rolls back creation and activity failure
+  rolls back archival without partial domain or log state.
+* Integration tests prove archived profiles continue blocking User role and
+  school changes, linked identity and tenant input remain immutable, and no
+  normal DELETE route exists.
+
 Capture:
 
 * Test Cases

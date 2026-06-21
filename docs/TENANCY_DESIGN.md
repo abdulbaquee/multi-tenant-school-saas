@@ -188,6 +188,43 @@ Teacher, and Accountant mappings but cannot query the Super Admin mapping or
 mutate any shared RBAC row. User role assignment remains tenant-bound through
 User Policy and User Service checks.
 
+## Phase 5 Academic Structure Tenancy Contract
+
+`academic_years`, `academic_terms`, `teachers`, `classes`, `sections`, and
+`subjects` are strict tenant-owned tables. Each model uses `BelongsToTenant`, and
+TenantContext supplies `school_id` on creation. No Academic Structure request
+may accept tenant ownership from user input.
+
+Database foreign keys prove that a parent exists but do not prove tenant
+alignment. Academic services must verify that every Academic Year, Term, Class,
+Teacher Profile, Section, Subject, and linked User belongs to the actor's active
+school. Tenant-scoped route-model binding resolves cross-school identifiers as
+not found before Policy checks.
+
+Teacher Profile creation accepts only an active, non-deleted Teacher-role User
+from the same tenant. New Section and Subject assignments accept only an active,
+non-deleted Teacher Profile from that tenant. Teacher read access derives the
+actor's profile through `teachers.user_id`, then permits only assigned Sections,
+assigned Subjects, and their related Classes. It does not rely on request-supplied
+teacher or school identifiers.
+
+An authorized Super Admin may read Academic Structure records only after
+explicit Platform context and Policy/service authorization. Platform mode does
+not permit Academic Structure mutation in Phase 5. School Admin mutations and
+their activity/audit records remain tenant-owned.
+
+Implementation Status:
+
+* All six Phase 5 models use `BelongsToTenant`; automatic School A, School B,
+  Platform, and Unresolved behavior is covered by foundation tests.
+* Academic Year and Academic Term services, Policies, tenant-scoped parent
+  validation, cross-tenant route binding, Platform read-only access, and
+  tenant-owned mutation logs are implemented and tested.
+* Teacher Profile services enforce same-school eligible User linking,
+  tenant-derived ownership, immutable identity, retained archived-profile
+  isolation, Platform read-only access, and tenant-owned mutation logs.
+* Class, Section, Subject, and assigned-record workflows remain pending.
+
 The `users` exception exists only because authentication must retrieve a globally
 unique identity before tenant context can be resolved. It does not authorize
 unrestricted operational user queries. School Admin user creation always derives
