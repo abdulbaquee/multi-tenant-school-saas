@@ -259,6 +259,10 @@ Profile
 
 # 9. SCHOOL ADMIN MENU
 
+The role menus below show the approved end-state navigation. Phase 7 activates
+only the Attendance Entry, History, and Monthly Summary items documented in the
+Attendance flow. Reports and Analytics branches remain hidden until Phase 10.
+
 Dashboard
 
 School Settings
@@ -290,7 +294,7 @@ Students
 Attendance
 ├── Mark Attendance
 ├── Attendance History
-└── Attendance Reports
+└── Monthly Summary
 
 Fees
 ├── Fee Categories
@@ -340,7 +344,7 @@ Students
 Attendance
 ├── Mark Attendance
 ├── Attendance History
-└── Attendance Reports
+└── Monthly Summary
 
 Examinations
 ├── Marks Entry
@@ -674,18 +678,29 @@ Rules:
 
 # 18. ATTENDANCE FLOW
 
-Attendance Dashboard
+Attendance Workspace
 │
 ├── Mark Attendance
 ├── Attendance History
-├── Monthly Attendance
-└── Attendance Reports
+└── Monthly Summary
 
 Access:
 
-* School Admin: all classes in own school
-* Teacher: assigned classes only
-* Super Admin: reports only
+* School Admin: all eligible active Sections in own school.
+* Teacher: only an active Section directly assigned through
+  `sections.teacher_id` to the actor's active Teacher Profile. Subject assignment
+  alone does not authorize Attendance.
+* Super Admin: no Phase 7 screen; platform reports begin in Phase 10.
+* Accountant: no Attendance access.
+
+Phase Boundary:
+
+* Attendance history and monthly summaries are operational on-screen views using
+  `attendance.view`.
+* Reports, exports, analytics, dashboard widgets, and platform summaries are not
+  Phase 7 screens.
+* No Attendance delete flow exists. Authorized corrections use
+  `attendance.update` and preserve audit evidence.
 
 ---
 
@@ -700,13 +715,46 @@ Select Class
 Select Section
 │
 ▼
-Load Students
+Load Eligible Enrollment Roster
 │
 ▼
-Mark Attendance
+Assign One Status Per Student
 │
 ▼
-Save Attendance
+Validate Complete Roster And Save Atomically
+
+Rules:
+
+* The server resolves the current Academic Year and same-tenant Enrollment
+  placement. The request cannot choose a school or override Student placement.
+* Date must be within the current Academic Year, on or after Enrollment date,
+  and no later than the school-local current date.
+* New rows require active Students and active Enrollments. Existing retained rows
+  remain visible after later lifecycle changes.
+* A repeated save may create newly eligible missing rows and correct existing
+  rows only when the actor has the required create/update permissions.
+* Holiday applies to the complete eligible Section roster and is School
+  Admin-only.
+
+Correction Flow:
+
+Attendance History
+│
+▼
+Select Existing Date And Section
+│
+▼
+Load Retained Records
+│
+▼
+Correct Status Or Optional Remark
+│
+▼
+Save With Audit Evidence
+
+Historical Academic Years are read-only in Phase 7. Corrections are limited to
+the current Academic Year. `marked_by` remains the original creator; the audit
+record identifies the correcting actor.
 
 ---
 

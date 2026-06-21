@@ -282,6 +282,46 @@ Implementation Status:
 * The Phase 6 tenant-isolation review passed at 10/10 after explicit HTTP and
   direct-service coverage for every Enrollment mutation path.
 
+## Phase 7 Attendance Tenancy Contract
+
+`attendances` is strict tenant-owned and must use `BelongsToTenant`.
+TenantContext supplies `school_id`; no request field may choose or override
+tenant ownership. Student, Academic Year, Class, Section, Enrollment, and marker
+relationships must resolve in the active tenant before any Attendance query or
+write.
+
+The eligible roster is derived from active same-tenant Student Enrollments for
+the active current Academic Year and selected active Section. The service must
+verify that each Enrollment's Class and Section match the selected context and
+that each Student is active and not archived. Request-submitted Student IDs are
+accepted only as a complete status map to compare with that derived roster; they
+never define eligibility.
+
+Attendance role boundaries are:
+
+* School Admin operates only in the active tenant.
+* Teacher requires an active Teacher-role User, active Teacher Profile, and
+  direct active Section assignment through `sections.teacher_id`. Subject
+  assignment alone grants no Attendance access.
+* Super Admin remains in Platform context and receives no Phase 7 Attendance
+  route. Platform reports begin in Phase 10.
+* Accountant receives no Attendance route.
+
+Cross-tenant route identifiers must resolve as not found. Policies and services
+must also reject forged same-request parent IDs, ownership mutation, Unresolved
+context, Platform writes, stale Teacher assignments, inactive schools, and
+direct service invocation without an actor aligned to TenantContext.
+
+Bulk creation and correction must lock and write within one tenant transaction.
+Attendance, activity, and audit rows derive the same school. A logging failure
+must roll back the Attendance batch. History relationships use retained
+Student, Class, Section, and User records without removing TenantScope.
+
+Phase 7 isolation tests must cover School A/B HTTP and direct-service paths,
+automatic scope filtering, forged parent and roster IDs, Teacher Section
+assignment, Subject-only denial, School Admin ownership, Super Admin and
+Accountant denial, unresolved/Platform contexts, and tenant-owned logs.
+
 The `users` exception exists only because authentication must retrieve a globally
 unique identity before tenant context can be resolved. It does not authorize
 unrestricted operational user queries. School Admin user creation always derives

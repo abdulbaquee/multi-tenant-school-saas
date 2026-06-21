@@ -240,7 +240,7 @@ erDiagram
         bigint section_id FK
         date attendance_date
         varchar status
-        text remarks
+        varchar remarks
         bigint marked_by FK
         timestamp created_at
         timestamp updated_at
@@ -571,6 +571,7 @@ Total Tables Included: 28
 | Class to Student Enrollments | One to Many |
 | Section to Student Enrollments | One to Many |
 | Student to Attendances | One to Many |
+| User to Attendances as Original Marker | One to Many; each Attendance requires one User |
 | Fee Category to Fee Structures | One to Many |
 | Fee Structure to Student Fees | One to Many |
 | Student to Student Fees | One to Many |

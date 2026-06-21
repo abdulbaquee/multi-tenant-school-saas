@@ -43,13 +43,12 @@ Phase 7 — Attendance Readiness Review
 
 Progress:
 
-Phase 5 Academic Structure is completed and release-approved. Phase 6 Student
-Management design remediation defines the Student, Enrollment, privacy, role,
-and retention boundaries. The readiness rerun passed at 10/10. The core schema,
-Student registration, profiles, role-scoped reads, lifecycle, and private-photo
-workflows are implemented. Initial Enrollment creation, completion, Student
-transfer, and graduation coupling are implemented. Phase 6 passed every review
-gate and is release-approved; Phase 7 readiness review is next.
+Phase 5 Academic Structure and Phase 6 Student Management are completed and
+release-approved. The initial Phase 7 readiness review scored 5/10 and required
+documentation remediation. The Attendance operational boundary, tenant and
+Teacher scope, Enrollment-derived roster, bulk and correction rules, retention,
+privacy, and testing requirements are now documented. The Phase 7 readiness
+review must be rerun before migrations or models are created.
 
 Repository:
 
@@ -250,14 +249,15 @@ privacy-safe logging, and denied-role/tenant enforcement are completed.
 
 # Phase 7 — Attendance Management
 
-Status: Pending
+Status: Design Remediated — Readiness Rerun Pending
 
 ## Features
 
-* Daily Attendance
-* Attendance History
-* Attendance Reports
-* Attendance Analytics
+* Daily and Bulk Attendance Entry
+* Attendance History and Search
+* Authorized Attendance Corrections
+* Monthly Operational Summaries
+* Attendance Reports, Exports, and Analytics Deferred to Phase 10
 
 ## Deliverables
 
@@ -391,4 +391,5 @@ Project ready for final evaluation and submission.
 
 # Next Immediate Task
 
-Create and execute the Phase 7 Attendance Management readiness-review prompt.
+Rerun the Phase 7 Attendance Management readiness-review prompt. Do not create
+Attendance migrations or models until the review approves implementation.

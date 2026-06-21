@@ -141,7 +141,7 @@ Phase 6 — Student Management
 Status: Completed — Release Approved
 
 Phase 7 — Attendance Management
-Status: Pending
+Status: Design Remediated — Readiness Rerun Pending
 
 Phase 8 — Fee Management
 Status: Pending
@@ -201,8 +201,16 @@ Phase 6 Review Progress: Tenant-isolation and security reviews approved at
 approved after validation and query-scope remediation. Release review approved
 the completed checkpoint at 9.8/10.
 
+Phase 7 Review Progress: The initial Attendance readiness review scored 5/10 and
+required documentation remediation. DECISION-032 now defines the operational
+phase boundary, assigned-Section Teacher scope, Enrollment-derived roster,
+school-local date rules, atomic bulk behavior, retained corrections, dormant
+delete/report/export permissions, privacy-safe logs, and mandatory tests. The
+readiness review must be rerun before migrations or models.
+
 ---
 
 # Next Milestone
 
-Create and execute the Phase 7 Attendance Management readiness-review prompt.
+Rerun the Phase 7 Attendance Management readiness-review prompt. Do not create
+Attendance migrations or models until implementation is approved.

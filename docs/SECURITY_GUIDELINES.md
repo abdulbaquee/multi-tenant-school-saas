@@ -640,6 +640,39 @@ Implementation Status:
 * The Phase 6 security review passed at 10/10 with no critical, high, medium,
   dependency, privacy, retention, or authorization findings.
 
+## Phase 7 Attendance Security And Privacy Rules
+
+Attendance is sensitive minor data and must follow least privilege:
+
+* School Admin may manage Attendance only inside the active tenant.
+* Teacher access requires the actor's active Teacher Profile to be directly
+  assigned to the active Section. Subject-only assignment is insufficient.
+* Super Admin and Accountant have no Phase 7 Attendance screen, route, or direct
+  service pathway.
+* The server derives the eligible Student roster from same-tenant active
+  Enrollments. Client-submitted school, Academic Year, Class, Section, Student,
+  marker, or placement data cannot expand that roster.
+* Historical records are never deleted. `attendance.delete` has no operational
+  route; authorized corrections use `attendance.update` and immutable audit
+  evidence.
+* `marked_by` stores the original actor and cannot be replaced during correction.
+  Audit `user_id` identifies the correcting actor.
+* Optional remarks are limited to 500 characters. Users must not record detailed
+  diagnoses, disability information, medication, or unnecessary family details.
+* Activity descriptions and audit old/new values must never contain raw remarks,
+  DOB, guardian details, contact data, address, or Student photos. Use Student,
+  Enrollment, Academic Year, Class, Section, Attendance IDs, date, status, and a
+  Boolean `remarks_changed` indicator only.
+* Bulk saves are atomic and fail closed for incomplete rosters, duplicate IDs,
+  forged parents, stale assignments, permission revocation, concurrent writes,
+  or logging failure.
+* CSRF protection, Form Requests, Policies, TenantContext validation, global
+  scopes, service revalidation, and database constraints are all mandatory.
+
+Attendance reports, exports, analytics, dashboards, and platform summaries are
+Phase 10 security work. Their catalog permissions do not activate Phase 7
+capabilities.
+
 ---
 
 # 19. DATA ACCESS POLICY

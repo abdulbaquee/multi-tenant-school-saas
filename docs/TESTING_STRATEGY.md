@@ -550,17 +550,66 @@ Implemented on 2026-06-21:
 
 # 18. ATTENDANCE MODULE TESTING
 
-Validate:
+Phase 7 tests must validate:
 
-* Attendance Entry
-* Attendance Update
-* Attendance Reports
-* Monthly Attendance
-* Attendance Analytics
+Schema and model:
+
+* Named indexes, `uq_attendances_student_date`, required restricted foreign
+  keys, status and date casts, required immutable `marked_by`, and absence of
+  soft deletes.
+* `BelongsToTenant`, automatic school assignment, ownership immutability,
+  deletion rejection, and retained relationships to soft-deleted parents.
+
+Allowed workflows:
+
+* School Admin daily and bulk entry for a complete eligible own-tenant Section
+  roster.
+* Directly assigned active Section Teacher entry, history, and correction.
+* Server-derived Academic Year, Class, Section, and Enrollment placement.
+* Creation of missing eligible rows and correction of existing rows in one
+  authorized repeated save without duplicates.
+* Current-year history, search, monthly operational summaries, and School
+  Admin-only whole-roster holiday marking.
+
+Validation and lifecycle:
+
+* Reject future and out-of-year dates, dates before Enrollment, historical-year
+  writes, inactive Academic Years, Classes, Sections, Students, archived
+  Students, and completed or transferred Enrollments for new rows.
+* Reject missing, duplicate, and extraneous roster IDs; invalid status values;
+  Teacher holiday attempts; remarks over 500 characters; and prohibited tenant,
+  placement, or marker fields.
+* Existing records remain readable after lifecycle changes. Current-year
+  corrections change only status and remarks; placement, date, tenant, Student,
+  and original marker remain immutable.
+
+Authorization and isolation:
+
+* School A cannot list, load, create, correct, or infer School B Attendance.
+* Teacher access requires direct active Section assignment. Subject-only,
+  related-Class-only, inactive-profile, inactive-User, stale-assignment, and
+  unassigned-Section paths are denied.
+* Super Admin, Accountant, guests, permission-revoked actors, inactive schools,
+  Platform context, Unresolved context, and actor/context mismatch are denied.
+* Forged Student, Enrollment, Academic Year, Class, Section, marker, route, and
+  direct-service identifiers fail closed.
+
+Transactions, concurrency, and evidence:
+
+* Any invalid row, authorization failure, unique-key race, persistence error,
+  activity-log failure, or audit-log failure rolls back the entire batch.
+* Repeated identical submission remains idempotent and creates no duplicate row
+  or duplicate change evidence.
+* Activity and audit records inherit the tenant. Corrections preserve the
+  original `marked_by`, identify the correcting actor, record old/new status and
+  `remarks_changed`, and omit raw remarks and all unrelated minor data.
+* No delete, report, export, analytics, dashboard-summary, Super Admin, or
+  Accountant Attendance route becomes available in Phase 7.
 
 Expected Result:
 
-Attendance calculations remain accurate.
+Attendance entry, correction, history, and monthly operational summaries are
+accurate, tenant-isolated, assignment-scoped, retained, privacy-safe, and atomic.
 
 ---
 

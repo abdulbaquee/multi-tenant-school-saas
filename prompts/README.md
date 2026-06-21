@@ -98,12 +98,15 @@ prompts/
     ├── 04-phase-05-teacher-profile-management.md
     ├── 05-phase-05-class-management.md
     └── 06-phase-05-section-subject-management.md
-└── 05-student-management/
+├── 05-student-management/
     ├── 00-phase-06-readiness-review.md
     ├── 01-phase-06-student-design-remediation.md
     ├── 02-phase-06-core-student-schema.md
     ├── 03-phase-06-student-profile-management.md
     └── 04-phase-06-enrollment-management.md
+└── 06-attendance/
+    ├── 00-phase-07-readiness-review.md
+    └── 01-phase-07-attendance-design-remediation.md
 ```
 
 ## Current Prompt Creation Status
@@ -138,6 +141,8 @@ Created for the next roadmap gate:
 - Phase 6 core Student schema and model foundation (executed).
 - Phase 6 Student profile management (executed).
 - Phase 6 Enrollment management (executed).
+- Phase 7 Attendance Management readiness review (executed; remediation required).
+- Phase 7 Attendance design remediation (executed; readiness rerun required).
 
 Future prompt groups should be added only when they are needed for the next roadmap phase.
 

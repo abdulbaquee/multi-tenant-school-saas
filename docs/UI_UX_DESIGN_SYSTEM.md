@@ -573,7 +573,20 @@ Display:
 * Student Grid
 * Attendance Status
 
-Bulk entry support is mandatory.
+Bulk entry support is mandatory. Use compact status controls for Present,
+Absent, Leave, and Late on each eligible Student row. Show Holiday as a separate
+School Admin-only whole-roster action rather than a Teacher row-level choice.
+
+The interface must:
+
+* Identify the current Academic Year, selected Class, Section, and date.
+* Distinguish initial entry from correction of retained records.
+* Require a status for every eligible Student before submission.
+* Provide an explicit Mark All Present convenience action without silently
+  defaulting omitted Students.
+* Display validation and stale-roster conflicts without partially saving rows.
+* Keep operational history and monthly summaries separate from Phase 10 report,
+  export, and analytics screens.
 
 ---
 

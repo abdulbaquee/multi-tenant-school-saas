@@ -646,13 +646,34 @@ Status: Completed — Release Approved
 
 # [0.9.0] - Attendance Management
 
-Status: Planned
+Status: Design Remediated — Readiness Rerun Pending
 
-## Planned
+## Design Remediation
 
-* Daily attendance
-* Attendance reports
-* Attendance analytics
+* Reconciled Phase 7 daily operations with Phase 10 ownership of reports,
+  exports, analytics, dashboards, and platform summaries.
+* Defined School Admin tenant access and direct assigned-Section Teacher access;
+  Subject-only assignment grants no Attendance authority.
+* Defined the Enrollment-derived active roster, school-local date validation,
+  immutable placement, and Student/Enrollment lifecycle boundaries.
+* Defined complete atomic bulk saves, repeated create/correction behavior,
+  concurrency handling, and whole-batch rollback.
+* Standardized retained Attendance with no delete route. Catalog delete, report,
+  and export permissions remain dormant until an approved phase uses them.
+* Made the original `marked_by` required and immutable; corrections identify the
+  actor through privacy-safe audit evidence.
+* Defined School Admin-only roster holiday handling, manual Late selection,
+  optional 500-character privacy-limited remarks, and school timezone behavior.
+* Expanded Phase 7 schema, tenancy, security, UI, screen-flow, and testing
+  requirements and recorded DECISION-032.
+
+## Planned Implementation
+
+* Attendance migration and tenant-aware model after readiness approval
+* Daily and bulk Attendance entry
+* Attendance history and search
+* Current-year authorized corrections
+* Monthly operational summaries
 
 ## Deliverables
 
@@ -805,7 +826,7 @@ Example:
 # Current Project Status
 
 Phase: Phase 6 Student Management Completed — Release Approved; Phase 7
-Attendance Readiness Review Next
+Attendance Design Remediated — Readiness Rerun Pending
 
 Repository Setup: Completed
 
@@ -820,4 +841,5 @@ completed. Phase 6 Student registration, profiles, role-scoped reads,
 lifecycle, private photos, immutable Enrollment creation/completion, and
 transaction-coupled transfer/graduation are implemented.
 
-Next Task: Create and execute the Phase 7 Attendance Management readiness-review prompt
+Next Task: Rerun the Phase 7 Attendance Management readiness-review prompt before
+creating migrations or models

@@ -494,13 +494,14 @@ Purpose:
 
 Track student attendance.
 
-Features:
+Phase 7 Features:
 
 * Daily Attendance
 * Bulk Attendance Entry
 * Attendance History
 * Attendance Search
-* Monthly Attendance
+* Monthly Operational Summary
+* Authorized Correction of Retained Attendance
 
 Attendance Status:
 
@@ -510,23 +511,53 @@ Attendance Status:
 * Late
 * Holiday
 
-Screens:
+Phase 7 Screens:
 
 * Attendance Entry
-* Attendance List
-* Attendance Reports
+* Attendance History
+* Monthly Attendance Summary
 
-Reports:
+Phase Boundary:
 
-* Daily Attendance
-* Monthly Attendance
-* Student Attendance
-* Class Attendance
+* Phase 7 does not create report, export, analytics, dashboard-summary, or
+  Super Admin Attendance routes.
+* Attendance reports, exports, trends, and platform summaries belong to Phase 10
+  Reporting, Analytics & System Operations.
+* Operational history and monthly on-screen summaries use `attendance.view` and
+  are not report generation.
 
-Accessible By:
+Phase 7 Access:
 
-School Admin
-Teacher
+| Role | Access |
+| ---- | ------ |
+| School Admin | View and create Attendance for eligible Students in every active Section of the current school. May correct retained current-year own-school records even when a Student, Enrollment, Class, or Section later becomes inactive or terminal. School Admin alone may mark an active Section roster as holiday. |
+| Teacher | View, create, and correct Attendance only for an active Section directly assigned to the actor's active Teacher Profile through `sections.teacher_id`. Subject assignment alone grants no Attendance access. |
+| Super Admin | No Phase 7 route or menu. Platform Attendance reports begin in Phase 10. |
+| Accountant | No Attendance route or menu. |
+
+Attendance Rules:
+
+* New rows use the active current Academic Year and an active same-tenant Class,
+  Section, Student, and matching active Student Enrollment.
+* The server derives Class, Section, Academic Year, and school ownership from the
+  selected Section and eligible Enrollment roster; request data cannot override
+  placement or `school_id`.
+* Attendance date must be inside the Academic Year, on or after Enrollment date,
+  and no later than the current date in the school's configured timezone.
+* One retained row exists per school, Student, and attendance date.
+* Bulk saves require exactly one allowed status for every eligible roster member,
+  reject duplicate, omitted, or extraneous Student IDs, and commit atomically.
+* Repeated saves create missing eligible rows and correct existing rows under
+  create/update permissions. Unchanged rows do not create duplicate evidence.
+* Attendance rows are never deleted. Corrections change only status and remarks
+  and preserve privacy-safe audit history.
+* `marked_by` stores the original authenticated creator and is immutable.
+  Correction actors are recorded by audit-log user identity.
+* Holiday is a School Admin-only bulk status for the full eligible Section
+  roster. Late is selected manually; `attendance_start_time` is a reference
+  value and does not classify a Student automatically in the MCA scope.
+* Remarks are optional, limited to 500 characters, and must not contain detailed
+  medical, disability, or other unnecessary minor information.
 
 ---
 
@@ -861,6 +892,11 @@ Phase Availability:
   privacy-minimized projection, Teacher `students.view` is assigned-record only,
   and Accountant `students.view` has no direct menu or route until Phase 8 Fee
   Management.
+* In Phase 7, only `attendance.view`, `attendance.create`, and
+  `attendance.update` become operational for School Admin and assigned-Section
+  Teacher workflows. `attendance.delete`, `attendance.report`, and
+  `attendance.export` remain catalog permissions with no Phase 7 route. Super
+  Admin report access begins only in Phase 10.
 
 ## Essential Permission Rules
 
@@ -933,7 +969,8 @@ A module is considered complete when:
 
 ✓ Activity Logging Enabled
 
-✓ Reports Generated
+✓ Reports Generated when the roadmap phase owns reporting, or explicitly
+deferred to Phase 10
 
 ✓ Screenshots Captured
 

@@ -1256,6 +1256,69 @@ Attendance readiness review is next.
 
 ---
 
+# DECISION-032
+
+Date:
+2026-06-21
+
+Title:
+Define Phase 7 Attendance Operations, Assignment, Retention, And Correction Boundaries
+
+Status:
+Approved
+
+Decision:
+
+Phase 7 implements operational daily and bulk Attendance entry, history, search,
+current-year corrections, and monthly on-screen summaries. Attendance reports,
+exports, analytics, dashboard widgets, and Super Admin platform summaries remain
+Phase 10 work.
+
+School Admin may operate on every eligible active Section in the tenant. Teacher
+access requires an active Teacher Profile directly assigned to the active
+Section through `sections.teacher_id`; Subject assignment or related-Class
+visibility alone grants no Attendance authority. Super Admin and Accountant have
+no Phase 7 Attendance route or menu.
+
+The server derives the roster from active Students and matching active immutable
+Enrollments for the active current Academic Year, selected Class, and Section.
+Attendance date must be inside that Academic Year, on or after Enrollment date,
+and no later than the school-local current date. New rows stop when Student or
+Enrollment state becomes ineligible. Retained current-year rows may be corrected
+under the same tenant and assignment boundaries; historical Academic Years are
+read-only.
+
+One retained row exists per school, Student, and date. Bulk saves require one
+status for every server-derived eligible Student, reject omitted, duplicate, and
+extraneous IDs, and atomically create missing rows or correct existing rows.
+Attendance is never deleted. `attendance.delete`, `attendance.report`, and
+`attendance.export` remain dormant catalog permissions with no Phase 7 route.
+
+`marked_by` is required and immutable as the original creator. Correction actors
+are preserved in audit-log user identity. Raw remarks and unrelated minor data
+are excluded from activity and audit payloads. Holiday is a School Admin-only
+whole-roster status; Late remains manually selected, with school attendance start
+time used only as a display reference in the MCA scope.
+
+Reason:
+
+* Keeps Phase 7 focused on an explainable MCA operational workflow.
+* Prevents Subject assignment from granting unintended class-wide access.
+* Uses immutable Enrollment placement without requiring a speculative transfer
+  history or Attendance calendar module.
+* Preserves historical records while allowing accountable corrections.
+* Defers report and analytics authorization to one canonical later phase.
+* Makes bulk writes deterministic, tenant-safe, concurrency-safe, and testable.
+
+Outcome:
+
+The Attendance data dictionary, ERD marker relationship, role matrix, menus,
+screen flow, tenancy, security, privacy, logging, testing, roadmap, governance,
+and MCA evidence are aligned. The Phase 7 readiness review must be rerun before
+creating migrations, models, routes, or other Attendance implementation.
+
+---
+
 # CURRENT PROJECT STATUS
 
 Architecture Decisions:
@@ -1277,4 +1340,4 @@ Development Decisions:
 Completed
 
 Project Ready For:
-Phase 7 Attendance Readiness Review
+Phase 7 Attendance Readiness Review Rerun

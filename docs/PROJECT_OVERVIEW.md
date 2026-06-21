@@ -91,8 +91,13 @@ The project includes the following functional areas:
 
 ### Attendance Management
 
-* Daily Attendance
-* Attendance Reporting
+* Daily and Bulk Attendance Entry
+* Attendance History and Search
+* Authorized Attendance Corrections
+* Monthly Operational Summaries
+
+Attendance reports, exports, and analytics are delivered by the later Reporting
+& Analytics phase.
 
 ### Fee Management
 

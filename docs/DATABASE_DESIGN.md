@@ -611,10 +611,49 @@ Stores daily student attendance.
 | section_id | BIGINT UNSIGNED | No | - | idx_attendances_section_id | - | sections.id restrictOnDelete | Section context. |
 | attendance_date | DATE | No | - | idx_attendances_attendance_date | uq_attendances_student_date | - | Date of attendance. |
 | status | VARCHAR(20) | No | present | idx_attendances_status | - | - | present, absent, leave, late, or holiday. |
-| remarks | TEXT | Yes | NULL | - | - | - | Optional remarks. |
-| marked_by | BIGINT UNSIGNED | Yes | NULL | idx_attendances_marked_by | - | users.id restrictOnDelete | User who marked attendance. |
+| remarks | VARCHAR(500) | Yes | NULL | - | - | - | Optional operational note. Detailed health, disability, or other unnecessary minor data is prohibited. |
+| marked_by | BIGINT UNSIGNED | No | - | idx_attendances_marked_by | - | users.id restrictOnDelete | Original authenticated user who created the retained record. Immutable after creation. |
 | created_at | TIMESTAMP | Yes | NULL | - | - | - | Creation timestamp. |
 | updated_at | TIMESTAMP | Yes | NULL | - | - | - | Last update timestamp. |
+
+Attendance constraints and lifecycle:
+
+* `uq_attendances_student_date` covers `school_id + student_id +
+  attendance_date`. One retained daily row exists per Student in a school.
+* Attendance is a strict tenant-owned historical table. It does not use soft
+  deletes, and application models must reject deletion.
+* New rows require the active current Academic Year, an active Class and Section,
+  an active non-archived Student, and the Student's matching active Enrollment.
+  The Enrollment must match Academic Year, Class, and Section in the same tenant.
+* `attendance_date` must fall inside the Academic Year, be on or after
+  `student_enrollments.enrollment_date`, and be no later than the current date in
+  `school_settings.timezone`.
+* `school_id`, `student_id`, `academic_year_id`, `class_id`, `section_id`,
+  `attendance_date`, and `marked_by` are immutable after creation. Only `status`
+  and `remarks` may be corrected.
+* Historical Academic Years are read-only in Phase 7. New rows and corrections
+  are limited to the current Academic Year. Existing records remain readable
+  after Student, Enrollment, Class, Section, Teacher, User, or school lifecycle
+  changes under the documented authorization and retention rules.
+* New rows are not created after a Student becomes inactive, transferred,
+  graduated, or archived, or after the matching Enrollment becomes completed or
+  transferred. Retained rows may still be corrected by an authorized School
+  Admin, or by the currently assigned active Section Teacher, while their
+  Academic Year remains current.
+* Bulk saves derive the eligible roster server-side and require exactly one
+  status per eligible Student. Duplicate, omitted, or extraneous Student IDs are
+  rejected. Missing eligible rows may be created and existing rows corrected in
+  one locked transaction when the actor has the applicable create/update
+  permissions.
+* The service must serialize same-school, same-Section, same-date writes, rely on
+  the unique constraint as the final concurrency guard, and roll back the whole
+  batch on validation, authorization, logging, or persistence failure.
+* Allowed statuses are `present`, `absent`, `leave`, `late`, and `holiday`.
+  Holiday is a School Admin-only full-roster operation. Application validation
+  must require an explicit status and must not rely on the database default.
+* `marked_by` remains the original creator. A correction actor is recorded in
+  the immutable audit row's `user_id`; raw remarks are never copied to activity
+  descriptions or audit old/new values.
 
 ---
 

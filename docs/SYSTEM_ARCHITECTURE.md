@@ -568,6 +568,49 @@ Implementation Status:
   tenant-safe HTTP/UI, Platform read-only access, assigned-Teacher reads, and
   activity/audit workflows are implemented.
 
+## Phase 7 Attendance Architecture
+
+Phase 7 owns operational daily and bulk Attendance entry, history, search,
+current-year corrections, and monthly on-screen summaries. Reports, exports,
+analytics, dashboard widgets, and platform summaries remain Phase 10 work.
+
+Canonical Laravel components:
+
+| Table | Model | Service | Notes |
+| ----- | ----- | ------- | ----- |
+| `attendances` | `Attendance` | `AttendanceService` | Strict tenant-owned retained daily Student records. |
+
+`AttendanceController` handles HTTP flow only. Dedicated Form Requests validate
+the date and submitted Student/status map. `AttendancePolicy` combines exact
+permissions with role, tenant, and assigned-Section boundaries.
+`AttendanceService` resolves the current Academic Year, Section, Class, eligible
+Enrollment roster, school timezone, and actor context again before writing.
+
+School Admin may operate on every eligible active Section in the tenant. Teacher
+write and read scope requires the actor's active Teacher Profile to be assigned
+directly to the active Section through `sections.teacher_id`; a Subject
+assignment or related Class read does not grant Attendance authority. Super
+Admin and Accountant have no Phase 7 Attendance execution path.
+
+Bulk saves use one transaction. The service locks the selected Section and the
+relevant Attendance rows, rejects incomplete or forged rosters, creates missing
+eligible rows, corrects existing rows only with update authorization, and uses
+the daily unique constraint as the final concurrency guard. Any validation,
+authorization, activity-log, audit-log, or persistence failure rolls back the
+whole batch.
+
+Attendance placement, date, tenant, Student, and original marker are immutable.
+Corrections may change only status and the optional remark. Records are never
+deleted. Activity records summarize the batch without minor data; audit records
+store IDs, date, old/new status, and `remarks_changed` but never raw remarks.
+The audit actor identifies who made a correction while `marked_by` continues to
+identify the original creator.
+
+The status `holiday` is a School Admin-only complete-roster operation. Late is
+manually selected in Phase 7; the School Setting attendance start time is a UI
+reference only. School-local date calculations use the configured school
+timezone.
+
 ---
 
 # 11. DASHBOARD ARCHITECTURE

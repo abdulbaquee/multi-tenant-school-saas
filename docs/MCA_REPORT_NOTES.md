@@ -441,6 +441,10 @@ Phase 2 through Phase 5 evidence available for later report assembly:
 * Phase 6 review evidence: tenant isolation, security, and documentation passed
   at 10/10; code review passed after validation/query remediation; release
   review approved the checkpoint at 9.8/10.
+* Phase 7 Attendance design evidence: DECISION-032 defines assigned-Section
+  Teacher authority, Enrollment-derived rosters, school-local date validation,
+  atomic bulk entry, retained corrections, privacy-safe audit evidence, and
+  Phase 10 report/analytics deferral before implementation.
 
 Screenshots remain to be selected and captured during the documentation and
 submission phases.
@@ -466,7 +470,8 @@ Student Management
 Attendance
 
 * Attendance Entry
-* Attendance Reports
+* Attendance History
+* Monthly Attendance Summary
 
 Fees
 
