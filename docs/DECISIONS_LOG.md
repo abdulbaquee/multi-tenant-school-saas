@@ -1189,6 +1189,64 @@ No major architectural decision should be implemented without updating this docu
 
 ---
 
+# DECISION-031
+
+Date:
+2026-06-21
+
+Title:
+Define Phase 6 Student Management And Immutable Enrollment Boundaries
+
+Status:
+Approved
+
+Decision:
+
+Phase 5 Academic Structure passed its release review and is complete. Phase 6
+implements Student registration, privacy-aware profiles, authorized directory
+and search views, private Student photos, status management, and one immutable
+Enrollment placement per Student and Academic Year.
+
+`student_enrollments.roll_no` is the sole roll-number source of truth.
+`students.roll_no` is removed from the design to prevent duplicated current and
+historical values. The unique `student_id + academic_year_id` constraint permits
+one placement per year; Enrollment Class, Section, and roll number are immutable
+after creation. Enrollment lifecycle may change only from active to completed or
+transferred.
+
+Internal Class or Section reassignment, promotion, and mid-year transfer are
+deferred. A transferred Student represents departure from the current school and
+sets the active Enrollment transferred in the same transaction. The MVP never
+copies, moves, or exposes Student data across tenants.
+
+Student Reports and exports are Phase 10 Reporting work. Phase 6 creates no
+Student export or report route.
+
+Access is least privilege: School Admin manages own-tenant Student records;
+Teacher reads only Students reached through active assigned Section or Subject
+relationships; Super Admin has explicit, school-scoped, read-only,
+privacy-minimized access; and Accountant receives no direct Student screen until
+Phase 8 Fee Management. Student photos are private and available only to an
+authorized School Admin in the Student's active tenant. Student audit/activity
+payloads omit DOB, guardian details, address, contact data, and photo paths.
+
+Reason:
+
+* Preserves enrollment history without introducing a new history abstraction.
+* Prevents cross-tenant transfer, accidental record rewriting, and duplicate
+  roll-number sources.
+* Keeps minor data access and private files limited to a necessary role.
+* Defers reporting and financial lookup to their approved roadmap phases.
+* Maintains an MCA-friendly model that is straightforward to explain and test.
+
+Outcome:
+
+The Student and Enrollment schema, role matrix, menus, privacy rules, tenant
+contract, and Phase 6 test requirements are aligned. Phase 6 readiness must be
+rerun before migrations or models are created.
+
+---
+
 # CURRENT PROJECT STATUS
 
 Architecture Decisions:
@@ -1210,4 +1268,4 @@ Development Decisions:
 Completed
 
 Project Ready For:
-Phase 5 Release Review
+Phase 6 Core Student Schema And Model Foundation

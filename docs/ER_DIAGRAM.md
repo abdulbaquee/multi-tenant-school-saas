@@ -201,7 +201,6 @@ erDiagram
         bigint id PK
         bigint school_id FK
         varchar admission_no
-        varchar roll_no
         varchar first_name
         varchar last_name
         varchar gender

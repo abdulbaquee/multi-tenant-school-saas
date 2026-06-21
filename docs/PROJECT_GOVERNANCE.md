@@ -135,10 +135,10 @@ Phase 4 — Roles & Permissions
 Status: Completed
 
 Phase 5 — Academic Structure
-Status: Implementation Completed — Code Review Approved
+Status: Completed — Release Approved
 
 Phase 6 — Student Management
-Status: Pending
+Status: Readiness Approved — Implementation Pending
 
 Phase 7 — Attendance Management
 Status: Pending
@@ -181,19 +181,20 @@ Phase 4 RBAC, the Phase 5 core Academic Structure schema/model foundation, and
 Academic Year, Academic Term, Teacher Profile, and Class management implemented
 with Section and Subject management also implemented
 
-Development Progress: Phase 4 completed and release-approved; Phase 5 Academic
-Structure design, core schema/model foundation, and Academic Year and Academic
-Term workflows completed, with Teacher Profile management also completed and
-Class, Section, and Subject management completed; Phase 5 review gate pending
+Development Progress: Phase 4 and Phase 5 are completed and release-approved.
+Phase 6 Student Management design remediation defines the migration-ready
+Student and Enrollment boundaries. The readiness rerun passed at 10/10; no
+Phase 6 application implementation has started.
 
 Review Progress: Tenant-isolation review approved at 10/10; security review
 approved at 10/10 after local credential-file hygiene remediation;
 documentation review approved at 10/10 after consistency remediation; code
-review approved after archived Teacher identity retention remediation; release
-review remains.
+review approved after archived Teacher identity retention remediation; and the
+Phase 5 release review approved the completed checkpoint. The Phase 6 readiness
+rerun passed at 10/10 with no blocking issues.
 
 ---
 
 # Next Milestone
 
-Run the Phase 5 release review.
+Create and execute the Phase 6 core Student schema and model-foundation prompt.

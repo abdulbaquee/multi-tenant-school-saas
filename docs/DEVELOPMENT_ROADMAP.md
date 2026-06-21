@@ -39,16 +39,14 @@ Single Database Multi-Tenant SaaS
 
 Current Phase:
 
-Phase 5 — Academic Structure Review Gate
+Phase 6 — Student Management Implementation Preparation
 
 Progress:
 
-Phase 4 Roles & Permissions is completed and release-approved. Phase 5 Academic
-Structure design, core schema, tenant-aware models, Academic Year management,
-Academic Term management, Teacher Profile management, and Class management are
-implemented. Section and Subject management is also implemented. Tenant-
-isolation, security, documentation, and code reviews are approved; the release
-review remains in the Phase 5 gate.
+Phase 5 Academic Structure is completed and release-approved. Phase 6 Student
+Management design remediation defines the Student, Enrollment, privacy, role,
+and retention boundaries. The readiness rerun passed at 10/10; implementation
+has not started.
 
 Repository:
 
@@ -176,7 +174,7 @@ Status: Completed
 
 # Phase 5 — Academic Structure
 
-Status: Implementation Completed — Code Review Approved
+Status: Completed — Release Approved
 
 ## Features
 
@@ -217,14 +215,17 @@ Student registration and Student Enrollment remain Phase 6.
 
 # Phase 6 — Student Management
 
-Status: Pending
+Status: Readiness Approved — Implementation Pending
 
 ## Features
 
 * Student Registration
 * Student Profiles
+* Student Enrollment
 * Student Search
-* Student Reports
+* Private Student Photos
+
+Student Reports and exports are deferred to Phase 10 Reporting.
 
 ## Deliverables
 
@@ -375,4 +376,4 @@ Project ready for final evaluation and submission.
 
 # Next Immediate Task
 
-Run the Phase 5 release review.
+Create and execute the Phase 6 core Student schema and model-foundation prompt.

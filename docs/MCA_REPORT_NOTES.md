@@ -421,6 +421,12 @@ Phase 2 through Phase 5 evidence available for later report assembly:
 * Role-aware Super Admin, School Admin, Teacher, and Accountant navigation.
 * Automated test baseline: 227 tests and 1,619 assertions passed on 2026-06-21.
 * Phase 5 tenant-isolation and security reviews: 10/10 and approved.
+* Phase 5 code and release reviews: approved; release score 9.8/10.
+* Phase 6 Student Management design evidence: DECISION-031 defines immutable
+  Enrollment history, tenant-safe role scope, private Student photos, and minor
+  data privacy before implementation.
+* Phase 6 Student Management readiness rerun: 10/10 and approved with 227 tests
+  and 1,619 assertions passing before implementation.
 
 Screenshots remain to be selected and captured during the documentation and
 submission phases.

@@ -544,6 +544,8 @@ Status: Implementation Completed — Review Gate Pending
 * Phase 5 code review rerun: approved with no remaining findings after retaining
   archived Teacher identity on historical Section and Subject records and adding
   lifecycle regression coverage.
+* Phase 5 release review: READY at 9.8/10 with no blocking issues. The approved
+  checkpoint was committed and pushed as `9320be0`.
 * Security-focused suite: 138 tests and 1,057 assertions passed.
 * PHP and JavaScript dependency audits reported no advisories.
 * Isolated in-memory migration and canonical seed completed successfully.
@@ -553,7 +555,6 @@ Status: Implementation Completed — Review Gate Pending
 
 ## Planned
 
-* Phase 5 release review
 * Academic Structure exports in the reporting phase
 
 ## Deliverables
@@ -564,14 +565,35 @@ Status: Implementation Completed — Review Gate Pending
 
 # [0.8.0] - Student Management
 
-Status: Planned
+Status: Readiness Approved — Implementation Pending
+
+## Design Remediation
+
+* DECISION-031 defines Phase 6 Student Management and immutable Enrollment
+  boundaries before implementation.
+* Student Enrollment owns the only canonical roll number; the duplicate
+  `students.roll_no` column was removed from the database design and ERD.
+* One immutable Enrollment is retained for each Student and Academic Year;
+  internal reassignment, promotion, and mid-year transfer are deferred.
+* Student Reports and exports are deferred to Phase 10 Reporting.
+* School Admin, Teacher, Super Admin, and Accountant Student access paths are
+  reconciled with privacy-minimized views and Phase availability.
+* Private Student-photo access and privacy-safe activity/audit rules are
+  documented.
+
+## Verification
+
+* Phase 6 readiness rerun: READY at 10/10 with no blocking issues.
+* Full existing application suite: 227 tests and 1,619 assertions passed.
+* Documentation consistency and whitespace validation passed.
 
 ## Planned
 
 * Student registration
 * Student profiles
 * Student search
-* Student reports
+* Student enrollment
+* Private Student photos
 
 ## Deliverables
 
@@ -739,7 +761,8 @@ Example:
 
 # Current Project Status
 
-Phase: Phase 5 Academic Structure Implementation Completed — Code Review Approved
+Phase: Phase 5 Academic Structure Completed — Release Approved; Phase 6 Student
+Management Readiness Approved — Implementation Pending
 
 Repository Setup: Completed
 
@@ -749,8 +772,8 @@ Documentation Setup: Completed (Draft v1.0; maintained during implementation)
 
 Database Design Documentation: Remediated and implementation-ready draft (DATABASE_DESIGN.md, ER_DIAGRAM.md)
 
-Application Implementation: Phase 2 completed; Phase 3 tenant infrastructure,
-School Management, School Settings, and security logging completed; Phase 3
-tenant-isolation, security, documentation, code, and release reviews completed
+Application Implementation: Phase 2, Phase 3, Phase 4, and Phase 5 are
+completed. Phase 6 has no application implementation yet.
 
-Next Task: Run the Phase 5 release review
+Next Task: Create and execute the Phase 6 core Student schema and
+model-foundation prompt

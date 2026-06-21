@@ -223,6 +223,9 @@ Academic Structure
 ├── Sections
 └── Subjects
 
+Students
+└── School-Scoped Student Directory (read only, privacy-minimized)
+
 Reports
 ├── School Reports
 ├── User Reports
@@ -581,17 +584,32 @@ Student List
 ├── View Student
 │   ├── Edit Student
 │   ├── Enrollment History
-│   ├── Attendance History
-│   ├── Fee History
-│   └── Examination Results
+│   └── Status Management
 │
-└── Student Transfer
+└── Create Initial Enrollment
 
 Access:
 
-* School Admin: full access
-* Teacher: limited view for assigned classes
-* Accountant: limited student lookup inside fee workflows only
+* School Admin: full access inside the active school, including private photo
+  upload, replacement, removal, and authorized delivery.
+* Teacher: read-only, privacy-minimized Student directory and profile access
+  only for active Enrollments in an assigned active Section, or in an active
+  Class reached through an assigned active Subject. Teacher views exclude DOB,
+  guardian details, address, mobile numbers, email, and Student photos.
+* Super Admin: read-only, privacy-minimized directory and profile access only
+  after selecting a school through an authorized Platform workflow. Super Admin
+  views exclude DOB, guardian details, address, mobile numbers, email, and
+  Student photos.
+* Accountant: no direct Student Management flow in Phase 6. Limited lookup is
+  introduced only in Phase 8 Fee Management.
+
+Phase Boundary:
+
+* Attendance, Fee, and Examination history links are introduced with their
+  respective modules.
+* Student Reports and exports are introduced in Phase 10 Reporting.
+* Internal Class or Section reassignment, promotion, and mid-year transfer are
+  not Phase 6 workflows.
 
 ---
 
@@ -617,6 +635,20 @@ Save Enrollment
 Access:
 
 * School Admin only
+
+Rules:
+
+* The selected Student, Academic Year, Class, and Section must be active and
+  belong to the same school; the Section must belong to the selected Class.
+* The Academic Year must be the school's active current year, and the enrollment
+  date must fall inside its date range.
+* `student_enrollments.roll_no` is the only roll-number source of truth and is
+  unique within the selected school, Academic Year, Class, and Section.
+* One immutable Enrollment exists for each Student and Academic Year. Class,
+  Section, and roll number cannot be edited after creation.
+* Enrollment may change only from active to completed or transferred. Internal
+  reassignment, promotion, and cross-tenant transfer are not supported in the
+  MVP.
 
 ---
 

@@ -427,10 +427,9 @@ Features:
 * Student Registration
 * Student Profiles
 * Enrollment Management
-* Class Assignment
-* Section Assignment
-* Student Transfer
+* Initial Class and Section Assignment through Enrollment
 * Status Management
+* Private Student Photo Management
 
 Screens:
 
@@ -438,19 +437,37 @@ Screens:
 * Student Registration
 * Student Profile
 * Student Search
+* Student Enrollment History
 
 Reports:
 
-* Student Directory
-* Class-wise Students
-* Section-wise Students
-* Gender-wise Students
-* Active Students
+Student Reports and exports are implemented in Phase 10 Reporting, not in the
+Phase 6 Student Management module. Phase 6 provides only authorized list and
+search views.
 
-Accessible By:
+Access:
 
-School Admin
-Teacher
+* School Admin: full own-school Student and Enrollment management, including
+  private photo management.
+* Teacher: read-only, privacy-minimized access to active enrolled Students
+  reachable through the Teacher's own active Section assignment, or an active
+  Subject assignment for the Student's Class. Teachers cannot create, update,
+  archive, enroll, or access Student photos.
+* Super Admin: read-only, privacy-minimized access only after explicit Platform
+  authorization and selection of a school. No Platform mutation or Student
+  photo access is permitted.
+* Accountant: no direct Student Management menu or route in Phase 6. Limited
+  Student lookup begins only inside authorized Fee Management workflows in
+  Phase 8.
+
+Phase 6 Enrollment Boundary:
+
+* One immutable Enrollment placement exists per Student and Academic Year.
+* Enrollment owns the canonical roll number, Class, and Section assignment.
+* Internal Class or Section reassignment, promotion, and mid-year transfer are
+  deferred until an approved enrollment-history design exists.
+* A transferred Student means departure from the current school only. The MVP
+  does not transfer data between tenants.
 
 ---
 
@@ -816,6 +833,17 @@ Reactivation uses the corresponding `.update` permission plus Policy checks.
 | Activity Logs | Full | View own school logs | No | No |
 | Audit Trail | Full | View own school logs | No | No |
 | Backup Management | Full | No | No | No |
+
+Phase Availability:
+
+* The matrix defines the maximum authorized permission set; it does not create a
+  route, menu item, or feature before its roadmap phase.
+* In Phase 6, `students.export` remains a catalog permission only. Student
+  exports and reports become operational in Phase 10 Reporting.
+* In Phase 6, Super Admin `students.view` is a read-only school-scoped
+  privacy-minimized projection, Teacher `students.view` is assigned-record only,
+  and Accountant `students.view` has no direct menu or route until Phase 8 Fee
+  Management.
 
 ## Essential Permission Rules
 

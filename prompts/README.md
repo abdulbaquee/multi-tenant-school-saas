@@ -90,13 +90,17 @@ prompts/
     ├── 01-phase-04-rbac-design-remediation.md
     ├── 02-phase-04-core-rbac-foundation.md
     └── 03-role-permission-dashboard-management.md
-└── 04-academic-structure/
+├── 04-academic-structure/
     ├── 00-phase-05-readiness-review.md
     ├── 01-phase-05-academic-design-remediation.md
     ├── 02-phase-05-core-academic-schema.md
     ├── 03-phase-05-academic-year-term-management.md
     ├── 04-phase-05-teacher-profile-management.md
-    └── 05-phase-05-class-management.md
+    ├── 05-phase-05-class-management.md
+    └── 06-phase-05-section-subject-management.md
+└── 05-student-management/
+    ├── 00-phase-06-readiness-review.md
+    └── 01-phase-06-student-design-remediation.md
 ```
 
 ## Current Prompt Creation Status
@@ -126,6 +130,8 @@ Created for the next roadmap gate:
 - Phase 5 Teacher Profile management (executed).
 - Phase 5 Class management (executed).
 - Phase 5 Section and Subject management (executed).
+- Phase 6 Student Management readiness review (executed and approved at 10/10).
+- Phase 6 Student Management design remediation (executed).
 
 Future prompt groups should be added only when they are needed for the next roadmap phase.
 

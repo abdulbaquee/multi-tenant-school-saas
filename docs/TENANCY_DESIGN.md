@@ -233,6 +233,39 @@ Implementation Status:
 * The Phase 5 tenant-isolation review passed at 10/10 with no critical defects,
   missing enforcement points, or missing tests for implemented modules.
 
+## Phase 6 Student Management Tenancy Contract
+
+`students` and `student_enrollments` are strict tenant-owned tables. Each model
+must use `BelongsToTenant`; TenantContext supplies `school_id` on creation; and
+no Student or Enrollment request may accept tenant ownership from user input.
+
+Student and Enrollment services must verify that the Student, Academic Year,
+Class, and Section resolve in the same active tenant, and that the Section
+belongs to the selected Class. Tenant-scoped route-model binding resolves
+cross-school Student, Enrollment, and private-photo identifiers as not found
+before Policy checks.
+
+Student access boundaries are:
+
+* School Admin manages only active-tenant Student and Enrollment records.
+* Teacher reads only active Enrollments reached from the actor's own active
+  Section assignment, or active Class reached through the actor's active Subject
+  assignment. The server derives that scope; requests cannot submit a teacher,
+  class, section, or school bypass.
+* Super Admin uses explicit Platform context and an authorized, school-scoped,
+  read-only privacy-minimized projection. Platform mode never creates, updates,
+  archives, restores, enrolls, or delivers Student photos in Phase 6.
+* Accountant receives no direct Student route in Phase 6. Future fee lookup
+  remains tenant-bound and must be added only with Phase 8 controls.
+
+Private Student-photo delivery is not a global-scope bypass. Its controller must
+resolve the Student through the same tenant/Platform boundary, then apply the
+documented role and privacy Policy before reading from private storage.
+
+Phase 6 automatic-isolation tests must cover Students, Enrollments, private
+photo endpoints, forged parent identifiers, Teacher assigned-record boundaries,
+Super Admin school selection, and unresolved context behavior.
+
 The `users` exception exists only because authentication must retrieve a globally
 unique identity before tenant context can be resolved. It does not authorize
 unrestricted operational user queries. School Admin user creation always derives

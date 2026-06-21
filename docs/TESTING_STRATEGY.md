@@ -446,11 +446,49 @@ Validate:
 * View Student
 * Search Student
 * Student Enrollment
-* Student Reports
 
 Expected Result:
 
 Student lifecycle functions correctly.
+
+---
+
+## Phase 6 Student Management Required Coverage
+
+Before the Phase 6 release gate, tests must prove:
+
+* Student and Enrollment creation derives `school_id` from TenantContext and
+  rejects submitted ownership values.
+* School A cannot list, search, view, update, archive, restore, enroll, or
+  deliver a photo for School B Students or Enrollments; cross-tenant binding
+  returns 404.
+* School Admin can manage only Students in the active school. Super Admin is
+  read-only and school-scoped. Teacher sees only documented assigned Students.
+  Accountant has no direct Student route in Phase 6.
+* Teacher and Super Admin views exclude DOB, guardian details, address, phone
+  numbers, email, and photos.
+* Student validation enforces unique school admission numbers, accepted gender
+  values, valid DOB/admission dates, immutable admission numbers, and the
+  documented status transitions.
+* Enrollment validates a current active Academic Year, same-tenant active
+  Student/Class/Section, Section-to-Class membership, date containment, unique
+  Student/year placement, and unique section roll number.
+* Enrollment Class, Section, and roll number cannot be edited after creation;
+  only active-to-completed and active-to-transferred lifecycle transitions are
+  permitted.
+* Student transfer marks the active Enrollment transferred in the same
+  transaction and never creates a cross-tenant copy. Internal reassignment and
+  promotion are denied as out of scope.
+* Student archive requires inactive status and no active Enrollment. Restore
+  returns inactive and preserves retained Enrollment history.
+* Photo upload accepts only validated JPG, JPEG, PNG, or WebP files up to 2 MB,
+  stores generated names on private storage, and rejects forged MIME types.
+* Photo delivery, replacement, removal, inactive/archived access, rollback, and
+  cross-tenant attempts follow the private-file authorization policy.
+* Student and Enrollment activity/audit records are created transactionally,
+  omit sensitive values, and roll back domain changes when logging fails.
+* No direct Student export route is introduced in Phase 6; export coverage
+  belongs to Phase 10 Reporting.
 
 ---
 

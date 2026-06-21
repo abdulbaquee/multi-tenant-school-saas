@@ -494,7 +494,6 @@ Stores student master records. Student photos must use private storage.
 | id | BIGINT UNSIGNED | No | AUTO_INCREMENT | PRIMARY | - | - | Primary key. |
 | school_id | BIGINT UNSIGNED | No | - | idx_students_school_id | uq_students_school_admission_no | schools.id restrictOnDelete | Owning school. |
 | admission_no | VARCHAR(50) | No | - | idx_students_admission_no | uq_students_school_admission_no | - | School-specific admission number. |
-| roll_no | VARCHAR(50) | Yes | NULL | idx_students_school_roll_no | - | - | Current display roll number, if used. |
 | first_name | VARCHAR(100) | No | - | idx_students_first_name | - | - | Student first name. |
 | last_name | VARCHAR(100) | Yes | NULL | idx_students_last_name | - | - | Student last name. |
 | gender | VARCHAR(20) | No | - | idx_students_gender | - | - | Student gender. |
@@ -526,9 +525,60 @@ Tracks student assignment to academic years, classes, and sections.
 | section_id | BIGINT UNSIGNED | No | - | idx_student_enrollments_section_id | uq_student_enrollments_section_roll | sections.id restrictOnDelete | Assigned section. |
 | roll_no | VARCHAR(50) | No | - | idx_student_enrollments_roll_no | uq_student_enrollments_section_roll | - | Roll number within class/section/year. |
 | enrollment_date | DATE | No | - | idx_student_enrollments_enrollment_date | - | - | Enrollment date. |
-| status | VARCHAR(20) | No | active | idx_student_enrollments_status | - | - | active, promoted, transferred, or completed. |
+| status | VARCHAR(20) | No | active | idx_student_enrollments_status | - | - | active, transferred, or completed. |
 | created_at | TIMESTAMP | Yes | NULL | - | - | - | Creation timestamp. |
 | updated_at | TIMESTAMP | Yes | NULL | - | - | - | Last update timestamp. |
+
+---
+
+## 7.9 Student Management and Enrollment Rules
+
+Student rules:
+
+* `admission_no` is immutable after creation and remains reserved within its
+  school, including after soft deletion.
+* `gender` accepts only `male`, `female`, `other`, or `prefer_not_to_say`.
+* `date_of_birth` cannot be in the future and must be earlier than
+  `admission_date`; `admission_date` cannot be in the future.
+* Student status transitions are `active -> inactive`, `active -> transferred`,
+  `active -> graduated`, and `inactive -> active`. `transferred` and
+  `graduated` are terminal in the MVP.
+* A transferred Student represents departure from the current school only. The
+  MVP does not copy, move, or reveal Student data across tenants.
+* Student archival requires inactive status and no active Enrollment. Restore
+  returns the Student to inactive status. Students are never hard deleted.
+
+Enrollment rules:
+
+* `student_enrollments.roll_no` is the sole roll-number source of truth. The
+  `students` table intentionally has no duplicate roll-number column.
+* One Enrollment exists for each `student_id + academic_year_id`. Its Academic
+  Year, Class, Section, and roll number are immutable after creation.
+* New Enrollment requires an active current Academic Year, an active Student,
+  an active Class, and an active Section belonging to that Class, all in the
+  same school. `enrollment_date` must fall inside the Academic Year date range.
+* Enrollment status transitions are `active -> completed` and
+  `active -> transferred`. Both target states are terminal in the MVP.
+* Internal Class or Section reassignment, mid-year transfer, and promotion are
+  deferred because the one-enrollment-per-year constraint preserves one
+  immutable placement history. A future workflow requires an approved history
+  design before it can change that rule.
+* A Student transfer sets the active Enrollment to `transferred` in the same
+  transaction. Graduation sets the active Enrollment to `completed` in the
+  same transaction. An inactive Student may retain an active Enrollment but is
+  not eligible for future operational actions until reactivated.
+* Enrollments are retained historical records and never soft or hard deleted.
+  They remain available for future Attendance, Fee, Examination, and Reporting
+  relationships.
+
+Privacy and audit rules:
+
+* Student activity and audit evidence may retain Student and Enrollment IDs,
+  admission number, status, Class, Section, Academic Year, roll number, and a
+  `photo_changed` flag.
+* Activity descriptions and audit old/new values must exclude date of birth,
+  guardian details, address, mobile numbers, email, photo paths, and image
+  contents.
 
 ---
 
@@ -847,7 +897,6 @@ Mandatory indexes:
 * All `school_id` columns
 * All frequently searched codes and names
 * `students.admission_no`
-* `students.roll_no`
 * `users.email`
 * `attendances.attendance_date`
 * `fee_payments.receipt_no`

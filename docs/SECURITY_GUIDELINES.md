@@ -587,6 +587,44 @@ Privacy Requirements:
 
 ---
 
+## Phase 6 Student Access and Photo Rules
+
+Student data is shown by role and need:
+
+* School Admin may manage complete Student records only inside the active school.
+* Teacher access is limited to the assigned-record scope defined in
+  `MODULE_SPECIFICATIONS.md` and excludes DOB, guardian details, address, phone
+  numbers, email, and Student photos.
+* Super Admin access is read-only, requires explicit Platform authorization and
+  an explicitly selected school, and uses the same privacy-minimized fields as
+  Teacher access.
+* Accountant has no direct Student route or menu before Phase 8 Fee Management.
+
+Student photo rules:
+
+* Only an authorized School Admin in the Student's active tenant may upload,
+  replace, remove, or receive a Student photo.
+* Replacement deletes the prior private file only after the new file is stored
+  successfully and the Student update commits. Removal deletes the private file
+  only after the database update commits.
+* Photo access is denied for Teachers, Accountants, Super Admins, guests,
+  cross-tenant actors, inactive or archived Students, and inactive or
+  soft-deleted schools.
+* Student archival retains the private file for record continuity but denies all
+  photo delivery. Restoration returns the Student inactive, so photo delivery
+  remains denied until a separate authorized reactivation.
+
+Student logging rules:
+
+* Student and Enrollment activity/audit records retain only IDs, admission
+  number, status, Academic Year, Class, Section, roll number, and a
+  `photo_changed` indicator where needed.
+* Never log DOB, guardian details, address, phone number, email, photo path, or
+  image contents in activity descriptions, audit old/new values, exceptions, or
+  validation messages.
+
+---
+
 # 19. DATA ACCESS POLICY
 
 Data access must follow least privilege.

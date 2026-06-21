@@ -4,7 +4,7 @@
 > Built with Laravel 13, PHP 8.4, Blade, and Bootstrap 5
 
 Version: 1.0
-Status: Draft (Phase 5 implementation completed; tenant, security, documentation, and code reviews approved; release review pending)
+Status: Draft (Phase 5 release-approved; Phase 6 Student Management readiness approved and implementation pending)
 
 ---
 
@@ -160,8 +160,9 @@ tests/
 * [x] Laravel 13 Installation
 * [x] Authentication & User Management Foundation
 * [x] Multi-Tenant Foundation
-* [ ] RBAC (core foundation complete; management workspace pending)
-* [ ] Student Management
+* [x] Roles & Permissions
+* [x] Academic Structure
+* [ ] Student Management (design remediation complete; implementation pending)
 * [ ] Attendance Management
 * [ ] Fee Management
 * [ ] Examination Management
