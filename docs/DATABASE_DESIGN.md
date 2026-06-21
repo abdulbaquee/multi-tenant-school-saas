@@ -518,7 +518,7 @@ Tracks student assignment to academic years, classes, and sections.
 | Column Name | Data Type | Nullable | Default Value | Indexes | Unique Constraints | Foreign Keys | Description |
 | ----------- | --------- | -------- | ------------- | ------- | ------------------ | ------------ | ----------- |
 | id | BIGINT UNSIGNED | No | AUTO_INCREMENT | PRIMARY | - | - | Primary key. |
-| school_id | BIGINT UNSIGNED | No | - | idx_student_enrollments_school_id | uq_student_enrollments_student_year, uq_student_enrollments_section_roll | schools.id restrictOnDelete | Owning school. |
+| school_id | BIGINT UNSIGNED | No | - | idx_student_enrollments_school_id | uq_student_enrollments_section_roll | schools.id restrictOnDelete | Owning school. |
 | student_id | BIGINT UNSIGNED | No | - | idx_student_enrollments_student_id | uq_student_enrollments_student_year | students.id restrictOnDelete | Enrolled student. |
 | academic_year_id | BIGINT UNSIGNED | No | - | idx_student_enrollments_academic_year_id | uq_student_enrollments_student_year, uq_student_enrollments_section_roll | academic_years.id restrictOnDelete | Academic year. |
 | class_id | BIGINT UNSIGNED | No | - | idx_student_enrollments_class_id | uq_student_enrollments_section_roll | classes.id restrictOnDelete | Assigned class. |
@@ -579,6 +579,15 @@ Privacy and audit rules:
 * Activity descriptions and audit old/new values must exclude date of birth,
   guardian details, address, mobile numbers, email, photo paths, and image
   contents.
+
+Implementation Status:
+
+* The `students` and `student_enrollments` migration, named indexes, unique
+  constraints, restricted foreign keys, soft-delete boundary, tenant-aware
+  models, relationships, casts, lifecycle constants, and immutable identity
+  safeguards are implemented.
+* Student registration, profile, photo, lifecycle, and Enrollment workflows
+  remain for later Phase 6 prompts.
 
 ---
 

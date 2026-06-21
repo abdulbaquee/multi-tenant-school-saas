@@ -266,6 +266,15 @@ Phase 6 automatic-isolation tests must cover Students, Enrollments, private
 photo endpoints, forged parent identifiers, Teacher assigned-record boundaries,
 Super Admin school selection, and unresolved context behavior.
 
+Implementation Status:
+
+* Student and StudentEnrollment use `BelongsToTenant`, derive ownership from
+  TenantContext, default deny in Unresolved context, allow model-foundation reads
+  in explicit Platform context, and reject ownership mutation.
+* Focused tests cover School A, School B, Platform, Unresolved, forged ownership,
+  immutable ownership, and retained Enrollment identity. HTTP, assigned-record,
+  parent-alignment, and private-photo controls remain for later Phase 6 prompts.
+
 The `users` exception exists only because authentication must retrieve a globally
 unique identity before tenant context can be resolved. It does not authorize
 unrestricted operational user queries. School Admin user creation always derives

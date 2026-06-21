@@ -490,6 +490,22 @@ Before the Phase 6 release gate, tests must prove:
 * No direct Student export route is introduced in Phase 6; export coverage
   belongs to Phase 10 Reporting.
 
+## Phase 6 Core Student Schema Baseline
+
+Implemented on 2026-06-21:
+
+* 6 focused tests and 92 assertions cover both tables, documented columns,
+  named indexes, unique constraints, foreign keys, and deletion restrictions.
+* Automatic isolation covers School A, School B, explicit Platform, and
+  Unresolved context for Student and StudentEnrollment.
+* Ownership-forging and ownership-mutation tests cover both tenant-owned models.
+* Student admission number and Enrollment placement immutability are enforced
+  and tested; retained Enrollment deletion is rejected.
+* Relationship, date-cast, fillable, Student soft-delete, Enrollment retention,
+  duplicate admission, duplicate Student/year, duplicate roll, missing-parent,
+  and restricted-parent deletion behavior are covered.
+* The full application suite passes 233 tests and 1,711 assertions.
+
 ---
 
 # 18. ATTENDANCE MODULE TESTING

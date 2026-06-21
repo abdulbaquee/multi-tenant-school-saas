@@ -427,6 +427,9 @@ Phase 2 through Phase 5 evidence available for later report assembly:
   data privacy before implementation.
 * Phase 6 Student Management readiness rerun: 10/10 and approved with 227 tests
   and 1,619 assertions passing before implementation.
+* Phase 6 core Student/Enrollment schema evidence: migration, two tenant-aware
+  models, retained-history safeguards, 6 focused tests with 92 assertions, and
+  233 full-suite tests with 1,711 assertions passing.
 
 Screenshots remain to be selected and captured during the documentation and
 submission phases.

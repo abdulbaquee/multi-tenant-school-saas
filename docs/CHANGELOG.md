@@ -565,7 +565,7 @@ Status: Implementation Completed — Review Gate Pending
 
 # [0.8.0] - Student Management
 
-Status: Readiness Approved — Implementation Pending
+Status: Core Schema And Model Foundation Completed
 
 ## Design Remediation
 
@@ -581,10 +581,21 @@ Status: Readiness Approved — Implementation Pending
 * Private Student-photo access and privacy-safe activity/audit rules are
   documented.
 
+## Implemented
+
+* Reversible `students` and `student_enrollments` migration with every approved
+  named index, unique constraint, restricted foreign key, and retention rule.
+* Tenant-aware Student and StudentEnrollment models with canonical constants,
+  date casts, and relationships to School and Academic Structure entities.
+* Immutable Student admission number, immutable Enrollment placement, retained
+  Enrollment deletion protection, and tenant ownership safeguards.
+* School, Academic Year, Class, and Section inverse Enrollment relationships.
+
 ## Verification
 
 * Phase 6 readiness rerun: READY at 10/10 with no blocking issues.
-* Full existing application suite: 227 tests and 1,619 assertions passed.
+* Focused Student Management schema suite: 6 tests and 92 assertions passed.
+* Full application suite: 233 tests and 1,711 assertions passed.
 * Documentation consistency and whitespace validation passed.
 
 ## Planned
@@ -762,7 +773,7 @@ Example:
 # Current Project Status
 
 Phase: Phase 5 Academic Structure Completed — Release Approved; Phase 6 Student
-Management Readiness Approved — Implementation Pending
+Management Core Schema And Model Foundation Completed
 
 Repository Setup: Completed
 
@@ -773,7 +784,6 @@ Documentation Setup: Completed (Draft v1.0; maintained during implementation)
 Database Design Documentation: Remediated and implementation-ready draft (DATABASE_DESIGN.md, ER_DIAGRAM.md)
 
 Application Implementation: Phase 2, Phase 3, Phase 4, and Phase 5 are
-completed. Phase 6 has no application implementation yet.
+completed. Phase 6 Student and Enrollment schema/model foundation is complete.
 
-Next Task: Create and execute the Phase 6 core Student schema and
-model-foundation prompt
+Next Task: Create and execute the Phase 6 Student profile-management prompt
