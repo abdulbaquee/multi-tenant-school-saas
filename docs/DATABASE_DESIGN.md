@@ -589,8 +589,9 @@ Implementation Status:
 * Student registration, profile updates, role-scoped reads, active/inactive
   lifecycle, archival/restoration, private photos, and retained Enrollment
   history are implemented.
-* Enrollment creation, Enrollment lifecycle, Student transfer, and graduation
-  coupling remain for the next Phase 6 prompt.
+* Initial Enrollment creation, retained completion, immutable placement,
+  transaction-coupled Student transfer, and transaction-coupled graduation are
+  implemented without schema changes. Phase 6 is release-approved.
 
 ---
 

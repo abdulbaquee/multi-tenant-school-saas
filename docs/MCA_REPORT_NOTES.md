@@ -434,6 +434,13 @@ Phase 2 through Phase 5 evidence available for later report assembly:
   assignment-scoped Teacher reads, school-selected Super Admin reads, private
   photos, privacy-safe logs, 11 focused tests with 165 assertions, and 244
   full-suite tests with 1,876 assertions passing.
+* Phase 6 Enrollment Management evidence: tenant-derived immutable placement,
+  completion, transaction-coupled transfer/graduation, retained history,
+  privacy-safe logs, 13 focused tests with 123 assertions, and 257 full-suite
+  tests with 1,999 assertions passing.
+* Phase 6 review evidence: tenant isolation, security, and documentation passed
+  at 10/10; code review passed after validation/query remediation; release
+  review approved the checkpoint at 9.8/10.
 
 Screenshots remain to be selected and captured during the documentation and
 submission phases.

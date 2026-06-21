@@ -565,7 +565,7 @@ Status: Implementation Completed — Review Gate Pending
 
 # [0.8.0] - Student Management
 
-Status: Student Profile Management Completed — Enrollment Workflow Pending
+Status: Completed — Release Approved
 
 ## Design Remediation
 
@@ -600,6 +600,14 @@ Status: Student Profile Management Completed — Enrollment Workflow Pending
   removal, archival retention, and rollback cleanup are implemented.
 * Student Policy, context-aware Service, Form Requests, thin controllers,
   protected routes, Bootstrap views, and permission-aware navigation.
+* School Admin-only initial Enrollment creation against the active current
+  Academic Year and active same-tenant Class/Section parents.
+* Immutable placement, retained completion, and no Enrollment edit or delete
+  routes.
+* Transaction-coupled Student transfer and graduation with locked Student and
+  Enrollment rows, exact-one-active safeguards, and privacy-safe logs.
+* Enrollment Form Requests, dedicated Policy and Service boundaries,
+  confirmation-based Bootstrap controls, and denied-role/tenant enforcement.
 
 ## Verification
 
@@ -608,14 +616,27 @@ Status: Student Profile Management Completed — Enrollment Workflow Pending
 * Focused Student Profile Management suite: 11 tests and 165 assertions passed.
 * Combined Phase 6 Student suite: 17 tests and 257 assertions passed.
 * Full application suite: 244 tests and 1,876 assertions passed.
+* Focused Enrollment Management suite: 13 tests and 123 assertions passed.
+* Combined Phase 6 Student suite after Enrollment implementation: 30 tests and
+  380 assertions passed.
+* Full application suite after Enrollment implementation: 257 tests and 1,999
+  assertions passed.
 * Pint, production frontend build, Composer validation, route checks, and
   migration execution passed.
 * Documentation consistency and whitespace validation passed.
 
-## Planned
+## Review Status
 
-* Student enrollment
-* Enrollment lifecycle coupling for transfer and graduation
+* Phase 6 tenant-isolation review: 10/10 and approved after expanding denied
+  HTTP and direct-service mutation coverage.
+* Phase 6 security review: 10/10 and approved with no dependency advisories or
+  unresolved findings.
+* Phase 6 documentation review: 10/10 and approved after reconciling lifecycle
+  flows, permission mapping, and stale next-task references.
+* Phase 6 code review: approved after replacing a same-tenant relationship 404
+  with field validation, eliminating policy N+1 queries, and preserving reduced
+  Teacher/Super Admin projections.
+* Phase 6 release review: READY at 9.8/10 with no blocking issues.
 
 ## Deliverables
 
@@ -783,8 +804,8 @@ Example:
 
 # Current Project Status
 
-Phase: Phase 5 Academic Structure Completed — Release Approved; Phase 6 Student
-Profile Management Completed — Enrollment Workflow Pending
+Phase: Phase 6 Student Management Completed — Release Approved; Phase 7
+Attendance Readiness Review Next
 
 Repository Setup: Completed
 
@@ -796,6 +817,7 @@ Database Design Documentation: Remediated and implementation-ready draft (DATABA
 
 Application Implementation: Phase 2, Phase 3, Phase 4, and Phase 5 are
 completed. Phase 6 Student registration, profiles, role-scoped reads,
-lifecycle, private photos, and retained Enrollment history are implemented.
+lifecycle, private photos, immutable Enrollment creation/completion, and
+transaction-coupled transfer/graduation are implemented.
 
-Next Task: Create and execute the Phase 6 Enrollment-management prompt
+Next Task: Create and execute the Phase 7 Attendance Management readiness-review prompt

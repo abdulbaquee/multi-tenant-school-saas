@@ -11,7 +11,14 @@
                 </div>
                 <p class="text-body-secondary mb-0">{{ __('Admission Number: :number', ['number' => $student->admission_no]) }}</p>
             </div>
-            @can('update', $student)<a class="btn btn-outline-primary align-self-start" href="{{ route('students.edit', $student) }}"><i class="bi bi-pencil me-1" aria-hidden="true"></i>{{ __('Edit') }}</a>@endcan
+            <div class="d-flex flex-wrap gap-2 align-self-start">
+                @can('enroll', $student)
+                    @if ($student->enrollments->where('status', \App\Models\StudentEnrollment::STATUS_ACTIVE)->isEmpty())
+                        <a class="btn btn-primary" href="{{ route('student-enrollments.create', $student) }}"><i class="bi bi-person-check me-1" aria-hidden="true"></i>{{ __('Create Enrollment') }}</a>
+                    @endif
+                @endcan
+                @can('update', $student)<a class="btn btn-outline-primary" href="{{ route('students.edit', $student) }}"><i class="bi bi-pencil me-1" aria-hidden="true"></i>{{ __('Edit') }}</a>@endcan
+            </div>
         </div>
     </x-slot>
 
@@ -94,12 +101,12 @@
         <div class="card border-0 shadow-sm">
             <div class="table-responsive">
                 <table class="table align-middle mb-0">
-                    <thead class="table-light"><tr><th scope="col">{{ __('Academic Year') }}</th><th scope="col">{{ __('Class') }}</th><th scope="col">{{ __('Section') }}</th><th scope="col">{{ __('Roll Number') }}</th><th scope="col">{{ __('State') }}</th></tr></thead>
+                    <thead class="table-light"><tr><th scope="col">{{ __('Academic Year') }}</th><th scope="col">{{ __('Class') }}</th><th scope="col">{{ __('Section') }}</th><th scope="col">{{ __('Roll Number') }}</th><th scope="col">{{ __('State') }}</th><th scope="col" class="text-end">{{ __('Action') }}</th></tr></thead>
                     <tbody>
                         @forelse ($student->enrollments as $enrollment)
-                            <tr><td>{{ $enrollment->academicYear->name }}</td><td>{{ $enrollment->schoolClass->name }}</td><td>{{ $enrollment->section->name }}</td><td>{{ $enrollment->roll_no }}</td><td><span class="badge {{ $enrollment->status === 'active' ? 'text-bg-success' : 'text-bg-secondary' }}">{{ ucfirst($enrollment->status) }}</span></td></tr>
+                            <tr><td>{{ $enrollment->academicYear->name }}</td><td>{{ $enrollment->schoolClass->name }}</td><td>{{ $enrollment->section->name }}</td><td>{{ $enrollment->roll_no }}</td><td><span class="badge {{ $enrollment->status === 'active' ? 'text-bg-success' : 'text-bg-secondary' }}">{{ ucfirst($enrollment->status) }}</span></td><td class="text-end">@can('complete', $enrollment)<button class="btn btn-sm btn-outline-success" type="button" data-bs-toggle="modal" data-bs-target="#completeEnrollmentModal{{ $enrollment->id }}"><i class="bi bi-check2-circle me-1" aria-hidden="true"></i>{{ __('Complete') }}</button>@else<span class="text-body-secondary">—</span>@endcan</td></tr>
                         @empty
-                            <tr><td colspan="5" class="text-center text-body-secondary py-4">{{ __('No Enrollment history is available.') }}</td></tr>
+                            <tr><td colspan="6" class="text-center text-body-secondary py-4">{{ __('No Enrollment history is available.') }}</td></tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -112,10 +119,21 @@
         @can('deactivate', $student)<button class="btn btn-outline-warning" type="button" data-bs-toggle="modal" data-bs-target="#deactivateStudentModal"><i class="bi bi-slash-circle me-1" aria-hidden="true"></i>{{ __('Deactivate') }}</button>@endcan
         @can('archive', $student)<button class="btn btn-outline-danger" type="button" data-bs-toggle="modal" data-bs-target="#archiveStudentModal"><i class="bi bi-archive me-1" aria-hidden="true"></i>{{ __('Archive') }}</button>@endcan
         @can('restore', $student)<button class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#restoreStudentModal"><i class="bi bi-arrow-counterclockwise me-1" aria-hidden="true"></i>{{ __('Restore') }}</button>@endcan
+        @if ($student->enrollments->where('status', \App\Models\StudentEnrollment::STATUS_ACTIVE)->count() === 1)
+            @can('transfer', $student)<button class="btn btn-outline-danger" type="button" data-bs-toggle="modal" data-bs-target="#transferStudentModal"><i class="bi bi-box-arrow-right me-1" aria-hidden="true"></i>{{ __('Transfer Student') }}</button>@endcan
+            @can('graduate', $student)<button class="btn btn-outline-success" type="button" data-bs-toggle="modal" data-bs-target="#graduateStudentModal"><i class="bi bi-mortarboard me-1" aria-hidden="true"></i>{{ __('Graduate Student') }}</button>@endcan
+        @endif
     </div>
 
     @can('activate', $student)@include('academic.partials.confirmation-modal', ['modalId' => 'activateStudentModal', 'title' => __('Activate Student'), 'message' => __('This Student will become available for future operational workflows.'), 'action' => route('students.activate', $student), 'buttonLabel' => __('Activate'), 'buttonClass' => 'btn-success'])@endcan
     @can('deactivate', $student)@include('academic.partials.confirmation-modal', ['modalId' => 'deactivateStudentModal', 'title' => __('Deactivate Student'), 'message' => __('The profile remains retained, but the Student cannot enter new operational workflows.'), 'action' => route('students.deactivate', $student), 'buttonLabel' => __('Deactivate'), 'buttonClass' => 'btn-warning'])@endcan
     @can('archive', $student)@include('academic.partials.confirmation-modal', ['modalId' => 'archiveStudentModal', 'title' => __('Archive Student'), 'message' => __('Archival requires no active Enrollment and preserves identity, history, and any private photo.'), 'action' => route('students.archive', $student), 'buttonLabel' => __('Archive'), 'buttonClass' => 'btn-danger'])@endcan
     @can('restore', $student)@include('academic.partials.confirmation-modal', ['modalId' => 'restoreStudentModal', 'title' => __('Restore Student'), 'message' => __('The original record will return as inactive. Activate it separately after review.'), 'action' => route('students.restore', $student), 'buttonLabel' => __('Restore as Inactive'), 'buttonClass' => 'btn-primary'])@endcan
+    @foreach ($student->enrollments as $enrollment)
+        @can('complete', $enrollment)@include('academic.partials.confirmation-modal', ['modalId' => 'completeEnrollmentModal'.$enrollment->id, 'title' => __('Complete Enrollment'), 'message' => __('This retained placement will become completed and cannot be reopened or edited.'), 'action' => route('student-enrollments.complete', $enrollment), 'buttonLabel' => __('Complete Enrollment'), 'buttonClass' => 'btn-success'])@endcan
+    @endforeach
+    @if ($student->enrollments->where('status', \App\Models\StudentEnrollment::STATUS_ACTIVE)->count() === 1)
+        @can('transfer', $student)@include('academic.partials.confirmation-modal', ['modalId' => 'transferStudentModal', 'title' => __('Transfer Student'), 'message' => __('The active Enrollment and Student will become transferred and terminal. No data is copied to another school.'), 'action' => route('students.transfer', $student), 'buttonLabel' => __('Transfer Student'), 'buttonClass' => 'btn-danger'])@endcan
+        @can('graduate', $student)@include('academic.partials.confirmation-modal', ['modalId' => 'graduateStudentModal', 'title' => __('Graduate Student'), 'message' => __('The active Enrollment will be completed and the Student will become graduated and terminal.'), 'action' => route('students.graduate', $student), 'buttonLabel' => __('Graduate Student'), 'buttonClass' => 'btn-success'])@endcan
+    @endif
 </x-app-layout>

@@ -10,6 +10,7 @@ use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\SchoolSettingController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\StudentEnrollmentController;
 use App\Http\Controllers\StudentPhotoController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
@@ -112,6 +113,16 @@ Route::middleware(['auth', 'tenant.context'])->group(function () {
     Route::get('/students/{student}/photo', [StudentPhotoController::class, 'show'])->name('students.photo.show');
     Route::put('/students/{student}/photo', [StudentPhotoController::class, 'update'])->name('students.photo.update');
     Route::delete('/students/{student}/photo', [StudentPhotoController::class, 'destroy'])->name('students.photo.destroy');
+    Route::get('/students/{student}/enrollments/create', [StudentEnrollmentController::class, 'create'])
+        ->name('student-enrollments.create');
+    Route::post('/students/{student}/enrollments', [StudentEnrollmentController::class, 'store'])
+        ->name('student-enrollments.store');
+    Route::patch('/student-enrollments/{student_enrollment}/complete', [StudentEnrollmentController::class, 'complete'])
+        ->name('student-enrollments.complete');
+    Route::patch('/students/{student}/transfer', [StudentEnrollmentController::class, 'transfer'])
+        ->name('students.transfer');
+    Route::patch('/students/{student}/graduate', [StudentEnrollmentController::class, 'graduate'])
+        ->name('students.graduate');
     Route::resource('students', StudentController::class)
         ->withTrashed(['show'])
         ->except(['destroy']);

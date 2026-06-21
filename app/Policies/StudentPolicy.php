@@ -46,6 +46,26 @@ class StudentPolicy
             && $user->hasPermission('students.create');
     }
 
+    public function enroll(User $user, Student $student): bool
+    {
+        return $this->isSchoolAdmin($user)
+            && $user->canEstablishTenantContext()
+            && $user->hasPermission('students.create')
+            && $this->canAccessTenant($user, $student)
+            && ! $student->trashed()
+            && $student->status === Student::STATUS_ACTIVE;
+    }
+
+    public function transfer(User $user, Student $student): bool
+    {
+        return $this->canApplyTerminalLifecycle($user, $student);
+    }
+
+    public function graduate(User $user, Student $student): bool
+    {
+        return $this->canApplyTerminalLifecycle($user, $student);
+    }
+
     public function update(User $user, Student $student): bool
     {
         return $this->isSchoolAdmin($user)
@@ -157,5 +177,15 @@ class StudentPolicy
                             ->where('teacher_id', $teacher->id));
                 })
                 ->exists();
+    }
+
+    private function canApplyTerminalLifecycle(User $user, Student $student): bool
+    {
+        return $this->isSchoolAdmin($user)
+            && $user->canEstablishTenantContext()
+            && $user->hasPermission('students.update')
+            && $this->canAccessTenant($user, $student)
+            && ! $student->trashed()
+            && $student->status === Student::STATUS_ACTIVE;
     }
 }

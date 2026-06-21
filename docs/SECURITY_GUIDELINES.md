@@ -633,6 +633,12 @@ Implementation Status:
   paths and URLs are not used.
 * Photo replacement/removal, transaction rollback cleanup, archived-file
   retention, inactive/archived denial, and privacy-safe logs are tested.
+* Enrollment creation, completion, transfer, and graduation are School
+  Admin-only own-tenant workflows. Placement cannot be edited or deleted;
+  transfer and graduation update Student and Enrollment state in one locked
+  transaction with privacy-safe activity and audit evidence.
+* The Phase 6 security review passed at 10/10 with no critical, high, medium,
+  dependency, privacy, retention, or authorization findings.
 
 ---
 

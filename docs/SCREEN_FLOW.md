@@ -32,8 +32,8 @@ Phases 2 through 4 and the implemented Phase 5 Academic Structure workspace:
   Students, School Settings, Profile.
 * Teacher: Dashboard, assigned Academic Structure, assigned Students, Profile.
 * Accountant: Dashboard, Profile.
-* Student Management now provides the implemented Phase 6 profile workflows.
-  Enrollment mutation and Phase 7 or later module items documented below remain
+* Student Management now provides the implemented Phase 6 profile and immutable
+  Enrollment workflows. Phase 7 or later module items documented below remain
   omitted until their routes and authorization are implemented.
 
 School Management currently provides Super Admin-only listing, search, status
@@ -51,10 +51,11 @@ context read-only, School Admin management is own-tenant and permission-bound,
 Teacher access is limited to active assignments, and Accountant access is denied.
 
 Student Management currently provides School Admin registration, profile
-updates, search, lifecycle controls, private photos, and retained Enrollment
-history. Teacher reads are assignment-scoped and privacy-minimized; Super Admin
-reads require one selected school and are privacy-minimized; Accountant access
-is denied.
+updates, search, lifecycle controls, private photos, immutable Enrollment
+creation/completion, transaction-coupled transfer/graduation, and retained
+Enrollment history. Teacher reads are assignment-scoped and privacy-minimized;
+Super Admin reads require one selected school and are privacy-minimized;
+Accountant access is denied.
 
 ---
 
@@ -591,7 +592,10 @@ Student List
 ├── View Student
 │   ├── Edit Student
 │   ├── Enrollment History
+│   ├── Complete Active Enrollment
 │   └── Status Management
+│       ├── Transfer Student and Active Enrollment
+│       └── Graduate Student and Complete Active Enrollment
 │
 └── Create Initial Enrollment
 
@@ -638,6 +642,13 @@ Assign Roll Number
 │
 ▼
 Save Enrollment
+│
+▼
+Retain Immutable Enrollment History
+│
+├── Complete Enrollment
+├── Transfer Student and Enrollment
+└── Graduate Student and Complete Enrollment
 
 Access:
 
@@ -656,6 +667,8 @@ Rules:
 * Enrollment may change only from active to completed or transferred. Internal
   reassignment, promotion, and cross-tenant transfer are not supported in the
   MVP.
+* Completion leaves the Student active. Transfer and graduation update the
+  Student and its single active Enrollment in one transaction.
 
 ---
 

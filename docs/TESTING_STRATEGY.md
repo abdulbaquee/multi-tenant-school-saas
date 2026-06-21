@@ -526,6 +526,26 @@ Implemented on 2026-06-21:
 * The combined Phase 6 Student suite passes 17 tests and 257 assertions.
 * The full application suite passes 244 tests and 1,876 assertions.
 
+## Phase 6 Enrollment Management Baseline
+
+Implemented on 2026-06-21:
+
+* 13 focused tests and 123 assertions cover initial Enrollment creation,
+  current-year and parent validation, tenant-derived ownership, immutable
+  placement, retained completion, Student transfer, and graduation.
+* Cross-tenant identifiers, denied roles, exact permission revocation,
+  inactive/archived parents, invalid dates, duplicate placement/roll numbers,
+  stale or ambiguous active Enrollment state, and direct-service context abuse
+  fail closed.
+* Transaction and logging failures roll back Enrollment creation and coupled
+  Student/Enrollment lifecycle changes without partial writes.
+* The combined Phase 6 Student suite passes 30 tests and 380 assertions.
+* The full application suite passes 257 tests and 1,999 assertions.
+* The Phase 6 tenant-isolation and security review reruns are approved at 10/10.
+  Composer and production npm audits report no dependency advisories.
+* Documentation review passed at 10/10, code review passed after remediation,
+  and the Phase 6 release review approved the checkpoint at 9.8/10.
+
 ---
 
 # 18. ATTENDANCE MODULE TESTING

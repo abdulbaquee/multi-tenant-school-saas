@@ -478,8 +478,13 @@ Implementation Status:
   privacy-minimized projections. Accountant has no direct route.
 * Private Student photo upload, replacement, removal, archival retention, and
   protected School Admin-only delivery are implemented on private storage.
-* Enrollment creation, completion, transfer, and Student transfer/graduation
-  coupling remain pending within Phase 6.
+* Enrollment creation and retained completion are implemented. Student transfer
+  atomically transfers the active Enrollment; graduation atomically completes
+  it. Phase 6 is release-approved.
+* `students.create` authorizes Student registration and initial Enrollment
+  creation. `students.update` authorizes Enrollment completion and the coupled
+  Student transfer/graduation actions. Policies and Services additionally
+  enforce School Admin role, tenant ownership, and lifecycle state.
 
 ---
 

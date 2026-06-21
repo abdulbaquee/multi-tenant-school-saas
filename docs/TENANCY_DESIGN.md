@@ -275,8 +275,12 @@ Implementation Status:
   isolation, own-tenant School Admin mutations, assigned-record Teacher reads,
   school-selected Platform projections, private-photo controls, and direct
   service context denial.
-* Enrollment parent alignment, creation, and lifecycle controls remain for the
-  next Phase 6 prompt.
+* Enrollment creation resolves the active current Academic Year and active
+  same-tenant Class/Section parents under TenantScope. Completion, transfer, and
+  graduation lock tenant-owned rows and fail closed for cross-tenant, Platform,
+  unresolved, stale, or ambiguous active-Enrollment contexts.
+* The Phase 6 tenant-isolation review passed at 10/10 after explicit HTTP and
+  direct-service coverage for every Enrollment mutation path.
 
 The `users` exception exists only because authentication must retrieve a globally
 unique identity before tenant context can be resolved. It does not authorize

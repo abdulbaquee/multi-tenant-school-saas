@@ -138,7 +138,7 @@ Phase 5 — Academic Structure
 Status: Completed — Release Approved
 
 Phase 6 — Student Management
-Status: Student Profile Management Completed — Enrollment Workflow Pending
+Status: Completed — Release Approved
 
 Phase 7 — Attendance Management
 Status: Pending
@@ -185,7 +185,8 @@ Development Progress: Phase 4 and Phase 5 are completed and release-approved.
 Phase 6 Student Management design remediation defines the migration-ready
 Student and Enrollment boundaries. The readiness rerun passed at 10/10. The
 core schema, Student profile workflows, role-scoped reads, lifecycle, private
-photos, and privacy-safe logging are complete; Enrollment creation is pending.
+photos, privacy-safe logging, immutable Enrollment creation/completion, and
+transaction-coupled transfer/graduation are complete.
 
 Review Progress: Tenant-isolation review approved at 10/10; security review
 approved at 10/10 after local credential-file hygiene remediation;
@@ -194,8 +195,14 @@ review approved after archived Teacher identity retention remediation; and the
 Phase 5 release review approved the completed checkpoint. The Phase 6 readiness
 rerun passed at 10/10 with no blocking issues.
 
+Phase 6 Review Progress: Tenant-isolation and security reviews approved at
+10/10 after Enrollment denied-path expansion. Documentation review approved at
+10/10 after lifecycle, permission, and roadmap reconciliation. Code review is
+approved after validation and query-scope remediation. Release review approved
+the completed checkpoint at 9.8/10.
+
 ---
 
 # Next Milestone
 
-Create and execute the Phase 6 Enrollment-management prompt.
+Create and execute the Phase 7 Attendance Management readiness-review prompt.

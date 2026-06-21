@@ -155,13 +155,20 @@ class StudentService
 
         $this->authorize($actor->can('view', $student));
 
-        $enrollmentQuery = function (HasMany $query) use ($teacher): void {
+        $includeStudent = $actor->hasRoleCode(Role::SCHOOL_ADMIN);
+        $enrollmentQuery = function (HasMany $query) use ($teacher, $includeStudent): void {
             if ($teacher instanceof Teacher) {
                 $query->where('status', StudentEnrollment::STATUS_ACTIVE);
                 $this->applyTeacherEnrollmentScope($query, $teacher);
             }
 
-            $query->with(['academicYear', 'schoolClass', 'section'])
+            $relations = ['academicYear', 'schoolClass', 'section'];
+
+            if ($includeStudent) {
+                $relations[] = 'student';
+            }
+
+            $query->with($relations)
                 ->latest('enrollment_date');
         };
 
