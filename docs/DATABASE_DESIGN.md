@@ -655,6 +655,12 @@ Attendance constraints and lifecycle:
   the immutable audit row's `user_id`; raw remarks are never copied to activity
   descriptions or audit old/new values.
 
+Implementation status (2026-06-21): the `attendances` migration and tenant-aware
+model are implemented with the documented named indexes, daily unique
+constraint, restricted foreign keys, immutable identity fields, original-marker
+retention, and deletion rejection. Service-level roster, lifecycle, date,
+authorization, locking, and logging rules remain Phase 7 workflow work.
+
 ---
 
 # 9. FEE TABLES

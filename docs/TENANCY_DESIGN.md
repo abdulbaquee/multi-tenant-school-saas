@@ -322,6 +322,14 @@ automatic scope filtering, forged parent and roster IDs, Teacher Section
 assignment, Subject-only denial, School Admin ownership, Super Admin and
 Accountant denial, unresolved/Platform contexts, and tenant-owned logs.
 
+Core implementation status (2026-06-21): Attendance uses `BelongsToTenant`,
+derives ownership from TenantContext, defaults to no reads in Unresolved
+context, rejects tenant-owned creation outside Tenant context, and permits
+explicit Platform reads only at the model-foundation layer. Focused tests cover
+School A/B filtering, forged ownership, ownership immutability, retained parent
+relationships, and restricted foreign keys. HTTP, Policy, service, actor-scope,
+and tenant-owned logging tests remain part of the dedicated workflow prompt.
+
 The `users` exception exists only because authentication must retrieve a globally
 unique identity before tenant context can be resolved. It does not authorize
 unrestricted operational user queries. School Admin user creation always derives

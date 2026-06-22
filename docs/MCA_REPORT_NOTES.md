@@ -445,6 +445,11 @@ Phase 2 through Phase 5 evidence available for later report assembly:
   Teacher authority, Enrollment-derived rosters, school-local date validation,
   atomic bulk entry, retained corrections, privacy-safe audit evidence, and
   Phase 10 report/analytics deferral before implementation.
+* Phase 7 Attendance foundation evidence: one migration and tenant-aware model
+  implement retained daily records, automatic tenant ownership, immutable
+  placement/original marker, restricted relationships, and no deletion. The 6
+  focused tests pass 67 assertions, and the full suite passes 263 tests with
+  2,066 assertions.
 
 Screenshots remain to be selected and captured during the documentation and
 submission phases.

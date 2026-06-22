@@ -611,6 +611,14 @@ Expected Result:
 Attendance entry, correction, history, and monthly operational summaries are
 accurate, tenant-isolated, assignment-scoped, retained, privacy-safe, and atomic.
 
+Core schema evidence (2026-06-21): 6 focused tests with 67 assertions validate
+the documented table, named indexes, daily unique constraint, restricted
+foreign keys, absent soft deletes, default-deny TenantScope behavior, automatic
+ownership, forged ownership rejection, immutable identity/original marker,
+deletion rejection, status/date contracts, and retained parent relationships.
+The full application suite passes 263 tests with 2,066 assertions. Workflow,
+authorization, transaction, logging, and HTTP tests remain pending.
+
 ---
 
 # 19. FEE MANAGEMENT TESTING

@@ -611,6 +611,12 @@ manually selected in Phase 7; the School Setting attendance start time is a UI
 reference only. School-local date calculations use the configured school
 timezone.
 
+Core implementation status (2026-06-21): the Attendance migration, tenant-aware
+model, status constants, date cast, retained parent relationships, immutable
+identity/original-marker safeguards, and deletion rejection are implemented.
+`AttendanceService`, Policy, Form Requests, controller, routes, and Blade
+workflows remain pending.
+
 ---
 
 # 11. DASHBOARD ARCHITECTURE

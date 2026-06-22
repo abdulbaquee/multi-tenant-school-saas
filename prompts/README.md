@@ -106,7 +106,8 @@ prompts/
     └── 04-phase-06-enrollment-management.md
 └── 06-attendance/
     ├── 00-phase-07-readiness-review.md
-    └── 01-phase-07-attendance-design-remediation.md
+    ├── 01-phase-07-attendance-design-remediation.md
+    └── 02-phase-07-core-attendance-schema.md
 ```
 
 ## Current Prompt Creation Status
@@ -141,8 +142,9 @@ Created for the next roadmap gate:
 - Phase 6 core Student schema and model foundation (executed).
 - Phase 6 Student profile management (executed).
 - Phase 6 Enrollment management (executed).
-- Phase 7 Attendance Management readiness review (executed; remediation required).
-- Phase 7 Attendance design remediation (executed; readiness rerun required).
+- Phase 7 Attendance Management readiness review (executed and approved at 10/10).
+- Phase 7 Attendance design remediation (executed).
+- Phase 7 core Attendance schema and model foundation (executed).
 
 Future prompt groups should be added only when they are needed for the next roadmap phase.
 

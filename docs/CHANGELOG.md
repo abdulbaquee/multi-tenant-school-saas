@@ -646,7 +646,7 @@ Status: Completed — Release Approved
 
 # [0.9.0] - Attendance Management
 
-Status: Design Remediated — Readiness Rerun Pending
+Status: Core Schema Implemented — Workflow Pending
 
 ## Design Remediation
 
@@ -667,9 +667,21 @@ Status: Design Remediated — Readiness Rerun Pending
 * Expanded Phase 7 schema, tenancy, security, UI, screen-flow, and testing
   requirements and recorded DECISION-032.
 
-## Planned Implementation
+## Implemented
 
-* Attendance migration and tenant-aware model after readiness approval
+* Reversible `attendances` migration with every approved column, named index,
+  daily Student unique constraint, and restricted foreign key.
+* Tenant-aware Attendance model with canonical statuses, date casting,
+  automatic ownership, immutable placement and original marker, and retained-
+  history deletion protection.
+* Retained inverse relationships across School, Student, Academic Year, Class,
+  Section, and original marking User.
+* Focused schema and isolation suite: 6 tests and 67 assertions passed.
+* Full application suite after the foundation: 263 tests and 2,066 assertions
+  passed.
+
+## Remaining Implementation
+
 * Daily and bulk Attendance entry
 * Attendance history and search
 * Current-year authorized corrections
@@ -826,7 +838,7 @@ Example:
 # Current Project Status
 
 Phase: Phase 6 Student Management Completed — Release Approved; Phase 7
-Attendance Design Remediated — Readiness Rerun Pending
+Attendance Core Schema Implemented — Workflow Pending
 
 Repository Setup: Completed
 
@@ -837,9 +849,9 @@ Documentation Setup: Completed (Draft v1.0; maintained during implementation)
 Database Design Documentation: Remediated and implementation-ready draft (DATABASE_DESIGN.md, ER_DIAGRAM.md)
 
 Application Implementation: Phase 2, Phase 3, Phase 4, and Phase 5 are
-completed. Phase 6 Student registration, profiles, role-scoped reads,
-lifecycle, private photos, immutable Enrollment creation/completion, and
-transaction-coupled transfer/graduation are implemented.
+completed. Phase 6 Student Management is release-approved. The Phase 7
+Attendance migration, tenant-aware model, retained relationships, and focused
+schema/isolation tests are implemented; Attendance workflows remain pending.
 
-Next Task: Rerun the Phase 7 Attendance Management readiness-review prompt before
-creating migrations or models
+Next Task: Audit and commit the Phase 7 core Attendance foundation, then create
+the daily and bulk Attendance management prompt
