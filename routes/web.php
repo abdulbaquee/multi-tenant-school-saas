@@ -4,6 +4,8 @@ use App\Http\Controllers\AcademicTermController;
 use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ExamController;
+use App\Http\Controllers\ExamSubjectController;
 use App\Http\Controllers\FeeCategoryController;
 use App\Http\Controllers\FeeCollectionController;
 use App\Http\Controllers\FeeOutstandingBalanceController;
@@ -162,6 +164,14 @@ Route::middleware(['auth', 'tenant.context'])->group(function () {
     Route::get('/payment-transactions/{payment_transaction}', [PaymentTransactionController::class, 'show'])->name('payment-transactions.show');
     Route::get('/fee-payments/{fee_payment}', [FeePaymentController::class, 'show'])->name('fee-payments.show');
     Route::get('/fee-payments/{fee_payment}/print', [FeePaymentController::class, 'print'])->name('fee-payments.print');
+
+    Route::patch('/exams/{exam}/publish', [ExamController::class, 'publish'])->name('exams.publish');
+    Route::patch('/exams/{exam}/complete', [ExamController::class, 'complete'])->name('exams.complete');
+    Route::patch('/exams/{exam}/cancel', [ExamController::class, 'cancel'])->name('exams.cancel');
+    Route::patch('/exams/{exam}/archive', [ExamController::class, 'archive'])->name('exams.archive');
+    Route::resource('exams', ExamController::class)->except(['destroy']);
+
+    Route::resource('exam-subjects', ExamSubjectController::class)->only(['index', 'create', 'store', 'show']);
 });
 
 require __DIR__.'/auth.php';

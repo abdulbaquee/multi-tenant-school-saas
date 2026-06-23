@@ -952,6 +952,18 @@ summaries are deferred to Phase 10 Reporting.
   Section, Subject, Student, and User.
 * Focused Examination schema suite: 6 tests and 236 assertions passed.
 
+## Setup And Assignment Implemented
+
+* Added School Admin Exam list/create/update/show workflows with publish,
+  complete, cancel, and archive lifecycle routes.
+* Added School Admin Exam Subject assignment list/create/show workflows with
+  tenant-safe class/subject validation and server-derived marks bounds.
+* Seeded default school-local grade scales on first Exam create.
+* Added policies, Form Requests, services, controllers, routes, Bootstrap views,
+  sidebar navigation, activity logs, and audit logs.
+* Denied Super Admin, Accountant, Teacher, guest, and cross-tenant paths.
+* Focused setup/assignment suite: 7 tests and 48 assertions passed.
+
 ## Deliverables
 
 * Fee Management Module
@@ -1112,8 +1124,8 @@ Fee schema and tenant-aware model foundation are implemented. School Admin Fee
 Category, Fee Structure, and Student Fee assignment workflows are implemented.
 School Admin and Accountant collection, receipt, payment-history, outstanding-balance,
 and sandbox transaction operational workflows are implemented and release-approved.
-Phase 9 Examination Management design remediation is approved. The core
-Examination schema and tenant-aware model foundation are implemented. School
-Admin exam setup and Exam Subject assignment are the next checkpoint.
+Phase 9 Examination setup and Exam Subject assignment workflows are
+implemented. Teacher-scoped marks entry and result processing are the next
+checkpoint.
 
-Next Task: Implement Phase 9 School Admin exam setup and Exam Subject assignment workflows.
+Next Task: Implement Phase 9 teacher-scoped marks entry and result processing workflows.

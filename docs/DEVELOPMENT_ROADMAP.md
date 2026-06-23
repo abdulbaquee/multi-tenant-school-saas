@@ -310,7 +310,7 @@ summaries are deferred to Phase 10 Reporting.
 
 # Phase 9 — Examination Management
 
-Status: Core Schema Implemented — Pending Workflow Implementation
+Status: Setup And Assignment Implemented — Pending Marks Entry
 
 ## Features
 
@@ -421,4 +421,4 @@ Project ready for final evaluation and submission.
 
 # Next Immediate Task
 
-Implement Phase 9 School Admin exam setup and Exam Subject assignment workflows.
+Implement Phase 9 teacher-scoped marks entry and result processing workflows.

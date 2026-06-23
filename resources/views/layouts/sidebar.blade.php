@@ -86,6 +86,15 @@
                         </li>
                     @endif
 
+                    @can('viewAny', \App\Models\Exam::class)
+                        <li class="nav-item">
+                            <a class="nav-link sidebar-link @if (request()->routeIs('exams.*') || request()->routeIs('exam-subjects.*')) active @endif" href="{{ route('exams.index') }}" @if (request()->routeIs('exams.*') || request()->routeIs('exam-subjects.*')) aria-current="page" @endif>
+                                <i class="bi bi-journal-check" aria-hidden="true"></i>
+                                <span>{{ __('Examinations') }}</span>
+                            </a>
+                        </li>
+                    @endcan
+
                     @can('viewAny', \App\Models\School::class)
                         <li class="nav-item">
                             <a class="nav-link sidebar-link @if (request()->routeIs('schools.*')) active @endif" href="{{ route('schools.index') }}" @if (request()->routeIs('schools.*')) aria-current="page" @endif>

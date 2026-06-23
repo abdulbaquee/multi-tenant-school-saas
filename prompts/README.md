@@ -183,6 +183,7 @@ Created for the next roadmap gate:
   required; rerun approved with no blocking issues).
 - Phase 9 Examination Management design remediation (executed).
 - Phase 9 core Examination schema and tenant-model foundation (executed).
+- Phase 9 School Admin exam setup and Exam Subject assignment workflow (executed).
 
 Future prompt groups should be added only when they are needed for the next roadmap phase.
 
