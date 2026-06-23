@@ -45,4 +45,14 @@ class AcademicYear extends Model
     {
         return $this->hasMany(Attendance::class);
     }
+
+    public function feeStructures(): HasMany
+    {
+        return $this->hasMany(FeeStructure::class);
+    }
+
+    public function studentFees(): HasMany
+    {
+        return $this->hasMany(StudentFee::class);
+    }
 }

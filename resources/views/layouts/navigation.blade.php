@@ -1,10 +1,10 @@
-<nav class="navbar app-topbar sticky-top bg-white border-bottom" aria-label="{{ __('Account navigation') }}">
-    <div class="container-fluid px-3 px-lg-4">
-        <button class="btn btn-outline-secondary d-lg-none app-icon-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#appSidebar" aria-controls="appSidebar" aria-label="{{ __('Open navigation') }}">
+<nav class="navbar app-topbar sticky-top bg-white border-bottom flex-shrink-0" aria-label="{{ __('Account navigation') }}">
+    <div class="container-fluid px-3 px-lg-4 h-100">
+        <button class="btn btn-outline-secondary d-lg-none app-icon-button flex-shrink-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#appSidebar" aria-controls="appSidebar" aria-label="{{ __('Open navigation') }}">
             <i class="bi bi-list fs-5" aria-hidden="true"></i>
         </button>
 
-        <div class="ms-auto d-flex align-items-center gap-3">
+        <div class="ms-auto d-flex align-items-center gap-3 flex-shrink-0">
             <div class="d-none d-md-block text-end lh-sm">
                 <span class="d-block small text-body-secondary">
                     {{ Auth::user()->isSuperAdmin() ? __('Platform') : (Auth::user()->school?->name ?? __('School')) }}

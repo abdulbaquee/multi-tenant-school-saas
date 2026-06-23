@@ -145,7 +145,7 @@ Phase 7 — Attendance Management
 Status: Completed — Release Approved
 
 Phase 8 — Fee Management
-Status: Pending
+Status: Core Schema Implemented — Workflow Pending
 
 Phase 9 — Examination Management
 Status: Pending
@@ -185,7 +185,8 @@ monthly summary, role-aware UI, privacy-safe logs, and focused tests.
 Development Progress: Authentication, tenant infrastructure, School/User/RBAC,
 Academic Structure, and Student Management are stable checkpoints. Attendance
 implementation and remediation are complete and release-approved. Phase 8 Fee
-Management is the next implementation phase.
+Management has begun with readiness and design-boundary remediation approved,
+and the core schema/model foundation implemented.
 
 Review Progress: Tenant-isolation review approved at 10/10; security review
 approved at 10/10 after local credential-file hygiene remediation;
@@ -226,8 +227,19 @@ MCA Submission Governance: The official deadline is 2026-07-05.
 testing evidence, report, deployment, presentation, viva, and portal-submission
 workstreams.
 
+Phase 8 Review Progress: The initial Fee Management readiness review found
+documentation and RBAC boundary gaps around Fee reports, Accountant setup
+permissions, Super Admin reporting, Student Fee lifecycle, payment
+idempotency, sandbox payloads, financial retention, and required tests.
+DECISION-034 now defines the approved operational setup, assignment,
+collection, receipt, payment-history, outstanding-balance, sandbox, role, and
+Phase 10 deferral boundaries. The readiness rerun is approved with no blocking
+issues. The core Fee schema and tenant-aware model foundation are implemented
+with focused tests; setup, Student Fee assignment, collection, receipt,
+payment-history, outstanding-balance, and sandbox workflows remain pending.
+
 ---
 
 # Next Milestone
 
-Start Phase 8 Fee Management.
+Create and execute the Phase 8 Fee setup and Student Fee assignment workflow prompt.

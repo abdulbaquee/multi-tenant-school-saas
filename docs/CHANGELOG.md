@@ -808,15 +808,52 @@ Status: Completed
 
 # [1.0.0] - Fee Management
 
-Status: Planned
+Status: Core Schema Implemented — Workflow Pending
 
 ## Planned
 
 * Fee categories
 * Fee structures
+* Student Fee assignment
 * Fee collection
 * Receipts
-* Financial reports
+* Payment history
+* Outstanding balance views
+* Local sandbox transactions
+
+Fee reports, exports, analytics, dashboard widgets, and platform financial
+summaries are deferred to Phase 10 Reporting.
+
+## Design Remediation
+
+* Added the Phase 8 Fee Management readiness review prompt.
+* Initial readiness review found design and RBAC gaps around Fee reports,
+  Accountant setup permissions, Super Admin visibility, Student Fee assignment,
+  payment idempotency, sandbox payloads, financial retention, and required
+  tests.
+* Recorded DECISION-034 to define operational setup, assignment, collection,
+  receipt, payment-history, outstanding-balance, sandbox, role, and Phase 10
+  deferral boundaries.
+* Tightened Accountant RBAC defaults to Fee view/collect only; setup, delete,
+  report, and export permissions are out of bounds.
+* Phase 8 readiness rerun: approved with no blocking issues after design and
+  RBAC remediation.
+
+## Core Schema Implemented
+
+* Reversible migration creates `fee_categories`, `fee_structures`,
+  `student_fees`, `fee_payments`, and `payment_transactions` with documented
+  columns, named indexes, unique constraints, soft-delete boundaries, and
+  restricted foreign keys.
+* Added tenant-aware `FeeCategory`, `FeeStructure`, `StudentFee`, `FeePayment`,
+  and `PaymentTransaction` models with canonical statuses, payment modes,
+  money/date casts, retained-history deletion guards, and immutable financial
+  identity safeguards.
+* Added inverse relationships on School, Academic Year, Class, Student, and
+  User.
+* Focused Fee schema suite: 6 tests and 210 assertions passed.
+* Combined Fee/RBAC/Attendance schema suite: 27 tests and 427 assertions passed.
+* Full application suite: 286 tests and 2,480 assertions passed.
 
 ## Deliverables
 
@@ -951,7 +988,7 @@ Example:
 # Current Project Status
 
 Phase: Phase 7 Attendance Completed — Release Approved; Phase 8 Fee Management
-Pending
+Core Schema Implemented — Workflow Pending
 
 Repository Setup: Completed
 
@@ -965,6 +1002,9 @@ Application Implementation: Phase 2, Phase 3, Phase 4, and Phase 5 are
 completed. Phase 6 Student Management is release-approved. Phase 7 Attendance is
 release-approved and includes
 the Attendance schema/model foundation, daily complete-roster entry, authorized
-correction, retained history, and monthly operational summary workflows.
+correction, retained history, and monthly operational summary workflows. Phase 8
+Fee Management readiness and design-boundary remediation are approved. The core
+Fee schema and tenant-aware model foundation are implemented; user-facing Fee
+workflows remain pending.
 
-Next Task: Start Phase 8 Fee Management
+Next Task: Create and execute the Phase 8 Fee setup and Student Fee assignment workflow prompt

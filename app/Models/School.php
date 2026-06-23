@@ -81,4 +81,29 @@ class School extends Model
     {
         return $this->hasMany(Attendance::class);
     }
+
+    public function feeCategories(): HasMany
+    {
+        return $this->hasMany(FeeCategory::class);
+    }
+
+    public function feeStructures(): HasMany
+    {
+        return $this->hasMany(FeeStructure::class);
+    }
+
+    public function studentFees(): HasMany
+    {
+        return $this->hasMany(StudentFee::class);
+    }
+
+    public function feePayments(): HasMany
+    {
+        return $this->hasMany(FeePayment::class);
+    }
+
+    public function paymentTransactions(): HasMany
+    {
+        return $this->hasMany(PaymentTransaction::class);
+    }
 }

@@ -5,7 +5,7 @@
 
 Version: 1.0
 Status: Draft (Phase 7 Attendance completed and release-approved; Phase 8 Fee
-Management pending)
+Management core schema implemented; workflows pending)
 
 MCA Submission Deadline: 2026-07-05
 

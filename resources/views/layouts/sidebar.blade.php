@@ -1,5 +1,5 @@
 <aside id="appSidebar" class="offcanvas-lg offcanvas-start app-sidebar bg-white border-end" tabindex="-1" aria-labelledby="appSidebarLabel">
-    <div class="offcanvas-header border-bottom">
+    <div class="offcanvas-header border-bottom d-lg-none">
         <a id="appSidebarLabel" class="navbar-brand fw-semibold d-flex align-items-center gap-2" href="{{ route('dashboard') }}">
             <span class="brand-mark d-inline-flex align-items-center justify-content-center rounded-2 bg-primary text-white">
                 <i class="bi bi-mortarboard" aria-hidden="true"></i>

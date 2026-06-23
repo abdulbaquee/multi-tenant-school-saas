@@ -692,6 +692,61 @@ dashboard-summary, Super Admin, or Accountant Attendance route exists. The
 Phase 7 security-review rerun passed at 10/10 with no critical, high, or medium
 finding and no Composer or production npm advisory.
 
+## Phase 8 Fee Management Security And Privacy Rules
+
+Fee Management handles financial history tied to minors and must follow least
+privilege, tenant isolation, and retention-first controls:
+
+* School Admin may manage own-school Fee Categories, Fee Structures, Student Fee
+  assignments, collections, receipts, payment history, outstanding balances, and
+  sandbox transactions.
+* Accountant may access only own-school Student Fee lookup, collection, receipt,
+  payment-history, outstanding-balance, and sandbox-transaction workflows.
+  Accountant cannot configure Fee Categories or Fee Structures, assign, waive,
+  cancel, archive, delete, report, export, or open a general Student route.
+* Super Admin and Teacher have no Phase 8 Fee screen, route, or direct service
+  pathway. Super Admin Fee reports and platform financial summaries remain
+  Phase 10 work.
+* The server derives all school, Academic Year, Class, Student, Student Fee,
+  Payment, Transaction, and collector scope from TenantContext, relationships,
+  route binding, Policies, and Services. Client-submitted tenant or parent
+  identifiers cannot expand scope.
+* Fee setup writes require an active tenant school, active Fee Category, current
+  active Academic Year, active Class, and School Admin authorization.
+* Student Fee assignments require an active same-tenant Student and active
+  Enrollment matching the Fee Structure Academic Year and Class. Retained
+  Student Fees and payment history remain readable after later Student or
+  Enrollment lifecycle changes.
+* Payment collection must lock the Student Fee, reject zero, negative, or
+  over-balance amounts, update balances atomically, create one retained receipt,
+  create one retained Payment Transaction, and write privacy-safe activity and
+  audit evidence in the same transaction.
+* Receipt numbers and transaction numbers are school-unique and service
+  generated. Repeated submissions with the same generated transaction reference
+  must not duplicate financial history.
+* Fee Payments and Payment Transactions are retained financial history and must
+  not be hard-deleted. Reversal or correction workflows require explicit
+  status/audit evidence and cannot silently mutate paid history.
+* `sandbox_gateway` is local demonstration mode only. It must not call an
+  external gateway, require network access, store secrets, use webhooks, or
+  install SDKs/packages.
+* Sandbox `raw_response`, activity descriptions, and audit old/new values must
+  never contain real card/UPI data, gateway secrets, tokens, full raw provider
+  payloads, guardian contact details, addresses, raw payment notes, or unrelated
+  minor data. Store only sanitized identifiers, amount, mode, status, and
+  processed timestamp.
+* `fees.report`, `fees.export`, and Phase 10 reporting permissions do not
+  activate Phase 8 routes.
+
+Implementation Status:
+
+DECISION-034 defines the approved Phase 8 operational Fee boundary before schema
+implementation. The core schema and tenant-aware model foundation are
+implemented with retained Fee Payment and Payment Transaction deletion guards,
+immutable financial identity safeguards, and focused tenant-isolation tests.
+User-facing setup, assignment, collection, receipt, payment-history,
+outstanding-balance, and sandbox workflows remain pending.
+
 ---
 
 # 19. DATA ACCESS POLICY

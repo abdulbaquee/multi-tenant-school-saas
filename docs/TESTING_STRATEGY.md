@@ -648,16 +648,56 @@ audit, and whitespace checks.
 
 Validate:
 
-* Fee Categories
-* Fee Structures
-* Fee Assignment
-* Fee Collection
-* Receipt Generation
-* Outstanding Fee Calculation
+* Fee Category and Fee Structure setup for School Admin only.
+* Accountant denial for Fee setup, assignment, waiver, cancellation, delete,
+  report, and export permissions.
+* Student Fee assignment from active same-tenant Fee Structures to eligible
+  active Student Enrollment records.
+* Rejection of inactive, archived, transferred, graduated, completed, stale,
+  cross-tenant, or forged Student/Enrollment/Academic Year/Class/Fee Structure
+  inputs.
+* Discount, payable, paid, balance, due-date, waiver, cancellation, and status
+  calculations.
+* School Admin and Accountant Fee Collection with positive partial and full
+  payments only.
+* Rejection of zero, negative, over-balance, future-date, duplicate-reference,
+  paid, waived, cancelled, and cross-tenant payment attempts.
+* Receipt generation with school-unique receipt numbers.
+* Payment Transaction creation with school-unique transaction numbers.
+* Local `sandbox_gateway` transactions without external network, secrets, real
+  credentials, or unsanitized raw payloads.
+* Payment history and outstanding balance operational views without activating
+  Phase 10 reports, exports, analytics, charts, dashboards, or Super Admin
+  platform summaries.
+* Tenant ownership through `BelongsToTenant`, default-deny TenantScope,
+  route-model binding, Policies, Form Requests, and direct Service validation.
+* Transaction rollback when validation, authorization, balance update, receipt
+  creation, transaction creation, activity logging, or audit logging fails.
+* Retained financial history: Fee Payments and Payment Transactions cannot be
+  hard-deleted, and correction/reversal behavior preserves audit evidence.
+* Privacy-safe logs that omit raw notes, guardian contact details, addresses,
+  real payment data, secrets, tokens, and unrelated minor data.
 
 Expected Result:
 
-Financial data remains accurate.
+Fee setup, assignment, collection, receipts, payment history, outstanding
+balances, and sandbox transactions remain accurate, tenant-isolated,
+least-privilege, retained, privacy-safe, and transaction-safe.
+
+Phase 8 readiness evidence (2026-06-23): the initial readiness audit found
+missing Fee boundary decisions around reports, Accountant setup permissions,
+Super Admin reporting, assignment lifecycle, payment idempotency, sandbox
+payloads, reversal/retention behavior, and test scope. DECISION-034 and the
+Phase 8 design remediation define these rules.
+Core schema evidence (2026-06-23): 6 focused tests with 210 assertions validate
+all five Fee tables, documented columns, named indexes, unique constraints,
+restricted foreign keys, soft-delete setup boundaries, retained Payment and
+Transaction history, default-deny TenantScope behavior, automatic ownership,
+forged ownership rejection, immutable financial identity fields, canonical
+casts/statuses/modes, retained parent relationships, and duplicate/foreign-key
+integrity. The combined Fee/RBAC/Attendance schema suite passes 27 tests with
+427 assertions, and the full application suite passes 286 tests with 2,480
+assertions.
 
 ---
 

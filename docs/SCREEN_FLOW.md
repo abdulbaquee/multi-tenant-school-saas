@@ -302,8 +302,10 @@ Fees
 ├── Fee Structures
 ├── Student Fees
 ├── Fee Collection
+├── Receipts
 ├── Payment History
-└── Fee Reports
+├── Outstanding Balances
+└── Sandbox Transactions
 
 Examinations
 ├── Exams
@@ -368,14 +370,9 @@ Dashboard
 Fees
 ├── Fee Collection
 ├── Receipts
-├── Transactions
-├── Outstanding Fees
-└── Fee Reports
-
-Reports
-├── Fee Collection Reports
-├── Outstanding Fee Reports
-└── Transaction Reports
+├── Payment History
+├── Outstanding Balances
+└── Sandbox Transactions
 
 Profile
 
@@ -774,14 +771,21 @@ Fee Categories
 ├── Student Fees
 ├── Fee Collection
 ├── Receipts
-├── Transactions
-└── Fee Reports
+├── Payment History
+├── Outstanding Balances
+└── Sandbox Transactions
 
 Access:
 
-* School Admin: full access
-* Accountant: full access
-* Super Admin: reports only
+* School Admin: full own-school setup, assignment, collection, receipt,
+  payment-history, outstanding-balance, and sandbox-transaction access.
+* Accountant: own-school Student Fee lookup, collection, receipt,
+  payment-history, outstanding-balance, and sandbox-transaction access only.
+* Super Admin: no Phase 8 Fee route; platform Fee reports are Phase 10.
+* Teacher: no Fee Management access.
+
+Phase 8 excludes Fee reports, exports, analytics, dashboard widgets, and
+platform summaries. Those flows remain under Phase 10 Reporting.
 
 ---
 
@@ -803,6 +807,11 @@ Save Payment
 │
 ▼
 Save Transaction
+
+Phase 8 collection creates local retained payment and transaction records. The
+`sandbox_gateway` payment mode uses a deterministic local transaction payload
+only; no production gateway, real credentials, webhook, external SDK, or network
+call is used.
 
 ---
 

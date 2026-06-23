@@ -477,6 +477,20 @@ Phase 2 through Phase 5 evidence available for later report assembly:
   release review is approved at 9.5/10 with no blocking issues after full-suite,
   formatting, route, dependency-audit, frontend-build, and whitespace
   verification.
+* Phase 8 Fee Management design evidence: DECISION-034 defines School Admin Fee
+  setup and assignment authority, Accountant collection-only boundaries, no
+  Phase 8 Super Admin or Teacher route, Phase 10 report/export/analytics
+  deferral, retained financial history, deterministic local sandbox
+  transactions, and privacy-safe audit expectations.
+* Phase 8 Fee Management foundation evidence: one migration and five
+  tenant-aware models implement Fee Categories, Fee Structures, Student Fees,
+  Fee Payments, and Payment Transactions with documented columns, named indexes,
+  unique constraints, restricted foreign keys, setup soft deletes, retained
+  Payment/Transaction history, immutable financial identity safeguards, casts,
+  canonical statuses/modes, and inverse relationships. The focused Fee schema
+  suite passes 6 tests with 210 assertions, the combined Fee/RBAC/Attendance
+  schema suite passes 27 tests with 427 assertions, and the full suite passes
+  286 tests with 2,480 assertions.
 
 Screenshots remain to be selected and captured during the documentation and
 submission phases.

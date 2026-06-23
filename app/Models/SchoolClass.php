@@ -51,4 +51,9 @@ class SchoolClass extends Model
     {
         return $this->hasMany(Attendance::class, 'class_id');
     }
+
+    public function feeStructures(): HasMany
+    {
+        return $this->hasMany(FeeStructure::class, 'class_id');
+    }
 }

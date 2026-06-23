@@ -336,6 +336,50 @@ and tenant-owned privacy-safe logs are implemented. Focused HTTP and direct-
 service tests deny cross-tenant, Platform, Unresolved, context-mismatched,
 inactive, stale-assignment, Super Admin, and Accountant pathways.
 
+## Phase 8 Fee Management Tenancy Contract
+
+Fee Categories, Fee Structures, Student Fees, Fee Payments, and Payment
+Transactions are strict tenant-owned records. Every create path derives
+`school_id` from TenantContext through `BelongsToTenant`; client-submitted
+school identifiers are ignored or rejected.
+
+School Admin Fee setup, Student Fee assignment, collection, receipts, payment
+history, outstanding balance, and sandbox transaction workflows operate only in
+the active tenant. Accountant workflows operate only in the active tenant and
+are limited to Student Fee lookup, collection, receipts, payment history,
+outstanding balances, and sandbox transactions. Accountant Fee lookup does not
+activate the Phase 6 general Student Management route and must expose only the
+Student fields needed to identify the fee account safely.
+
+Super Admin and Teacher have no Phase 8 Fee route or direct service pathway.
+Platform Fee reports, exports, analytics, dashboards, and summaries remain
+Phase 10 work and require a separate authorized reporting design.
+
+Fee Structure writes must verify the Fee Category, Academic Year, and Class all
+belong to the active tenant. Student Fee assignment must verify the Student and
+active Enrollment belong to the active tenant and match the Fee Structure
+Academic Year and Class. Payment collection must lock the tenant-owned Student
+Fee, update balances, create Fee Payment and Payment Transaction rows, and write
+tenant-owned activity/audit evidence in one transaction.
+
+Cross-tenant route identifiers must resolve as not found. Policies and services
+must also reject forged Fee Category, Fee Structure, Student, Academic Year,
+Class, Student Fee, Fee Payment, Payment Transaction, collector, Unresolved
+context, Platform write, inactive school, and actor/context mismatch paths.
+
+Phase 8 isolation tests must cover School A/B HTTP and direct-service paths,
+automatic scope filtering, forged parent IDs, Accountant setup denial, Super
+Admin and Teacher denial, retained payment history, sandbox transaction
+ownership, logging rollback, and tenant-owned activity/audit rows.
+
+Core implementation status (2026-06-23): Fee Category, Fee Structure, Student
+Fee, Fee Payment, and Payment Transaction models use `BelongsToTenant`, derive
+ownership from TenantContext, default to no reads in Unresolved context, reject
+tenant-owned creation outside Tenant context, and permit explicit Platform reads
+only at the model-foundation layer. Focused tests cover School A/B filtering,
+forged ownership, ownership immutability, retained parent relationships,
+retained financial-history deletion guards, and restricted foreign keys.
+
 The `users` exception exists only because authentication must retrieve a globally
 unique identity before tenant context can be resolved. It does not authorize
 unrestricted operational user queries. School Admin user creation always derives

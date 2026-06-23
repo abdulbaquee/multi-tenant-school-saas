@@ -588,25 +588,55 @@ Features:
 * Fee Collection
 * Receipt Generation
 * Payment Tracking
+* Outstanding Balance Views
+* Local Sandbox Transactions
 
 Screens:
 
 * Fee Categories
 * Fee Structures
+* Student Fees
 * Fee Collection
+* Receipts
 * Payment History
+* Outstanding Balances
 
 Reports:
 
-* Fee Collection
-* Outstanding Fees
-* Daily Collection
-* Monthly Collection
+Fee reports, exports, analytics, dashboard widgets, and platform summaries are
+deferred to Phase 10 Reporting. Phase 8 provides operational payment history and
+outstanding balance views only.
 
 Accessible By:
 
-School Admin
-Accountant
+* School Admin: full own-school setup, assignment, collection, receipt, payment
+  history, outstanding balance, and sandbox transaction workflows.
+* Accountant: own-school Student Fee lookup, collection, receipt, payment
+  history, outstanding balance, and sandbox transaction workflows only.
+* Super Admin: no Phase 8 Fee route; platform Fee reports are deferred to Phase
+  10.
+* Teacher: no Fee Management access.
+
+Implementation Boundary:
+
+* Accountant cannot create, update, delete, archive, waive, cancel, or configure
+  Fee Categories, Fee Structures, or Student Fee assignments.
+* `fees.report` and `fees.export` remain dormant catalog permissions in Phase
+  8.
+* `fees.delete` cannot authorize payment or transaction deletion. Setup
+  deactivation, waiver, or cancellation must preserve retained financial
+  history and audit evidence.
+
+Implementation Status (2026-06-23):
+
+The Phase 8 core Fee migration and tenant-aware model foundation are
+implemented. The foundation includes Fee Categories, Fee Structures, Student
+Fees, Fee Payments, Payment Transactions, canonical statuses and payment modes,
+money/date casts, inverse relationships, automatic tenant ownership, immutable
+scope/financial identity safeguards, setup soft deletes, retained Payment and
+Transaction deletion guards, and focused schema/isolation tests. User-facing Fee
+setup, assignment, collection, receipt, payment-history, outstanding-balance,
+and sandbox workflows remain pending.
 
 ---
 
@@ -888,7 +918,7 @@ Reactivation uses the corresponding `.update` permission plus Policy checks.
 | Academic Structure | View | Full | View assigned classes and subjects | No |
 | Student Management | View | Full | Limited view for assigned classes | Limited view for fee collection |
 | Attendance Management | View reports | Full | Full for directly assigned Sections | No |
-| Fee Management | View reports | Full | No | Full |
+| Fee Management | Phase 10 reports only | Full own-school operations | No | Collection, receipts, payment history, and outstanding balances only |
 | Examination Management | View reports | Full | Full for assigned classes and subjects | No |
 | Reporting | Platform reports | School reports | Assigned class reports | Financial reports |
 | Activity Logs | Full | View own school logs | No | No |
@@ -936,7 +966,11 @@ because its permission record exists.
 * Backup Management is Super Admin only.
 * Audit Logs are available to Super Admin platform-wide and School Admin for the active school only.
 * Reports must never expose data beyond the user's permitted module and tenant scope.
-* Fee screens are available to School Admin and Accountant. Teachers do not access Fee Management.
+* Phase 8 Fee setup and assignment screens are School Admin-only.
+* Phase 8 Fee collection, receipts, payment history, and outstanding balance
+  screens are available to School Admin and Accountant inside the active tenant.
+* Super Admin Fee reports, Fee exports, analytics, and platform summaries remain
+  Phase 10 work. Teachers do not access Fee Management.
 * Dashboard widgets must only summarize data that the role is permitted to view.
 * Only School Settings is included as a settings module in the MVP.
 

@@ -1,7 +1,6 @@
 
 
 import 'bootstrap';
-import 'bootstrap-icons/font/bootstrap-icons.css';
 
 document.addEventListener('click', (event) => {
     const button = event.target.closest('[data-mark-all-present]');

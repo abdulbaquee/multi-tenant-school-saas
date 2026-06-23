@@ -117,7 +117,7 @@ $maximumMappings = [
     'accountant' => [
         'profile.view', 'profile.update', 'dashboard.view', 'analytics.view',
         'students.view',
-        'fees.view', 'fees.create', 'fees.update', 'fees.delete', 'fees.collect', 'fees.report', 'fees.export',
+        'fees.view', 'fees.collect',
         'reports.view', 'reports.export',
     ],
 ];

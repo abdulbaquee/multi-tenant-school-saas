@@ -199,11 +199,11 @@ Implemented foundations:
 * DashboardService
 * SecurityLogService
 * PasswordSecurityService
+* StudentService
+* AttendanceService
 
 Planned module services:
 
-* StudentService
-* AttendanceService
 * FeeService
 * ExamService
 * ReportService

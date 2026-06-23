@@ -254,6 +254,29 @@ class RolePermissionManagementTest extends TestCase
         $this->assertSame($originalCodes, $this->codes($teacher));
     }
 
+    public function test_accountant_fee_setup_report_and_export_permissions_are_out_of_bounds(): void
+    {
+        $superAdmin = $this->superAdmin();
+        $accountant = $this->role(Role::ACCOUNTANT);
+        $originalCodes = $this->codes($accountant);
+
+        foreach (['fees.create', 'fees.update', 'fees.delete', 'fees.report', 'fees.export'] as $code) {
+            $this->actingAs($superAdmin)
+                ->from(route('roles.edit', $accountant))
+                ->put(route('roles.permissions.update', $accountant), [
+                    'mapping_fingerprint' => $this->fingerprint($accountant),
+                    'permission_ids' => $this->permissionIds([
+                        ...config('rbac.essential_permissions.accountant'),
+                        $code,
+                    ]),
+                ])
+                ->assertRedirect(route('roles.edit', $accountant))
+                ->assertSessionHasErrors('permission_ids');
+
+            $this->assertSame($originalCodes, $this->codes($accountant));
+        }
+    }
+
     public function test_essential_removal_and_empty_payload_fail_without_partial_writes(): void
     {
         $superAdmin = $this->superAdmin();

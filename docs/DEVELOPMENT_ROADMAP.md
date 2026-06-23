@@ -57,7 +57,15 @@ approved at 10/10 after consistency remediation. The code review found retained-
 roster, direct-validation, and History query findings; remediation is complete,
 the rerun is approved with no remaining findings. The Phase 7 release review is
 approved at 9.5/10 with no blocking issues, so Attendance is release-approved
-and Phase 8 Fee Management is the next implementation phase.
+and Phase 8 Fee Management has begun. The initial Phase 8 readiness review found
+design gaps around reports, Accountant permissions, Super Admin visibility,
+Student Fee assignment, payment idempotency, sandbox transactions, retention,
+and tests. DECISION-034 and the Phase 8 design remediation define the approved
+operational Fee boundary. The readiness rerun is approved with no blocking
+issues. The Phase 8 core Fee schema and tenant-aware model foundation are
+implemented with focused tests; setup, assignment,
+collection, receipt, payment-history, outstanding-balance, and sandbox workflows
+remain pending.
 
 Repository:
 
@@ -276,15 +284,21 @@ Status: Completed — Release Approved
 
 # Phase 8 — Fee Management
 
-Status: Pending
+Status: Core Schema Implemented — Workflow Pending
 
 ## Features
 
 * Fee Categories
 * Fee Structures
+* Student Fee Assignment
 * Fee Collection
 * Receipts
-* Financial Reports
+* Payment History
+* Outstanding Balance Views
+* Local Sandbox Transactions
+
+Fee reports, exports, analytics, dashboard widgets, and platform financial
+summaries are deferred to Phase 10 Reporting.
 
 ## Deliverables
 
@@ -400,4 +414,4 @@ Project ready for final evaluation and submission.
 
 # Next Immediate Task
 
-Start Phase 8 Fee Management.
+Create and execute the Phase 8 Fee setup and Student Fee assignment workflow prompt.

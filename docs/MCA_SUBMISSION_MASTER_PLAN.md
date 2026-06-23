@@ -285,7 +285,7 @@ allows an optional file.
 | Design multi-tenant relational database | Complete | Database design and ERD |
 | Develop school-onboarding module | Complete | Phases 2-4 |
 | Implement Student registration | Complete | Phase 6 release approval |
-| Add Attendance tracking | Implemented; release gate remains | Phase 7 code and 279-test suite |
+| Add Attendance tracking | Complete | Phase 7 release approval and 279-test suite |
 | Build Fee Management and receipt module | Pending | Phase 8 |
 | Develop Examination and grading system | Pending | Phase 9 |
 | Configure role-based access control | Complete | Phase 4 release approval |
@@ -680,9 +680,10 @@ confirmed changes before final PDF generation.
 
 ## 22. Immediate Next Action
 
-Continue the Phase 7 review gate by running:
+Create and execute the Phase 8 Fee setup and Student Fee assignment workflow
+prompt after the core schema checkpoint:
 
-`prompts/00-governance/06-release-review.md`
+`prompts/07-fee-management/03-phase-08-fee-setup-assignment.md`
 
-After Phase 7 release approval, mark Qollabb Student Registration complete,
-capture Phase 7 evidence, and begin the Phase 8 Fee Management readiness review.
+Keep Fee screenshots and report evidence moving in parallel while schema and
+tenant-model work continues into user-facing workflows.

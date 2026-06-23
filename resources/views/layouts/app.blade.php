@@ -7,6 +7,8 @@
 
         <title>{{ config('app.name', 'School SaaS') }}</title>
 
+        @include('layouts.partials.critical-head')
+
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body>
@@ -16,12 +18,18 @@
             <div class="app-main d-flex flex-column flex-grow-1 min-vh-100">
                 @include('layouts.navigation')
 
-                <div class="flex-grow-1">
+                <div class="app-main-body">
                     @isset($header)
                         <header class="page-header bg-white border-bottom">
                             <div class="app-content py-3 py-lg-4">
-                                @isset($breadcrumb)
-                                    <nav aria-label="{{ __('Breadcrumb') }}">
+                                <nav
+                                    aria-label="{{ __('Breadcrumb') }}"
+                                    @class([
+                                        'page-header-breadcrumb',
+                                        'page-header-breadcrumb--placeholder' => ! isset($breadcrumb),
+                                    ])
+                                >
+                                    @isset($breadcrumb)
                                         <ol class="breadcrumb small mb-3">
                                             @isset($breadcrumbParent)
                                                 <li class="breadcrumb-item">
@@ -32,15 +40,19 @@
                                             @endisset
                                             <li class="breadcrumb-item active" aria-current="page">{{ $breadcrumb }}</li>
                                         </ol>
-                                    </nav>
-                                @endisset
+                                    @else
+                                        <ol class="breadcrumb small mb-3" aria-hidden="true">
+                                            <li class="breadcrumb-item"><span>&nbsp;</span></li>
+                                        </ol>
+                                    @endisset
+                                </nav>
 
                                 {{ $header }}
                             </div>
                         </header>
                     @endisset
 
-                    <main class="app-content py-4">
+                    <main class="app-content app-page-content py-4">
                         {{ $slot }}
                     </main>
                 </div>

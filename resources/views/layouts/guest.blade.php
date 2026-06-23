@@ -7,6 +7,8 @@
 
         <title>{{ config('app.name', 'School SaaS') }}</title>
 
+        @include('layouts.partials.critical-head')
+
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body>

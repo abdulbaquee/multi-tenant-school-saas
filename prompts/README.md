@@ -114,6 +114,11 @@ prompts/
     ├── 05-phase-07-security-remediation.md
     ├── 06-phase-07-documentation-remediation.md
     └── 07-phase-07-code-review-remediation.md
+└── 07-fee-management/
+    ├── 00-phase-08-readiness-review.md
+    ├── 01-phase-08-fee-design-remediation.md
+    ├── 02-phase-08-core-fee-schema.md
+    └── 03-phase-08-fee-setup-assignment.md
 ```
 
 ## Current Prompt Creation Status
@@ -158,6 +163,12 @@ Created for the next roadmap gate:
   at 10/10).
 - Phase 7 Attendance code-review remediation (executed; review rerun approved
   with no remaining findings).
+- Phase 8 Fee Management readiness review (executed; design remediation
+  required; rerun approved with no blocking issues).
+- Phase 8 Fee Management design remediation (executed).
+- Phase 8 core Fee schema and tenant-model foundation (executed).
+- Phase 8 Fee setup and Student Fee assignment workflow (created; execution
+  next).
 
 Future prompt groups should be added only when they are needed for the next roadmap phase.
 
