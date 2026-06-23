@@ -253,11 +253,13 @@ approved operational setup, assignment, marks entry, grade-scale,
 result-processing, report-card, role, and Phase 10 deferral boundaries. Teacher
 RBAC defaults were tightened to marks-entry permissions only. The readiness rerun
 is approved with no blocking issues. The core Examination schema and tenant-aware
-model foundation are implemented with focused tests. School Admin exam setup and
-Exam Subject assignment workflows are the next checkpoint.
+model foundation are implemented with focused tests. School Admin exam setup,
+Exam Subject assignment, teacher-scoped marks entry, grade calculation, and
+School Admin result processing, and operational report cards are implemented.
+Phase 9 release gate reviews are the next checkpoint.
 
 ---
 
 # Next Milestone
 
-Implement Phase 9 School Admin exam setup and Exam Subject assignment workflows.
+Run Phase 9 release gate reviews and submission evidence updates.

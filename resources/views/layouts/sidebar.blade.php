@@ -86,14 +86,14 @@
                         </li>
                     @endif
 
-                    @can('viewAny', \App\Models\Exam::class)
+                    @if (auth()->user()->can('viewAny', \App\Models\Exam::class) || auth()->user()->can('viewAny', \App\Models\ExamResult::class))
                         <li class="nav-item">
-                            <a class="nav-link sidebar-link @if (request()->routeIs('exams.*') || request()->routeIs('exam-subjects.*')) active @endif" href="{{ route('exams.index') }}" @if (request()->routeIs('exams.*') || request()->routeIs('exam-subjects.*')) aria-current="page" @endif>
+                            <a class="nav-link sidebar-link @if (request()->routeIs('exams.*') || request()->routeIs('exam-subjects.*') || request()->routeIs('exam-marks-entry.*') || request()->routeIs('exam-results.*') || request()->routeIs('report-cards.*')) active @endif" href="{{ auth()->user()->can('viewAny', \App\Models\Exam::class) ? route('exams.index') : (auth()->user()->can('viewAny', \App\Models\ReportCard::class) ? route('report-cards.index') : route('exam-marks-entry.index')) }}" @if (request()->routeIs('exams.*') || request()->routeIs('exam-subjects.*') || request()->routeIs('exam-marks-entry.*') || request()->routeIs('exam-results.*') || request()->routeIs('report-cards.*')) aria-current="page" @endif>
                                 <i class="bi bi-journal-check" aria-hidden="true"></i>
                                 <span>{{ __('Examinations') }}</span>
                             </a>
                         </li>
-                    @endcan
+                    @endif
 
                     @can('viewAny', \App\Models\School::class)
                         <li class="nav-item">

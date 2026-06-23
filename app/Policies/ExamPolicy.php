@@ -65,6 +65,26 @@ class ExamPolicy
             && in_array($exam->status, [Exam::STATUS_SCHEDULED, Exam::STATUS_CANCELLED], true);
     }
 
+    public function process(User $user, Exam $exam): bool
+    {
+        return $this->isSchoolAdmin($user)
+            && $user->canEstablishTenantContext()
+            && $user->hasPermission('exams.update')
+            && $this->canAccessTenant($user, $exam)
+            && ! $exam->trashed()
+            && $exam->status === Exam::STATUS_ONGOING;
+    }
+
+    public function generate(User $user, Exam $exam): bool
+    {
+        return $this->isSchoolAdmin($user)
+            && $user->canEstablishTenantContext()
+            && $user->hasPermission('exams.update')
+            && $this->canAccessTenant($user, $exam)
+            && ! $exam->trashed()
+            && in_array($exam->status, [Exam::STATUS_ONGOING, Exam::STATUS_COMPLETED], true);
+    }
+
     private function isSchoolAdmin(User $user): bool
     {
         return $user->hasRoleCode(Role::SCHOOL_ADMIN) && filled($user->school_id);

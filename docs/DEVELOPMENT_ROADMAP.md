@@ -310,7 +310,7 @@ summaries are deferred to Phase 10 Reporting.
 
 # Phase 9 — Examination Management
 
-Status: Setup And Assignment Implemented — Pending Marks Entry
+Status: Operational Report Cards Implemented — Pending Release Gate
 
 ## Features
 
@@ -421,4 +421,4 @@ Project ready for final evaluation and submission.
 
 # Next Immediate Task
 
-Implement Phase 9 teacher-scoped marks entry and result processing workflows.
+Run Phase 9 release gate reviews and submission evidence updates.

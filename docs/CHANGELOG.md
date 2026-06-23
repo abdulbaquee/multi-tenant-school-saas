@@ -964,6 +964,34 @@ summaries are deferred to Phase 10 Reporting.
 * Denied Super Admin, Accountant, Teacher, guest, and cross-tenant paths.
 * Focused setup/assignment suite: 7 tests and 48 assertions passed.
 
+## Marks Entry And Result Processing Implemented
+
+* Added teacher-scoped marks entry workspace with complete-roster save,
+  server-derived pass/fail/absent status, grade-scale resolution, and immutable
+  `entered_by`.
+* Added School Admin and Teacher result review list/show screens with scoped
+  queries and School Admin-only result processing.
+* Added `ExamResultPolicy`, `ExamResultService`, controllers, Form Requests,
+  routes, Bootstrap views, navigation, activity logs, and audit logs.
+* Denied Super Admin, Accountant, guest, cross-tenant, unassigned Teacher, and
+  forged ownership paths.
+* Focused marks-entry suite: 8 tests and 53 assertions passed. Full suite: 341
+  tests and 3,020 assertions passed.
+
+## Operational Report Cards Implemented
+
+* Added School Admin report-card generation for ongoing or completed exams with
+  complete per-student results, server-derived totals, percentage, grade, and
+  pass/fail status.
+* Added report card list, detail, and browser-print views with subject breakdown.
+* Added teacher-scoped view/print access for assigned class/subject students.
+* Added `ReportCardPolicy`, `ReportCardService`, controllers, Form Requests,
+  routes, navigation, activity logs, and audit logs.
+* Denied Super Admin, Accountant, guest, cross-tenant, unassigned Teacher, and
+  forged ownership paths.
+* Focused report-card suite: 7 tests and 33 assertions passed. Full suite: 348
+  tests and 3,054 assertions passed.
+
 ## Deliverables
 
 * Fee Management Module
@@ -1124,8 +1152,9 @@ Fee schema and tenant-aware model foundation are implemented. School Admin Fee
 Category, Fee Structure, and Student Fee assignment workflows are implemented.
 School Admin and Accountant collection, receipt, payment-history, outstanding-balance,
 and sandbox transaction operational workflows are implemented and release-approved.
-Phase 9 Examination setup and Exam Subject assignment workflows are
-implemented. Teacher-scoped marks entry and result processing are the next
-checkpoint.
+Exam Subject assignment workflows are implemented. Teacher-scoped marks entry,
+grade calculation, and School Admin result processing are implemented.
+Operational report cards are implemented. Phase 9 release gate reviews are the
+next checkpoint.
 
-Next Task: Implement Phase 9 teacher-scoped marks entry and result processing workflows.
+Next Task: Run Phase 9 release gate reviews and submission evidence updates.

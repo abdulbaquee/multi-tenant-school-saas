@@ -721,8 +721,10 @@ result-processing, report-card, role, retention, and Phase 10 deferral rules.
 Teacher RBAC defaults were tightened to marks-entry permissions only. The core
 Examination migration and tenant-aware model foundation are implemented with
 policies-ready scope safeguards, retained Exam Result and Report Card deletion
-guards, and focused schema/isolation tests. School Admin exam setup and Exam
-Subject assignment workflows are the next checkpoint.
+guards, and focused schema/isolation tests. School Admin exam setup, Exam
+Subject assignment, teacher-scoped marks entry, grade calculation, and School
+Admin result processing are implemented. Operational report cards are
+implemented. Phase 9 release gate reviews are the next checkpoint.
 
 ---
 

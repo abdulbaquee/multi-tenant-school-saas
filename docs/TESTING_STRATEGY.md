@@ -771,8 +771,10 @@ soft-delete boundaries, retained Exam Result and Report Card history,
 default-deny TenantScope behavior, automatic ownership, forged ownership
 rejection, immutable scope/identity fields, canonical casts/statuses,
 retained parent relationships, and duplicate/foreign-key integrity. The full
-application suite passes 326 tests with 2,919 assertions. School Admin exam
-setup and Exam Subject assignment are the next checkpoint.
+application suite passes 341 tests with 3,020 assertions. School Admin exam
+setup, Exam Subject assignment, teacher-scoped marks entry, grade calculation,
+and School Admin result processing are implemented. Operational report cards are
+implemented. Phase 9 release gate reviews are the next checkpoint.
 
 ---
 

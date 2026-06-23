@@ -5,6 +5,8 @@ use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExamController;
+use App\Http\Controllers\ExamMarksEntryController;
+use App\Http\Controllers\ExamResultController;
 use App\Http\Controllers\ExamSubjectController;
 use App\Http\Controllers\FeeCategoryController;
 use App\Http\Controllers\FeeCollectionController;
@@ -13,6 +15,7 @@ use App\Http\Controllers\FeePaymentController;
 use App\Http\Controllers\FeeStructureController;
 use App\Http\Controllers\PaymentTransactionController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportCardController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SchoolClassController;
 use App\Http\Controllers\SchoolController;
@@ -172,6 +175,17 @@ Route::middleware(['auth', 'tenant.context'])->group(function () {
     Route::resource('exams', ExamController::class)->except(['destroy']);
 
     Route::resource('exam-subjects', ExamSubjectController::class)->only(['index', 'create', 'store', 'show']);
+
+    Route::get('/exam-marks-entry', [ExamMarksEntryController::class, 'index'])->name('exam-marks-entry.index');
+    Route::post('/exam-marks-entry', [ExamMarksEntryController::class, 'store'])->name('exam-marks-entry.store');
+    Route::get('/exam-results', [ExamResultController::class, 'index'])->name('exam-results.index');
+    Route::get('/exams/{exam}/results', [ExamResultController::class, 'show'])->name('exam-results.show');
+    Route::patch('/exams/{exam}/process-results', [ExamResultController::class, 'process'])->name('exam-results.process');
+
+    Route::get('/report-cards', [ReportCardController::class, 'index'])->name('report-cards.index');
+    Route::get('/report-cards/{report_card}', [ReportCardController::class, 'show'])->name('report-cards.show');
+    Route::get('/report-cards/{report_card}/print', [ReportCardController::class, 'print'])->name('report-cards.print');
+    Route::post('/exams/{exam}/report-cards', [ReportCardController::class, 'generate'])->name('report-cards.generate');
 });
 
 require __DIR__.'/auth.php';

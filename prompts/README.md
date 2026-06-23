@@ -125,7 +125,9 @@ prompts/
     └── 07-phase-08-release-gate-reviews.md
 └── 09-examination/
     ├── 00-phase-09-readiness-review.md
-    └── 01-phase-09-examination-design-remediation.md
+    ├── 01-phase-09-examination-design-remediation.md
+    ├── 04-phase-09-marks-entry-results.md
+    └── 05-phase-09-report-cards.md
 ```
 
 ## Current Prompt Creation Status

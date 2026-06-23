@@ -26,12 +26,25 @@
                 <dt class="col-sm-4">{{ __('Exam Type') }}</dt><dd class="col-sm-8">{{ ucfirst(str_replace('_', ' ', $exam->exam_type)) }}</dd>
                 <dt class="col-sm-4">{{ __('Dates') }}</dt><dd class="col-sm-8">{{ $exam->start_date?->format('M j, Y') }} – {{ $exam->end_date?->format('M j, Y') }}</dd>
                 <dt class="col-sm-4">{{ __('Assigned Subjects') }}</dt><dd class="col-sm-8">{{ $exam->exam_subjects_count }}</dd>
-                <dt class="col-sm-4">{{ __('Retained Results') }}</dt><dd class="col-sm-8 mb-0">{{ $exam->exam_results_count }}</dd>
+                <dt class="col-sm-4">{{ __('Retained Results') }}</dt><dd class="col-sm-8">{{ $exam->exam_results_count }}</dd>
+                <dt class="col-sm-4">{{ __('Report Cards') }}</dt><dd class="col-sm-8 mb-0">{{ $exam->report_cards_count }}</dd>
             </dl>
         </div>
     </div>
 
     <div class="d-flex flex-wrap gap-2 mt-4">
+        @can('viewAny', \App\Models\ExamResult::class)
+            <a class="btn btn-outline-secondary" href="{{ route('exam-results.show', $exam) }}">
+                <i class="bi bi-clipboard-data me-1" aria-hidden="true"></i>{{ __('Results Summary') }}
+            </a>
+        @endcan
+        @can('generate', $exam)
+            <button class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#generateReportCardsModal">
+                <i class="bi bi-card-checklist me-1" aria-hidden="true"></i>{{ __('Generate Report Cards') }}
+            </button>
+        @elseif(auth()->user()->can('update', $exam) && $exam->status === \App\Models\Exam::STATUS_SCHEDULED)
+            <span class="align-self-center small text-body-secondary">{{ __('Publish this exam to enable report-card generation.') }}</span>
+        @endcan
         @can('create', \App\Models\ExamSubject::class)
             <a class="btn btn-outline-primary" href="{{ route('exam-subjects.create', ['exam_id' => $exam->id]) }}"><i class="bi bi-book me-1" aria-hidden="true"></i>{{ __('Assign Subject') }}</a>
         @endcan
@@ -45,4 +58,23 @@
     @can('complete', $exam)@include('academic.partials.confirmation-modal', ['modalId' => 'completeExamModal', 'title' => __('Complete Exam'), 'message' => __('This marks the exam as completed after operational processing.'), 'action' => route('exams.complete', $exam), 'buttonLabel' => __('Complete'), 'buttonClass' => 'btn-success'])@endcan
     @can('cancel', $exam)@include('academic.partials.confirmation-modal', ['modalId' => 'cancelExamModal', 'title' => __('Cancel Exam'), 'message' => __('Cancelled exams remain retained and cannot accept new assignments.'), 'action' => route('exams.cancel', $exam), 'buttonLabel' => __('Cancel Exam'), 'buttonClass' => 'btn-warning'])@endcan
     @can('archive', $exam)@include('academic.partials.confirmation-modal', ['modalId' => 'archiveExamModal', 'title' => __('Archive Exam'), 'message' => __('Archive only when no retained results or report cards exist.'), 'action' => route('exams.archive', $exam), 'buttonLabel' => __('Archive'), 'buttonClass' => 'btn-danger'])@endcan
+    @can('generate', $exam)
+        @include('academic.partials.confirmation-modal', [
+            'modalId' => 'generateReportCardsModal',
+            'title' => __('Generate Report Cards'),
+            'message' => __('Generate or refresh report cards for students with complete exam results.'),
+            'action' => route('report-cards.generate', $exam),
+            'buttonLabel' => __('Generate'),
+            'buttonClass' => 'btn-primary',
+        ])
+    @endcan
+
+    @if (auth()->user()->can('generate', $exam) && $exam->exam_results_count === 0)
+        <div class="alert alert-warning mt-4" role="alert">
+            {{ __('This exam has no retained results yet. Enter marks for every subject before generating report cards.') }}
+            @if ($exam->status === \App\Models\Exam::STATUS_COMPLETED)
+                {{ __('This exam is completed, so marks entry is closed. Re-open marks by changing exam workflow only if your school policy allows corrections elsewhere.') }}
+            @endif
+        </div>
+    @endif
 </x-app-layout>
