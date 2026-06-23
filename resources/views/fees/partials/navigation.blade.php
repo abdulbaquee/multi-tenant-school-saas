@@ -14,8 +14,18 @@
             <i class="bi bi-receipt me-1" aria-hidden="true"></i>{{ __('Student Fees') }}
         </a>
     @endcan
+    @can('viewAny', \App\Models\FeePayment::class)
+        <a class="nav-link @if (request()->routeIs('fee-payments.*')) active @endif" href="{{ route('fee-payments.index') }}">
+            <i class="bi bi-clock-history me-1" aria-hidden="true"></i>{{ __('Payment History') }}
+        </a>
+    @endcan
+    @can('viewAny', \App\Models\StudentFee::class)
+        <a class="nav-link @if (request()->routeIs('fee-outstanding-balances.*')) active @endif" href="{{ route('fee-outstanding-balances.index') }}">
+            <i class="bi bi-exclamation-circle me-1" aria-hidden="true"></i>{{ __('Outstanding Balances') }}
+        </a>
+    @endcan
     @if (auth()->user()?->hasPermission('fees.collect'))
-        <a class="nav-link @if (request()->routeIs('fee-collections.*') || request()->routeIs('fee-payments.*')) active @endif" href="{{ route('fee-collections.index') }}">
+        <a class="nav-link @if (request()->routeIs('fee-collections.*')) active @endif" href="{{ route('fee-collections.index') }}">
             <i class="bi bi-cash-stack me-1" aria-hidden="true"></i>{{ __('Fee Collection') }}
         </a>
     @endif

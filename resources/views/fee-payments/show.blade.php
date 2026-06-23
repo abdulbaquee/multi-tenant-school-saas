@@ -1,6 +1,6 @@
 <x-app-layout>
-    <x-slot name="breadcrumbParent">{{ __('Fee Collection') }}</x-slot>
-    <x-slot name="breadcrumbParentUrl">{{ route('fee-collections.index') }}</x-slot>
+    <x-slot name="breadcrumbParent">{{ __('Payment History') }}</x-slot>
+    <x-slot name="breadcrumbParentUrl">{{ route('fee-payments.index') }}</x-slot>
     <x-slot name="breadcrumb">{{ $feePayment->receipt_no }}</x-slot>
     <x-slot name="header">
         <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3">

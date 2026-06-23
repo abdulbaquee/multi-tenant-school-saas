@@ -6,6 +6,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FeeCategoryController;
 use App\Http\Controllers\FeeCollectionController;
+use App\Http\Controllers\FeeOutstandingBalanceController;
 use App\Http\Controllers\FeePaymentController;
 use App\Http\Controllers\FeeStructureController;
 use App\Http\Controllers\ProfileController;
@@ -154,6 +155,8 @@ Route::middleware(['auth', 'tenant.context'])->group(function () {
     Route::get('/fee-collections', [FeeCollectionController::class, 'index'])->name('fee-collections.index');
     Route::get('/student-fees/{student_fee}/collect', [FeeCollectionController::class, 'create'])->name('fee-collections.create');
     Route::post('/student-fees/{student_fee}/collect', [FeeCollectionController::class, 'store'])->name('fee-collections.store');
+    Route::get('/fee-payments', [FeePaymentController::class, 'index'])->name('fee-payments.index');
+    Route::get('/fee-outstanding-balances', [FeeOutstandingBalanceController::class, 'index'])->name('fee-outstanding-balances.index');
     Route::get('/fee-payments/{fee_payment}', [FeePaymentController::class, 'show'])->name('fee-payments.show');
     Route::get('/fee-payments/{fee_payment}/print', [FeePaymentController::class, 'print'])->name('fee-payments.print');
 });
