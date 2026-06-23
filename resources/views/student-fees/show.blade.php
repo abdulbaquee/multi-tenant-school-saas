@@ -26,8 +26,14 @@
                 <dt class="col-sm-4">{{ __('Paid Amount') }}</dt><dd class="col-sm-8">{{ number_format((float) $studentFee->paid_amount, 2) }}</dd>
                 <dt class="col-sm-4">{{ __('Balance Amount') }}</dt><dd class="col-sm-8">{{ number_format((float) $studentFee->balance_amount, 2) }}</dd>
                 <dt class="col-sm-4">{{ __('Due Date') }}</dt><dd class="col-sm-8">{{ $studentFee->due_date?->format('Y-m-d') ?: '—' }}</dd>
-                <dt class="col-sm-4">{{ __('State') }}</dt><dd class="col-sm-8 mb-0">{{ ucfirst($studentFee->status) }}</dd>
+                <dt class="col-sm-4">{{ __('State') }}</dt><dd class="col-sm-8">{{ ucfirst($studentFee->status) }}</dd>
             </dl>
         </div>
+    </div>
+
+    <div class="d-flex flex-wrap gap-2 mt-4">
+        @can('collect', $studentFee)
+            <a class="btn btn-primary" href="{{ route('fee-collections.create', $studentFee) }}"><i class="bi bi-cash-stack me-1" aria-hidden="true"></i>{{ __('Collect Payment') }}</a>
+        @endcan
     </div>
 </x-app-layout>

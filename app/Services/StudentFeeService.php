@@ -223,8 +223,8 @@ class StudentFeeService
 
     private function authorizeActorContext(User $actor): void
     {
-        $valid = $actor->hasRoleCode(Role::SCHOOL_ADMIN)
-            && filled($actor->school_id)
+        $valid = filled($actor->school_id)
+            && ($actor->hasRoleCode(Role::SCHOOL_ADMIN) || $actor->hasRoleCode(Role::ACCOUNTANT))
             && $actor->canEstablishTenantContext()
             && $this->tenantContext->isTenant()
             && $this->tenantContext->tenantId() === (int) $actor->school_id;

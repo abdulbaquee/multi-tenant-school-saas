@@ -79,7 +79,7 @@
 
                     @if (auth()->user()->can('viewAny', \App\Models\FeeCategory::class) || auth()->user()->can('viewAny', \App\Models\StudentFee::class))
                         <li class="nav-item">
-                            <a class="nav-link sidebar-link @if (request()->routeIs('fee-categories.*') || request()->routeIs('fee-structures.*') || request()->routeIs('student-fees.*')) active @endif" href="{{ route('fee-categories.index') }}" @if (request()->routeIs('fee-categories.*') || request()->routeIs('fee-structures.*') || request()->routeIs('student-fees.*')) aria-current="page" @endif>
+                            <a class="nav-link sidebar-link @if (request()->routeIs('fee-categories.*') || request()->routeIs('fee-structures.*') || request()->routeIs('student-fees.*') || request()->routeIs('fee-collections.*') || request()->routeIs('fee-payments.*')) active @endif" href="{{ auth()->user()->can('viewAny', \App\Models\FeeCategory::class) ? route('fee-categories.index') : route('fee-collections.index') }}" @if (request()->routeIs('fee-categories.*') || request()->routeIs('fee-structures.*') || request()->routeIs('student-fees.*') || request()->routeIs('fee-collections.*') || request()->routeIs('fee-payments.*')) aria-current="page" @endif>
                                 <i class="bi bi-cash-coin" aria-hidden="true"></i>
                                 <span>{{ __('Fees') }}</span>
                             </a>

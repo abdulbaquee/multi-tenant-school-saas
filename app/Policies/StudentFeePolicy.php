@@ -10,7 +10,7 @@ class StudentFeePolicy
 {
     public function viewAny(User $user): bool
     {
-        return $this->isSchoolAdmin($user) && $user->hasPermission('fees.view');
+        return $this->isFeeOperator($user) && $user->hasPermission('fees.view');
     }
 
     public function view(User $user, StudentFee $studentFee): bool
@@ -25,14 +25,38 @@ class StudentFeePolicy
             && $user->hasPermission('fees.create');
     }
 
+    public function collect(User $user, StudentFee $studentFee): bool
+    {
+        return $this->isFeeOperator($user)
+            && $user->canEstablishTenantContext()
+            && $user->hasPermission('fees.collect')
+            && $this->canAccessTenant($user, $studentFee)
+            && $this->isCollectible($studentFee);
+    }
+
     private function isSchoolAdmin(User $user): bool
     {
         return $user->hasRoleCode(Role::SCHOOL_ADMIN) && filled($user->school_id);
+    }
+
+    private function isFeeOperator(User $user): bool
+    {
+        return filled($user->school_id)
+            && ($user->hasRoleCode(Role::SCHOOL_ADMIN) || $user->hasRoleCode(Role::ACCOUNTANT));
     }
 
     private function canAccessTenant(User $user, StudentFee $studentFee): bool
     {
         return filled($user->school_id)
             && (int) $user->school_id === (int) $studentFee->school_id;
+    }
+
+    private function isCollectible(StudentFee $studentFee): bool
+    {
+        if (! in_array($studentFee->status, [StudentFee::STATUS_PENDING, StudentFee::STATUS_PARTIAL], true)) {
+            return false;
+        }
+
+        return bccomp((string) $studentFee->balance_amount, '0.00', 2) === 1;
     }
 }
