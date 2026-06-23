@@ -554,10 +554,23 @@ Attendance Rules:
 * `marked_by` stores the original authenticated creator and is immutable.
   Correction actors are recorded by audit-log user identity.
 * Holiday is a School Admin-only bulk status for the full eligible Section
-  roster. Late is selected manually; `attendance_start_time` is a reference
-  value and does not classify a Student automatically in the MCA scope.
+  roster. Transitions both to and from Holiday must use the atomic complete-
+  roster workflow; Teachers cannot overwrite Holiday and single-record
+  correction cannot change a Holiday status. Late is selected manually;
+  `attendance_start_time` is a reference value and does not classify a Student
+  automatically in the MCA scope.
 * Remarks are optional, limited to 500 characters, and must not contain detailed
   medical, disability, or other unnecessary minor information.
+
+Implementation Status (2026-06-22):
+
+* The Phase 7 operational entry, correction, retained history, search, monthly
+  summary, authorization, tenant isolation, privacy-safe logging, navigation,
+  and Bootstrap UI workflows are implemented. Tenant-isolation, security, and
+  documentation reviews are approved at 10/10. Code-review remediation preserves
+  lifecycle-changed retained roster rows, validates direct corrections, and
+  bounds History authorization queries. The code-review rerun is approved; only
+  the release gate remains.
 
 ---
 
@@ -874,7 +887,7 @@ Reactivation uses the corresponding `.update` permission plus Policy checks.
 | Role & Permission | Manage constrained canonical mappings and role assignment | View mappings and assign school roles | No | No |
 | Academic Structure | View | Full | View assigned classes and subjects | No |
 | Student Management | View | Full | Limited view for assigned classes | Limited view for fee collection |
-| Attendance Management | View reports | Full | Full for assigned classes | No |
+| Attendance Management | View reports | Full | Full for directly assigned Sections | No |
 | Fee Management | View reports | Full | No | Full |
 | Examination Management | View reports | Full | Full for assigned classes and subjects | No |
 | Reporting | Platform reports | School reports | Assigned class reports | Financial reports |

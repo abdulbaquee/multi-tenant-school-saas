@@ -1297,8 +1297,11 @@ Attendance is never deleted. `attendance.delete`, `attendance.report`, and
 `marked_by` is required and immutable as the original creator. Correction actors
 are preserved in audit-log user identity. Raw remarks and unrelated minor data
 are excluded from activity and audit payloads. Holiday is a School Admin-only
-whole-roster status; Late remains manually selected, with school attendance start
-time used only as a display reference in the MCA scope.
+whole-roster status. Transitions both to and from Holiday use the atomic
+complete-roster workflow; Teachers cannot overwrite a Holiday record, and
+single-record correction cannot change Holiday state. Late remains manually
+selected, with school attendance start time used only as a display reference in
+the MCA scope.
 
 Reason:
 
@@ -1316,7 +1319,55 @@ The Attendance data dictionary, ERD marker relationship, role matrix, menus,
 screen flow, tenancy, security, privacy, logging, testing, roadmap, governance,
 and MCA evidence are aligned. The readiness rerun passed at 10/10. The approved
 core migration and tenant-aware Attendance model are implemented with retained
-history and focused isolation tests; user-facing workflows remain pending.
+history and focused isolation tests. The approved complete-roster entry,
+assigned-Teacher scope, current-year correction, operational history/monthly
+summary, atomic logging, and Bootstrap workflows were implemented on 2026-06-22
+without activating Phase 10 or deletion capabilities.
+
+---
+
+# DECISION-033
+
+Date:
+2026-06-22
+
+Title:
+Adopt A Deadline-Driven MCA Submission And Evidence Governance Plan
+
+Status:
+Approved
+
+Decision:
+
+The 2026-07-05 MCA Project Work deadline is a hard project constraint.
+`MCA_SUBMISSION_MASTER_PLAN.md` is the canonical source for university and
+Qollabb requirements, report structure, deployment, presentation, viva,
+critical-path dates, and the final submission package.
+
+Implementation, automated testing, manual verification, screenshots, report
+evidence, deployment preparation, presentation material, and viva notes proceed
+in parallel. New feature work freezes on 2026-07-02 except for critical
+security, deployment, or submission defects. The first complete portal package
+is targeted for 2026-07-04, leaving the official deadline as emergency buffer.
+
+The official DOCX supplies report structure. Until the mentor clarifies source
+conflicts, the report uses A4, 1-inch margins, Times New Roman 12 pt body text,
+14-16 pt bold headings, 1.5 spacing, justified text, bottom-right page numbers,
+one 150-250 word Abstract, 60-100 pages, and 18,000-30,000 words.
+
+Reason:
+
+* Protects the externally evaluated report, presentation, and viva work.
+* Prevents deployment, screenshots, appendices, and evidence from being deferred
+  until after implementation.
+* Converts the deadline into explicit phase-level acceptance criteria.
+* Records source conflicts rather than silently inventing formatting rules.
+* Preserves an emergency buffer before the portal deadline.
+
+Outcome:
+
+All future prompts and review gates must consult the master plan. Phase
+completion requires submission evidence as well as working code and tests.
 
 ---
 
@@ -1341,4 +1392,4 @@ Development Decisions:
 Completed
 
 Project Ready For:
-Phase 7 Daily And Bulk Attendance Workflow Planning
+Phase 7 Release Review

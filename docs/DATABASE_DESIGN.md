@@ -658,8 +658,11 @@ Attendance constraints and lifecycle:
 Implementation status (2026-06-21): the `attendances` migration and tenant-aware
 model are implemented with the documented named indexes, daily unique
 constraint, restricted foreign keys, immutable identity fields, original-marker
-retention, and deletion rejection. Service-level roster, lifecycle, date,
-authorization, locking, and logging rules remain Phase 7 workflow work.
+retention, and deletion rejection. The operational Service now enforces the
+documented roster, lifecycle, date, authorization, locking, atomicity, and
+privacy-safe logging rules without changing this schema. Retained same-date rows
+remain part of complete correction rosters after later Student or Enrollment
+lifecycle changes; they cannot cause creation of a new ineligible row.
 
 ---
 

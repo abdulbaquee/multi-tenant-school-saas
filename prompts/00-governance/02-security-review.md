@@ -17,6 +17,7 @@ Read and follow:
 - `database/AGENTS.md`
 - `resources/AGENTS.md`
 - `docs/PROJECT_CONSTITUTION.md`
+- `docs/MCA_SUBMISSION_MASTER_PLAN.md`
 - `docs/SECURITY_GUIDELINES.md`
 - `docs/TENANCY_DESIGN.md`
 - `docs/MODULE_SPECIFICATIONS.md`

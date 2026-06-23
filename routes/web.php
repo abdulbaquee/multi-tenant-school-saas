@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AcademicTermController;
 use App\Http\Controllers\AcademicYearController;
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
@@ -126,6 +127,14 @@ Route::middleware(['auth', 'tenant.context'])->group(function () {
     Route::resource('students', StudentController::class)
         ->withTrashed(['show'])
         ->except(['destroy']);
+
+    Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
+    Route::post('/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
+    Route::get('/attendance/history', [AttendanceController::class, 'history'])->name('attendance.history');
+    Route::get('/attendance/monthly-summary', [AttendanceController::class, 'monthlySummary'])
+        ->name('attendance.monthly-summary');
+    Route::get('/attendance/{attendance}/edit', [AttendanceController::class, 'edit'])->name('attendance.edit');
+    Route::patch('/attendance/{attendance}', [AttendanceController::class, 'update'])->name('attendance.update');
 });
 
 require __DIR__.'/auth.php';

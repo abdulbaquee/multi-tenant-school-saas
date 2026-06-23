@@ -22,6 +22,8 @@ When project documentation conflicts, use this order:
 
 1. `docs/PROJECT_CONSTITUTION.md`
 2. Domain-specific source of truth:
+   - MCA submission, deadline, report, deployment, presentation, and viva:
+     `docs/MCA_SUBMISSION_MASTER_PLAN.md`
    - Tenancy: `docs/TENANCY_DESIGN.md`
    - Phase order: `docs/DEVELOPMENT_ROADMAP.md`
    - Modules and permissions: `docs/MODULE_SPECIFICATIONS.md`
@@ -53,7 +55,8 @@ Read the relevant document before changing its domain:
 - UI: `docs/UI_UX_DESIGN_SYSTEM.md`
 - Code standards: `docs/CODING_STANDARDS.md`
 - Security and quality: `docs/SECURITY_GUIDELINES.md`, `docs/TESTING_STRATEGY.md`
-- MCA report planning: `docs/MCA_REPORT_NOTES.md`
+- MCA submission and deadline: `docs/MCA_SUBMISSION_MASTER_PLAN.md`
+- MCA report content planning: `docs/MCA_REPORT_NOTES.md`
 
 ## Architecture Guardrails
 
@@ -101,6 +104,12 @@ Native Laravel Multi-Tenancy is mandatory.
 
 ## Workflow Expectations
 
+- Treat 2026-07-05 as the hard MCA submission deadline.
+- Before starting a phase, check `docs/MCA_SUBMISSION_MASTER_PLAN.md` for the
+  critical path, submission evidence, screenshots, report inputs, deployment,
+  presentation, and viva obligations.
+- Develop implementation and submission evidence in parallel; do not defer all
+  report, deployment, presentation, or viva work until coding ends.
 - Check existing patterns before editing.
 - Keep changes scoped to the request.
 - Do not generate application code during documentation-only tasks.

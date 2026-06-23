@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\AcademicTerm;
 use App\Models\AcademicYear;
+use App\Models\Attendance;
 use App\Models\Role;
 use App\Models\School;
 use App\Models\SchoolClass;
@@ -16,6 +17,7 @@ use App\Models\Teacher;
 use App\Models\User;
 use App\Policies\AcademicTermPolicy;
 use App\Policies\AcademicYearPolicy;
+use App\Policies\AttendancePolicy;
 use App\Policies\RolePolicy;
 use App\Policies\SchoolClassPolicy;
 use App\Policies\SchoolPolicy;
@@ -51,6 +53,7 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::policy(AcademicYear::class, AcademicYearPolicy::class);
         Gate::policy(AcademicTerm::class, AcademicTermPolicy::class);
+        Gate::policy(Attendance::class, AttendancePolicy::class);
         Gate::policy(School::class, SchoolPolicy::class);
         Gate::policy(SchoolClass::class, SchoolClassPolicy::class);
         Gate::policy(SchoolSetting::class, SchoolSettingPolicy::class);

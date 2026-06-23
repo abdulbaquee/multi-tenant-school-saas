@@ -19,6 +19,7 @@ This project is documentation-first. Documentation is part of the implementation
 - UI: `UI_UX_DESIGN_SYSTEM.md`
 - Security: `SECURITY_GUIDELINES.md`
 - Testing: `TESTING_STRATEGY.md`
+- MCA submission, deadline, and deliverables: `MCA_SUBMISSION_MASTER_PLAN.md`
 - MCA report planning: `MCA_REPORT_NOTES.md`
 
 ## Maintenance Rules
@@ -26,6 +27,8 @@ This project is documentation-first. Documentation is part of the implementation
 - Update docs when implementation changes architecture, schema, security, permissions, testing, UI, roadmap, or deployment assumptions.
 - Record architectural decisions in `DECISIONS_LOG.md`.
 - Update `CHANGELOG.md` for meaningful milestones and remediation work.
+- Keep implementation status, report evidence, deployment status, presentation,
+  and viva preparation aligned with `MCA_SUBMISSION_MASTER_PLAN.md`.
 - Keep document status and phase language consistent across governance, roadmap, and changelog.
 - Prefer links to canonical docs over repeated long rule blocks.
 

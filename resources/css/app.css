@@ -128,6 +128,39 @@ body {
     aspect-ratio: 4 / 5;
 }
 
+.attendance-status-control .btn {
+    min-width: 4.5rem;
+}
+
+.attendance-roster-table {
+    min-width: 920px;
+}
+
+.attendance-status-present {
+    color: #fff;
+    background: #16a34a;
+}
+
+.attendance-status-absent {
+    color: #fff;
+    background: #dc2626;
+}
+
+.attendance-status-leave {
+    color: #111827;
+    background: #f59e0b;
+}
+
+.attendance-status-late {
+    color: #fff;
+    background: #2563eb;
+}
+
+.attendance-status-holiday {
+    color: #fff;
+    background: #64748b;
+}
+
 .settings-section-nav {
     position: sticky;
     top: 70px;

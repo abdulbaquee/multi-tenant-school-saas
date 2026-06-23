@@ -23,17 +23,18 @@ The canonical permission matrix is defined in `MODULE_SPECIFICATIONS.md`. Every 
 
 ## Current Implementation Status
 
-The current implementation exposes only authorized navigation for completed
-Phases 2 through 4 and the implemented Phase 5 Academic Structure workspace:
+The current implementation exposes authorized navigation for completed Phases
+2 through 6 and the implemented Phase 7 Attendance workspace:
 
 * Super Admin: Dashboard, Users, Roles & Permissions, Academic Structure,
   Students, Schools, Profile.
 * School Admin: Dashboard, Users, Roles & Permissions, Academic Structure,
-  Students, School Settings, Profile.
-* Teacher: Dashboard, assigned Academic Structure, assigned Students, Profile.
+  Students, Attendance, School Settings, Profile.
+* Teacher: Dashboard, assigned Academic Structure, assigned Students,
+  Attendance, Profile.
 * Accountant: Dashboard, Profile.
 * Student Management now provides the implemented Phase 6 profile and immutable
-  Enrollment workflows. Phase 7 or later module items documented below remain
+  Enrollment workflows. Phase 8 or later module items documented below remain
   omitted until their routes and authorization are implemented.
 
 School Management currently provides Super Admin-only listing, search, status
@@ -756,6 +757,13 @@ Historical Academic Years are read-only in Phase 7. Corrections are limited to
 the current Academic Year. `marked_by` remains the original creator; the audit
 record identifies the correcting actor.
 
+Implementation Status (2026-06-22):
+
+The Attendance workspace, complete-roster save, whole-roster Holiday action,
+history/search, retained correction, monthly summary, active tab/navigation,
+and denied role/tenant flows are implemented. Report, export, delete, analytics,
+dashboard, Super Admin, and Accountant Attendance flows remain absent.
+
 ---
 
 # 20. FEE MANAGEMENT FLOW
@@ -883,7 +891,7 @@ Role Visibility:
 | School Reports | Yes | No | No | No |
 | User Reports | Yes | Own school | No | No |
 | Student Reports | Platform summary | Own school | Assigned classes | Fee lookup only |
-| Attendance Reports | Platform summary | Own school | Assigned classes | No |
+| Attendance Reports | Platform summary | Own school | Directly assigned Sections | No |
 | Fee Reports | Platform summary | Own school | No | Own school |
 | Examination Reports | Platform summary | Own school | Assigned classes | No |
 | Activity Reports | Platform-wide | Own school | No | No |

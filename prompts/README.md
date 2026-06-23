@@ -41,6 +41,7 @@ Before using any prompt, read the relevant documents:
 - Documentation: `../docs/AGENTS.md`
 - UI and Blade views: `../resources/AGENTS.md`
 - Constitution: `../docs/PROJECT_CONSTITUTION.md`
+- MCA submission: `../docs/MCA_SUBMISSION_MASTER_PLAN.md`
 - Governance: `../docs/PROJECT_GOVERNANCE.md`
 - Decisions: `../docs/DECISIONS_LOG.md`
 - Roadmap: `../docs/DEVELOPMENT_ROADMAP.md`
@@ -107,7 +108,12 @@ prompts/
 └── 06-attendance/
     ├── 00-phase-07-readiness-review.md
     ├── 01-phase-07-attendance-design-remediation.md
-    └── 02-phase-07-core-attendance-schema.md
+    ├── 02-phase-07-core-attendance-schema.md
+    ├── 03-phase-07-daily-attendance-management.md
+    ├── 04-phase-07-tenant-isolation-test-remediation.md
+    ├── 05-phase-07-security-remediation.md
+    ├── 06-phase-07-documentation-remediation.md
+    └── 07-phase-07-code-review-remediation.md
 ```
 
 ## Current Prompt Creation Status
@@ -145,6 +151,13 @@ Created for the next roadmap gate:
 - Phase 7 Attendance Management readiness review (executed and approved at 10/10).
 - Phase 7 Attendance design remediation (executed).
 - Phase 7 core Attendance schema and model foundation (executed).
+- Phase 7 daily Attendance management workflow (executed).
+- Phase 7 Attendance tenant-isolation test remediation (executed).
+- Phase 7 Attendance Holiday security remediation (executed).
+- Phase 7 Attendance documentation remediation (executed; review rerun approved
+  at 10/10).
+- Phase 7 Attendance code-review remediation (executed; review rerun approved
+  with no remaining findings).
 
 Future prompt groups should be added only when they are needed for the next roadmap phase.
 

@@ -30,6 +30,11 @@ This document serves as the master planning guide for preparing the final MCA Pr
 
 It maps project documentation, diagrams, screenshots, testing evidence, and implementation details to the university report structure.
 
+`MCA_SUBMISSION_MASTER_PLAN.md` is the higher-authority source for the official
+deadline, university and Qollabb requirements, formatting conflict resolution,
+submission package, critical path, deployment, presentation, viva, and final
+checklist. This document remains the chapter-content and evidence staging guide.
+
 ---
 
 # 1. REPORT OBJECTIVE
@@ -51,13 +56,17 @@ The report must focus on implementation rather than theory.
 
 # 2. TARGET REPORT SIZE
 
-Recommended Length:
+Official Length:
 
-60–80 Pages
+60-100 Pages
 
-Recommended Word Count:
+Official Word Count:
 
-18,000–25,000 Words
+18,000-30,000 Words
+
+Internal Target:
+
+70-85 Pages and 20,000-25,000 Words
 
 Exclude:
 
@@ -450,6 +459,24 @@ Phase 2 through Phase 5 evidence available for later report assembly:
   placement/original marker, restricted relationships, and no deletion. The 6
   focused tests pass 67 assertions, and the full suite passes 263 tests with
   2,066 assertions.
+* Phase 7 Attendance workflow evidence: Policies, Form Requests, Service,
+  controller, routes, Bootstrap screens, complete-roster atomic writes,
+  assigned-Teacher scope, retained correction, operational history/monthly
+  summary, and privacy-safe logs are implemented. Code-review remediation adds
+  lifecycle-safe retained rosters, direct correction revalidation, bounded
+  History queries, and exact permission-boundary evidence. The focused suite
+  passes 16 tests with 179 assertions, the combined Attendance suite passes 22
+  tests with 246 assertions, and the full suite passes 279 tests with 2,245
+  assertions. Cross-school roster POST, direct edit/PATCH route binding,
+  unfiltered history, monthly Section selection, Teacher Holiday overwrite, and
+  single-record Holiday transition paths are explicitly denied. The Phase 7
+  tenant-isolation and security reviews are approved at 10/10. The documentation
+  review rerun is approved at 10/10 after reconciling current navigation,
+  direct-Section scope, evidence checklists, request naming, and prompt
+  governance. The code-review rerun has no remaining findings. The Phase 7
+  release review is approved at 9.5/10 with no blocking issues after full-suite,
+  formatting, route, dependency-audit, frontend-build, and whitespace
+  verification.
 
 Screenshots remain to be selected and captured during the documentation and
 submission phases.
@@ -515,17 +542,17 @@ Target:
 
 Required:
 
-✓ System Architecture Diagram
+- [x] System Architecture Diagram
 
-✓ ER Diagram
+- [x] ER Diagram
 
-✓ Use Case Diagram
+- [ ] Use Case Diagram
 
-✓ Activity Diagram
+- [ ] Activity Diagram
 
-✓ Sequence Diagram
+- [ ] Sequence Diagram
 
-✓ Class Diagram
+- [ ] Class Diagram
 
 Recommended Total:
 
@@ -552,25 +579,25 @@ Prepare Answers For:
 
 # 19. FINAL SUBMISSION CHECKLIST
 
-✓ Working Application
+- [ ] Working Application
 
-✓ GitHub Repository Updated
+- [ ] GitHub Repository Updated
 
-✓ Documentation Complete
+- [ ] Documentation Complete
 
-✓ Diagrams Complete
+- [ ] Diagrams Complete
 
-✓ Screenshots Complete
+- [ ] Screenshots Complete
 
-✓ Test Cases Complete
+- [ ] Test Cases Complete
 
-✓ Report Completed
+- [ ] Report Completed
 
-✓ References Added
+- [ ] References Added
 
-✓ PDF Generated
+- [ ] PDF Generated
 
-✓ Viva Notes Prepared
+- [ ] Viva Notes Prepared
 
 ---
 

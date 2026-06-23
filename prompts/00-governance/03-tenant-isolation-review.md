@@ -16,6 +16,7 @@ Read and follow:
 - `app/AGENTS.md`
 - `database/AGENTS.md`
 - `tests/AGENTS.md`
+- `docs/MCA_SUBMISSION_MASTER_PLAN.md`
 - `docs/TENANCY_DESIGN.md`
 - `docs/DATABASE_DESIGN.md`
 - `docs/MODULE_SPECIFICATIONS.md`

@@ -35,6 +35,22 @@ school_id
 
 ---
 
+# MCA SUBMISSION CONSTRAINT
+
+The final MCA Project Work submission deadline is 2026-07-05.
+
+`MCA_SUBMISSION_MASTER_PLAN.md` is authoritative for the deadline, university
+requirements, Qollabb deliverables, report structure, deployment, presentation,
+viva preparation, critical-path schedule, and final submission checklist.
+
+Implementation must not consume the entire remaining schedule. Each phase must
+produce tests, documentation evidence, sanitized screenshots, report inputs,
+and demonstration notes while the module context is current. New feature work
+freezes on 2026-07-02 except for critical security, deployment, or submission
+defects.
+
+---
+
 # 1. PROJECT VISION
 
 Build a modern, secure, scalable, and maintainable School Administration Management SaaS Platform that demonstrates professional software engineering practices and satisfies MCA project requirements.

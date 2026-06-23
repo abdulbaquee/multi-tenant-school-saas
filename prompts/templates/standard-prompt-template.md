@@ -30,6 +30,7 @@ Read and follow:
 
 Required domain references:
 
+- MCA submission: `docs/MCA_SUBMISSION_MASTER_PLAN.md`
 - Architecture: `docs/SYSTEM_ARCHITECTURE.md`
 - Tenancy: `docs/TENANCY_DESIGN.md`
 - Database: `docs/DATABASE_DESIGN.md`

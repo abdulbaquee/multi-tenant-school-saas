@@ -14,6 +14,7 @@ Read and follow:
 
 - `AGENTS.md`
 - The nearest nested `AGENTS.md` for changed files
+- `docs/MCA_SUBMISSION_MASTER_PLAN.md`
 - `docs/CODING_STANDARDS.md`
 - `docs/SYSTEM_ARCHITECTURE.md`
 - `docs/TENANCY_DESIGN.md`

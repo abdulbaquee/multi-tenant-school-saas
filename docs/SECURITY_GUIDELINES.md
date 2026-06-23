@@ -409,7 +409,7 @@ Laravel Form Requests
 Examples:
 
 * StoreStudentRequest
-* StoreAttendanceRequest
+* AttendanceStoreRequest
 * StoreFeeRequest
 * StoreExamRequest
 
@@ -655,6 +655,10 @@ Attendance is sensitive minor data and must follow least privilege:
 * Historical records are never deleted. `attendance.delete` has no operational
   route; authorized corrections use `attendance.update` and immutable audit
   evidence.
+* Holiday is a School Admin-only complete-roster state. Transitions to or from
+  Holiday require an authorized atomic complete-roster save. Teachers cannot
+  correct or overwrite Holiday records, and a single-record correction cannot
+  change a Holiday status.
 * `marked_by` stores the original actor and cannot be replaced during correction.
   Audit `user_id` identifies the correcting actor.
 * Optional remarks are limited to 500 characters. Users must not record detailed
@@ -672,6 +676,21 @@ Attendance is sensitive minor data and must follow least privilege:
 Attendance reports, exports, analytics, dashboards, and platform summaries are
 Phase 10 security work. Their catalog permissions do not activate Phase 7
 capabilities.
+
+Implementation evidence (2026-06-22): Phase 7 operational routes use dedicated
+Policies and Form Requests, revalidate TenantContext and actor scope in the
+Service, derive complete rosters server-side, preserve immutable original
+markers, and write Attendance/activity/audit evidence in one transaction. The
+focused workflow suite passes 16 tests with 179 assertions, including denied
+role, assignment, lifecycle, context, tenant, forged-input, privacy, forced-
+logging-failure, foreign roster POST, route-binding, unfiltered history,
+monthly-summary, Teacher Holiday PATCH/roster overwrite, and single-record
+Holiday transition paths. Retained lifecycle-changed Holiday rows remain inside
+the complete correction roster, and direct correction calls reject non-string
+or oversized remarks before mutation. No delete, report, export, analytics,
+dashboard-summary, Super Admin, or Accountant Attendance route exists. The
+Phase 7 security-review rerun passed at 10/10 with no critical, high, or medium
+finding and no Composer or production npm advisory.
 
 ---
 

@@ -68,6 +68,15 @@
                         </li>
                     @endcan
 
+                    @can('viewAny', \App\Models\Attendance::class)
+                        <li class="nav-item">
+                            <a class="nav-link sidebar-link @if (request()->routeIs('attendance.*')) active @endif" href="{{ route('attendance.index') }}" @if (request()->routeIs('attendance.*')) aria-current="page" @endif>
+                                <i class="bi bi-calendar2-check" aria-hidden="true"></i>
+                                <span>{{ __('Attendance') }}</span>
+                            </a>
+                        </li>
+                    @endcan
+
                     @can('viewAny', \App\Models\School::class)
                         <li class="nav-item">
                             <a class="nav-link sidebar-link @if (request()->routeIs('schools.*')) active @endif" href="{{ route('schools.index') }}" @if (request()->routeIs('schools.*')) aria-current="page" @endif>

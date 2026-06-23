@@ -646,7 +646,7 @@ Status: Completed — Release Approved
 
 # [0.9.0] - Attendance Management
 
-Status: Core Schema Implemented — Workflow Pending
+Status: Completed — Release Approved
 
 ## Design Remediation
 
@@ -680,16 +680,129 @@ Status: Core Schema Implemented — Workflow Pending
 * Full application suite after the foundation: 263 tests and 2,066 assertions
   passed.
 
-## Remaining Implementation
+## Operational Workflow Implemented
 
-* Daily and bulk Attendance entry
-* Attendance history and search
-* Current-year authorized corrections
-* Monthly operational summaries
+* School Admin complete-roster entry and correction across active own-tenant
+  Sections, including a whole-roster Holiday action.
+* Active directly assigned Section Teacher entry, history, and current-year
+  correction with Subject-only and stale-assignment denial.
+* Server-derived current Academic Year, active Section/Class, active Enrollment,
+  Student lifecycle, and enrollment-date roster boundaries.
+* School-local date validation, exact-roster validation, atomic create/correct
+  saves, idempotent repeated saves, and unique-race protection.
+* Retained operational history, Student search, Section/date/status filters, and
+  monthly on-screen status totals without report or export routes.
+* Privacy-safe activity summaries and per-row audit evidence that preserve the
+  original marker and never copy raw remarks or unrelated minor data.
+* Policy, Form Request, Service, thin controller, protected routes, Bootstrap 5
+  views, role-aware navigation, and Mark All Present support.
+
+## Workflow Verification
+
+* Focused Attendance workflow suite: 13 tests and 150 assertions passed.
+* Combined Attendance schema/workflow suite: 19 tests and 217 assertions passed.
+* Full application suite: 276 tests and 2,216 assertions passed.
+* Cross-school roster POST, route-bound edit/PATCH, unfiltered history, and
+  monthly-summary denied paths now have explicit regression coverage.
+* Pint, production frontend build, route inspection, Composer validation, and
+  whitespace checks passed.
+
+## Security Remediation
+
+* Restricted transitions both to and from Holiday to the School Admin atomic
+  complete-roster workflow.
+* Denied Teacher correction and roster overwrite of existing Holiday records,
+  and denied single-record Holiday transitions for every role.
+* Preserved ordinary Teacher correction rights for assigned non-Holiday
+  Attendance and retained privacy-safe transactional evidence.
+* Focused security/Attendance suite: 25 tests and 243 assertions passed.
+* Composer and production npm audits reported no dependency advisories.
+* Phase 7 security-review rerun: 10/10, approved with no critical, high, or
+  medium finding.
+
+## Documentation Remediation
+
+* Reconciled the current navigation summary with the implemented School Admin
+  and directly assigned-Section Teacher Attendance workspace.
+* Replaced broad assigned-Class Attendance wording with the canonical direct
+  active Section assignment boundary.
+* Converted premature diagram and final-submission completion marks into
+  evidence-based completed and pending checkboxes.
+* Corrected the implemented `AttendanceStoreRequest` name in the validation
+  guidance.
+* Added the MCA submission master plan to the reusable prompt template, prompt
+  README, and every governance review prompt as required by DECISION-033.
+* Added the scoped Phase 7 documentation-remediation prompt and synchronized
+  the prompt inventory.
+* Phase 7 documentation-review rerun: 10/10, approved with no remaining
+  contradiction, stale reference, or missing update.
+
+## Code Review Remediation
+
+* Merged lifecycle-changed retained same-date Attendance rows into complete
+  correction rosters while keeping new ineligible records excluded.
+* Revalidated direct correction status and remark payloads, including the
+  500-character limit, before persistence.
+* Reused eager-loaded actor, permission, Section, Class, and Academic Year
+  relationships so per-row History authorization no longer causes N+1 queries.
+* Added regression coverage for retained Holiday transitions, direct-service
+  invalid remarks, bounded History query counts, and distinct create, update,
+  and view permission behavior.
+* Focused Attendance suite: 16 tests and 179 assertions passed.
+* Combined Attendance schema/workflow suite: 22 tests and 246 assertions passed.
+* Focused security/Attendance suite: 28 tests and 272 assertions passed.
+* Full application suite: 279 tests and 2,245 assertions passed.
+* Phase 7 code-review rerun: approved with no remaining findings.
+
+## Test Database Safety
+
+* PHPUnit now declares `APP_ENV=testing` and SQLite `:memory:` as forced test
+  configuration.
+* The shared test bootstrap aborts before `RefreshDatabase` can migrate or
+  truncate data unless Laravel resolves the approved isolated test database.
+* Local development data remains tenant-owned and is not recreated by automated
+  tests.
+
+## Release Review
+
+* Phase 7 release review: READY WITH MINOR IMPROVEMENTS at 9.5/10, final
+  verdict YES, with no blocking issues.
+* Verified 279 tests with 2,245 assertions, Pint, Attendance route inspection,
+  Composer validation, Composer audit, production frontend build, production
+  npm audit, and whitespace checks.
+* Remaining improvements are non-blocking: commit/push the checkpoint and
+  capture sanitized Attendance screenshots and MCA evidence while the module
+  context is fresh.
 
 ## Deliverables
 
 * Attendance Module
+
+---
+
+# [0.9.1] - MCA Submission Governance
+
+Date: 2026-06-22
+
+Status: Completed
+
+## Added
+
+* Canonical `MCA_SUBMISSION_MASTER_PLAN.md` based on the reviewed Major Project
+  assignment, detailed writing guidelines, official report template, Qollabb
+  portal requirements, and the 2026-07-05 deadline.
+* Verified report, presentation, live-link, optional-video, milestone,
+  evaluation, demonstration, certificate, and submission requirements.
+* Chapter/page/word targets, formatting conflict resolution, diagram and
+  screenshot inventory, deployment contract, presentation plan, viva plan,
+  critical-path calendar, feature freeze, and final submission checklist.
+
+## Governance
+
+* Root and documentation AGENT instructions now require every remaining phase
+  to consult the submission plan.
+* The Constitution, Governance, Roadmap, Project Overview, and report notes now
+  share the same deadline and parallel-delivery obligations.
 
 ---
 
@@ -837,8 +950,8 @@ Example:
 
 # Current Project Status
 
-Phase: Phase 6 Student Management Completed — Release Approved; Phase 7
-Attendance Core Schema Implemented — Workflow Pending
+Phase: Phase 7 Attendance Completed — Release Approved; Phase 8 Fee Management
+Pending
 
 Repository Setup: Completed
 
@@ -849,9 +962,9 @@ Documentation Setup: Completed (Draft v1.0; maintained during implementation)
 Database Design Documentation: Remediated and implementation-ready draft (DATABASE_DESIGN.md, ER_DIAGRAM.md)
 
 Application Implementation: Phase 2, Phase 3, Phase 4, and Phase 5 are
-completed. Phase 6 Student Management is release-approved. The Phase 7
-Attendance migration, tenant-aware model, retained relationships, and focused
-schema/isolation tests are implemented; Attendance workflows remain pending.
+completed. Phase 6 Student Management is release-approved. Phase 7 Attendance is
+release-approved and includes
+the Attendance schema/model foundation, daily complete-roster entry, authorized
+correction, retained history, and monthly operational summary workflows.
 
-Next Task: Audit and commit the Phase 7 core Attendance foundation, then create
-the daily and bulk Attendance management prompt
+Next Task: Start Phase 8 Fee Management

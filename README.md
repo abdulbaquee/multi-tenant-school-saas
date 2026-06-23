@@ -4,7 +4,12 @@
 > Built with Laravel 13, PHP 8.4, Blade, and Bootstrap 5
 
 Version: 1.0
-Status: Draft (Phase 6 Student Management completed and release-approved; Phase 7 readiness review next)
+Status: Draft (Phase 7 Attendance completed and release-approved; Phase 8 Fee
+Management pending)
+
+MCA Submission Deadline: 2026-07-05
+
+Submission Source Of Truth: `docs/MCA_SUBMISSION_MASTER_PLAN.md`
 
 ---
 
@@ -126,6 +131,7 @@ The canonical module list (15 modules) is defined in
 
 | Document                      | Description                       |
 | ----------------------------- | --------------------------------- |
+| docs/MCA_SUBMISSION_MASTER_PLAN.md | Deadline, report, deployment, presentation, viva, and submission source of truth |
 | docs/PROJECT_OVERVIEW.md      | Project Scope & Objectives        |
 | docs/TENANCY_DESIGN.md        | Multi-Tenancy (Single Source)     |
 | docs/MODULE_SPECIFICATIONS.md | Module List (Single Source)       |

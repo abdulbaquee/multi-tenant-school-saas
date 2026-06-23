@@ -15,6 +15,7 @@ Read and follow:
 - `AGENTS.md`
 - `docs/AGENTS.md`
 - `docs/PROJECT_CONSTITUTION.md`
+- `docs/MCA_SUBMISSION_MASTER_PLAN.md`
 - `docs/PROJECT_GOVERNANCE.md`
 - `docs/DECISIONS_LOG.md`
 - `docs/DEVELOPMENT_ROADMAP.md`

@@ -18,6 +18,12 @@ Major Project
 Development Year:
 2026
 
+Final Submission Deadline:
+2026-07-05
+
+Submission Source Of Truth:
+`MCA_SUBMISSION_MASTER_PLAN.md`
+
 ---
 
 # 1. INTRODUCTION
@@ -203,7 +209,8 @@ Responsible for managing school settings, users, academic structure, students, a
 
 ### Teacher
 
-Responsible for assigned class attendance, marks entry, report cards, and assigned class reports.
+Responsible for directly assigned Section attendance, marks entry, report cards,
+and assigned-class reports under the module-specific authorization rules.
 
 ### Accountant
 

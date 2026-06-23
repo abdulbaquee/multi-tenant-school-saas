@@ -611,11 +611,16 @@ manually selected in Phase 7; the School Setting attendance start time is a UI
 reference only. School-local date calculations use the configured school
 timezone.
 
-Core implementation status (2026-06-21): the Attendance migration, tenant-aware
+Implementation status (2026-06-22): the Attendance migration, tenant-aware
 model, status constants, date cast, retained parent relationships, immutable
 identity/original-marker safeguards, and deletion rejection are implemented.
-`AttendanceService`, Policy, Form Requests, controller, routes, and Blade
-workflows remain pending.
+`AttendanceService`, Policy, dedicated Form Requests, thin controller, protected
+routes, Bootstrap workspace/history/summary views, and role-aware navigation now
+implement the approved operational workflow. Phase 10 capabilities remain
+absent. Code-review remediation merges lifecycle-changed retained same-date rows
+into correction rosters without permitting new ineligible records, revalidates
+direct correction payloads, and reuses eager-loaded authorization context so
+History row policies do not produce N+1 queries.
 
 ---
 

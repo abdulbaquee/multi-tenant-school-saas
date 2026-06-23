@@ -577,8 +577,11 @@ Validation and lifecycle:
   writes, inactive Academic Years, Classes, Sections, Students, archived
   Students, and completed or transferred Enrollments for new rows.
 * Reject missing, duplicate, and extraneous roster IDs; invalid status values;
-  Teacher holiday attempts; remarks over 500 characters; and prohibited tenant,
-  placement, or marker fields.
+  Teacher holiday attempts; Teacher PATCH and roster attempts against existing
+  Holiday records; single-record Holiday transitions; remarks over 500
+  characters; and prohibited tenant, placement, or marker fields.
+* Verify only School Admin can transition the complete roster to or from
+  Holiday and denied attempts create no Attendance, activity, or audit mutation.
 * Existing records remain readable after lifecycle changes. Current-year
   corrections change only status and remarks; placement, date, tenant, Student,
   and original marker remain immutable.
@@ -616,8 +619,28 @@ the documented table, named indexes, daily unique constraint, restricted
 foreign keys, absent soft deletes, default-deny TenantScope behavior, automatic
 ownership, forged ownership rejection, immutable identity/original marker,
 deletion rejection, status/date contracts, and retained parent relationships.
-The full application suite passes 263 tests with 2,066 assertions. Workflow,
-authorization, transaction, logging, and HTTP tests remain pending.
+The schema checkpoint full suite passed 263 tests with 2,066 assertions.
+
+Operational workflow evidence (2026-06-22): 16 focused tests with 179 assertions
+validate School Admin and directly assigned Teacher paths, exact roster and
+lifecycle rules, school-local dates, Holiday restrictions, correction retention,
+history/search, monthly summaries, role-aware navigation, tenant and context
+denials, permission revocation, privacy-safe logs, idempotency, and rollback on
+logging failure. Explicit denied paths cover foreign roster POST, Attendance
+edit/PATCH route binding, unfiltered School Admin history, and monthly Section
+selection, plus Teacher Holiday PATCH/roster overwrite and single-record Holiday
+transitions. Code-review regressions cover lifecycle-changed retained Holiday
+rosters, direct-service remark validation, bounded History authorization queries,
+and separate create/update/view permission behavior. The combined Attendance
+suite passes 22 tests with 246 assertions, the focused security/Attendance suite
+passes 28 tests with 272 assertions, and the full application suite passes 279
+tests with 2,245 assertions. The Phase 7
+documentation review rerun passed at 10/10 after status, navigation,
+assignment-scope, evidence-checklist, request-name, and prompt-governance
+reconciliation. The Phase 7 release review is approved at 9.5/10 with no
+blocking issues after rerunning the full suite, Pint, route inspection,
+Composer validation, Composer audit, production frontend build, production npm
+audit, and whitespace checks.
 
 ---
 
@@ -755,10 +778,24 @@ Validate:
 * Relationships
 * Soft Deletes
 * Indexes
+* Test database isolation
+
+Safety requirements:
+
+* Automated tests must run with `APP_ENV=testing`, the SQLite connection, and
+  `DB_DATABASE=:memory:`.
+* PHPUnit declares these values as forced test configuration. If a shell,
+  cached configuration, or local override still resolves another database, the
+  shared bootstrap guard must stop execution.
+* The shared test bootstrap stops before migrations whenever Laravel
+  resolves a non-testing environment, a non-SQLite connection, or any database
+  other than SQLite `:memory:`.
+* `RefreshDatabase` must never target `database/database.sqlite` or another
+  developer-maintained database.
 
 Expected Result:
 
-Database integrity is maintained.
+Database integrity is maintained without altering local development data.
 
 ---
 

@@ -7,6 +7,10 @@ Status: Draft
 > documents (PROJECT_GOVERNANCE.md, MODULE_SPECIFICATIONS.md, CHANGELOG.md) must
 > follow this phase order. If any document conflicts on phase ordering, this
 > document wins.
+>
+> The final MCA submission deadline is 2026-07-05. Phase execution dates,
+> parallel report/deployment/presentation work, feature freeze, and submission
+> packaging are governed by `MCA_SUBMISSION_MASTER_PLAN.md`.
 
 ## Project Information
 
@@ -39,15 +43,21 @@ Single Database Multi-Tenant SaaS
 
 Current Phase:
 
-Phase 7 — Attendance Core Schema Implementation
+Phase 8 — Fee Management
 
 Progress:
 
 Phase 5 Academic Structure and Phase 6 Student Management are completed and
 release-approved. Phase 7 design remediation was completed and the readiness
-rerun passed at 10/10. The Attendance migration, tenant-aware model, retained
-relationships, immutable identity safeguards, and focused schema/isolation
-tests are implemented. Daily and bulk Attendance workflows remain pending.
+rerun passed at 10/10. The Attendance migration, tenant-aware model, complete-
+roster entry/correction, operational history, monthly summary, role-aware UI,
+privacy-safe logs, and focused tests are implemented. Tenant-isolation and
+security reviews are approved at 10/10. The documentation review rerun is also
+approved at 10/10 after consistency remediation. The code review found retained-
+roster, direct-validation, and History query findings; remediation is complete,
+the rerun is approved with no remaining findings. The Phase 7 release review is
+approved at 9.5/10 with no blocking issues, so Attendance is release-approved
+and Phase 8 Fee Management is the next implementation phase.
 
 Repository:
 
@@ -248,7 +258,7 @@ privacy-safe logging, and denied-role/tenant enforcement are completed.
 
 # Phase 7 — Attendance Management
 
-Status: Core Schema Implemented — Workflow Pending
+Status: Completed — Release Approved
 
 ## Features
 
@@ -390,5 +400,4 @@ Project ready for final evaluation and submission.
 
 # Next Immediate Task
 
-Audit and commit the Phase 7 core Attendance foundation, then create and execute
-the dedicated daily and bulk Attendance management prompt.
+Start Phase 8 Fee Management.

@@ -327,8 +327,14 @@ derives ownership from TenantContext, defaults to no reads in Unresolved
 context, rejects tenant-owned creation outside Tenant context, and permits
 explicit Platform reads only at the model-foundation layer. Focused tests cover
 School A/B filtering, forged ownership, ownership immutability, retained parent
-relationships, and restricted foreign keys. HTTP, Policy, service, actor-scope,
-and tenant-owned logging tests remain part of the dedicated workflow prompt.
+relationships, and restricted foreign keys.
+
+Operational implementation status (2026-06-22): Policies, Form Requests,
+TenantContext-aware Service validation, scoped route resolution, server-derived
+rosters, direct active Section-Teacher assignment, atomic tenant-owned writes,
+and tenant-owned privacy-safe logs are implemented. Focused HTTP and direct-
+service tests deny cross-tenant, Platform, Unresolved, context-mismatched,
+inactive, stale-assignment, Super Admin, and Accountant pathways.
 
 The `users` exception exists only because authentication must retrieve a globally
 unique identity before tenant context can be resolved. It does not authorize
