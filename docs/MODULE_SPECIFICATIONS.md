@@ -659,41 +659,70 @@ Manage examinations and academic results.
 
 Features:
 
-* Exam Creation
-* Subject Assignment
-* Marks Entry
+* Exam Setup
+* Exam Subject Assignment
+* Grade Scale Seeding And Management
+* Teacher-Scoped Marks Entry
 * Grade Calculation
 * Result Processing
-* Report Card Generation
+* Operational Report Card View And Print
 
-Screens:
+Phase 9 Screens:
 
 * Exam List
+* Exam Subject Assignment
+* Grade Scales
 * Marks Entry
 * Results
 * Report Cards
 
 Grade Scale:
 
-* A+
-* A
-* B+
-* B
-* C
-* D
-* F
+School-local Grade Scales use the default seeded A+ through F percentage ranges
+unless School Admin replaces them. Ranges must not overlap within a school.
 
 Reports:
 
-* Pass/Fail Analysis
-* Grade Distribution
-* Top Performers
-* Result Summary
+Examination reports, exports, analytics, dashboard widgets, pass/fail analysis,
+grade distribution, top-performer summaries, and platform summaries are deferred
+to Phase 10 Reporting. Phase 9 provides operational result review and on-screen
+report-card view/print only.
 
 Accessible By:
 
-School Admin
-Teacher
+* School Admin: full own-school Exam setup, Exam Subject assignment, Grade Scale
+  management, result processing, and operational report-card generation/view/print.
+* Teacher: assigned class/subject marks entry, assigned result review, and
+  operational report-card view/print only.
+* Super Admin: no Phase 9 Examination route; platform Examination reports are
+  deferred to Phase 10.
+* Accountant: no Examination Management access.
+
+Implementation Boundary:
+
+* Teacher cannot create, update, delete, publish, report, or export Exam master
+  records or Grade Scales. Teacher `exams.create` and `exams.update` authorize
+  marks-entry and correction workflows only within assigned class/subject scope.
+* Teacher marks-entry scope requires an active Teacher Profile linked to the
+  actor, an Exam Subject Subject assigned through `subjects.teacher_id`, a
+  matching Exam Subject Class, and an eligible active Enrollment for the Exam
+  Academic Year. Section assignment alone grants no marks-entry access.
+* `exams.report` and `exams.export` remain dormant catalog permissions in Phase
+  9.
+* `exams.delete` authorizes Exam soft-delete before results exist only. Exam
+  Results and Report Cards are retained history and cannot be hard-deleted.
+* Corrections preserve audit evidence; `entered_by` remains immutable.
+
+Implementation Status (2026-06-23):
+
+Phase 9 readiness identified missing operational Examination boundaries.
+DECISION-035 defines the approved setup, assignment, marks entry, grade-scale,
+result-processing, report-card, role, retention, and Phase 10 deferral rules.
+Teacher RBAC defaults were tightened to marks-entry permissions only. The core
+Examination migration and tenant-aware model foundation are implemented with
+policies-ready scope safeguards, retained Exam Result and Report Card deletion
+guards, and focused schema/isolation tests. School Admin exam setup and Exam
+Subject assignment workflows are the next checkpoint.
 
 ---
 
@@ -930,7 +959,7 @@ Reactivation uses the corresponding `.update` permission plus Policy checks.
 | Student Management | View | Full | Limited view for assigned classes | Limited view for fee collection |
 | Attendance Management | View reports | Full | Full for directly assigned Sections | No |
 | Fee Management | Phase 10 reports only | Full own-school operations | No | Collection, receipts, payment history, and outstanding balances only |
-| Examination Management | View reports | Full | Full for assigned classes and subjects | No |
+| Examination Management | Phase 10 reports only | Full own-school operations | Marks entry, result review, and operational report cards for assigned class/subject only | No |
 | Reporting | Platform reports | School reports | Assigned class reports | Financial reports |
 | Activity Logs | Full | View own school logs | No | No |
 | Audit Trail | Full | View own school logs | No | No |
@@ -951,6 +980,13 @@ Phase Availability:
   Teacher workflows. `attendance.delete`, `attendance.report`, and
   `attendance.export` remain catalog permissions with no Phase 7 route. Super
   Admin report access begins only in Phase 10.
+* In Phase 9, School Admin exam setup, Exam Subject assignment, Grade Scale
+  management, result processing, and operational report-card workflows use
+  `exams.view`, `exams.create`, `exams.update`, `exams.delete`, and
+  `exams.publish`. `exams.report` and `exams.export` remain dormant catalog
+  permissions. Teacher operational access uses `exams.view`, `exams.create`, and
+  `exams.update` only within assigned class/subject scope. Super Admin and
+  Accountant have no Phase 9 route.
 
 ## Essential Permission Rules
 
@@ -982,6 +1018,15 @@ because its permission record exists.
   screens are available to School Admin and Accountant inside the active tenant.
 * Super Admin Fee reports, Fee exports, analytics, and platform summaries remain
   Phase 10 work. Teachers do not access Fee Management.
+* Phase 9 Examination setup, Exam Subject assignment, Grade Scale management,
+  result processing, and operational report-card generation are School Admin-only.
+* Phase 9 marks entry and assigned result review use `exams.view`,
+  `exams.create`, and `exams.update` for School Admin and assigned-subject
+  Teacher workflows only.
+* Super Admin Examination reports, Examination exports, analytics, and platform
+  summaries remain Phase 10 work. Accountants and Teachers do not access exam
+  setup, publish, delete, report, or export routes outside the documented Phase
+  9 Teacher marks-entry boundary.
 * Dashboard widgets must only summarize data that the role is permitted to view.
 * Only School Settings is included as a settings module in the MVP.
 

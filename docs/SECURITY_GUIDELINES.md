@@ -749,6 +749,52 @@ implemented. Payment-history, outstanding-balance, and sandbox transaction
 operational screens are implemented. Phase 8 release gate reviews are approved.
 Phase 9 Examination Management is the next roadmap checkpoint.
 
+## Phase 9 Examination Management Security And Privacy Rules
+
+Examination Management handles academic history tied to minors and must follow
+least privilege, tenant isolation, and retention-first controls:
+
+* School Admin may manage own-school Exams, Exam Subjects, Grade Scales, result
+  processing, and operational report-card generation/view/print.
+* Teacher may access only assigned class/subject marks entry, assigned result
+  review, and operational report-card view/print. Teacher cannot configure
+  Exams, Exam Subjects, Grade Scales, publish exams, delete exams, report,
+  export, or open school-wide result-processing routes.
+* Super Admin and Accountant have no Phase 9 Examination screen, route, or
+  direct service pathway. Super Admin Examination reports and platform
+  summaries remain Phase 10 work.
+* The server derives all school, Academic Year, Term, Class, Subject, Student,
+  Enrollment, Exam, Exam Subject, Result, Grade Scale, and entered-by scope
+  from TenantContext, relationships, route binding, Policies, and Services.
+  Client-submitted tenant or parent identifiers cannot expand scope.
+* Exam setup writes require an active tenant school, active Academic Year,
+  valid optional Term, active Class, active Subject, and School Admin
+  authorization.
+* Teacher marks entry requires an active Teacher Profile, an Exam Subject
+  Subject assigned through `subjects.teacher_id`, matching Class context, and an
+  eligible active Enrollment for the Exam Academic Year.
+* Marks entry must reject forged max marks, passing marks, grade, status, and
+  tenant identifiers; validate absent status, duplicate rows, numeric bounds,
+  and enrolled-student eligibility; and write privacy-safe activity and audit
+  evidence in the same transaction as result changes.
+* Exam Results and Report Cards are retained academic history and must not be
+  hard-deleted. Corrections require explicit audit evidence and cannot silently
+  mutate retained summaries.
+* Activity descriptions and audit old/new values must never contain guardian
+  contact details, addresses, raw remarks beyond approved fields, or unrelated
+  minor data.
+* `exams.report`, `exams.export`, and Phase 10 reporting permissions do not
+  activate Phase 9 routes.
+
+Implementation Status:
+
+DECISION-035 defines the approved Phase 9 operational Examination boundary.
+Teacher RBAC defaults were tightened to marks-entry permissions only. The core
+schema and tenant-aware model foundation are implemented with retained Exam
+Result and Report Card deletion guards, immutable scope/identity safeguards,
+and focused tenant-isolation tests. No Examination routes or workflow tests
+exist yet.
+
 ---
 
 # 19. DATA ACCESS POLICY

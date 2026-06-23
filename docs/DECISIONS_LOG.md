@@ -1458,6 +1458,104 @@ the next implementation checkpoint.
 
 ---
 
+# DECISION-035
+
+Date:
+2026-06-23
+
+Title:
+Define Phase 9 Examination Management Setup, Marks Entry, Result Processing, And Report Card Boundaries
+
+Status:
+Approved
+
+Decision:
+
+Phase 9 implements operational Examination Management for tenant schools: Exam
+setup, Exam Subject assignment, school-local Grade Scale seeding or management,
+teacher-scoped marks entry, grade calculation, result processing, and
+operational report-card view/print. Examination reports, exports, analytics,
+dashboard widgets, charts, platform summaries, and Super Admin operational
+Examination routes remain Phase 10 work.
+
+School Admin may manage own-school Exams, Exam Subjects, Grade Scales, result
+processing, and operational report-card generation/view/print for active tenant
+schools. Teacher may view assigned class/subject marks entry screens, enter or
+correct marks for eligible enrolled Students within assigned scope only, review
+assigned results, and view or print operational report cards for assigned
+Students. Teacher cannot create, update, delete, publish, report, or export Exam
+master records, Grade Scales, or school-wide result-processing actions. Super
+Admin and Accountant have no Phase 9 Examination route or menu. Super Admin
+Examination reporting is deferred to Phase 10.
+
+Exam setup writes are limited to active tenant schools and tenant-derived
+ownership. Exams belong to the current active Academic Year in the same tenant.
+Optional Academic Term references must belong to the selected Academic Year.
+Exam Subjects must reference an active same-tenant Exam, Subject, and Class
+where the Subject belongs to that Class. Duplicate Exam names within the same
+school and Academic Year are rejected. Exams may soft-delete only before any
+Exam Result or Report Card exists; retained results and report cards must not be
+orphaned or misrepresented.
+
+Teacher marks-entry scope follows existing Academic Structure assignment
+patterns. A Teacher may enter or correct marks only when the Exam Subject
+Subject is directly assigned to the actor's active Teacher Profile through
+`subjects.teacher_id`, the Exam Subject Class matches the Subject Class, and
+the Student has an active same-tenant Enrollment in that Class for the Exam
+Academic Year. Section assignment alone does not grant marks-entry access.
+School Admin is not limited by Teacher Profile assignment.
+
+Grade Scales are school-local. Each school receives a default seeded A+ through
+F percentage range set at first use unless School Admin replaces it through
+documented management screens. Percentage ranges must not overlap within a
+school. Grade calculation runs when marks are saved or when School Admin
+processes results; `grade_scale_id` on Exam Results and Report Cards stores the
+matched scale row at calculation time.
+
+Marks entry must validate max marks, passing marks, absent status, duplicate
+result rows, enrolled-student eligibility, non-negative numeric bounds, and
+tenant ownership through services, policies, Form Requests, and tests. Exam
+Results and Report Cards are retained academic history. Corrections update marks,
+status, grade, and remarks with audit evidence; hard deletion is prohibited.
+`entered_by` stores the original marks creator and is immutable; correction
+actors are recorded through audit-log user identity.
+
+Operational report-card generation is School Admin workflow in Phase 9. Assigned
+Teachers may view and print report cards only for Students in their assigned
+class/subject scope. Phase 9 report cards provide on-screen view and browser
+print only; PDF/Excel export infrastructure and Examination analytics belong to
+Phase 10 Reporting.
+
+`exams.report` and `exams.export` remain dormant catalog permissions in Phase
+9 for School Admin. `exams.delete` authorizes documented Exam soft-delete before
+results exist only; it never authorizes Exam Result or Report Card deletion.
+`exams.publish` is School Admin-only and controls exam lifecycle transitions
+needed for marks entry and result processing. Examination workflows must be
+tenant-derived, service-validated, privacy-safe, transaction-safe, and
+test-covered.
+
+Reason:
+
+* Keeps Phase 9 focused on a demonstrable MCA operational examination workflow.
+* Prevents overbroad Teacher exam setup, publish, or reporting authority.
+* Aligns marks-entry scope with existing Teacher Profile and Subject assignment
+  patterns.
+* Preserves academic history and tenant isolation before result-related code is
+  introduced.
+* Defers reports, exports, and analytics to the canonical Phase 10 Reporting
+  boundary.
+
+Outcome:
+
+The Examination Management roadmap, module specification, screen flow, database
+rules, tenancy, security, testing, RBAC defaults, prompt inventory, and MCA
+evidence are aligned to this decision. The readiness rerun is approved with no
+blocking issues. The Phase 9 core Examination schema and tenant-aware model
+foundation are implemented with focused tests; School Admin exam setup and Exam
+Subject assignment workflows are the next implementation checkpoint.
+
+---
+
 # CURRENT PROJECT STATUS
 
 Architecture Decisions:
@@ -1479,4 +1577,4 @@ Development Decisions:
 Completed
 
 Project Ready For:
-Phase 8 Fee Collection, Receipts, Payment History, Outstanding Balances, And Sandbox Transactions
+Phase 9 School Admin Exam Setup And Exam Subject Assignment Workflows

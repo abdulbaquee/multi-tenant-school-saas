@@ -829,26 +829,30 @@ call is used.
 
 Exams
 │
-▼
-Assign Subjects
-│
-▼
-Marks Entry
-│
-▼
-Grade Calculation
-│
-▼
-Result Processing
-│
-▼
-Report Card Generation
+├── Exam Subject Assignment
+├── Grade Scales
+├── Marks Entry
+├── Results
+└── Report Cards
 
 Access:
 
-* School Admin: full access
-* Teacher: marks and results for assigned classes and subjects
-* Super Admin: reports only
+* School Admin: full own-school setup, assignment, grade-scale management,
+  result processing, and operational report-card generation/view/print.
+* Teacher: assigned class/subject marks entry, assigned result review, and
+  operational report-card view/print only.
+* Super Admin: no Phase 9 Examination route; platform Examination reports are
+  Phase 10.
+* Accountant: no Examination Management access.
+
+Phase 9 excludes Examination reports, exports, analytics, dashboard widgets,
+and platform summaries. Those flows remain under Phase 10 Reporting.
+
+Implementation Status (2026-06-23):
+
+DECISION-035 defines the approved Phase 9 operational boundary. The core schema
+and tenant-aware model foundation are implemented with focused tests. School
+Admin exam setup and Exam Subject assignment are the next checkpoint.
 
 ---
 
@@ -887,7 +891,10 @@ Calculate Grades
 Generate Report Card
 │
 ▼
-Print or Export
+Print or View
+
+Phase 9 report cards provide on-screen view and browser print only. PDF/Excel
+export belongs to Phase 10 Reporting.
 
 ---
 

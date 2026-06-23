@@ -518,6 +518,22 @@ Phase 2 through Phase 5 evidence available for later report assembly:
   collection-token single-use remediation, controller authorization hardening,
   and expanded denied-path tests. The full suite passes 319 tests with 2,662
   assertions.
+* Phase 9 Examination Management design evidence: DECISION-035 defines School
+  Admin Examination setup and assignment authority, Teacher marks-entry-only
+  boundaries through `subjects.teacher_id`, no Phase 9 Super Admin or Accountant
+  route, Phase 10 report/export/analytics deferral, school-local grade scales,
+  retained result history, operational report-card view/print only, and
+  privacy-safe audit expectations. Teacher RBAC defaults were tightened to
+  `exams.view`, `exams.create`, and `exams.update` only. The readiness rerun is
+  approved with no blocking issues.
+* Phase 9 Examination Management foundation evidence: one migration and five
+  tenant-aware models implement Grade Scales, Exams, Exam Subjects, Exam
+  Results, and Report Cards with documented columns, named indexes, unique
+  constraints, restricted foreign keys, Exam soft deletes, retained Exam Result
+  and Report Card deletion guards, immutable scope/identity safeguards, casts,
+  canonical statuses, and inverse relationships. The focused Examination schema
+  suite passes 6 tests with 236 assertions, and the full suite passes 326 tests
+  with 2,919 assertions.
 
 Screenshots remain to be selected and captured during the documentation and
 submission phases.

@@ -277,6 +277,37 @@ class RolePermissionManagementTest extends TestCase
         }
     }
 
+    public function test_teacher_exam_setup_publish_report_and_export_permissions_are_out_of_bounds(): void
+    {
+        $superAdmin = $this->superAdmin();
+        $teacher = $this->role(Role::TEACHER);
+        $originalCodes = $this->codes($teacher);
+
+        foreach (['exams.delete', 'exams.publish', 'exams.report', 'exams.export'] as $code) {
+            $this->actingAs($superAdmin)
+                ->from(route('roles.edit', $teacher))
+                ->put(route('roles.permissions.update', $teacher), [
+                    'mapping_fingerprint' => $this->fingerprint($teacher),
+                    'permission_ids' => $this->permissionIds([
+                        ...config('rbac.essential_permissions.teacher'),
+                        $code,
+                    ]),
+                ])
+                ->assertRedirect(route('roles.edit', $teacher))
+                ->assertSessionHasErrors('permission_ids');
+
+            $this->assertSame($originalCodes, $this->codes($teacher));
+        }
+
+        $this->assertEqualsCanonicalizing(
+            ['exams.view', 'exams.create', 'exams.update'],
+            array_values(array_intersect(
+                config('rbac.default_mappings.teacher'),
+                ['exams.view', 'exams.create', 'exams.update', 'exams.delete', 'exams.publish', 'exams.report', 'exams.export'],
+            )),
+        );
+    }
+
     public function test_essential_removal_and_empty_payload_fail_without_partial_writes(): void
     {
         $superAdmin = $this->superAdmin();

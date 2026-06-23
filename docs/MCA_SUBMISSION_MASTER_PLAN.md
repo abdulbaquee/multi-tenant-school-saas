@@ -680,8 +680,8 @@ confirmed changes before final PDF generation.
 
 ## 22. Immediate Next Action
 
-Run Phase 9 Examination Management readiness review after the approved Phase 8
-Fee Management checkpoint.
+Implement Phase 9 School Admin exam setup and Exam Subject assignment workflows
+after the approved Phase 9 core Examination schema checkpoint.
 
-Keep Fee screenshots and report evidence moving in parallel while collection,
-receipt, and sandbox work proceeds.
+Keep Examination report evidence and MCA Chapter 4 drafting moving in parallel
+while schema and workflow implementation proceeds.

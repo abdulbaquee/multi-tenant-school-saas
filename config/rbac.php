@@ -111,7 +111,7 @@ $maximumMappings = [
         'academic.view', 'students.view',
         'attendance.view', 'attendance.create', 'attendance.update', 'attendance.delete',
         'attendance.report', 'attendance.export',
-        'exams.view', 'exams.create', 'exams.update', 'exams.delete', 'exams.publish', 'exams.report', 'exams.export',
+        'exams.view', 'exams.create', 'exams.update',
         'reports.view', 'reports.export',
     ],
     'accountant' => [

@@ -743,16 +743,36 @@ Phase 8 release gate reviews are approved.
 
 Validate:
 
-* Exam Creation
-* Subject Assignment
-* Marks Entry
+* Exam Setup
+* Exam Subject Assignment
+* Grade Scale Seeding And Overlap Rules
+* Teacher-Scoped Marks Entry
 * Grade Calculation
 * Result Processing
-* Report Card Generation
+* Operational Report Card View And Print
 
 Expected Result:
 
-Academic calculations remain correct.
+Exam setup, assignment, marks entry, grade calculation, result processing, and
+operational report cards remain accurate, tenant-isolated, least-privilege,
+retained, privacy-safe, and transaction-safe.
+
+Phase 9 readiness evidence (2026-06-23): the initial readiness audit found
+missing Examination boundary decisions around reports, Teacher setup permissions,
+Super Admin reporting, marks-entry assignment scope, grade-scale rules, result
+retention, report-card export deferral, and test scope. DECISION-035 and the
+Phase 9 design remediation define these rules. Teacher RBAC defaults were
+tightened to `exams.view`, `exams.create`, and `exams.update` only. Focused RBAC
+regression coverage validates the Teacher boundary. The readiness rerun is
+approved with no blocking issues. Core schema evidence (2026-06-23): 6 focused
+tests with 236 assertions validate all five Examination tables, documented
+columns, named indexes, unique constraints, restricted foreign keys, Exam
+soft-delete boundaries, retained Exam Result and Report Card history,
+default-deny TenantScope behavior, automatic ownership, forged ownership
+rejection, immutable scope/identity fields, canonical casts/statuses,
+retained parent relationships, and duplicate/foreign-key integrity. The full
+application suite passes 326 tests with 2,919 assertions. School Admin exam
+setup and Exam Subject assignment are the next checkpoint.
 
 ---
 

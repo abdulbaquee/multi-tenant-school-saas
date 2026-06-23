@@ -123,6 +123,9 @@ prompts/
     ├── 05-phase-08-payment-history-outstanding-balances.md
     ├── 06-phase-08-sandbox-transaction-screens.md
     └── 07-phase-08-release-gate-reviews.md
+└── 09-examination/
+    ├── 00-phase-09-readiness-review.md
+    └── 01-phase-09-examination-design-remediation.md
 ```
 
 ## Current Prompt Creation Status
@@ -176,6 +179,10 @@ Created for the next roadmap gate:
 - Phase 8 payment history and outstanding balance workflow (executed).
 - Phase 8 sandbox transaction operational screens (executed).
 - Phase 8 release gate reviews (executed and approved).
+- Phase 9 Examination Management readiness review (executed; design remediation
+  required; rerun approved with no blocking issues).
+- Phase 9 Examination Management design remediation (executed).
+- Phase 9 core Examination schema and tenant-model foundation (executed).
 
 Future prompt groups should be added only when they are needed for the next roadmap phase.
 

@@ -148,7 +148,7 @@ Phase 8 — Fee Management
 Status: Completed — Release Approved
 
 Phase 9 — Examination Management
-Status: Pending
+Status: Core Schema Implemented — Pending Workflow Implementation
 
 Phase 10 — Reports, Analytics & System Operations
 Status: Pending
@@ -247,8 +247,17 @@ review passed with no remaining findings. The Phase 8 release review is approved
 at 9.6/10 with one accepted demo-only residual risk around concurrent receipt
 number generation under heavy load, and the checkpoint is ready for Phase 9.
 
+Phase 9 Review Progress: The initial Examination Management readiness review
+scored 5/10 and required documentation remediation. DECISION-035 now defines the
+approved operational setup, assignment, marks entry, grade-scale,
+result-processing, report-card, role, and Phase 10 deferral boundaries. Teacher
+RBAC defaults were tightened to marks-entry permissions only. The readiness rerun
+is approved with no blocking issues. The core Examination schema and tenant-aware
+model foundation are implemented with focused tests. School Admin exam setup and
+Exam Subject assignment workflows are the next checkpoint.
+
 ---
 
 # Next Milestone
 
-Run Phase 9 Examination Management readiness review.
+Implement Phase 9 School Admin exam setup and Exam Subject assignment workflows.
