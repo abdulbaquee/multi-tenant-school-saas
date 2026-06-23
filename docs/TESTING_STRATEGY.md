@@ -707,6 +707,30 @@ direct-service tenant-context rejection, and route-contract checks without
 destroy routes. The full application suite passes 293 tests with 2,539
 assertions.
 
+Collection and receipt evidence (2026-06-23): `FeeCollectionReceiptTest` passes
+8 tests with 50 assertions covering guest denial, School Admin and Accountant
+allowed collection paths, Teacher/Super Admin denial, overpayment and future-date
+rejection, prohibited forged receipt fields, invalid collection-token rejection,
+cross-tenant HTTP denial, direct-service tenant-context rejection, atomic
+Student Fee/Fee Payment/Payment Transaction updates, and sanitized sandbox
+transaction payloads. The full application suite passes 301 tests with 2,589
+assertions.
+
+Payment history and outstanding balance evidence (2026-06-23):
+`FeePaymentHistoryOutstandingTest` passes 8 tests with 42 assertions covering
+guest denial, School Admin and Accountant allowed read paths,
+Teacher/Super Admin denial, payment-history search/mode/date filters,
+outstanding-balance state/search filters and on-screen summary totals,
+cross-tenant HTTP denial, and direct-service tenant-context rejection. The full
+application suite passes 309 tests with 2,631 assertions.
+
+Sandbox transaction screen evidence (2026-06-23): `SandboxTransactionScreenTest`
+passes 7 tests with 24 assertions covering guest denial, School Admin and
+Accountant allowed read paths, Teacher/Super Admin denial, sandbox-only list
+filtering, non-sandbox detail denial, cross-tenant HTTP denial, and direct-service
+tenant-context rejection. The full application suite passes 316 tests with 2,655
+assertions.
+
 ---
 
 # 20. EXAMINATION MODULE TESTING

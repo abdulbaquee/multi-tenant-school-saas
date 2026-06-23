@@ -145,7 +145,7 @@ Phase 7 — Attendance Management
 Status: Completed — Release Approved
 
 Phase 8 — Fee Management
-Status: Setup And Assignment Implemented — Collection Pending
+Status: Sandbox Transaction Screens Implemented — Release Gate Pending
 
 Phase 9 — Examination Management
 Status: Pending
@@ -237,12 +237,12 @@ Phase 10 deferral boundaries. The readiness rerun is approved with no blocking
 issues. The core Fee schema and tenant-aware model foundation are implemented
 with focused tests. School Admin Fee Category, Fee Structure, and Student Fee
 assignment workflows are implemented with tenant isolation, privacy-safe logging,
-and denied-path coverage. Collection, receipt, payment-history,
-outstanding-balance, and sandbox workflows remain pending.
+and denied-path coverage. Fee collection, receipt, payment-history,
+outstanding-balance, and sandbox transaction operational screens are implemented.
+Phase 8 release gate reviews remain pending.
 
 ---
 
 # Next Milestone
 
-Implement Phase 8 Fee collection, receipts, payment history, outstanding balance
-views, and local sandbox transaction workflows.
+Run Phase 8 release gate reviews after the sandbox transaction checkpoint.

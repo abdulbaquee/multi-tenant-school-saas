@@ -792,9 +792,10 @@ Implementation Status (2026-06-23):
 School Admin Fee Category, Fee Structure, and Student Fee assignment screens,
 navigation, lifecycle actions, privacy-minimized assignment detail fields,
 activity/audit evidence, and denied role/tenant flows are implemented.
-Collection, receipt, payment-history, outstanding-balance, sandbox, report,
-export, analytics, dashboard, Super Admin, Accountant setup, and Teacher Fee
-flows remain absent.
+School Admin and Accountant collection, receipt, payment-history, outstanding-balance,
+and sandbox transaction operational screens are implemented. Report, export,
+analytics, dashboard, Super Admin, Accountant setup, and Teacher Fee flows remain
+absent.
 
 ---
 

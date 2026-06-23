@@ -808,7 +808,7 @@ Status: Completed
 
 # [1.0.0] - Fee Management
 
-Status: Setup And Assignment Implemented — Collection Pending
+Status: Sandbox Transaction Screens Implemented — Release Gate Pending
 
 ## Planned
 
@@ -872,6 +872,47 @@ summaries are deferred to Phase 10 Reporting.
   direct-service wrong-context paths on setup and assignment routes.
 * Focused setup/assignment suite: 7 tests and 59 assertions passed.
 * Full application suite: 293 tests and 2,539 assertions passed.
+
+## Collection And Receipts Implemented
+
+* Added School Admin and Accountant collectible Student Fee lookup and collection
+  workflow with tenant-safe visibility.
+* Added atomic collection that updates Student Fee balances, creates retained Fee
+  Payment receipts, creates Payment Transactions, and writes activity/audit
+  evidence in one transaction.
+* Added server-generated receipt and transaction numbers, collection-token replay
+  protection, school-local payment-date validation, and privacy-safe audit values.
+* Added receipt detail and print-friendly views.
+* Denied Teacher, Super Admin, guest, cross-tenant, forged-field, and wrong
+  tenant-context collection paths.
+* Focused collection/receipt suite: 8 tests and 50 assertions passed.
+* Full application suite: 301 tests and 2,589 assertions passed.
+
+## Payment History And Outstanding Balances Implemented
+
+* Added School Admin and Accountant payment-history list with search, payment-mode,
+  and date-range filters linked to existing receipt detail views.
+* Added School Admin and Accountant outstanding-balance list with on-screen summary
+  totals, search, and balance-state filters.
+* Added `FeePaymentHistoryService`, `FeeOutstandingBalanceService`, Form Requests,
+  controllers, routes, Bootstrap views, and fee navigation updates.
+* Denied Teacher, Super Admin, guest, cross-tenant, prohibited-field, and wrong
+  tenant-context read paths.
+* Focused payment-history/outstanding suite: 8 tests and 42 assertions passed.
+* Full application suite: 309 tests and 2,631 assertions passed.
+
+## Sandbox Transaction Screens Implemented
+
+* Added School Admin and Accountant sandbox Payment Transaction list and detail screens
+  for `sandbox_gateway` records only.
+* Added sanitized payload display, receipt links, and privacy-minimized Student
+  identifiers without export or mutation controls.
+* Added `SandboxTransactionService`, `PaymentTransactionPolicy`, Form Request,
+  controller, routes, Bootstrap views, and fee navigation updates.
+* Denied Teacher, Super Admin, guest, cross-tenant, non-sandbox detail, and wrong
+  tenant-context read paths.
+* Focused sandbox screen suite: 7 tests and 24 assertions passed.
+* Full application suite: 316 tests and 2,655 assertions passed.
 
 ## Deliverables
 
@@ -1006,7 +1047,7 @@ Example:
 # Current Project Status
 
 Phase: Phase 7 Attendance Completed — Release Approved; Phase 8 Fee Management
-Setup And Assignment Implemented — Collection Pending
+Setup And Assignment Implemented — Collection And Receipts Implemented — Payment History And Outstanding Balances Implemented — Sandbox Transaction Screens Implemented — Release Gate Pending
 
 Repository Setup: Completed
 
@@ -1024,8 +1065,8 @@ correction, retained history, and monthly operational summary workflows. Phase 8
 Fee Management readiness and design-boundary remediation are approved. The core
 Fee schema and tenant-aware model foundation are implemented. School Admin Fee
 Category, Fee Structure, and Student Fee assignment workflows are implemented.
-Collection, receipt, payment-history, outstanding-balance, and sandbox
-workflows remain pending.
+School Admin and Accountant collection, receipt, payment-history, outstanding-balance,
+and sandbox transaction operational workflows are implemented. Phase 8 release gate
+reviews remain pending.
 
-Next Task: Implement Phase 8 Fee collection, receipts, payment history,
-outstanding balance views, and local sandbox transaction workflows.
+Next Task: Run Phase 8 release gate reviews.

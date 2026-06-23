@@ -497,6 +497,23 @@ Phase 2 through Phase 5 evidence available for later report assembly:
   audit logs, privacy-minimized assignment detail fields, and tenant isolation
   tests. `FeeSetupAssignmentTest` passes 7 tests with 59 assertions. The full
   suite passes 293 tests with 2,539 assertions.
+* Phase 8 Fee collection and receipt evidence: School Admin and Accountant
+  collection, receipt detail, and print workflows are implemented with atomic
+  balance/receipt/transaction updates, collection-token replay protection,
+  privacy-safe logging, and tenant isolation tests. `FeeCollectionReceiptTest`
+  passes 8 tests with 50 assertions. The full suite passes 301 tests with 2,589
+  assertions.
+* Phase 8 Fee payment history and outstanding balance evidence: School Admin and
+  Accountant payment-history and outstanding-balance operational views are
+  implemented with tenant-safe filters, on-screen summary totals only, and
+  privacy-minimized Student identifiers. `FeePaymentHistoryOutstandingTest`
+  passes 8 tests with 42 assertions. The full suite passes 309 tests with 2,631
+  assertions.
+* Phase 8 Fee sandbox transaction screen evidence: School Admin and Accountant
+  sandbox Payment Transaction list/detail screens are implemented with
+  sandbox-only filtering, sanitized payload display, and tenant isolation tests.
+  `SandboxTransactionScreenTest` passes 7 tests with 24 assertions. The full
+  suite passes 316 tests with 2,655 assertions.
 
 Screenshots remain to be selected and captured during the documentation and
 submission phases.

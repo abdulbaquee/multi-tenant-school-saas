@@ -645,8 +645,9 @@ values are server-derived; forged amount and payable fields are rejected.
 Accountant, Teacher, Super Admin, guest, and cross-tenant actors are denied on
 setup and assignment routes.
 
-Collection, receipt, payment-history, outstanding-balance, and sandbox
-workflows remain pending.
+Collection, receipt, payment-history, outstanding-balance, and sandbox transaction
+operational screens are implemented with focused tenant isolation tests. Phase 8
+release gate reviews remain pending.
 
 ---
 

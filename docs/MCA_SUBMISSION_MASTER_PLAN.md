@@ -680,9 +680,7 @@ confirmed changes before final PDF generation.
 
 ## 22. Immediate Next Action
 
-Implement Phase 8 Fee collection, receipts, payment history, outstanding balance
-views, and local sandbox transaction workflows after the setup and assignment
-checkpoint.
+Run Phase 8 release gate reviews after the sandbox transaction checkpoint.
 
 Keep Fee screenshots and report evidence moving in parallel while collection,
 receipt, and sandbox work proceeds.

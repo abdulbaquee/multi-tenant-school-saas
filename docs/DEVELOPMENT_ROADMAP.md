@@ -65,8 +65,9 @@ operational Fee boundary. The readiness rerun is approved with no blocking
 issues. The Phase 8 core Fee schema and tenant-aware model foundation are
 implemented with focused tests. School Admin Fee Category, Fee Structure, and
 Student Fee assignment workflows are implemented with tenant isolation and
-privacy-safe logging. Collection, receipt, payment-history, outstanding-balance,
-and sandbox workflows remain pending.
+privacy-safe logging. Fee collection, receipt, payment-history, outstanding-balance,
+and sandbox operational workflows are implemented. Phase 8 release gate reviews
+remain pending.
 
 Repository:
 
@@ -285,7 +286,7 @@ Status: Completed — Release Approved
 
 # Phase 8 — Fee Management
 
-Status: Setup And Assignment Implemented — Collection Pending
+Status: Sandbox Transaction Screens Implemented — Release Gate Pending
 
 ## Features
 
@@ -415,5 +416,4 @@ Project ready for final evaluation and submission.
 
 # Next Immediate Task
 
-Implement Phase 8 Fee collection, receipts, payment history, outstanding balance
-views, and local sandbox transaction workflows.
+Run Phase 8 release gate reviews after the sandbox transaction checkpoint.

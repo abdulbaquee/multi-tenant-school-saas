@@ -745,7 +745,8 @@ implementation. The core schema and tenant-aware model foundation are
 implemented with retained Fee Payment and Payment Transaction deletion guards,
 immutable financial identity safeguards, and focused tenant-isolation tests.
 User-facing setup, assignment, collection, receipt, payment-history,
-outstanding-balance, and sandbox workflows remain pending.
+implemented. Payment-history, outstanding-balance, and sandbox transaction
+operational screens are implemented. Phase 8 release gate reviews remain pending.
 
 ---
 
