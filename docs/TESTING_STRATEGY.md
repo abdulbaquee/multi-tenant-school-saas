@@ -731,6 +731,12 @@ filtering, non-sandbox detail denial, cross-tenant HTTP denial, and direct-servi
 tenant-context rejection. The full application suite passes 316 tests with 2,655
 assertions.
 
+Release gate evidence (2026-06-23): collection-token single-use remediation,
+controller authorization hardening, and expanded denied-path tests were added
+after governance review. Focused Fee workflow suites pass 39 tests with 389
+assertions. The full application suite passes 319 tests with 2,662 assertions.
+Phase 8 release gate reviews are approved.
+
 ---
 
 # 20. EXAMINATION MODULE TESTING

@@ -680,7 +680,8 @@ confirmed changes before final PDF generation.
 
 ## 22. Immediate Next Action
 
-Run Phase 8 release gate reviews after the sandbox transaction checkpoint.
+Run Phase 9 Examination Management readiness review after the approved Phase 8
+Fee Management checkpoint.
 
 Keep Fee screenshots and report evidence moving in parallel while collection,
 receipt, and sandbox work proceeds.

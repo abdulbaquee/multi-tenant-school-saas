@@ -514,6 +514,10 @@ Phase 2 through Phase 5 evidence available for later report assembly:
   sandbox-only filtering, sanitized payload display, and tenant isolation tests.
   `SandboxTransactionScreenTest` passes 7 tests with 24 assertions. The full
   suite passes 316 tests with 2,655 assertions.
+* Phase 8 Fee release gate evidence: governance reviews approved after
+  collection-token single-use remediation, controller authorization hardening,
+  and expanded denied-path tests. The full suite passes 319 tests with 2,662
+  assertions.
 
 Screenshots remain to be selected and captured during the documentation and
 submission phases.

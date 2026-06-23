@@ -31,6 +31,7 @@ class FeePaymentController extends Controller
     {
         /** @var User $actor */
         $actor = $request->user();
+        $this->authorize('view', $feePayment);
 
         return view('fee-payments.show', [
             'feePayment' => $this->feeCollections->receiptFor($feePayment, $actor),
@@ -41,6 +42,7 @@ class FeePaymentController extends Controller
     {
         /** @var User $actor */
         $actor = $request->user();
+        $this->authorize('view', $feePayment);
 
         return view('fee-payments.print', [
             'feePayment' => $this->feeCollections->receiptFor($feePayment, $actor),

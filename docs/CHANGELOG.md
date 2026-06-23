@@ -808,7 +808,7 @@ Status: Completed
 
 # [1.0.0] - Fee Management
 
-Status: Sandbox Transaction Screens Implemented — Release Gate Pending
+Status: Completed — Release Approved
 
 ## Planned
 
@@ -913,6 +913,16 @@ summaries are deferred to Phase 10 Reporting.
   tenant-context read paths.
 * Focused sandbox screen suite: 7 tests and 24 assertions passed.
 * Full application suite: 316 tests and 2,655 assertions passed.
+
+## Release Gate Approved
+
+* Ran Phase 8 tenant isolation, security, documentation, code, and release reviews.
+* Remediated collection-token replay by consuming session tokens on first valid use.
+* Added controller-level authorization on receipt and sandbox detail routes.
+* Expanded release-gate tests for cross-tenant collection POST denial, token replay
+  rejection, paid-fee collection denial, and sandbox show service context checks.
+* Focused Fee workflow suites: 39 tests and 389 assertions passed.
+* Full application suite: 319 tests and 2,662 assertions passed.
 
 ## Deliverables
 
@@ -1047,7 +1057,7 @@ Example:
 # Current Project Status
 
 Phase: Phase 7 Attendance Completed — Release Approved; Phase 8 Fee Management
-Setup And Assignment Implemented — Collection And Receipts Implemented — Payment History And Outstanding Balances Implemented — Sandbox Transaction Screens Implemented — Release Gate Pending
+Setup And Assignment Implemented — Collection And Receipts Implemented — Payment History And Outstanding Balances Implemented — Sandbox Transaction Screens Implemented — Release Approved
 
 Repository Setup: Completed
 
@@ -1066,7 +1076,7 @@ Fee Management readiness and design-boundary remediation are approved. The core
 Fee schema and tenant-aware model foundation are implemented. School Admin Fee
 Category, Fee Structure, and Student Fee assignment workflows are implemented.
 School Admin and Accountant collection, receipt, payment-history, outstanding-balance,
-and sandbox transaction operational workflows are implemented. Phase 8 release gate
-reviews remain pending.
+and sandbox transaction operational workflows are implemented and release-approved.
+Phase 9 Examination Management is the next roadmap checkpoint.
 
-Next Task: Run Phase 8 release gate reviews.
+Next Task: Run Phase 9 Examination Management readiness review.

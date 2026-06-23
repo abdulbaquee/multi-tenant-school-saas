@@ -184,6 +184,12 @@ class FeeCollectionReceiptTest extends TestCase
         $paymentA = $this->collectViaService($schoolA, $studentFeeA, '500.00');
 
         $this->actingAs($adminB)->get(route('fee-collections.create', $studentFeeA))->assertNotFound();
+        $this->actingAs($adminB)->post(route('fee-collections.store', $studentFeeA), [
+            'amount_paid' => '100.00',
+            'payment_date' => now()->toDateString(),
+            'payment_mode' => FeePayment::MODE_CASH,
+            'collection_token' => '00000000-0000-0000-0000-000000000000',
+        ])->assertNotFound();
         $this->actingAs($adminB)->get(route('fee-payments.show', $paymentA))->assertNotFound();
         $this->actingAs($adminB)->get(route('fee-payments.print', $paymentA))->assertNotFound();
     }
@@ -205,6 +211,38 @@ class FeeCollectionReceiptTest extends TestCase
             ],
             $admin,
         ));
+    }
+
+    public function test_collection_token_is_consumed_after_successful_payment(): void
+    {
+        $school = $this->school('One');
+        $admin = $this->schoolUser(Role::SCHOOL_ADMIN, $school, 'admin@example.com');
+        $studentFee = $this->assignedStudentFee($school, '1400.00');
+        $token = $this->collectionToken($admin, $studentFee);
+
+        $this->actingAs($admin)->post(route('fee-collections.store', $studentFee), [
+            'amount_paid' => '100.00',
+            'payment_date' => now()->toDateString(),
+            'payment_mode' => FeePayment::MODE_CASH,
+            'collection_token' => $token,
+        ])->assertRedirect();
+
+        $this->actingAs($admin)->post(route('fee-collections.store', $studentFee), [
+            'amount_paid' => '100.00',
+            'payment_date' => now()->toDateString(),
+            'payment_mode' => FeePayment::MODE_CASH,
+            'collection_token' => $token,
+        ])->assertSessionHasErrors(['collection_token']);
+    }
+
+    public function test_collection_is_denied_for_paid_student_fees(): void
+    {
+        $school = $this->school('One');
+        $admin = $this->schoolUser(Role::SCHOOL_ADMIN, $school, 'admin@example.com');
+        $studentFee = $this->assignedStudentFee($school, '500.00');
+        $this->collectViaService($school, $studentFee, '500.00');
+
+        $this->actingAs($admin)->get(route('fee-collections.create', $studentFee->fresh()))->assertForbidden();
     }
 
     public function test_sandbox_gateway_collection_stores_sanitized_transaction_payload(): void

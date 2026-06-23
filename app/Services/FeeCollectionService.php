@@ -167,8 +167,6 @@ class FeeCollectionService
                 'raw_response' => $this->sandboxResponse($paymentMode, $transactionNo, $amountPaid),
             ]);
 
-            session()->forget($this->collectionTokenKey($studentFee));
-
             $this->logStudentFeeMutation($lockedFee, $actor, 'collected', $oldFeeValues);
             $this->logPaymentMutation($feePayment, $actor, 'collected', [], $this->paymentAuditValues($feePayment));
 
@@ -199,7 +197,7 @@ class FeeCollectionService
 
     private function assertCollectionToken(StudentFee $studentFee, string $token): void
     {
-        $expected = session()->get($this->collectionTokenKey($studentFee));
+        $expected = session()->pull($this->collectionTokenKey($studentFee));
 
         if (! is_string($expected) || ! hash_equals($expected, $token)) {
             throw ValidationException::withMessages([

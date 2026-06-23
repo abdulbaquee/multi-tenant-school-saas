@@ -27,6 +27,7 @@ class PaymentTransactionController extends Controller
     {
         /** @var User $actor */
         $actor = $request->user();
+        $this->authorize('view', $paymentTransaction);
         $paymentTransaction = $this->sandboxTransactions->showFor($paymentTransaction, $actor);
 
         return view('payment-transactions.show', [

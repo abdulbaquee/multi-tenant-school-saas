@@ -98,7 +98,7 @@ class SandboxTransactionScreenTest extends TestCase
         $payment = $this->collectViaService($school, $cashStudentFee, '500.00', FeePayment::MODE_CASH);
         $transaction = PaymentTransaction::query()->withoutGlobalScopes()->where('fee_payment_id', $payment->id)->firstOrFail();
 
-        $this->actingAs($admin)->get(route('payment-transactions.show', $transaction))->assertNotFound();
+        $this->actingAs($admin)->get(route('payment-transactions.show', $transaction))->assertForbidden();
     }
 
     public function test_cross_tenant_sandbox_transactions_are_not_exposed(): void
@@ -120,6 +120,16 @@ class SandboxTransactionScreenTest extends TestCase
 
         $this->expectException(AuthorizationException::class);
         app(TenantContext::class)->runAsPlatform(fn () => app(SandboxTransactionService::class)->listFor($admin, []));
+    }
+
+    public function test_direct_sandbox_transaction_show_service_rejects_wrong_tenant_context(): void
+    {
+        $school = $this->school('One');
+        $admin = $this->schoolUser(Role::SCHOOL_ADMIN, $school, 'admin@example.com');
+        $transaction = $this->sandboxTransaction($school);
+
+        $this->expectException(AuthorizationException::class);
+        app(TenantContext::class)->runAsPlatform(fn () => app(SandboxTransactionService::class)->showFor($transaction, $admin));
     }
 
     private function school(string $suffix): School

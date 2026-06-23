@@ -647,7 +647,7 @@ setup and assignment routes.
 
 Collection, receipt, payment-history, outstanding-balance, and sandbox transaction
 operational screens are implemented with focused tenant isolation tests. Phase 8
-release gate reviews remain pending.
+release gate reviews are approved.
 
 ---
 
