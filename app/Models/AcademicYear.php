@@ -55,4 +55,14 @@ class AcademicYear extends Model
     {
         return $this->hasMany(StudentFee::class);
     }
+
+    public function exams(): HasMany
+    {
+        return $this->hasMany(Exam::class);
+    }
+
+    public function reportCards(): HasMany
+    {
+        return $this->hasMany(ReportCard::class);
+    }
 }

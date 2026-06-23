@@ -863,6 +863,18 @@ with 210 assertions, and the full suite passes 286 tests with 2,480 assertions.
 
 # 10. EXAMINATION TABLES
 
+Implementation Status:
+
+Phase 9 readiness identified missing operational Examination boundaries on
+2026-06-23. DECISION-035 defines the approved setup, assignment, marks entry,
+grade-scale, result-processing, report-card, role, retention, and Phase 10
+deferral rules. The core migration and tenant-aware Examination models are
+implemented with documented columns, named indexes, unique constraints,
+restricted foreign keys, Exam soft-delete boundaries, retained Exam Result and
+Report Card deletion guards, immutable scope/identity safeguards, and focused
+schema/isolation tests. The focused Examination schema suite passes 6 tests
+with 236 assertions.
+
 ## 10.1 exams
 
 Stores exam master records.

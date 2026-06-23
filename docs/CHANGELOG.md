@@ -924,6 +924,34 @@ summaries are deferred to Phase 10 Reporting.
 * Focused Fee workflow suites: 39 tests and 389 assertions passed.
 * Full application suite: 319 tests and 2,662 assertions passed.
 
+## Phase 9 Design Remediation
+
+* Added the Phase 9 Examination Management readiness review prompt.
+* Initial readiness review found design and RBAC gaps around Examination reports,
+  Teacher setup permissions, Super Admin visibility, marks-entry assignment
+  scope, grade-scale rules, result retention, report-card export deferral, and
+  required tests.
+* Recorded DECISION-035 to define operational setup, assignment, marks entry,
+  grade-scale, result-processing, report-card, role, and Phase 10 deferral
+  boundaries.
+* Tightened Teacher RBAC defaults to `exams.view`, `exams.create`, and
+  `exams.update` only; setup, delete, publish, report, and export permissions
+  are out of bounds.
+* Phase 9 readiness rerun: approved with no blocking issues after design and
+  RBAC remediation.
+
+## Core Schema Implemented
+
+* Reversible migration creates `grade_scales`, `exams`, `exam_subjects`,
+  `exam_results`, and `report_cards` with documented columns, named indexes,
+  unique constraints, Exam soft-delete boundaries, and restricted foreign keys.
+* Added tenant-aware `GradeScale`, `Exam`, `ExamSubject`, `ExamResult`, and
+  `ReportCard` models with canonical statuses, decimal/date/datetime casts,
+  retained-history deletion guards, and immutable scope/identity safeguards.
+* Added inverse relationships on School, Academic Year, Academic Term, Class,
+  Section, Subject, Student, and User.
+* Focused Examination schema suite: 6 tests and 236 assertions passed.
+
 ## Deliverables
 
 * Fee Management Module
@@ -932,15 +960,22 @@ summaries are deferred to Phase 10 Reporting.
 
 # [1.1.0] - Examination Management
 
-Status: Planned
+Status: Core Schema Implemented — Pending Workflow Implementation
+
+## Design Remediation
+
+* DECISION-035 defines School Admin Examination setup and assignment authority,
+  Teacher marks-entry-only boundaries, no Phase 9 Super Admin or Accountant
+  route, Phase 10 report/export/analytics deferral, retained result history,
+  school-local grade scales, and privacy-safe audit expectations.
 
 ## Planned
 
-* Examinations
-* Marks entry
-* Grade calculations
-* Report cards
-* Academic reports
+* Examination setup and Exam Subject assignment
+* Grade scale seeding and management
+* Teacher-scoped marks entry
+* Grade calculation and result processing
+* Operational report-card view and print
 
 ## Deliverables
 
@@ -1077,6 +1112,8 @@ Fee schema and tenant-aware model foundation are implemented. School Admin Fee
 Category, Fee Structure, and Student Fee assignment workflows are implemented.
 School Admin and Accountant collection, receipt, payment-history, outstanding-balance,
 and sandbox transaction operational workflows are implemented and release-approved.
-Phase 9 Examination Management is the next roadmap checkpoint.
+Phase 9 Examination Management design remediation is approved. The core
+Examination schema and tenant-aware model foundation are implemented. School
+Admin exam setup and Exam Subject assignment are the next checkpoint.
 
-Next Task: Run Phase 9 Examination Management readiness review.
+Next Task: Implement Phase 9 School Admin exam setup and Exam Subject assignment workflows.

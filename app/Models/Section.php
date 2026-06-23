@@ -49,4 +49,9 @@ class Section extends Model
     {
         return $this->hasMany(Attendance::class);
     }
+
+    public function reportCards(): HasMany
+    {
+        return $this->hasMany(ReportCard::class);
+    }
 }

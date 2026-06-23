@@ -106,4 +106,29 @@ class School extends Model
     {
         return $this->hasMany(PaymentTransaction::class);
     }
+
+    public function gradeScales(): HasMany
+    {
+        return $this->hasMany(GradeScale::class);
+    }
+
+    public function exams(): HasMany
+    {
+        return $this->hasMany(Exam::class);
+    }
+
+    public function examSubjects(): HasMany
+    {
+        return $this->hasMany(ExamSubject::class);
+    }
+
+    public function examResults(): HasMany
+    {
+        return $this->hasMany(ExamResult::class);
+    }
+
+    public function reportCards(): HasMany
+    {
+        return $this->hasMany(ReportCard::class);
+    }
 }

@@ -6,6 +6,7 @@ use App\Models\Concerns\BelongsToTenant;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 #[Fillable(['class_id', 'teacher_id', 'name', 'code', 'subject_type', 'status'])]
@@ -36,5 +37,15 @@ class Subject extends Model
     public function teacher(): BelongsTo
     {
         return $this->belongsTo(Teacher::class)->withTrashed();
+    }
+
+    public function examSubjects(): HasMany
+    {
+        return $this->hasMany(ExamSubject::class);
+    }
+
+    public function examResults(): HasMany
+    {
+        return $this->hasMany(ExamResult::class);
     }
 }
