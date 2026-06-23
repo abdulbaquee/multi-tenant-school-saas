@@ -77,6 +77,15 @@
                         </li>
                     @endcan
 
+                    @if (auth()->user()->can('viewAny', \App\Models\FeeCategory::class) || auth()->user()->can('viewAny', \App\Models\StudentFee::class))
+                        <li class="nav-item">
+                            <a class="nav-link sidebar-link @if (request()->routeIs('fee-categories.*') || request()->routeIs('fee-structures.*') || request()->routeIs('student-fees.*')) active @endif" href="{{ route('fee-categories.index') }}" @if (request()->routeIs('fee-categories.*') || request()->routeIs('fee-structures.*') || request()->routeIs('student-fees.*')) aria-current="page" @endif>
+                                <i class="bi bi-cash-coin" aria-hidden="true"></i>
+                                <span>{{ __('Fees') }}</span>
+                            </a>
+                        </li>
+                    @endif
+
                     @can('viewAny', \App\Models\School::class)
                         <li class="nav-item">
                             <a class="nav-link sidebar-link @if (request()->routeIs('schools.*')) active @endif" href="{{ route('schools.index') }}" @if (request()->routeIs('schools.*')) aria-current="page" @endif>

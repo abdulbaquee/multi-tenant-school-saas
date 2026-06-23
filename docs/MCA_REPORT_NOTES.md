@@ -491,6 +491,12 @@ Phase 2 through Phase 5 evidence available for later report assembly:
   suite passes 6 tests with 210 assertions, the combined Fee/RBAC/Attendance
   schema suite passes 27 tests with 427 assertions, and the full suite passes
   286 tests with 2,480 assertions.
+* Phase 8 Fee setup and assignment evidence: School Admin Fee Category, Fee
+  Structure, and Student Fee assignment workflows are implemented with policies,
+  services, Form Requests, Bootstrap screens, sidebar navigation, activity and
+  audit logs, privacy-minimized assignment detail fields, and tenant isolation
+  tests. `FeeSetupAssignmentTest` passes 7 tests with 59 assertions. The full
+  suite passes 293 tests with 2,539 assertions.
 
 Screenshots remain to be selected and captured during the documentation and
 submission phases.

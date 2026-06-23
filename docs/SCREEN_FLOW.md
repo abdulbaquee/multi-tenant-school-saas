@@ -787,6 +787,15 @@ Access:
 Phase 8 excludes Fee reports, exports, analytics, dashboard widgets, and
 platform summaries. Those flows remain under Phase 10 Reporting.
 
+Implementation Status (2026-06-23):
+
+School Admin Fee Category, Fee Structure, and Student Fee assignment screens,
+navigation, lifecycle actions, privacy-minimized assignment detail fields,
+activity/audit evidence, and denied role/tenant flows are implemented.
+Collection, receipt, payment-history, outstanding-balance, sandbox, report,
+export, analytics, dashboard, Super Admin, Accountant setup, and Teacher Fee
+flows remain absent.
+
 ---
 
 # 21. FEE COLLECTION FLOW

@@ -634,9 +634,19 @@ implemented. The foundation includes Fee Categories, Fee Structures, Student
 Fees, Fee Payments, Payment Transactions, canonical statuses and payment modes,
 money/date casts, inverse relationships, automatic tenant ownership, immutable
 scope/financial identity safeguards, setup soft deletes, retained Payment and
-Transaction deletion guards, and focused schema/isolation tests. User-facing Fee
-setup, assignment, collection, receipt, payment-history, outstanding-balance,
-and sandbox workflows remain pending.
+Transaction deletion guards, and focused schema/isolation tests.
+
+School Admin Fee Category list/create/update/show, activate/deactivate,
+Fee Structure list/create/update/show, activate/deactivate, and Student Fee
+assignment list/create/show workflows are implemented with policies, Form
+Requests, services, Bootstrap views, sidebar navigation, activity logs, audit
+logs, and tenant isolation tests. Assignment amounts, payable, paid, and balance
+values are server-derived; forged amount and payable fields are rejected.
+Accountant, Teacher, Super Admin, guest, and cross-tenant actors are denied on
+setup and assignment routes.
+
+Collection, receipt, payment-history, outstanding-balance, and sandbox
+workflows remain pending.
 
 ---
 

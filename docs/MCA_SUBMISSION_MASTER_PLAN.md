@@ -680,10 +680,9 @@ confirmed changes before final PDF generation.
 
 ## 22. Immediate Next Action
 
-Create and execute the Phase 8 Fee setup and Student Fee assignment workflow
-prompt after the core schema checkpoint:
+Implement Phase 8 Fee collection, receipts, payment history, outstanding balance
+views, and local sandbox transaction workflows after the setup and assignment
+checkpoint.
 
-`prompts/07-fee-management/03-phase-08-fee-setup-assignment.md`
-
-Keep Fee screenshots and report evidence moving in parallel while schema and
-tenant-model work continues into user-facing workflows.
+Keep Fee screenshots and report evidence moving in parallel while collection,
+receipt, and sandbox work proceeds.

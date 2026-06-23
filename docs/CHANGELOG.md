@@ -808,7 +808,7 @@ Status: Completed
 
 # [1.0.0] - Fee Management
 
-Status: Core Schema Implemented — Workflow Pending
+Status: Setup And Assignment Implemented — Collection Pending
 
 ## Planned
 
@@ -854,6 +854,24 @@ summaries are deferred to Phase 10 Reporting.
 * Focused Fee schema suite: 6 tests and 210 assertions passed.
 * Combined Fee/RBAC/Attendance schema suite: 27 tests and 427 assertions passed.
 * Full application suite: 286 tests and 2,480 assertions passed.
+
+## Setup And Assignment Implemented
+
+* Added School Admin Fee Category list/create/update/show workflows with
+  activate/deactivate lifecycle routes and tenant-safe visibility.
+* Added School Admin Fee Structure list/create/update/show workflows with
+  activate/deactivate lifecycle routes, current Academic Year and active Class
+  validation, and tenant-safe visibility.
+* Added School Admin Student Fee assignment list/create/show workflows with
+  eligible-enrollment validation, duplicate rejection, server-derived amount,
+  payable, paid, and balance values, and privacy-minimized Student identifiers.
+* Added policies, Form Requests, services, controllers, routes, Bootstrap
+  views, sidebar navigation, activity logs, and audit logs for setup and
+  assignment only.
+* Denied Accountant, Teacher, Super Admin, guest, inactive, cross-tenant, and
+  direct-service wrong-context paths on setup and assignment routes.
+* Focused setup/assignment suite: 7 tests and 59 assertions passed.
+* Full application suite: 293 tests and 2,539 assertions passed.
 
 ## Deliverables
 
@@ -988,7 +1006,7 @@ Example:
 # Current Project Status
 
 Phase: Phase 7 Attendance Completed — Release Approved; Phase 8 Fee Management
-Core Schema Implemented — Workflow Pending
+Setup And Assignment Implemented — Collection Pending
 
 Repository Setup: Completed
 
@@ -1004,7 +1022,10 @@ release-approved and includes
 the Attendance schema/model foundation, daily complete-roster entry, authorized
 correction, retained history, and monthly operational summary workflows. Phase 8
 Fee Management readiness and design-boundary remediation are approved. The core
-Fee schema and tenant-aware model foundation are implemented; user-facing Fee
+Fee schema and tenant-aware model foundation are implemented. School Admin Fee
+Category, Fee Structure, and Student Fee assignment workflows are implemented.
+Collection, receipt, payment-history, outstanding-balance, and sandbox
 workflows remain pending.
 
-Next Task: Create and execute the Phase 8 Fee setup and Student Fee assignment workflow prompt
+Next Task: Implement Phase 8 Fee collection, receipts, payment history,
+outstanding balance views, and local sandbox transaction workflows.

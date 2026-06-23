@@ -1479,4 +1479,4 @@ Development Decisions:
 Completed
 
 Project Ready For:
-Phase 8 Fee Setup And Student Fee Assignment Workflow
+Phase 8 Fee Collection, Receipts, Payment History, Outstanding Balances, And Sandbox Transactions

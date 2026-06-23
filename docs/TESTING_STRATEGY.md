@@ -696,7 +696,15 @@ Transaction history, default-deny TenantScope behavior, automatic ownership,
 forged ownership rejection, immutable financial identity fields, canonical
 casts/statuses/modes, retained parent relationships, and duplicate/foreign-key
 integrity. The combined Fee/RBAC/Attendance schema suite passes 27 tests with
-427 assertions, and the full application suite passes 286 tests with 2,480
+427 assertions.
+
+Setup and assignment evidence (2026-06-23): `FeeSetupAssignmentTest` passes 7
+tests with 59 assertions covering guest denial, School Admin allowed paths,
+Accountant/Teacher/Super Admin denial, forged tenant/status/amount/payable
+rejection, eligible-enrollment assignment with server-derived payable/balance
+values, duplicate and ineligible-student rejection, cross-tenant HTTP denial,
+direct-service tenant-context rejection, and route-contract checks without
+destroy routes. The full application suite passes 293 tests with 2,539
 assertions.
 
 ---

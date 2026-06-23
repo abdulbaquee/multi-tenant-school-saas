@@ -167,8 +167,7 @@ Created for the next roadmap gate:
   required; rerun approved with no blocking issues).
 - Phase 8 Fee Management design remediation (executed).
 - Phase 8 core Fee schema and tenant-model foundation (executed).
-- Phase 8 Fee setup and Student Fee assignment workflow (created; execution
-  next).
+- Phase 8 Fee setup and Student Fee assignment workflow (executed).
 
 Future prompt groups should be added only when they are needed for the next roadmap phase.
 

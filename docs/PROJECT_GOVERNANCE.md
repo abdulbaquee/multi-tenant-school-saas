@@ -145,7 +145,7 @@ Phase 7 — Attendance Management
 Status: Completed — Release Approved
 
 Phase 8 — Fee Management
-Status: Core Schema Implemented — Workflow Pending
+Status: Setup And Assignment Implemented — Collection Pending
 
 Phase 9 — Examination Management
 Status: Pending
@@ -235,11 +235,14 @@ DECISION-034 now defines the approved operational setup, assignment,
 collection, receipt, payment-history, outstanding-balance, sandbox, role, and
 Phase 10 deferral boundaries. The readiness rerun is approved with no blocking
 issues. The core Fee schema and tenant-aware model foundation are implemented
-with focused tests; setup, Student Fee assignment, collection, receipt,
-payment-history, outstanding-balance, and sandbox workflows remain pending.
+with focused tests. School Admin Fee Category, Fee Structure, and Student Fee
+assignment workflows are implemented with tenant isolation, privacy-safe logging,
+and denied-path coverage. Collection, receipt, payment-history,
+outstanding-balance, and sandbox workflows remain pending.
 
 ---
 
 # Next Milestone
 
-Create and execute the Phase 8 Fee setup and Student Fee assignment workflow prompt.
+Implement Phase 8 Fee collection, receipts, payment history, outstanding balance
+views, and local sandbox transaction workflows.

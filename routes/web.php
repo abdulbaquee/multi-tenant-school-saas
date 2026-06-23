@@ -4,6 +4,8 @@ use App\Http\Controllers\AcademicTermController;
 use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FeeCategoryController;
+use App\Http\Controllers\FeeStructureController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SchoolClassController;
@@ -12,6 +14,7 @@ use App\Http\Controllers\SchoolSettingController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\StudentEnrollmentController;
+use App\Http\Controllers\StudentFeeController;
 use App\Http\Controllers\StudentPhotoController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
@@ -135,6 +138,16 @@ Route::middleware(['auth', 'tenant.context'])->group(function () {
         ->name('attendance.monthly-summary');
     Route::get('/attendance/{attendance}/edit', [AttendanceController::class, 'edit'])->name('attendance.edit');
     Route::patch('/attendance/{attendance}', [AttendanceController::class, 'update'])->name('attendance.update');
+
+    Route::patch('/fee-categories/{fee_category}/activate', [FeeCategoryController::class, 'activate'])->name('fee-categories.activate');
+    Route::patch('/fee-categories/{fee_category}/deactivate', [FeeCategoryController::class, 'deactivate'])->name('fee-categories.deactivate');
+    Route::resource('fee-categories', FeeCategoryController::class)->except(['destroy']);
+
+    Route::patch('/fee-structures/{fee_structure}/activate', [FeeStructureController::class, 'activate'])->name('fee-structures.activate');
+    Route::patch('/fee-structures/{fee_structure}/deactivate', [FeeStructureController::class, 'deactivate'])->name('fee-structures.deactivate');
+    Route::resource('fee-structures', FeeStructureController::class)->except(['destroy']);
+
+    Route::resource('student-fees', StudentFeeController::class)->only(['index', 'create', 'store', 'show']);
 });
 
 require __DIR__.'/auth.php';

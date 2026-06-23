@@ -63,9 +63,10 @@ Student Fee assignment, payment idempotency, sandbox transactions, retention,
 and tests. DECISION-034 and the Phase 8 design remediation define the approved
 operational Fee boundary. The readiness rerun is approved with no blocking
 issues. The Phase 8 core Fee schema and tenant-aware model foundation are
-implemented with focused tests; setup, assignment,
-collection, receipt, payment-history, outstanding-balance, and sandbox workflows
-remain pending.
+implemented with focused tests. School Admin Fee Category, Fee Structure, and
+Student Fee assignment workflows are implemented with tenant isolation and
+privacy-safe logging. Collection, receipt, payment-history, outstanding-balance,
+and sandbox workflows remain pending.
 
 Repository:
 
@@ -284,7 +285,7 @@ Status: Completed — Release Approved
 
 # Phase 8 — Fee Management
 
-Status: Core Schema Implemented — Workflow Pending
+Status: Setup And Assignment Implemented — Collection Pending
 
 ## Features
 
@@ -414,4 +415,5 @@ Project ready for final evaluation and submission.
 
 # Next Immediate Task
 
-Create and execute the Phase 8 Fee setup and Student Fee assignment workflow prompt.
+Implement Phase 8 Fee collection, receipts, payment history, outstanding balance
+views, and local sandbox transaction workflows.
