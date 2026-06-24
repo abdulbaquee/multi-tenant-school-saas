@@ -1,4 +1,5 @@
 <x-app-layout>
+    @php($canViewFullReportCards = auth()->user()?->hasRoleCode(\App\Models\Role::SCHOOL_ADMIN) ?? false)
     <x-slot name="header">
         <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3">
             <div>
@@ -48,9 +49,13 @@
                         <th scope="col">{{ __('Student') }}</th>
                         <th scope="col">{{ __('Exam') }}</th>
                         <th scope="col">{{ __('Class') }}</th>
-                        <th scope="col">{{ __('Percentage') }}</th>
-                        <th scope="col">{{ __('Grade') }}</th>
-                        <th scope="col">{{ __('Status') }}</th>
+                        @if ($canViewFullReportCards)
+                            <th scope="col">{{ __('Percentage') }}</th>
+                            <th scope="col">{{ __('Grade') }}</th>
+                            <th scope="col">{{ __('Status') }}</th>
+                        @else
+                            <th scope="col">{{ __('Scope') }}</th>
+                        @endif
                         <th scope="col" class="text-end">{{ __('Actions') }}</th>
                     </tr>
                 </thead>
@@ -63,15 +68,19 @@
                             </td>
                             <td>{{ $reportCard->exam->name }}</td>
                             <td>{{ $reportCard->schoolClass->name }}</td>
-                            <td>{{ $reportCard->percentage }}%</td>
-                            <td>{{ $reportCard->gradeScale?->grade ?? '—' }}</td>
-                            <td><span class="badge text-bg-secondary">{{ ucfirst($reportCard->result_status) }}</span></td>
+                            @if ($canViewFullReportCards)
+                                <td>{{ $reportCard->percentage }}%</td>
+                                <td>{{ $reportCard->gradeScale?->grade ?? '—' }}</td>
+                                <td><span class="badge text-bg-secondary">{{ ucfirst($reportCard->result_status) }}</span></td>
+                            @else
+                                <td><span class="badge text-bg-info">{{ __('Assigned subjects') }}</span></td>
+                            @endif
                             <td class="text-end">
                                 <a class="btn btn-sm btn-outline-secondary" href="{{ route('report-cards.show', $reportCard) }}">{{ __('View') }}</a>
                             </td>
                         </tr>
                     @empty
-                        <tr><td colspan="7" class="text-center text-body-secondary py-4">{{ __('No report cards found.') }}</td></tr>
+                        <tr><td colspan="{{ $canViewFullReportCards ? 7 : 5 }}" class="text-center text-body-secondary py-4">{{ __('No report cards found.') }}</td></tr>
                     @endforelse
                 </tbody>
             </table>

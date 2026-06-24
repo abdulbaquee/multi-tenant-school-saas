@@ -127,7 +127,10 @@ prompts/
     ├── 00-phase-09-readiness-review.md
     ├── 01-phase-09-examination-design-remediation.md
     ├── 04-phase-09-marks-entry-results.md
-    └── 05-phase-09-report-cards.md
+    ├── 05-phase-09-report-cards.md
+    └── 06-phase-09-release-gate-reviews.md
+└── 10-reports-analytics-system-operations/
+    └── 00-phase-10-readiness-review.md
 ```
 
 ## Current Prompt Creation Status
@@ -186,6 +189,11 @@ Created for the next roadmap gate:
 - Phase 9 Examination Management design remediation (executed).
 - Phase 9 core Examination schema and tenant-model foundation (executed).
 - Phase 9 School Admin exam setup and Exam Subject assignment workflow (executed).
+- Phase 9 marks entry and result processing workflow (executed).
+- Phase 9 operational report-card workflow (executed).
+- Phase 9 release gate reviews (executed and approved).
+- Phase 10 Reports, Analytics & System Operations readiness review (created;
+  ready to execute).
 
 Future prompt groups should be added only when they are needed for the next roadmap phase.
 

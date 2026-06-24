@@ -148,7 +148,7 @@ Phase 8 — Fee Management
 Status: Completed — Release Approved
 
 Phase 9 — Examination Management
-Status: Core Schema Implemented — Pending Workflow Implementation
+Status: Completed — Release Approved
 
 Phase 10 — Reports, Analytics & System Operations
 Status: Pending
@@ -176,17 +176,14 @@ Architecture Design Documentation: Approved (SYSTEM_ARCHITECTURE.md, TENANCY_DES
 
 Database Design Documentation: Remediated and implementation-ready draft (DATABASE_DESIGN.md, ER_DIAGRAM.md)
 
-Application Implementation: Phases 2-5 are completed. Phase 6 Student
-Management is completed and release-approved. Phase 7 Attendance is completed
-and release-approved, including the
-tenant-aware schema/model, complete-roster entry, retained correction, history,
-monthly summary, role-aware UI, privacy-safe logs, and focused tests.
+Application Implementation: Phases 2-9 are completed and release-approved.
+Attendance, Fee, and Examination operational workflows include tenant-aware
+models, role-aware UI, retained history, privacy-safe logs, and focused tests.
 
 Development Progress: Authentication, tenant infrastructure, School/User/RBAC,
-Academic Structure, and Student Management are stable checkpoints. Attendance
-implementation and remediation are complete and release-approved. Phase 8 Fee
-Management has begun with readiness and design-boundary remediation approved,
-and the core schema/model foundation implemented.
+Academic Structure, Student Management, Attendance, Fee Management, and
+Examination Management are stable release-approved checkpoints. Phase 10
+Reports, Analytics & System Operations is the next roadmap phase.
 
 Review Progress: Tenant-isolation review approved at 10/10; security review
 approved at 10/10 after local credential-file hygiene remediation;
@@ -250,16 +247,38 @@ number generation under heavy load, and the checkpoint is ready for Phase 9.
 Phase 9 Review Progress: The initial Examination Management readiness review
 scored 5/10 and required documentation remediation. DECISION-035 now defines the
 approved operational setup, assignment, marks entry, grade-scale,
-result-processing, report-card, role, and Phase 10 deferral boundaries. Teacher
-RBAC defaults were tightened to marks-entry permissions only. The readiness rerun
-is approved with no blocking issues. The core Examination schema and tenant-aware
-model foundation are implemented with focused tests. School Admin exam setup,
-Exam Subject assignment, teacher-scoped marks entry, grade calculation, and
-School Admin result processing, and operational report cards are implemented.
-Phase 9 release gate reviews are the next checkpoint.
+result-processing, report-card, role, retention, and Phase 10 deferral
+boundaries. Teacher RBAC defaults were tightened to marks-entry permissions only.
+The readiness rerun is approved with no blocking issues. The core Examination
+schema and tenant-aware model foundation, School Admin exam setup, Exam Subject
+assignment, teacher-scoped marks entry, grade calculation, School Admin result
+processing, and operational report cards are implemented. The release gate found
+one Teacher report-card privacy issue where assigned Teachers could see
+unassigned subject breakdown and aggregate summary fields; remediation now
+limits Teacher report-card list/detail/print output to assigned subject scope.
+The Phase 9 release review is approved at 9.7/10 with no blocking issues, and
+the checkpoint is ready for Phase 10.
+
+## Phase 9 Release Gate Scorecards
+
+| Review Area | Score / Decision | Result |
+| --- | --- | --- |
+| Tenant Isolation | 10/10 | Approved; no cross-school Examination read, write, report-card, route-binding, or service-context defect remains. |
+| Security | 10/10 | Approved after Teacher report-card privacy remediation; no critical, high, or medium finding remains. |
+| Documentation | 10/10 | Approved after release-gate prompt, roadmap, module, screen-flow, security, testing, changelog, MCA evidence, and prompt-inventory updates. |
+| Code Review | Approved | No remaining findings after Teacher report-card subject-scope remediation and regression coverage. |
+| Release Review | READY, 9.7/10 | Approved for Phase 10 progression after focused and full verification. |
+
+Verification evidence:
+
+* Focused Report Card suite: 7 tests, 48 assertions.
+* Focused Phase 9 Examination suites: 28 tests, 390 assertions.
+* Full application suite: 348 tests, 3,078 assertions.
+* Pint, Composer validation, route inspection, and `git diff --check` passed.
 
 ---
 
 # Next Milestone
 
-Run Phase 9 release gate reviews and submission evidence updates.
+Start Phase 10 Reports, Analytics & System Operations readiness review and
+submission evidence planning.

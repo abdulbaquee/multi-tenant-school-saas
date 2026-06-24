@@ -745,8 +745,8 @@ implementation. The core schema and tenant-aware model foundation are
 implemented with retained Fee Payment and Payment Transaction deletion guards,
 immutable financial identity safeguards, and focused tenant-isolation tests.
 User-facing setup, assignment, collection, receipt, payment-history,
-implemented. Payment-history, outstanding-balance, and sandbox transaction
-operational screens are implemented. Phase 8 release gate reviews are approved.
+outstanding-balance, and sandbox transaction operational screens are
+implemented. Phase 8 release gate reviews are approved.
 Post-implementation code audit remediation (2026-06-24) narrowed Student Fee
 assignment list/detail access back to School Admin-only while retaining
 Accountant collection and outstanding-balance access through explicit policy
@@ -802,7 +802,12 @@ screens are implemented. Post-implementation code audit remediation
 (2026-06-24) rejects row-level forged marks-entry status, grade, scope, and
 audit fields; keeps absent status derived only from the explicit absent flag;
 stores Exam Result audit remarks as `remarks_changed` instead of raw text; and
-uses local Vite CSS assets for report-card print views.
+uses local Vite CSS assets for report-card print views. Phase 9 release-gate
+remediation limits Teacher report-card list/detail/print output to assigned
+subject scope so unassigned subject marks, full aggregate totals, percentage,
+grade, and status are not exposed to Teachers. The Phase 9 tenant-isolation,
+security, documentation, code, and release reviews are approved with no
+remaining critical, high, or medium security finding.
 
 ---
 

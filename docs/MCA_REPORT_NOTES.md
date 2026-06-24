@@ -534,6 +534,13 @@ Phase 2 through Phase 5 evidence available for later report assembly:
   canonical statuses, and inverse relationships. The focused Examination schema
   suite passes 6 tests with 236 assertions, and the full suite passes 326 tests
   with 2,919 assertions.
+* Phase 9 Examination Management release evidence: School Admin exam setup,
+  Exam Subject assignment, Teacher-scoped marks entry, result processing, and
+  operational report-card view/print are release-approved. The release gate
+  remediated Teacher report-card privacy so Teachers see only assigned subject
+  scope in report-card list/detail/print output. Focused Phase 9 Examination
+  suites pass 28 tests with 390 assertions, and the full application suite
+  passes 348 tests with 3,078 assertions.
 
 Screenshots remain to be selected and captured during the documentation and
 submission phases.

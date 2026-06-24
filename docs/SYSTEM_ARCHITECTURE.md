@@ -624,6 +624,67 @@ History row policies do not produce N+1 queries.
 
 ---
 
+## Phase 8 Fee Management Architecture
+
+Phase 8 owns operational Fee setup, Student Fee assignment, collection,
+receipts, payment-history, outstanding-balance, and local sandbox transaction
+screens. Fee reports, exports, analytics, dashboard widgets, and platform
+financial summaries remain Phase 10 work.
+
+Canonical Laravel components:
+
+| Table | Model | Service | Notes |
+| ----- | ----- | ------- | ----- |
+| `fee_categories` | `FeeCategory` | `FeeCategoryService` | Tenant-owned setup catalog with retained lifecycle. |
+| `fee_structures` | `FeeStructure` | `FeeStructureService` | Tenant-owned fee plan with current-year/class validation. |
+| `student_fees` | `StudentFee` | `StudentFeeService` | Tenant-owned assignment with derived payable, paid, and balance values. |
+| `fee_payments` | `FeePayment` | `FeeCollectionService` | Retained financial receipt history. |
+| `payment_transactions` | `PaymentTransaction` | `SandboxTransactionService` | Retained local sandbox transaction evidence. |
+
+School Admin owns setup and assignment workflows. School Admin and Accountant
+may collect fees and view payment-history, outstanding-balance, and sandbox
+transaction screens. Teacher and Super Admin have no Phase 8 Fee route. Payment
+collection is transactional, consumes a collection token on first valid use,
+updates balances atomically, creates retained receipt and transaction records,
+and writes privacy-safe activity/audit evidence.
+
+Implementation status (2026-06-24): Phase 8 is release-approved. Post-release
+code remediation keeps Student Fee assignment list/detail School Admin-only,
+preserves Accountant collection/outstanding access through explicit policy
+abilities, and uses local Vite CSS for receipt print views.
+
+## Phase 9 Examination Management Architecture
+
+Phase 9 owns operational Exam setup, Exam Subject assignment, Grade Scale
+seeding/management, Teacher-scoped marks entry, result processing, and
+operational report-card view/print. Examination reports, exports, analytics,
+dashboard widgets, and platform summaries remain Phase 10 work.
+
+Canonical Laravel components:
+
+| Table | Model | Service | Notes |
+| ----- | ----- | ------- | ----- |
+| `grade_scales` | `GradeScale` | `GradeScaleService` | School-local grade ranges with overlap protection. |
+| `exams` | `Exam` | `ExamService` | Tenant-owned exam lifecycle with soft-delete before retained history exists. |
+| `exam_subjects` | `ExamSubject` | `ExamSubjectService` | Tenant-owned class/subject assignment with server-derived marks bounds. |
+| `exam_results` | `ExamResult` | `ExamResultService` | Retained academic result history and immutable identity fields. |
+| `report_cards` | `ReportCard` | `ReportCardService` | Retained operational report-card summaries. |
+
+School Admin owns setup, assignment, result processing, and report-card
+generation. Teacher access is limited to assigned subject marks/results and
+assigned report-card scope through the active Teacher Profile and
+`subjects.teacher_id`. Super Admin and Accountant have no Phase 9 Examination
+route. Marks entry is a complete-roster operation; the service derives pass,
+fail, absent, grade, tenant, scope, and entered-by values server-side and stores
+privacy-safe audit evidence.
+
+Implementation status (2026-06-24): Phase 9 is release-approved. Release-gate
+remediation limits Teacher report-card list/detail/print output to assigned
+subject scope and hides unassigned subject marks plus full aggregate totals,
+percentage, grade, and status.
+
+---
+
 # 11. DASHBOARD ARCHITECTURE
 
 Dashboard Components:

@@ -713,7 +713,7 @@ Implementation Boundary:
   Results and Report Cards are retained history and cannot be hard-deleted.
 * Corrections preserve audit evidence; `entered_by` remains immutable.
 
-Implementation Status (2026-06-23):
+Implementation Status (2026-06-24):
 
 Phase 9 readiness identified missing operational Examination boundaries.
 DECISION-035 defines the approved setup, assignment, marks entry, grade-scale,
@@ -724,7 +724,10 @@ policies-ready scope safeguards, retained Exam Result and Report Card deletion
 guards, and focused schema/isolation tests. School Admin exam setup, Exam
 Subject assignment, teacher-scoped marks entry, grade calculation, and School
 Admin result processing are implemented. Operational report cards are
-implemented. Phase 9 release gate reviews are the next checkpoint.
+implemented. Release-gate remediation limits Teacher report-card list/detail/
+print output to assigned subject scope. Phase 9 release gate reviews are
+approved, and Reports, Analytics, Activity/Audit screens, and Backup Management
+remain Phase 10.
 
 ---
 

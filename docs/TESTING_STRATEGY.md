@@ -774,7 +774,7 @@ retained parent relationships, and duplicate/foreign-key integrity. The full
 application suite passes 341 tests with 3,020 assertions. School Admin exam
 setup, Exam Subject assignment, teacher-scoped marks entry, grade calculation,
 and School Admin result processing are implemented. Operational report cards are
-implemented. Phase 9 release gate reviews are the next checkpoint.
+implemented.
 
 Post-implementation code audit remediation evidence (2026-06-24): focused Fee
 workflow suites pass 39 tests with 397 assertions after restoring School
@@ -783,6 +783,15 @@ collection/outstanding paths through explicit policy abilities. Focused
 Examination suites pass 28 tests with 376 assertions after rejecting row-level
 forged marks-entry fields and sanitizing Exam Result audit remarks. The full
 application suite passes 348 tests with 3,064 assertions.
+
+Phase 9 release gate evidence (2026-06-24): Teacher report-card list/detail/print
+privacy was remediated so assigned Teachers see only assigned subject scope and
+do not receive unassigned subject marks or full aggregate report-card totals,
+percentage, grade, and status. Focused Report Card coverage passes 7 tests with
+48 assertions. Focused Phase 9 Examination suites pass 28 tests with 390
+assertions. The full application suite passes 348 tests with 3,078 assertions.
+Pint, Composer validation, route inspection, and `git diff --check` passed. The
+Phase 9 release gate is approved and ready for Phase 10.
 
 ---
 

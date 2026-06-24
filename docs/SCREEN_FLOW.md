@@ -24,18 +24,21 @@ The canonical permission matrix is defined in `MODULE_SPECIFICATIONS.md`. Every 
 ## Current Implementation Status
 
 The current implementation exposes authorized navigation for completed Phases
-2 through 6 and the implemented Phase 7 Attendance workspace:
+2 through 9:
 
 * Super Admin: Dashboard, Users, Roles & Permissions, Academic Structure,
   Students, Schools, Profile.
 * School Admin: Dashboard, Users, Roles & Permissions, Academic Structure,
-  Students, Attendance, School Settings, Profile.
+  Students, Attendance, Fees, Examinations, School Settings, Profile.
 * Teacher: Dashboard, assigned Academic Structure, assigned Students,
-  Attendance, Profile.
-* Accountant: Dashboard, Profile.
+  Attendance, assigned Examination marks/results/report-card views, Profile.
+* Accountant: Dashboard, Fee collection/history/outstanding/sandbox views,
+  Profile.
 * Student Management now provides the implemented Phase 6 profile and immutable
-  Enrollment workflows. Phase 8 or later module items documented below remain
-  omitted until their routes and authorization are implemented.
+  Enrollment workflows. Attendance, Fee, and Examination operational workflows
+  are implemented. Phase 10 Reporting, Dashboard Analytics, Activity/Audit
+  review screens, and Backup Management remain omitted until their routes and
+  authorization are implemented.
 
 School Management currently provides Super Admin-only listing, search, status
 filtering, registration, details, editing, activation, and deactivation. School
@@ -848,11 +851,15 @@ Access:
 Phase 9 excludes Examination reports, exports, analytics, dashboard widgets,
 and platform summaries. Those flows remain under Phase 10 Reporting.
 
-Implementation Status (2026-06-23):
+Implementation Status (2026-06-24):
 
 DECISION-035 defines the approved Phase 9 operational boundary. The core schema
 and tenant-aware model foundation are implemented with focused tests. School
-Admin exam setup and Exam Subject assignment are the next checkpoint.
+Admin exam setup, Exam Subject assignment, Teacher-scoped marks entry, result
+processing, and operational report-card view/print flows are implemented.
+Release-gate remediation limits Teacher report-card list/detail/print output to
+assigned subject scope. Phase 9 release gate reviews are approved, and reporting
+branches remain under Phase 10.
 
 ---
 

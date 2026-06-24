@@ -380,6 +380,47 @@ only at the model-foundation layer. Focused tests cover School A/B filtering,
 forged ownership, ownership immutability, retained parent relationships,
 retained financial-history deletion guards, and restricted foreign keys.
 
+## Phase 9 Examination Management Tenancy Contract
+
+Grade Scales, Exams, Exam Subjects, Exam Results, and Report Cards are strict
+tenant-owned records. Every create path derives `school_id` from TenantContext
+through `BelongsToTenant`; client-submitted school, scope, grade, status, audit,
+or parent identifiers cannot expand tenant or assignment scope.
+
+School Admin Examination setup, Exam Subject assignment, result processing, and
+report-card generation/view/print workflows operate only in the active tenant.
+Teacher workflows operate only in the active tenant and are limited to assigned
+subject marks entry, assigned result review, and assigned report-card scope
+through the actor's active Teacher Profile and `subjects.teacher_id`.
+
+Super Admin and Accountant have no Phase 9 Examination route or direct service
+pathway. Platform Examination reports, exports, analytics, dashboards, and
+summaries remain Phase 10 work and require a separate authorized reporting
+design.
+
+Marks entry must derive the eligible roster from same-tenant active Student
+Enrollments for the Exam Academic Year and Exam Subject Class. Request-submitted
+Student IDs are accepted only as a complete roster map to compare with that
+derived eligibility; they never define eligibility. Result status, grade scale,
+tenant ownership, Exam, Exam Subject, Subject, and entered-by values are
+server-derived. Exam Results and Report Cards are retained academic history and
+must not be deleted.
+
+Report-card list/detail/print output must remain tenant-scoped. School Admin
+may see the full own-school operational report card. Teacher output is limited
+to assigned subject scope and must not expose unassigned subject marks or full
+aggregate report-card totals, percentage, grade, and status.
+
+Phase 9 isolation tests must cover School A/B HTTP and direct-service paths,
+automatic scope filtering, forged parent/scope fields, Super Admin and
+Accountant denial, unassigned Teacher denial, retained result/report-card
+history, logging rollback, and tenant-owned activity/audit rows.
+
+Implementation status (2026-06-24): Phase 9 Examination Management is
+release-approved. Focused Phase 9 Examination suites pass 28 tests with 390
+assertions, and the full application suite passes 348 tests with 3,078
+assertions.
+
 The `users` exception exists only because authentication must retrieve a globally
 unique identity before tenant context can be resolved. It does not authorize
 unrestricted operational user queries. School Admin user creation always derives

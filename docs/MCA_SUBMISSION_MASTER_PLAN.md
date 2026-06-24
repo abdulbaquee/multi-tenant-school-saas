@@ -4,7 +4,7 @@ Version: 1.0
 
 Status: Active - Submission Critical
 
-Last Verified: 2026-06-22
+Last Verified: 2026-06-24
 
 Official Submission Deadline: 2026-07-05
 
@@ -263,7 +263,7 @@ completion percentage.
 | Design Database Structure | Completed | Complete 28-table dictionary and ERD | Retain evidence |
 | Build Onboarding Module | Completed | Authentication, school management, settings, users, tenancy, RBAC, and review approval | Retain evidence |
 | Implement Student Registration | Not marked complete in screenshot | Phase 6 is implemented and release-approved, including private photos and Enrollment | Mark complete with evidence now |
-| Integrate Payment System | Pending | Fee and sandbox transaction design exists; implementation is Phase 8 | Complete after Phase 8 release gate |
+| Integrate Payment System | Not marked complete in screenshot | Phase 8 release-approved Fee collection, receipts, payment history, outstanding balances, and local sandbox transaction workflow | Mark complete with evidence now |
 | Deploy and Test Application | Pending | Automated tests exist; cloud deployment, full QA, manuals, and final evidence remain | Complete after deployment and final QA |
 
 Recommended Milestone 4 progress description:
@@ -286,11 +286,11 @@ allows an optional file.
 | Develop school-onboarding module | Complete | Phases 2-4 |
 | Implement Student registration | Complete | Phase 6 release approval |
 | Add Attendance tracking | Complete | Phase 7 release approval and 279-test suite |
-| Build Fee Management and receipt module | Pending | Phase 8 |
-| Develop Examination and grading system | Pending | Phase 9 |
+| Build Fee Management and receipt module | Complete | Phase 8 release approval |
+| Develop Examination and grading system | Complete | Phase 9 release approval and 348-test suite |
 | Configure role-based access control | Complete | Phase 4 release approval |
 | Ensure tenant-level data filtering | Complete for implemented modules | Native tenancy and 10/10 reviews |
-| Integrate payment sandbox | Pending | Phase 8 sandbox transaction workflow |
+| Integrate payment sandbox | Complete | Phase 8 sandbox transaction workflow and release approval |
 | Deploy application on cloud platform | Pending | Phase 12 |
 | Conduct concurrent tenant testing | Pending final QA | Phase 11 |
 | Implement logging and backups | Logging foundation complete; screens/backups pending | Phase 10 |
@@ -680,8 +680,9 @@ confirmed changes before final PDF generation.
 
 ## 22. Immediate Next Action
 
-Implement Phase 9 School Admin exam setup and Exam Subject assignment workflows
-after the approved Phase 9 core Examination schema checkpoint.
+Start Phase 10 Reports, Analytics & System Operations readiness review and
+submission evidence planning after the approved Phase 9 Examination release
+gate.
 
-Keep Examination report evidence and MCA Chapter 4 drafting moving in parallel
-while schema and workflow implementation proceeds.
+Keep Examination evidence, MCA Chapter 4 design updates, and Chapter 5
+implementation notes moving in parallel with Phase 10 work.

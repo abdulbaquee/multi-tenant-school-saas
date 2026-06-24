@@ -1522,9 +1522,11 @@ actors are recorded through audit-log user identity.
 
 Operational report-card generation is School Admin workflow in Phase 9. Assigned
 Teachers may view and print report cards only for Students in their assigned
-class/subject scope. Phase 9 report cards provide on-screen view and browser
-print only; PDF/Excel export infrastructure and Examination analytics belong to
-Phase 10 Reporting.
+class/subject scope. Teacher report-card output must not expose unassigned
+subject marks or full aggregate report-card totals, percentage, grade, and
+status. Phase 9 report cards provide on-screen view and browser print only;
+PDF/Excel export infrastructure and Examination analytics belong to Phase 10
+Reporting.
 
 `exams.report` and `exams.export` remain dormant catalog permissions in Phase
 9 for School Admin. `exams.delete` authorizes documented Exam soft-delete before

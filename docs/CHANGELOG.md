@@ -924,6 +924,18 @@ summaries are deferred to Phase 10 Reporting.
 * Focused Fee workflow suites: 39 tests and 389 assertions passed.
 * Full application suite: 319 tests and 2,662 assertions passed.
 
+## Deliverables
+
+* Fee Management Module
+
+---
+
+# [1.1.0] - Examination Management
+
+Date: 2026-06-24
+
+Status: Completed — Release Approved
+
 ## Phase 9 Design Remediation
 
 * Added the Phase 9 Examination Management readiness review prompt.
@@ -1008,30 +1020,19 @@ summaries are deferred to Phase 10 Reporting.
   tests with 3,064 assertions. Pint, Composer validation, route inspection, and
   `git diff --check` passed.
 
-## Deliverables
+## Release Gate Approved
 
-* Fee Management Module
-
----
-
-# [1.1.0] - Examination Management
-
-Status: Core Schema Implemented — Pending Workflow Implementation
-
-## Design Remediation
-
-* DECISION-035 defines School Admin Examination setup and assignment authority,
-  Teacher marks-entry-only boundaries, no Phase 9 Super Admin or Accountant
-  route, Phase 10 report/export/analytics deferral, retained result history,
-  school-local grade scales, and privacy-safe audit expectations.
-
-## Planned
-
-* Examination setup and Exam Subject assignment
-* Grade scale seeding and management
-* Teacher-scoped marks entry
-* Grade calculation and result processing
-* Operational report-card view and print
+* Ran Phase 9 tenant isolation, security, documentation, code, and release reviews.
+* Remediated Teacher report-card privacy so assigned Teachers see only assigned
+  subject scope in list/detail/print output and do not receive unassigned subject
+  marks or full aggregate totals, percentage, grade, and status.
+* Created the scoped Phase 9 release-gate prompt and synchronized roadmap,
+  governance, security, testing, module, screen-flow, MCA evidence, and prompt
+  inventory documentation.
+* Verification: focused Report Card suite passes 7 tests with 48 assertions;
+  focused Phase 9 Examination suites pass 28 tests with 390 assertions; full
+  suite passes 348 tests with 3,078 assertions. Pint, Composer validation, route
+  inspection, and `git diff --check` passed.
 
 ## Deliverables
 
@@ -1148,7 +1149,8 @@ Example:
 # Current Project Status
 
 Phase: Phase 7 Attendance Completed — Release Approved; Phase 8 Fee Management
-Setup And Assignment Implemented — Collection And Receipts Implemented — Payment History And Outstanding Balances Implemented — Sandbox Transaction Screens Implemented — Release Approved; Phase 9 Examination Management Operational Report Cards Implemented — Pending Release Gate
+Completed — Release Approved; Phase 9 Examination Management Completed —
+Release Approved; Phase 10 Reports, Analytics & System Operations next
 
 Repository Setup: Completed
 
@@ -1168,9 +1170,9 @@ Fee schema and tenant-aware model foundation are implemented. School Admin Fee
 Category, Fee Structure, and Student Fee assignment workflows are implemented.
 School Admin and Accountant collection, receipt, payment-history, outstanding-balance,
 and sandbox transaction operational workflows are implemented and release-approved.
-Exam Subject assignment workflows are implemented. Teacher-scoped marks entry,
-grade calculation, and School Admin result processing are implemented.
-Operational report cards are implemented. Phase 9 release gate reviews are the
-next checkpoint.
+School Admin exam setup, Exam Subject assignment, Teacher-scoped marks entry,
+grade calculation, School Admin result processing, and operational report cards
+are implemented and release-approved.
 
-Next Task: Run Phase 9 release gate reviews and submission evidence updates.
+Next Task: Start Phase 10 Reports, Analytics & System Operations readiness
+review and submission evidence planning.

@@ -873,7 +873,12 @@ implemented with documented columns, named indexes, unique constraints,
 restricted foreign keys, Exam soft-delete boundaries, retained Exam Result and
 Report Card deletion guards, immutable scope/identity safeguards, and focused
 schema/isolation tests. The focused Examination schema suite passes 6 tests
-with 236 assertions.
+with 236 assertions. School Admin exam setup, Exam Subject assignment,
+Teacher-scoped marks entry, result processing, and operational report-card
+generation/view/print workflows are implemented. Release-gate remediation
+limits Teacher report-card list/detail/print output to assigned subject scope.
+The focused Phase 9 Examination suites pass 28 tests with 390 assertions, and
+the Phase 9 release gate is approved.
 
 ## 10.1 exams
 

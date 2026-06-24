@@ -75,6 +75,7 @@ class ReportCardService
         return [
             'reportCard' => $reportCard,
             'subjectResults' => $this->subjectResultsFor($reportCard, $actor),
+            'canViewFullReportCard' => $actor->hasRoleCode(Role::SCHOOL_ADMIN),
         ];
     }
 
@@ -162,11 +163,21 @@ class ReportCardService
      */
     private function subjectResultsFor(ReportCard $reportCard, User $actor): Collection
     {
-        return ExamResult::query()
+        $query = ExamResult::query()
             ->with(['subject', 'examSubject', 'gradeScale'])
             ->where('exam_id', $reportCard->exam_id)
-            ->where('student_id', $reportCard->student_id)
-            ->get()
+            ->where('student_id', $reportCard->student_id);
+
+        if ($actor->hasRoleCode(Role::TEACHER)) {
+            $teacher = $this->activeTeacherProfile($actor);
+            $this->authorize($teacher instanceof Teacher);
+
+            $query->whereHas('examSubject', fn (Builder $query) => $query
+                ->where('class_id', $reportCard->class_id)
+                ->whereHas('subject', fn (Builder $query) => $query->where('teacher_id', $teacher->id)));
+        }
+
+        return $query->get()
             ->sortBy(fn (ExamResult $result): string => $result->subject->name)
             ->values();
     }
@@ -277,7 +288,9 @@ class ReportCardService
             $query->whereHas('exam.examResults', function (Builder $query) use ($teacher): void {
                 $query->whereColumn('exam_results.student_id', 'report_cards.student_id')
                     ->whereColumn('exam_results.exam_id', 'report_cards.exam_id')
-                    ->whereHas('examSubject.subject', fn (Builder $query) => $query->where('teacher_id', $teacher->id));
+                    ->whereHas('examSubject', fn (Builder $query) => $query
+                        ->whereColumn('exam_subjects.class_id', 'report_cards.class_id')
+                        ->whereHas('subject', fn (Builder $query) => $query->where('teacher_id', $teacher->id)));
             });
         }
 

@@ -97,7 +97,7 @@ class ReportCardTest extends TestCase
     {
         $school = $this->school('One');
         $admin = $this->schoolUser(Role::SCHOOL_ADMIN, $school, 'admin@example.com');
-        $graphA = $this->reportGraph($school, 'A', withResults: true);
+        $graphA = $this->reportGraph($school, 'A', withResults: true, withPeerSubjectResults: true);
         $graphB = $this->reportGraph($school, 'B', withResults: true);
 
         $this->actingAs($admin)->post(route('report-cards.generate', $graphA['exam']));
@@ -106,8 +106,36 @@ class ReportCardTest extends TestCase
         $cardAId = (int) DB::table('report_cards')->where('exam_id', $graphA['exam']->id)->value('id');
         $cardBId = (int) DB::table('report_cards')->where('exam_id', $graphB['exam']->id)->value('id');
 
-        $this->actingAs($graphA['teacherUser'])->get(route('report-cards.index'))->assertOk()->assertSee('ADM-A-1')->assertDontSee('ADM-B-1');
-        $this->actingAs($graphA['teacherUser'])->get(route('report-cards.show', $cardAId))->assertOk();
+        $this->actingAs($graphA['teacherUser'])
+            ->get(route('report-cards.index'))
+            ->assertOk()
+            ->assertSee('ADM-A-1')
+            ->assertSee('Assigned subjects')
+            ->assertDontSee('92.50%')
+            ->assertDontSee('ADM-B-1');
+
+        $this->actingAs($graphA['teacherUser'])
+            ->get(route('report-cards.show', $cardAId))
+            ->assertOk()
+            ->assertSee('Assigned Subject View')
+            ->assertSee('Mathematics A')
+            ->assertDontSee('Science A')
+            ->assertDontSee('92.50%')
+            ->assertDontSee('185.00 / 200.00');
+
+        $this->actingAs($graphA['teacherUser'])
+            ->get(route('report-cards.print', $cardAId))
+            ->assertOk()
+            ->assertSee('Mathematics A')
+            ->assertDontSee('Science A');
+
+        $this->actingAs($admin)
+            ->get(route('report-cards.show', $cardAId))
+            ->assertOk()
+            ->assertSee('Science A')
+            ->assertSee('92.50%')
+            ->assertSee('185.00 / 200.00');
+
         $this->actingAs($graphA['teacherUser'])->get(route('report-cards.show', $cardBId))->assertForbidden();
         $this->actingAs($graphA['teacherUser'])->post(route('report-cards.generate', $graphA['exam']))->assertForbidden();
     }
@@ -176,8 +204,9 @@ class ReportCardTest extends TestCase
         string $suffix,
         int $studentCount = 1,
         bool $withResults = false,
+        bool $withPeerSubjectResults = false,
     ): array {
-        return $this->tenant($school, function () use ($suffix, $studentCount, $withResults, $school): array {
+        return $this->tenant($school, function () use ($suffix, $studentCount, $withResults, $withPeerSubjectResults, $school): array {
             $year = AcademicYear::create([
                 'name' => '2026-'.$suffix,
                 'start_date' => now()->subMonths(2)->toDateString(),
@@ -230,6 +259,37 @@ class ReportCardTest extends TestCase
                 'max_marks' => '100.00',
                 'passing_marks' => '33.00',
             ]);
+            $peerSubject = null;
+            $peerExamSubject = null;
+
+            if ($withPeerSubjectResults) {
+                $peerTeacherUser = User::factory()->create([
+                    'school_id' => app(TenantContext::class)->tenantId(),
+                    'role_id' => Role::query()->where('code', Role::TEACHER)->value('id'),
+                    'email' => strtolower('report-peer-teacher-'.$suffix).'@example.com',
+                ]);
+                $peerTeacher = Teacher::create([
+                    'user_id' => $peerTeacherUser->id,
+                    'employee_code' => 'TCH-PEER-'.$suffix,
+                    'joining_date' => now()->subMonth()->toDateString(),
+                    'status' => Teacher::STATUS_ACTIVE,
+                ]);
+                $peerSubject = Subject::create([
+                    'class_id' => $class->id,
+                    'teacher_id' => $peerTeacher->id,
+                    'name' => 'Science '.$suffix,
+                    'code' => 'SCI-'.$suffix,
+                    'status' => Subject::STATUS_ACTIVE,
+                ]);
+                $peerExamSubject = ExamSubject::create([
+                    'exam_id' => $exam->id,
+                    'subject_id' => $peerSubject->id,
+                    'class_id' => $class->id,
+                    'max_marks' => '100.00',
+                    'passing_marks' => '33.00',
+                ]);
+            }
+
             app(GradeScaleService::class)->ensureDefaultScalesExist();
             $admin = User::factory()->create([
                 'school_id' => $school->id,
@@ -274,10 +334,23 @@ class ReportCardTest extends TestCase
                         'result_status' => $status,
                         'entered_by' => $admin->id,
                     ]);
+
+                    if ($peerExamSubject instanceof ExamSubject && $peerSubject instanceof Subject) {
+                        ExamResult::create([
+                            'exam_id' => $exam->id,
+                            'exam_subject_id' => $peerExamSubject->id,
+                            'student_id' => $student->id,
+                            'subject_id' => $peerSubject->id,
+                            'marks_obtained' => $index === 1 ? '100.00' : '70.00',
+                            'grade_scale_id' => null,
+                            'result_status' => ExamResult::STATUS_PASS,
+                            'entered_by' => $admin->id,
+                        ]);
+                    }
                 }
             }
 
-            return compact('year', 'class', 'section', 'subject', 'teacher', 'teacherUser', 'exam', 'examSubject', 'students', 'admin');
+            return compact('year', 'class', 'section', 'subject', 'peerSubject', 'teacher', 'teacherUser', 'exam', 'examSubject', 'peerExamSubject', 'students', 'admin');
         });
     }
 

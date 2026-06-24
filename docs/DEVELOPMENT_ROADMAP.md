@@ -43,31 +43,18 @@ Single Database Multi-Tenant SaaS
 
 Current Phase:
 
-Phase 8 — Fee Management
+Phase 10 — Reports, Analytics & System Operations
 
 Progress:
 
-Phase 5 Academic Structure and Phase 6 Student Management are completed and
-release-approved. Phase 7 design remediation was completed and the readiness
-rerun passed at 10/10. The Attendance migration, tenant-aware model, complete-
-roster entry/correction, operational history, monthly summary, role-aware UI,
-privacy-safe logs, and focused tests are implemented. Tenant-isolation and
-security reviews are approved at 10/10. The documentation review rerun is also
-approved at 10/10 after consistency remediation. The code review found retained-
-roster, direct-validation, and History query findings; remediation is complete,
-the rerun is approved with no remaining findings. The Phase 7 release review is
-approved at 9.5/10 with no blocking issues, so Attendance is release-approved
-and Phase 8 Fee Management has begun. The initial Phase 8 readiness review found
-design gaps around reports, Accountant permissions, Super Admin visibility,
-Student Fee assignment, payment idempotency, sandbox transactions, retention,
-and tests. DECISION-034 and the Phase 8 design remediation define the approved
-operational Fee boundary. The readiness rerun is approved with no blocking
-issues. The Phase 8 core Fee schema and tenant-aware model foundation are
-implemented with focused tests. School Admin Fee Category, Fee Structure, and
-Student Fee assignment workflows are implemented with tenant isolation and
-privacy-safe logging. Fee collection, receipt, payment-history, outstanding-balance,
-and sandbox operational workflows are implemented. Phase 8 release gate reviews
-are approved and the checkpoint is ready for Phase 9.
+Phases 5, 6, 7, 8, and 9 are completed and release-approved. Attendance, Fee,
+and Examination operational workflows are implemented with tenant isolation,
+least-privilege authorization, retained history, privacy-safe logging, focused
+tests, full-suite verification, and governance release approval. The Phase 9
+release gate remediated Teacher report-card privacy by limiting Teacher
+list/detail/print output to assigned subject scope, then passed tenant-isolation,
+security, documentation, code, and release reviews. The checkpoint is ready for
+Phase 10 Reports, Analytics & System Operations.
 
 Repository:
 
@@ -310,7 +297,7 @@ summaries are deferred to Phase 10 Reporting.
 
 # Phase 9 — Examination Management
 
-Status: Operational Report Cards Implemented — Pending Release Gate
+Status: Completed — Release Approved
 
 ## Features
 
@@ -421,4 +408,5 @@ Project ready for final evaluation and submission.
 
 # Next Immediate Task
 
-Run Phase 9 release gate reviews and submission evidence updates.
+Start Phase 10 Reports, Analytics & System Operations readiness review and
+submission evidence planning.
