@@ -37,8 +37,8 @@ The current implementation exposes authorized navigation for completed Phases
 * Student Management now provides the implemented Phase 6 profile and immutable
   Enrollment workflows. Attendance, Fee, and Examination operational workflows
   are implemented. Phase 10 Reporting, Dashboard Analytics, Activity/Audit
-  review screens, and Backup Management remain omitted until their routes and
-  authorization are implemented.
+  review screens, and Backup Management are implemented under a single
+  **System Operations** sidebar entry with in-page navigation.
 
 School Management currently provides Super Admin-only listing, search, status
 filtering, registration, details, editing, activation, and deactivation. School

@@ -826,6 +826,23 @@ review access, and RBAC alignment. Teacher and Accountant no longer receive
 RBAC regression coverage passes. The readiness rerun is approved with no blocking
 issues. Core reporting foundation is the next checkpoint.
 
+## Phase 10 Release Gate Evidence
+
+Phase 10 release gate evidence (2026-06-24): implementation covers the reports
+hub, student/attendance/fee/examination reports, Chart.js Analytics, Activity
+Log and Audit Trail review screens, Backup Management, and consolidated System
+Operations sidebar navigation. Release-gate remediation fixed report CSV
+full-dataset export, generic backup failure messaging, and backup detail path
+disclosure. Manual operator verification passed on 2026-06-24.
+
+Focused Phase 10 suites pass 45 tests with 207 assertions across
+`ReportFoundationTest`, `StudentAttendanceReportTest`,
+`FeeExaminationReportTest`, `AnalyticsTest`, `ActivityAuditLogTest`, and
+`BackupManagementTest`. The full application suite passes 394 tests with 3,312
+assertions. Pint, Composer validation, route inspection, and `git diff --check`
+passed. The Phase 10 release gate is approved and ready for MCA submission
+evidence and Phase 11 QA hardening.
+
 ---
 
 # 21. REPORTING TESTING

@@ -293,7 +293,7 @@ allows an optional file.
 | Integrate payment sandbox | Complete | Phase 8 sandbox transaction workflow and release approval |
 | Deploy application on cloud platform | Pending | Phase 12 |
 | Conduct concurrent tenant testing | Pending final QA | Phase 11 |
-| Implement logging and backups | Logging foundation complete; screens/backups pending | Phase 10 |
+| Implement logging and backups | Complete | Phase 10 release approval — activity/audit review screens and manual platform backups |
 | Optimize database queries | Ongoing; final audit pending | Phase 11 |
 | Prepare system documentation | Ongoing | Phase 12 and report workstream |
 
@@ -680,8 +680,8 @@ confirmed changes before final PDF generation.
 
 ## 22. Immediate Next Action
 
-Begin Phase 10 core reporting foundation and shared report filters after the
-approved design remediation.
+Begin MCA submission evidence and Phase 11 cross-module QA hardening while
+preserving the approved Phase 10 feature-freeze boundary.
 
-Keep Examination evidence, MCA Chapter 4 design updates, and Chapter 5
-implementation notes moving in parallel with Phase 10 work.
+Keep report chapters, screenshots, deployment notes, and presentation inputs
+moving in parallel with final QA hardening.

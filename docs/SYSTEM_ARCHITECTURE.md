@@ -706,8 +706,9 @@ Request filters, service-built datasets, and tenant/assignment enforcement
 matching Phases 6–9. Super Admin platform reads occur only in explicit Platform
 context and return aggregate summaries rather than raw cross-tenant PII.
 
-Implementation status (2026-06-24): Phase 10 design remediation is approved.
-Core reporting foundation is the next checkpoint.
+Implementation status (2026-06-24): Phase 10 Reports, Analytics & System
+Operations is release-approved. MCA submission evidence and Phase 11 QA hardening
+are the next checkpoints.
 
 ---
 

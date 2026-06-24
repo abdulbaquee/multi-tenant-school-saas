@@ -1213,6 +1213,28 @@ Status: Completed
 
 ---
 
+# [1.2.8] - Phase 10 Release Gate Approved
+
+Status: Completed
+
+## Approved
+
+* Phase 10 Reports, Analytics & System Operations release gate at 9.8/10.
+* Tenant isolation, security, documentation, code, and release reviews recorded
+  in `docs/PROJECT_GOVERNANCE.md`.
+* Manual operator verification passed 2026-06-24.
+
+## Verification
+
+* Focused Phase 10 suites: 45 tests, 207 assertions.
+* Full application suite: 394 tests, 3,312 assertions.
+
+## Deliverables
+
+* Phase 10 feature-freeze checkpoint ready for MCA submission evidence.
+
+---
+
 # [1.3.0] - Testing & Quality Assurance
 
 Status: Planned
@@ -1301,9 +1323,8 @@ Example:
 
 # Current Project Status
 
-Phase: Phase 10 Reports, Analytics & System Operations In Progress — Design
-Remediation Approved; Phase 9 Examination Management Completed — Release
-Approved
+Phase: Phase 10 Reports, Analytics & System Operations Completed — Release
+Approved; Phase 9 Examination Management Completed — Release Approved
 
 Repository Setup: Completed
 
@@ -1327,4 +1348,5 @@ School Admin exam setup, Exam Subject assignment, Teacher-scoped marks entry,
 grade calculation, School Admin result processing, and operational report cards
 are implemented and release-approved.
 
-Next Task: Run Phase 10 release-gate review or proceed to MCA submission evidence.
+Next Task: Begin MCA submission evidence (report, screenshots, deployment,
+presentation) and Phase 11 cross-module QA hardening.

@@ -176,14 +176,16 @@ Architecture Design Documentation: Approved (SYSTEM_ARCHITECTURE.md, TENANCY_DES
 
 Database Design Documentation: Remediated and implementation-ready draft (DATABASE_DESIGN.md, ER_DIAGRAM.md)
 
-Application Implementation: Phases 2-9 are completed and release-approved.
-Attendance, Fee, and Examination operational workflows include tenant-aware
-models, role-aware UI, retained history, privacy-safe logs, and focused tests.
+Application Implementation: Phases 2-10 are completed and release-approved.
+Attendance, Fee, Examination, Reporting, Analytics, and System Operations
+workflows include tenant-aware models, role-aware UI, retained history,
+privacy-safe logs, and focused tests.
 
 Development Progress: Authentication, tenant infrastructure, School/User/RBAC,
-Academic Structure, Student Management, Attendance, Fee Management, and
-Examination Management are stable release-approved checkpoints. Phase 10
-Reports, Analytics & System Operations is the next roadmap phase.
+Academic Structure, Student Management, Attendance, Fee Management, Examination
+Management, and Phase 10 Reports, Analytics & System Operations are stable
+release-approved checkpoints. Phase 11 Testing & Quality Assurance and MCA
+submission evidence are the next roadmap priorities.
 
 Review Progress: Tenant-isolation review approved at 10/10; security review
 approved at 10/10 after local credential-file hygiene remediation;
@@ -278,22 +280,40 @@ Verification evidence:
 
 ---
 
-# Next Milestone
-
-Begin Phase 10 core reporting foundation and shared report filters after the
-approved design remediation.
-
----
-
 # Phase 10 Review Progress
 
 The Phase 10 readiness review scored 7/10 and required design remediation.
 DECISION-036 resolved export, backup, analytics, log-review, and role-boundary
-findings. CSV streaming and browser print are the approved Phase 10 MVP export
-formats; PDF and Excel libraries remain deferred. Chart.js is approved for Super
-Admin and School Admin Analytics via npm. Teacher and Accountant receive
-dashboard-embedded summaries only. Accountant `fees.report` and `fees.export`
-activate financial report boundaries. `backups.delete` retains `backup_logs`
-history and removes only the private backup file. The readiness rerun is
-approved with no blocking issues. Core reporting foundation is the next
-implementation checkpoint.
+findings. The readiness rerun is approved with no blocking issues. Core
+reporting foundation, student/attendance/fee/examination reports, Chart.js
+Analytics, Activity Log and Audit Trail review screens, Backup Management, and
+consolidated **System Operations** sidebar navigation are implemented. Release-gate
+remediation fixed report CSV full-dataset export, backup failure-message
+privacy, and backup detail path disclosure. Manual testing passed on 2026-06-24.
+The Phase 10 release review is approved at 9.8/10 with no blocking issues, and
+the checkpoint is ready for MCA submission evidence and Phase 11 QA hardening.
+
+## Phase 10 Release Gate Scorecards
+
+| Review Area | Score / Decision | Result |
+| --- | --- | --- |
+| Tenant Isolation | 10/10 | Approved; no cross-school report, analytics, log, or backup read/write defect remains. |
+| Security | 10/10 | Approved after CSV export, backup UI, and privacy remediations; no critical, high, or medium finding remains. |
+| Documentation | 10/10 | Approved after release-gate prompt, manual checklist, roadmap, screen-flow, testing, changelog, and governance updates. |
+| Code Review | Approved | No remaining findings after export-pagination and backup privacy remediations. |
+| Release Review | READY, 9.8/10 | Approved for MCA submission evidence and Phase 11 progression after focused and full verification. |
+
+Verification evidence:
+
+* Focused Phase 10 suites: 45 tests, 207 assertions.
+* Full application suite: 394 tests, 3,312 assertions.
+* Manual checklist: passed 2026-06-24 per operator verification.
+* Pint, Composer validation, route inspection, and `git diff --check` passed.
+
+---
+
+# Next Milestone
+
+Begin MCA submission evidence (report chapters, screenshots, deployment notes,
+presentation inputs) and Phase 11 cross-module QA hardening while preserving the
+approved feature freeze boundary.
