@@ -1,4 +1,4 @@
-<nav class="mb-4" aria-label="{{ __('System logs navigation') }}">
+<nav class="mb-4" aria-label="{{ __('System operations navigation') }}">
     <ul class="nav nav-pills flex-wrap gap-2">
         @can('activity_logs.view')
             <li class="nav-item">

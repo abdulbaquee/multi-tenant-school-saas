@@ -138,6 +138,7 @@ prompts/
     └── 05-phase-10-dashboard-analytics-widgets.md
     └── 06-phase-10-activity-audit-screens.md
     └── 07-phase-10-backup-management.md
+    └── 08-phase-10-release-gate-review.md
 ```
 
 ## Current Prompt Creation Status

@@ -1205,6 +1205,12 @@ Status: Completed
 
 * Phase 10 system-operations scope complete pending release-gate review
 
+## Changed
+
+* Consolidated Activity Logs, Audit Trail, and Backup Management into a single
+  sidebar **System Operations** entry with in-page tab navigation.
+* Added `docs/PHASE_10_MANUAL_TEST_CHECKLIST.md` and release-gate prompt `08`.
+
 ---
 
 # [1.3.0] - Testing & Quality Assurance

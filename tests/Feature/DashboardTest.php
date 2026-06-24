@@ -116,9 +116,9 @@ class DashboardTest extends TestCase
         $response->assertSee(route('students.index'), false);
         $response->assertSee(route('reports.index'), false);
         $response->assertSee(route('analytics.index'), false);
+        $response->assertSee('System Operations');
         $response->assertSee(route('activity-logs.index'), false);
-        $response->assertSee(route('audit-logs.index'), false);
-        $response->assertSee(route('backups.index'), false);
+        $response->assertDontSee('>Backup Management</span>');
 
         foreach ([
             'Platform Settings',
