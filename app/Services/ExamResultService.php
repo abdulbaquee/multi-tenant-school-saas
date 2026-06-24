@@ -60,7 +60,7 @@ class ExamResultService
     }
 
     /**
-     * @param  array{exam_subject_id: int, entries: list<array{student_id: int, result_status: string, marks_obtained?: numeric-string|float|int|null, remarks?: string|null}>}  $data
+     * @param  array{exam_subject_id: int, entries: list<array{student_id: int, absent?: bool, marks_obtained?: numeric-string|float|int|null, remarks?: string|null}>}  $data
      * @return array{created: int, corrected: int, unchanged: int}
      */
     public function saveMarksRoster(array $data, User $actor): array
@@ -108,21 +108,22 @@ class ExamResultService
                         'remarks' => $values['remarks'],
                         'entered_by' => $actor->id,
                     ]);
-                    $this->logMutation($result, $actor, 'created', [], $this->auditValues($result));
+                    $this->logMutation($result, $actor, 'created', [], $this->auditValues($result, filled($values['remarks'])));
                     $created++;
 
                     continue;
                 }
 
                 if ($this->resultChanged($result, $values)) {
-                    $oldValues = $this->auditValues($result);
+                    $remarksChanged = (string) ($result->remarks ?? '') !== (string) ($values['remarks'] ?? '');
+                    $oldValues = $this->auditValues($result, false);
                     $result->fill([
                         'marks_obtained' => $values['marks_obtained'],
                         'grade_scale_id' => $values['grade_scale_id'],
                         'result_status' => $values['result_status'],
                         'remarks' => $values['remarks'],
                     ])->save();
-                    $this->logChangedMutation($result, $actor, 'corrected', $oldValues);
+                    $this->logChangedMutation($result, $actor, 'corrected', $oldValues, $remarksChanged);
                     $corrected++;
 
                     continue;
@@ -217,7 +218,7 @@ class ExamResultService
                             continue;
                         }
 
-                        $oldValues = $this->auditValues($result);
+                        $oldValues = $this->auditValues($result, false);
                         $calculated = $result->result_status === ExamResult::STATUS_ABSENT
                             ? [
                                 'marks_obtained' => '0.00',
@@ -233,8 +234,8 @@ class ExamResultService
 
                         $result->fill($calculated)->save();
 
-                        if ($this->resultChangedFromAudit($oldValues, $this->auditValues($result))) {
-                            $this->logChangedMutation($result, $actor, 'processed', $oldValues);
+                        if ($this->resultChangedFromAudit($oldValues, $this->auditValues($result, false))) {
+                            $this->logChangedMutation($result, $actor, 'processed', $oldValues, false);
                             $processed++;
                         }
                     }
@@ -280,8 +281,7 @@ class ExamResultService
                 ]);
             }
 
-            $isAbsent = filter_var($entry['absent'] ?? false, FILTER_VALIDATE_BOOLEAN)
-                || ($entry['result_status'] ?? null) === ExamResult::STATUS_ABSENT;
+            $isAbsent = filter_var($entry['absent'] ?? false, FILTER_VALIDATE_BOOLEAN);
 
             if ($isAbsent) {
                 $calculated = $this->gradeScales->calculateResultValues(
@@ -506,7 +506,7 @@ class ExamResultService
     /**
      * @return array<string, mixed>
      */
-    private function auditValues(ExamResult $examResult): array
+    private function auditValues(ExamResult $examResult, bool $remarksChanged): array
     {
         return [
             'exam_id' => $examResult->exam_id,
@@ -516,16 +516,21 @@ class ExamResultService
             'marks_obtained' => $examResult->marks_obtained,
             'grade_scale_id' => $examResult->grade_scale_id,
             'result_status' => $examResult->result_status,
-            'remarks' => $examResult->remarks,
+            'remarks_changed' => $remarksChanged,
         ];
     }
 
     /**
      * @param  array<string, mixed>  $oldValues
      */
-    private function logChangedMutation(ExamResult $examResult, User $actor, string $action, array $oldValues): void
-    {
-        $newValues = $this->auditValues($examResult);
+    private function logChangedMutation(
+        ExamResult $examResult,
+        User $actor,
+        string $action,
+        array $oldValues,
+        bool $remarksChanged,
+    ): void {
+        $newValues = $this->auditValues($examResult, $remarksChanged);
         $changedKeys = array_keys(array_diff_assoc($newValues, $oldValues));
 
         $this->logMutation(

@@ -776,6 +776,14 @@ setup, Exam Subject assignment, teacher-scoped marks entry, grade calculation,
 and School Admin result processing are implemented. Operational report cards are
 implemented. Phase 9 release gate reviews are the next checkpoint.
 
+Post-implementation code audit remediation evidence (2026-06-24): focused Fee
+workflow suites pass 39 tests with 397 assertions after restoring School
+Admin-only Student Fee assignment list/detail access and preserving Accountant
+collection/outstanding paths through explicit policy abilities. Focused
+Examination suites pass 28 tests with 376 assertions after rejecting row-level
+forged marks-entry fields and sanitizing Exam Result audit remarks. The full
+application suite passes 348 tests with 3,064 assertions.
+
 ---
 
 # 21. REPORTING TESTING

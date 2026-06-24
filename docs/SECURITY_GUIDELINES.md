@@ -747,7 +747,11 @@ immutable financial identity safeguards, and focused tenant-isolation tests.
 User-facing setup, assignment, collection, receipt, payment-history,
 implemented. Payment-history, outstanding-balance, and sandbox transaction
 operational screens are implemented. Phase 8 release gate reviews are approved.
-Phase 9 Examination Management is the next roadmap checkpoint.
+Post-implementation code audit remediation (2026-06-24) narrowed Student Fee
+assignment list/detail access back to School Admin-only while retaining
+Accountant collection and outstanding-balance access through explicit policy
+abilities. Receipt print views now use local Vite CSS assets instead of an
+external CDN. Phase 9 Examination Management is the next roadmap checkpoint.
 
 ## Phase 9 Examination Management Security And Privacy Rules
 
@@ -792,8 +796,13 @@ DECISION-035 defines the approved Phase 9 operational Examination boundary.
 Teacher RBAC defaults were tightened to marks-entry permissions only. The core
 schema and tenant-aware model foundation are implemented with retained Exam
 Result and Report Card deletion guards, immutable scope/identity safeguards,
-and focused tenant-isolation tests. No Examination routes or workflow tests
-exist yet.
+and focused tenant-isolation tests. Exam setup, Exam Subject assignment,
+teacher-scoped marks entry, result processing, and operational report-card
+screens are implemented. Post-implementation code audit remediation
+(2026-06-24) rejects row-level forged marks-entry status, grade, scope, and
+audit fields; keeps absent status derived only from the explicit absent flag;
+stores Exam Result audit remarks as `remarks_changed` instead of raw text; and
+uses local Vite CSS assets for report-card print views.
 
 ---
 

@@ -31,7 +31,7 @@ class FeeCollectionService
     public function collectibleListFor(User $actor, array $filters): LengthAwarePaginator
     {
         $this->authorizeCollectorContext($actor);
-        $this->authorize($actor->can('viewAny', StudentFee::class));
+        $this->authorize($actor->can('collectAny', StudentFee::class));
 
         return StudentFee::query()
             ->with([

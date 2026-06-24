@@ -69,6 +69,7 @@ class FeeCollectionReceiptTest extends TestCase
         $studentFee = $this->assignedStudentFee($school, '1400.00');
 
         $this->actingAs($accountant)->get(route('fee-categories.index'))->assertForbidden();
+        $this->actingAs($accountant)->get(route('student-fees.index'))->assertForbidden();
         $this->actingAs($accountant)->get(route('student-fees.create'))->assertForbidden();
         $this->actingAs($accountant)->get(route('fee-collections.index'))->assertOk();
 

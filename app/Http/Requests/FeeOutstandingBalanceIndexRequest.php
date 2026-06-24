@@ -11,7 +11,7 @@ class FeeOutstandingBalanceIndexRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()?->can('viewAny', StudentFee::class) ?? false;
+        return $this->user()?->can('viewOutstandingAny', StudentFee::class) ?? false;
     }
 
     protected function prepareForValidation(): void

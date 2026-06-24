@@ -992,6 +992,22 @@ summaries are deferred to Phase 10 Reporting.
 * Focused report-card suite: 7 tests and 33 assertions passed. Full suite: 348
   tests and 3,054 assertions passed.
 
+## Post-Implementation Code Audit Remediation
+
+* Restored School Admin-only access for Student Fee assignment list/detail
+  routes while preserving Accountant collection and outstanding-balance access
+  through explicit `collectAny` and `viewOutstandingAny` policy abilities.
+* Rejected row-level forged marks-entry scope, grade, status, timestamp, and
+  audit fields; absent status is now derived only from the explicit absent flag.
+* Sanitized Exam Result audit evidence so marks-entry remarks are represented as
+  `remarks_changed` instead of raw remark text.
+* Replaced external Bootstrap CDN references in Fee receipt and Report Card
+  browser-print views with local Vite CSS assets.
+* Verification: focused Fee suites pass 39 tests with 397 assertions; focused
+  Examination suites pass 28 tests with 376 assertions; full suite passes 348
+  tests with 3,064 assertions. Pint, Composer validation, route inspection, and
+  `git diff --check` passed.
+
 ## Deliverables
 
 * Fee Management Module
@@ -1132,7 +1148,7 @@ Example:
 # Current Project Status
 
 Phase: Phase 7 Attendance Completed — Release Approved; Phase 8 Fee Management
-Setup And Assignment Implemented — Collection And Receipts Implemented — Payment History And Outstanding Balances Implemented — Sandbox Transaction Screens Implemented — Release Approved
+Setup And Assignment Implemented — Collection And Receipts Implemented — Payment History And Outstanding Balances Implemented — Sandbox Transaction Screens Implemented — Release Approved; Phase 9 Examination Management Operational Report Cards Implemented — Pending Release Gate
 
 Repository Setup: Completed
 

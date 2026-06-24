@@ -91,7 +91,9 @@
                             <td>{{ $studentFee->due_date?->format('Y-m-d') ?: '—' }}</td>
                             <td><span class="badge text-bg-secondary">{{ ucfirst($studentFee->status) }}</span></td>
                             <td class="text-end text-nowrap">
-                                <a class="btn btn-sm btn-outline-secondary" href="{{ route('student-fees.show', $studentFee) }}"><i class="bi bi-eye me-1" aria-hidden="true"></i>{{ __('View') }}</a>
+                                @can('view', $studentFee)
+                                    <a class="btn btn-sm btn-outline-secondary" href="{{ route('student-fees.show', $studentFee) }}"><i class="bi bi-eye me-1" aria-hidden="true"></i>{{ __('View') }}</a>
+                                @endcan
                                 @can('collect', $studentFee)
                                     <a class="btn btn-sm btn-primary" href="{{ route('fee-collections.create', $studentFee) }}"><i class="bi bi-cash-stack me-1" aria-hidden="true"></i>{{ __('Collect') }}</a>
                                 @endcan

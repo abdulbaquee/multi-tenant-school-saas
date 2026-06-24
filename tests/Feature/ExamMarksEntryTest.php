@@ -180,6 +180,21 @@ class ExamMarksEntryTest extends TestCase
                 'marks_obtained' => '50.00',
             ])->all(),
         ])->assertSessionHasErrors('school_id');
+
+        $this->actingAs($admin)->post(route('exam-marks-entry.store'), [
+            'exam_subject_id' => $graph['examSubject']->id,
+            'entries' => collect($graph['students'])->map(fn (Student $student): array => [
+                'student_id' => $student->id,
+                'marks_obtained' => '50.00',
+                'result_status' => ExamResult::STATUS_ABSENT,
+                'grade_scale_id' => 1,
+                'entered_by' => $admin->id,
+            ])->all(),
+        ])->assertSessionHasErrors([
+            'entries.0.result_status',
+            'entries.0.grade_scale_id',
+            'entries.0.entered_by',
+        ]);
     }
 
     public function test_cross_tenant_exam_results_are_not_exposed_or_mutable(): void
@@ -234,8 +249,9 @@ class ExamMarksEntryTest extends TestCase
             'subject_id' => $resultId,
         ]);
 
-        $logPayload = AuditLog::withoutGlobalScopes()->latest('id')->firstOrFail()->toJson();
+        $logPayload = AuditLog::withoutGlobalScopes()->get()->toJson();
         $this->assertStringNotContainsString('Private remark', $logPayload);
+        $this->assertStringContainsString('remarks_changed', $logPayload);
     }
 
     /**

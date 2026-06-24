@@ -19,7 +19,7 @@
             <i class="bi bi-clock-history me-1" aria-hidden="true"></i>{{ __('Payment History') }}
         </a>
     @endcan
-    @can('viewAny', \App\Models\StudentFee::class)
+    @can('viewOutstandingAny', \App\Models\StudentFee::class)
         <a class="nav-link @if (request()->routeIs('fee-outstanding-balances.*')) active @endif" href="{{ route('fee-outstanding-balances.index') }}">
             <i class="bi bi-exclamation-circle me-1" aria-hidden="true"></i>{{ __('Outstanding Balances') }}
         </a>
@@ -29,9 +29,9 @@
             <i class="bi bi-credit-card-2-front me-1" aria-hidden="true"></i>{{ __('Sandbox Transactions') }}
         </a>
     @endcan
-    @if (auth()->user()?->hasPermission('fees.collect'))
+    @can('collectAny', \App\Models\StudentFee::class)
         <a class="nav-link @if (request()->routeIs('fee-collections.*')) active @endif" href="{{ route('fee-collections.index') }}">
             <i class="bi bi-cash-stack me-1" aria-hidden="true"></i>{{ __('Fee Collection') }}
         </a>
-    @endif
+    @endcan
 </nav>

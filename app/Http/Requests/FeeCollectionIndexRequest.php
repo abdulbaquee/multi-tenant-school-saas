@@ -10,7 +10,7 @@ class FeeCollectionIndexRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()?->can('viewAny', StudentFee::class) ?? false;
+        return $this->user()?->can('collectAny', StudentFee::class) ?? false;
     }
 
     /**

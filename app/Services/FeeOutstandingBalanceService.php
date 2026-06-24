@@ -29,7 +29,7 @@ class FeeOutstandingBalanceService
     public function listFor(User $actor, array $filters): array
     {
         $this->authorizeFeeOperatorContext($actor);
-        $this->authorize($actor->can('viewAny', StudentFee::class));
+        $this->authorize($actor->can('viewOutstandingAny', StudentFee::class));
 
         $baseQuery = StudentFee::query()
             ->whereIn('status', [StudentFee::STATUS_PENDING, StudentFee::STATUS_PARTIAL])

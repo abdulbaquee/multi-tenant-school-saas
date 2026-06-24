@@ -70,6 +70,8 @@ class FeePaymentHistoryOutstandingTest extends TestCase
         $payment = $this->collectViaService($school, $studentFee, '400.00');
 
         $this->actingAs($accountant)->get(route('fee-categories.index'))->assertForbidden();
+        $this->actingAs($accountant)->get(route('student-fees.index'))->assertForbidden();
+        $this->actingAs($accountant)->get(route('student-fees.show', $studentFee))->assertForbidden();
         $this->actingAs($accountant)->get(route('fee-payments.index'))->assertOk()->assertSee($payment->receipt_no);
         $this->actingAs($accountant)->get(route('fee-outstanding-balances.index'))->assertOk()->assertSee('1,000.00');
     }

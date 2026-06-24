@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\AcademicYear;
 use App\Models\Exam;
 use App\Models\ExamSubject;
-use App\Models\GradeScale;
 use App\Models\Role;
 use App\Models\School;
 use App\Models\SchoolClass;

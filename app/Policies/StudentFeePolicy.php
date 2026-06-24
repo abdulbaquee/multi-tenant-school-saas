@@ -10,7 +10,7 @@ class StudentFeePolicy
 {
     public function viewAny(User $user): bool
     {
-        return $this->isFeeOperator($user) && $user->hasPermission('fees.view');
+        return $this->isSchoolAdmin($user) && $user->hasPermission('fees.view');
     }
 
     public function view(User $user, StudentFee $studentFee): bool
@@ -25,13 +25,25 @@ class StudentFeePolicy
             && $user->hasPermission('fees.create');
     }
 
-    public function collect(User $user, StudentFee $studentFee): bool
+    public function collectAny(User $user): bool
     {
         return $this->isFeeOperator($user)
             && $user->canEstablishTenantContext()
-            && $user->hasPermission('fees.collect')
+            && $user->hasPermission('fees.collect');
+    }
+
+    public function collect(User $user, StudentFee $studentFee): bool
+    {
+        return $this->collectAny($user)
             && $this->canAccessTenant($user, $studentFee)
             && $this->isCollectible($studentFee);
+    }
+
+    public function viewOutstandingAny(User $user): bool
+    {
+        return $this->isFeeOperator($user)
+            && $user->canEstablishTenantContext()
+            && $user->hasPermission('fees.view');
     }
 
     private function isSchoolAdmin(User $user): bool

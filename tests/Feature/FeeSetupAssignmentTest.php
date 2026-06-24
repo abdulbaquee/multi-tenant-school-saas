@@ -75,10 +75,13 @@ class FeeSetupAssignmentTest extends TestCase
         $this->actingAs($accountant)->get(route('fee-structures.create'))->assertForbidden();
         $this->actingAs($teacher)->get(route('student-fees.create'))->assertForbidden();
         $this->actingAs($superAdmin)->get(route('student-fees.index'))->assertForbidden();
+        $this->actingAs($accountant)->get(route('student-fees.index'))->assertForbidden();
+        $studentFee = $this->studentFeeAssignment($school, $structure);
         $this->actingAs($accountant)->post(route('student-fees.store'), [
             'fee_structure_id' => $structure->id,
-            'student_id' => $this->eligibleStudent($school, $structure)->id,
+            'student_id' => $studentFee->student_id,
         ])->assertForbidden();
+        $this->actingAs($accountant)->get(route('student-fees.show', $studentFee))->assertForbidden();
     }
 
     public function test_school_admin_manages_fee_categories_structures_and_assignments_with_logs(): void
