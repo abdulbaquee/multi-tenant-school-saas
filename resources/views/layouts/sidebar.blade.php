@@ -4,7 +4,7 @@
             <span class="brand-mark d-inline-flex align-items-center justify-content-center rounded-2 bg-primary text-white">
                 <i class="bi bi-mortarboard" aria-hidden="true"></i>
             </span>
-            <span>{{ config('app.name', 'School SaaS') }}</span>
+            <span>{{ config('app.name', 'School Portal') }}</span>
         </a>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#appSidebar" aria-label="{{ __('Close navigation') }}"></button>
     </div>
@@ -16,7 +16,7 @@
                     <span class="brand-mark d-inline-flex align-items-center justify-content-center rounded-2 bg-primary text-white">
                         <i class="bi bi-mortarboard" aria-hidden="true"></i>
                     </span>
-                    <span>{{ config('app.name', 'School SaaS') }}</span>
+                    <span>{{ config('app.name', 'School Portal') }}</span>
                 </a>
             </div>
 

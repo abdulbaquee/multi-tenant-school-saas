@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'School SaaS') }}</title>
+        <title>{{ config('app.name', 'School Portal') }}</title>
 
         @include('layouts.partials.critical-head')
 
@@ -20,8 +20,8 @@
                             <a href="/" class="d-inline-flex align-items-center justify-content-center brand-mark rounded-circle bg-primary text-white text-decoration-none mb-3">
                                 <i class="bi bi-mortarboard fs-4"></i>
                             </a>
-                            <h1 class="h4 mb-1">{{ config('app.name', 'School SaaS') }}</h1>
-                            <p class="text-body-secondary mb-0">Secure school administration access</p>
+                            <h1 class="h4 mb-1">{{ config('app.name', 'School Portal') }}</h1>
+                            <p class="text-body-secondary mb-0">{{ __('Secure multi-tenant school administration access') }}</p>
                         </div>
 
                         {{ $slot }}

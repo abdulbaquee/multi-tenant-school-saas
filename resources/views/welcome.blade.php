@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>{{ config('app.name', 'School SaaS') }}</title>
+        <title>{{ config('app.name', 'School Portal') }}</title>
 
         @include('layouts.partials.critical-head')
 
@@ -21,9 +21,9 @@
                                     <i class="bi bi-mortarboard fs-4"></i>
                                 </div>
 
-                                <h1 class="h2 mb-3">{{ config('app.name', 'School SaaS') }}</h1>
+                                <h1 class="h2 mb-3">{{ config('app.name', 'School Portal') }}</h1>
                                 <p class="lead text-body-secondary mb-4">
-                                    Multi-tenant school administration foundation for secure authentication and user management.
+                                    Multi-tenant school administration platform for academics, students, attendance, fees, examinations, and reporting.
                                 </p>
 
                                 @auth

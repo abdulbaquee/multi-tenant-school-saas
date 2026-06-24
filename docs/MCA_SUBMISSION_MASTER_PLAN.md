@@ -42,9 +42,11 @@ must progress in parallel.
 | Qollabb Enrollment Date | 2026-06-16 |
 | Repository Technology | Laravel 13, PHP 8.4, MySQL 8, Blade, Bootstrap 5 |
 | Submission Deadline | 2026-07-05 |
-| Portal Evaluation Status On 2026-06-22 | Pending |
-| Portal Progress On 2026-06-22 | 45 percent |
-| Portal Milestones On 2026-06-22 | 3 of 6 marked complete |
+| Portal Evaluation Status On 2026-06-24 | Pending |
+| Portal Progress On 2026-06-24 | ~83 percent (student-reported after payment milestone) |
+| Portal Milestones On 2026-06-24 | 5 of 6 marked complete |
+| Remaining Portal Milestone | Deploy and Test Application |
+| Final Report Upload | Not yet submitted |
 
 Student name, enrollment number, place, signature, final guide designation, and
 submission time remain student-supplied values and must never be guessed.
@@ -262,9 +264,9 @@ completion percentage.
 | Understand School Workflows | Completed | Canonical roles, permissions, screen flows, module specifications, and governance | Retain evidence |
 | Design Database Structure | Completed | Complete 28-table dictionary and ERD | Retain evidence |
 | Build Onboarding Module | Completed | Authentication, school management, settings, users, tenancy, RBAC, and review approval | Retain evidence |
-| Implement Student Registration | Not marked complete in screenshot | Phase 6 is implemented and release-approved, including private photos and Enrollment | Mark complete with evidence now |
-| Integrate Payment System | Not marked complete in screenshot | Phase 8 release-approved Fee collection, receipts, payment history, outstanding balances, and local sandbox transaction workflow | Mark complete with evidence now |
-| Deploy and Test Application | Pending | Automated tests exist; cloud deployment, full QA, manuals, and final evidence remain | Complete after deployment and final QA |
+| Implement Student Registration | Completed (student-reported 2026-06-24) | Phase 6 release-approved — Student registration, profiles, private photos, Enrollment | Retain evidence |
+| Integrate Payment System | Completed (student-reported 2026-06-24) | Phase 8 release-approved — Fee collection, receipts, sandbox transaction workflow | Retain evidence |
+| Deploy and Test Application | Pending | 394 automated tests pass; `DEPLOYMENT_GUIDE.md` and `INSTALLATION_GUIDE.md` added; cloud deploy, smoke tests, and final report upload remain | Complete after live HTTPS deploy and QA evidence |
 
 Recommended Milestone 4 progress description:
 
@@ -287,15 +289,15 @@ allows an optional file.
 | Implement Student registration | Complete | Phase 6 release approval |
 | Add Attendance tracking | Complete | Phase 7 release approval and 279-test suite |
 | Build Fee Management and receipt module | Complete | Phase 8 release approval |
-| Develop Examination and grading system | Complete | Phase 9 release approval and 348-test suite |
+| Develop Examination and grading system | Complete | Phase 9 release approval |
 | Configure role-based access control | Complete | Phase 4 release approval |
 | Ensure tenant-level data filtering | Complete for implemented modules | Native tenancy and 10/10 reviews |
 | Integrate payment sandbox | Complete | Phase 8 sandbox transaction workflow and release approval |
-| Deploy application on cloud platform | Pending | Phase 12 |
-| Conduct concurrent tenant testing | Pending final QA | Phase 11 |
+| Deploy application on cloud platform | Pending | `DEPLOYMENT_GUIDE.md`; target live URL by 2026-06-30 |
+| Conduct concurrent tenant testing | Pending final QA | Two-browser SHA/SHB demo per deployment guide §7 |
 | Implement logging and backups | Complete | Phase 10 release approval — activity/audit review screens and manual platform backups |
-| Optimize database queries | Ongoing; final audit pending | Phase 11 |
-| Prepare system documentation | Ongoing | Phase 12 and report workstream |
+| Optimize database queries | Ongoing; final audit pending | Document in report Chapter 7 |
+| Prepare system documentation | In progress | `INSTALLATION_GUIDE.md`, `DEPLOYMENT_GUIDE.md`, `MCA_SUBMISSION_CHECKLIST.md`; final report and user manual pending |
 
 ## 10. Scope Required Before Feature Freeze
 

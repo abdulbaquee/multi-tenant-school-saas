@@ -551,6 +551,13 @@ Phase 2 through Phase 5 evidence available for later report assembly:
   defaults, and focused regression coverage are aligned. The readiness rerun is
   approved with no blocking issues. Core reporting foundation is the next
   checkpoint.
+* Phase 10 Reports, Analytics & System Operations release evidence (2026-06-24):
+  Reports hub with Student, Attendance, Fee, and Examination CSV exports;
+  Super Admin and School Admin Analytics with Chart.js; Activity Log and Audit
+  Trail review screens; manual platform backup management under System
+  Operations. Release gate approved at 9.8/10. Full application suite passes
+  **394 tests**. Operator manual checklist passed. Submission workstream shifted
+  to deployment, final report, and Qollabb Milestone 6.
 
 Screenshots remain to be selected and captured during the documentation and
 submission phases.

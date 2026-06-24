@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'School SaaS') }}</title>
+        <title>{{ config('app.name', 'School Portal') }}</title>
 
         @include('layouts.partials.critical-head')
 
@@ -60,8 +60,8 @@
 
                 <footer class="border-top bg-white">
                     <div class="app-content d-flex flex-column flex-sm-row justify-content-between gap-2 py-3 small text-body-secondary">
-                        <span>&copy; {{ now()->year }} {{ config('app.name', 'School SaaS') }}</span>
-                        <span>{{ __('School Administration Platform') }}</span>
+                        <span>&copy; {{ now()->year }} {{ config('app.name', 'School Portal') }}</span>
+                        <span>{{ __('Multi-Tenant School Administration') }}</span>
                     </div>
                 </footer>
             </div>

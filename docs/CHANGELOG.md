@@ -1235,6 +1235,33 @@ Status: Completed
 
 ---
 
+# [1.2.9] - MCA Submission Workstream (Deployment & Report)
+
+Date: 2026-06-24
+
+Status: In Progress
+
+## Added
+
+* `docs/INSTALLATION_GUIDE.md` — local setup and verification steps.
+* `docs/DEPLOYMENT_GUIDE.md` — VPS/Nginx/MySQL 8 production deployment,
+  smoke tests, tenant demo, and Qollabb Milestone 6 submission text.
+* `docs/MCA_SUBMISSION_CHECKLIST.md` — dated checklist through 2026-07-05.
+
+## Changed
+
+* `docs/MCA_SUBMISSION_MASTER_PLAN.md` — portal progress 5/6 milestones;
+  payment integration marked complete; submission focus on deploy and final report.
+* `docs/MCA_REPORT_NOTES.md` — Phase 10 release evidence and 394-test totals.
+
+## Deliverables
+
+* Installation and deployment guides for report appendices.
+* Critical-path checklist for cloud deploy, report PDF, presentation, and portal
+  final submit.
+
+---
+
 # [1.3.0] - Testing & Quality Assurance
 
 Status: Planned
@@ -1323,8 +1350,9 @@ Example:
 
 # Current Project Status
 
-Phase: Phase 10 Reports, Analytics & System Operations Completed — Release
-Approved; Phase 9 Examination Management Completed — Release Approved
+Phase: MCA submission critical path — deployment, final report, Qollabb
+Milestone 6 (Deploy and Test Application). Phase 10 release-approved; 394 tests
+passing. Feature freeze effective 2026-07-02.
 
 Repository Setup: Completed
 
