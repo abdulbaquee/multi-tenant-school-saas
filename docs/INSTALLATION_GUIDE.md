@@ -5,7 +5,8 @@ Status: Active
 Project: Multi-Tenant School Administration Management SaaS Platform
 
 This guide covers local developer installation for MCA demonstration, testing, and
-report evidence. Production deployment is documented in `DEPLOYMENT_GUIDE.md`.
+report evidence. Production deployment for **School Portal** at
+`https://schoolportal.pagescorch.com` is documented in `DEPLOYMENT_GUIDE.md`.
 
 ## 1. Prerequisites
 
@@ -23,8 +24,8 @@ Optional: `zip` PHP extension for platform backup archives in System Operations.
 ## 2. Clone And Configure
 
 ```bash
-git clone https://github.com/abdulbaquee/multi-tenant-school-saas.git
-cd multi-tenant-school-saas
+git clone https://github.com/abdulbaquee/multi-tenant-school-saas.git schoolportal
+cd schoolportal
 cp .env.example .env
 composer install
 php artisan key:generate
@@ -33,6 +34,7 @@ php artisan key:generate
 Edit `.env` for local MySQL:
 
 ```dotenv
+APP_NAME="School Portal"
 APP_ENV=local
 APP_DEBUG=true
 APP_URL=http://127.0.0.1:8000
@@ -40,7 +42,7 @@ APP_URL=http://127.0.0.1:8000
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=school_saas
+DB_DATABASE=schoolportal
 DB_USERNAME=your_user
 DB_PASSWORD=your_password
 
@@ -51,7 +53,7 @@ FILESYSTEM_DISK=local
 Create the database:
 
 ```sql
-CREATE DATABASE school_saas CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE schoolportal CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
 ## 3. Migrate, Seed, And Build Assets
@@ -113,6 +115,6 @@ move private files to `public/`.
 
 ## 8. Related Documents
 
-* `DEPLOYMENT_GUIDE.md` — production cloud deployment
+* `DEPLOYMENT_GUIDE.md` — production deployment at `schoolportal.pagescorch.com`
 * `MCA_SUBMISSION_CHECKLIST.md` — deadline checklist
 * `Dummy-Logins-for-multiple-schools.md` — demonstration credentials

@@ -33,7 +33,7 @@ them.
 - [ ] Configure production `.env` (`APP_DEBUG=false`, HTTPS)
 - [ ] `composer install --no-dev`, `npm run build`, `migrate --seed`
 - [ ] Post-deploy smoke tests on live URL
-- [ ] Record live URL in this checklist and Qollabb
+- [ ] Record live URL: `https://schoolportal.pagescorch.com` in Qollabb
 
 ### Report drafting (parallel — 25% time daily)
 
@@ -72,7 +72,7 @@ them.
 - [ ] Upload final report PDF
 - [ ] Upload presentation PDF/PPT
 - [ ] Add GitHub URL: `https://github.com/abdulbaquee/multi-tenant-school-saas`
-- [ ] Add live demo HTTPS URL
+- [ ] Add live demo HTTPS URL: `https://schoolportal.pagescorch.com`
 - [ ] Click final Submit before deadline
 
 ## Milestone 6 Evidence Package

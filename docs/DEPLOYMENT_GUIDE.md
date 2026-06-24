@@ -8,7 +8,10 @@ Cloud deployment is required for the Qollabb live-demo link and MCA Milestone 6
 (**Deploy and Test Application**). This guide targets a single Ubuntu VPS with
 Nginx, PHP 8.4, MySQL 8, and HTTPS.
 
-Adapt hostnames, paths, and credentials to your provider.
+**Canonical demo URL:** `https://schoolportal.pagescorch.com`
+
+Before deployment, add a DNS **A record** for `schoolportal` pointing to your VPS
+public IP address.
 
 ## 1. Deployment Goals
 
@@ -51,18 +54,18 @@ sudo apt install -y nodejs
 Secure MySQL and create database:
 
 ```sql
-CREATE DATABASE school_saas_prod CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'school_saas'@'localhost' IDENTIFIED BY 'strong-random-password';
-GRANT ALL PRIVILEGES ON school_saas_prod.* TO 'school_saas'@'localhost';
+CREATE DATABASE schoolportal_prod CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'schoolportal'@'localhost' IDENTIFIED BY 'strong-random-password';
+GRANT ALL PRIVILEGES ON schoolportal_prod.* TO 'schoolportal'@'localhost';
 FLUSH PRIVILEGES;
 ```
 
 ## 4. Deploy Application Files
 
 ```bash
-sudo mkdir -p /var/www/school-saas
-sudo chown -R $USER:www-data /var/www/school-saas
-cd /var/www/school-saas
+sudo mkdir -p /var/www/schoolportal
+sudo chown -R $USER:www-data /var/www/schoolportal
+cd /var/www/schoolportal
 git clone https://github.com/abdulbaquee/multi-tenant-school-saas.git .
 composer install --no-dev --optimize-autoloader
 cp .env.example .env
@@ -75,13 +78,13 @@ Production `.env` essentials:
 APP_NAME="School Portal"
 APP_ENV=production
 APP_DEBUG=false
-APP_URL=https://your-domain.example
+APP_URL=https://schoolportal.pagescorch.com
 
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=school_saas_prod
-DB_USERNAME=school_saas
+DB_DATABASE=schoolportal_prod
+DB_USERNAME=schoolportal
 DB_PASSWORD=strong-random-password
 
 SESSION_DRIVER=database
@@ -125,13 +128,13 @@ sudo chmod -R ug+rwx storage bootstrap/cache
 
 ## 5. Nginx Site Configuration
 
-Create `/etc/nginx/sites-available/school-saas`:
+Create `/etc/nginx/sites-available/schoolportal`:
 
 ```nginx
 server {
     listen 80;
-    server_name your-domain.example;
-    root /var/www/school-saas/public;
+    server_name schoolportal.pagescorch.com;
+    root /var/www/schoolportal/public;
 
     add_header X-Frame-Options "SAMEORIGIN";
     add_header X-Content-Type-Options "nosniff";
@@ -164,9 +167,9 @@ server {
 Enable and test:
 
 ```bash
-sudo ln -s /etc/nginx/sites-available/school-saas /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/schoolportal /etc/nginx/sites-enabled/
 sudo nginx -t && sudo systemctl reload nginx
-sudo certbot --nginx -d your-domain.example
+sudo certbot --nginx -d schoolportal.pagescorch.com
 ```
 
 ## 6. Post-Deployment Smoke Tests
@@ -185,8 +188,8 @@ production `.env` first).
 | 7 | Backup | Super Admin creates and downloads platform backup |
 | 8 | HTTPS | No mixed-content warnings; session persists after login |
 
-Record URL, date, PHP/MySQL versions, and screenshot filenames in
-`MCA_REPORT_NOTES.md`.
+Record `https://schoolportal.pagescorch.com`, date, PHP/MySQL versions, and
+screenshot filenames in `MCA_REPORT_NOTES.md`.
 
 ## 7. Concurrent Tenant Demonstration
 
@@ -207,7 +210,7 @@ run the test suite against production data.
 Before each production change:
 
 ```bash
-mysqldump -u school_saas -p school_saas_prod > backup-$(date +%F).sql
+mysqldump -u schoolportal -p schoolportal_prod > backup-$(date +%F).sql
 tar -czf storage-backup-$(date +%F).tar.gz storage/app/private
 ```
 
@@ -235,8 +238,8 @@ Management** inside the Super Admin UI.
 
 Copy into Qollabb when smoke tests and report draft are complete:
 
-> Deployed the Multi-Tenant School Administration Management SaaS Platform to a
-> cloud server with HTTPS, MySQL 8, and production Laravel configuration. Ran
+> Deployed **School Portal** at `https://schoolportal.pagescorch.com` on a cloud
+> server with HTTPS, MySQL 8, and production Laravel configuration. Ran
 > migrate/seed, built frontend assets, and verified smoke tests for Super Admin,
 > School Admin, Teacher, and Accountant roles. Demonstrated concurrent
 > two-school tenant isolation with SHA and SHB demo schools. Full automated
