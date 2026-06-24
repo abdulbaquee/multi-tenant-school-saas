@@ -627,8 +627,11 @@ Every report must include:
 
 Supported Exports:
 
-* PDF
-* Excel
+* CSV download
+* Browser print for printable report views
+
+PDF and Excel export libraries remain deferred for Phase 10 MVP per
+DECISION-036.
 
 ---
 
@@ -636,7 +639,9 @@ Supported Exports:
 
 Library:
 
-Chart.js
+Chart.js via npm for Super Admin and School Admin Analytics pages only.
+
+Teacher and Accountant analytics remain dashboard-embedded summary widgets.
 
 Supported Charts:
 

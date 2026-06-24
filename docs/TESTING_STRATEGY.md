@@ -793,6 +793,39 @@ assertions. The full application suite passes 348 tests with 3,078 assertions.
 Pint, Composer validation, route inspection, and `git diff --check` passed. The
 Phase 9 release gate is approved and ready for Phase 10.
 
+## Phase 10 Readiness And Design Remediation Evidence
+
+Phase 10 readiness evidence (2026-06-24): the initial readiness audit scored
+7/10 and found missing consolidated Phase 10 boundary decisions, export package
+conflicts, undeployed `backup_logs` implementation, Chart.js dependency gap, and
+incomplete dashboard analytics scope. DECISION-036 and the Phase 10 design
+remediation define these rules.
+
+Phase 10 tests must validate:
+
+* Shared report filters, pagination, and summary-card correctness.
+* Student, Attendance, Fee, and Examination report authorization by role and
+  assignment scope.
+* Super Admin platform aggregate reports without raw cross-tenant PII exposure.
+* CSV export authorization, tenant filters, and privacy-safe output fields.
+* Browser print views using the same authorized dataset as on-screen reports.
+* Dashboard widget aggregates for all four roles.
+* Super Admin and School Admin Analytics charts with bounded queries.
+* Activity Log and Audit Trail list/detail privacy-safe rendering.
+* Super Admin and School Admin log review only; Teacher and Accountant denied.
+* Manual platform backup creation, private storage, authorized download, and
+  retained `backup_logs` history.
+* `backups.delete` file removal with immutable history retention.
+* Cross-tenant HTTP and direct-service denial for every Phase 10 route.
+* Forged filter payloads with prohibited `school_id` and out-of-scope IDs.
+
+Phase 10 design remediation evidence (2026-06-24): DECISION-036 recorded CSV and
+browser-print export boundaries, Chart.js scope, backup workflow rules, log
+review access, and RBAC alignment. Teacher and Accountant no longer receive
+`analytics.view`. Accountant receives `fees.report` and `fees.export`. Focused
+RBAC regression coverage passes. The readiness rerun is approved with no blocking
+issues. Core reporting foundation is the next checkpoint.
+
 ---
 
 # 21. REPORTING TESTING
@@ -810,11 +843,28 @@ Verify:
 * Filters
 * Pagination
 * Data Accuracy
-* Export Functionality
+* CSV Export Functionality
+* Browser Print Parity With On-Screen Data
 
 Expected Result:
 
 Reports reflect accurate data.
+
+Phase 10 MVP excludes PDF and Excel export libraries unless a separate approved
+package decision exists.
+
+---
+
+# 21.1 PHASE 10 REPORTING TEST MATRIX
+
+| Area | Required Coverage |
+| ---- | ----------------- |
+| Student Reports | School Admin own school; Teacher assigned classes; Super Admin aggregates; Accountant fee-context lookup only |
+| Attendance Reports | School Admin own school; Teacher assigned Sections; Super Admin aggregates |
+| Fee Reports | School Admin and Accountant own school; Super Admin aggregates; Teacher denied |
+| Examination Reports | School Admin own school; Teacher assigned scope; Super Admin aggregates; Accountant denied |
+| CSV Export | Allowed roles only; denied without export permission; privacy-safe columns |
+| Cross-Tenant | School A cannot read School B report datasets by HTTP or direct service |
 
 ---
 
@@ -830,6 +880,28 @@ Validate:
 Expected Result:
 
 Dashboard values match database values.
+
+Teacher and Accountant analytics remain dashboard-embedded only. Super Admin and
+School Admin Analytics pages require Chart.js chart rendering tests with bounded
+datasets.
+
+---
+
+# 22.1 PHASE 10 BACKUP TESTING
+
+Validate:
+
+* Manual platform backup creation
+* Private storage path assignment
+* Authorized Super Admin download
+* Denied School Admin, Teacher, and Accountant access
+* `backup_logs` history retention
+* `backups.delete` private-file removal without history-row deletion
+* Activity and audit evidence for backup actions
+
+Expected Result:
+
+Backup files remain private and history is retained.
 
 ---
 

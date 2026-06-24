@@ -683,6 +683,32 @@ remediation limits Teacher report-card list/detail/print output to assigned
 subject scope and hides unassigned subject marks plus full aggregate totals,
 percentage, grade, and status.
 
+## Phase 10 Reports, Analytics & System Operations Architecture
+
+Phase 10 owns Student, Attendance, Fee, and Examination report screens,
+role-specific dashboard analytics, Activity Log and Audit Trail review screens,
+and Backup Management. Report datasets are built in services, authorized through
+Policies and Form Requests, and rendered as browser-safe paginated views. CSV
+export uses native PHP streaming with the same authorization and filters as the
+on-screen report. Browser print covers printable report views. PDF and Excel
+libraries remain deferred for the MCA MVP.
+
+Canonical Laravel components:
+
+| Table | Model | Service | Notes |
+| ----- | ----- | ------- | ----- |
+| `backup_logs` | `BackupLog` | `BackupService` | Manual platform backup history and private file metadata. |
+| `activity_logs` | `ActivityLog` | `ActivityLogService` | Read-only review screens over existing append-only records. |
+| `audit_logs` | `AuditLog` | `AuditLogService` | Read-only review screens with privacy-safe detail rendering. |
+
+Reporting services follow the existing layered pattern: thin controllers, Form
+Request filters, service-built datasets, and tenant/assignment enforcement
+matching Phases 6–9. Super Admin platform reads occur only in explicit Platform
+context and return aggregate summaries rather than raw cross-tenant PII.
+
+Implementation status (2026-06-24): Phase 10 design remediation is approved.
+Core reporting foundation is the next checkpoint.
+
 ---
 
 # 11. DASHBOARD ARCHITECTURE

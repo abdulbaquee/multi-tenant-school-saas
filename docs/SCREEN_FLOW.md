@@ -377,6 +377,9 @@ Fees
 ├── Outstanding Balances
 └── Sandbox Transactions
 
+Reports
+└── Fee Reports
+
 Profile
 
 ---

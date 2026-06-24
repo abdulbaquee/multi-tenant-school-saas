@@ -145,7 +145,8 @@ class TenantAwareServiceTest extends TestCase
         $tenantSummary = $service->summaryFor($schoolAdmin);
 
         $this->assertSame('School administration', $tenantSummary['title']);
-        $this->assertSame(2, $tenantSummary['metrics'][0]['value']);
+        $this->assertSame('Active students', $tenantSummary['metrics'][0]['label']);
+        $this->assertSame(0, $tenantSummary['metrics'][0]['value']);
 
         $context->setPlatform();
         $platformSummary = $service->summaryFor($superAdmin);

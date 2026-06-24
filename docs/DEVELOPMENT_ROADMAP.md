@@ -320,7 +320,7 @@ summaries are deferred to Phase 10 Reporting.
 
 # Phase 10 — Reports, Analytics & System Operations
 
-Status: Pending
+Status: In Progress — Design Remediation Approved
 
 ## Features
 
@@ -332,6 +332,18 @@ Status: Pending
 * Activity Log Screens
 * Audit Trail Screens
 * Backup Management and Private Backup History
+
+## Implementation Boundary
+
+DECISION-036 defines the approved Phase 10 boundary:
+
+* CSV export and browser print only for the MCA MVP; PDF/Excel libraries
+  deferred.
+* Super Admin platform aggregate reports, log review, and Backup Management.
+* School Admin own-school reports and log review.
+* Teacher assigned-class reports and dashboard summaries only.
+* Accountant financial reports and fee-context student lookup only.
+* Chart.js analytics page for Super Admin and School Admin only.
 
 ## Deliverables
 
@@ -408,5 +420,4 @@ Project ready for final evaluation and submission.
 
 # Next Immediate Task
 
-Start Phase 10 Reports, Analytics & System Operations readiness review and
-submission evidence planning.
+Begin Phase 10 core reporting foundation and shared report filters.

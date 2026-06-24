@@ -130,7 +130,14 @@ prompts/
     ├── 05-phase-09-report-cards.md
     └── 06-phase-09-release-gate-reviews.md
 └── 10-reports-analytics-system-operations/
-    └── 00-phase-10-readiness-review.md
+    ├── 00-phase-10-readiness-review.md
+    ├── 01-phase-10-design-remediation.md
+    ├── 02-phase-10-core-reporting-foundation.md
+    └── 03-phase-10-student-attendance-reports.md
+    └── 04-phase-10-fee-examination-reports.md
+    └── 05-phase-10-dashboard-analytics-widgets.md
+    └── 06-phase-10-activity-audit-screens.md
+    └── 07-phase-10-backup-management.md
 ```
 
 ## Current Prompt Creation Status
@@ -192,8 +199,13 @@ Created for the next roadmap gate:
 - Phase 9 marks entry and result processing workflow (executed).
 - Phase 9 operational report-card workflow (executed).
 - Phase 9 release gate reviews (executed and approved).
-- Phase 10 Reports, Analytics & System Operations readiness review (created;
-  ready to execute).
+- Phase 10 Reports, Analytics & System Operations readiness review (executed;
+  design remediation required; rerun approved with no blocking issues).
+- Phase 10 Reports, Analytics & System Operations design remediation (executed).
+- Phase 10 core reporting foundation and shared report filters (executed).
+- Phase 10 Student and Attendance report screens (executed).
+- Phase 10 Fee and Examination report screens (executed).
+- Phase 10 Dashboard and Analytics widgets (executed).
 
 Future prompt groups should be added only when they are needed for the next roadmap phase.
 

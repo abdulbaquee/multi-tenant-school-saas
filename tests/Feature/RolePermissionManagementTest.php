@@ -254,13 +254,13 @@ class RolePermissionManagementTest extends TestCase
         $this->assertSame($originalCodes, $this->codes($teacher));
     }
 
-    public function test_accountant_fee_setup_report_and_export_permissions_are_out_of_bounds(): void
+    public function test_accountant_fee_setup_permissions_remain_out_of_bounds(): void
     {
         $superAdmin = $this->superAdmin();
         $accountant = $this->role(Role::ACCOUNTANT);
         $originalCodes = $this->codes($accountant);
 
-        foreach (['fees.create', 'fees.update', 'fees.delete', 'fees.report', 'fees.export'] as $code) {
+        foreach (['fees.create', 'fees.update', 'fees.delete'] as $code) {
             $this->actingAs($superAdmin)
                 ->from(route('roles.edit', $accountant))
                 ->put(route('roles.permissions.update', $accountant), [
@@ -275,6 +275,14 @@ class RolePermissionManagementTest extends TestCase
 
             $this->assertSame($originalCodes, $this->codes($accountant));
         }
+
+        $this->assertEqualsCanonicalizing(
+            ['fees.report', 'fees.export'],
+            array_values(array_intersect(
+                config('rbac.default_mappings.accountant'),
+                ['fees.report', 'fees.export'],
+            )),
+        );
     }
 
     public function test_teacher_exam_setup_publish_report_and_export_permissions_are_out_of_bounds(): void

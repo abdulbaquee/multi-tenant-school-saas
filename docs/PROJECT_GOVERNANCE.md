@@ -151,7 +151,7 @@ Phase 9 — Examination Management
 Status: Completed — Release Approved
 
 Phase 10 — Reports, Analytics & System Operations
-Status: Pending
+Status: In Progress — Design Remediation Approved
 
 Phase 11 — Testing & Quality Assurance
 Status: Pending
@@ -280,5 +280,20 @@ Verification evidence:
 
 # Next Milestone
 
-Start Phase 10 Reports, Analytics & System Operations readiness review and
-submission evidence planning.
+Begin Phase 10 core reporting foundation and shared report filters after the
+approved design remediation.
+
+---
+
+# Phase 10 Review Progress
+
+The Phase 10 readiness review scored 7/10 and required design remediation.
+DECISION-036 resolved export, backup, analytics, log-review, and role-boundary
+findings. CSV streaming and browser print are the approved Phase 10 MVP export
+formats; PDF and Excel libraries remain deferred. Chart.js is approved for Super
+Admin and School Admin Analytics via npm. Teacher and Accountant receive
+dashboard-embedded summaries only. Accountant `fees.report` and `fees.export`
+activate financial report boundaries. `backups.delete` retains `backup_logs`
+history and removes only the private backup file. The readiness rerun is
+approved with no blocking issues. Core reporting foundation is the next
+implementation checkpoint.

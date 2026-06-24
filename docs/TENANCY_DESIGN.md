@@ -421,6 +421,33 @@ release-approved. Focused Phase 9 Examination suites pass 28 tests with 390
 assertions, and the full application suite passes 348 tests with 3,078
 assertions.
 
+## Phase 10 Reports, Analytics & System Operations Tenancy Contract
+
+Phase 10 report, analytics, log-review, and backup workflows inherit the tenant
+contracts of their source modules and DECISION-036.
+
+* School Admin report and log queries run only in Tenant context for the actor's
+  own school.
+* Teacher report queries are limited to assigned Students, directly assigned
+  Attendance Sections, and assigned Examination class/subject scope inside the
+  actor's tenant.
+* Accountant report queries are limited to own-school Fee datasets and
+  fee-context Student lookup inside the actor's tenant.
+* Super Admin platform report, log-review, and backup paths run only in
+  explicit Platform context and must return aggregate summaries rather than raw
+  cross-tenant minor data.
+* `backup_logs` for platform backups use `school_id = NULL` and private file
+  paths under authorized Super Admin download only.
+* Activity Log and Audit Trail review inherit the contextual log contract below;
+  Teachers and Accountants have no review route.
+
+Phase 10 isolation tests must cover School A/B HTTP and direct-service paths,
+forged filter fields, export authorization, backup privacy, and Super Admin
+aggregate-only platform report boundaries.
+
+Implementation status (2026-06-24): Phase 10 design remediation is approved.
+Core reporting foundation is the next checkpoint.
+
 The `users` exception exists only because authentication must retrieve a globally
 unique identity before tenant context can be resolved. It does not authorize
 unrestricted operational user queries. School Admin user creation always derives

@@ -680,9 +680,8 @@ confirmed changes before final PDF generation.
 
 ## 22. Immediate Next Action
 
-Start Phase 10 Reports, Analytics & System Operations readiness review and
-submission evidence planning after the approved Phase 9 Examination release
-gate.
+Begin Phase 10 core reporting foundation and shared report filters after the
+approved design remediation.
 
 Keep Examination evidence, MCA Chapter 4 design updates, and Chapter 5
 implementation notes moving in parallel with Phase 10 work.

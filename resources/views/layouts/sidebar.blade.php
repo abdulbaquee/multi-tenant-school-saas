@@ -95,6 +95,51 @@
                         </li>
                     @endif
 
+                    @can('reports.view')
+                        <li class="nav-item">
+                            <a class="nav-link sidebar-link @if (request()->routeIs('reports.*')) active @endif" href="{{ route('reports.index') }}" @if (request()->routeIs('reports.*')) aria-current="page" @endif>
+                                <i class="bi bi-file-earmark-bar-graph" aria-hidden="true"></i>
+                                <span>{{ __('Reports') }}</span>
+                            </a>
+                        </li>
+                    @endcan
+
+                    @can('analytics.view')
+                        <li class="nav-item">
+                            <a class="nav-link sidebar-link @if (request()->routeIs('analytics.*')) active @endif" href="{{ route('analytics.index') }}" @if (request()->routeIs('analytics.*')) aria-current="page" @endif>
+                                <i class="bi bi-graph-up" aria-hidden="true"></i>
+                                <span>{{ __('Analytics') }}</span>
+                            </a>
+                        </li>
+                    @endcan
+
+                    @can('activity_logs.view')
+                        <li class="nav-item">
+                            <a class="nav-link sidebar-link @if (request()->routeIs('activity-logs.*')) active @endif" href="{{ route('activity-logs.index') }}" @if (request()->routeIs('activity-logs.*')) aria-current="page" @endif>
+                                <i class="bi bi-activity" aria-hidden="true"></i>
+                                <span>{{ __('Activity Logs') }}</span>
+                            </a>
+                        </li>
+                    @endcan
+
+                    @can('audit_logs.view')
+                        <li class="nav-item">
+                            <a class="nav-link sidebar-link @if (request()->routeIs('audit-logs.*')) active @endif" href="{{ route('audit-logs.index') }}" @if (request()->routeIs('audit-logs.*')) aria-current="page" @endif>
+                                <i class="bi bi-shield-check" aria-hidden="true"></i>
+                                <span>{{ __('Audit Trail') }}</span>
+                            </a>
+                        </li>
+                    @endcan
+
+                    @can('backups.view')
+                        <li class="nav-item">
+                            <a class="nav-link sidebar-link @if (request()->routeIs('backups.*')) active @endif" href="{{ route('backups.index') }}" @if (request()->routeIs('backups.*')) aria-current="page" @endif>
+                                <i class="bi bi-cloud-arrow-up" aria-hidden="true"></i>
+                                <span>{{ __('Backup Management') }}</span>
+                            </a>
+                        </li>
+                    @endcan
+
                     @can('viewAny', \App\Models\School::class)
                         <li class="nav-item">
                             <a class="nav-link sidebar-link @if (request()->routeIs('schools.*')) active @endif" href="{{ route('schools.index') }}" @if (request()->routeIs('schools.*')) aria-current="page" @endif>

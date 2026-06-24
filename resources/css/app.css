@@ -192,6 +192,11 @@ footer.border-top {
     font-size: 1.25rem;
 }
 
+.analytics-chart-canvas {
+    position: relative;
+    min-height: 280px;
+}
+
 .school-logo-preview {
     width: 120px;
     height: 120px;

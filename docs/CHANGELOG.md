@@ -1042,21 +1042,168 @@ Status: Completed — Release Approved
 
 # [1.2.0] - Reports & Analytics
 
-Status: Planned
+Status: In Progress — Design Remediation Approved
+
+## Added
+
+* DECISION-036 defining Phase 10 report, analytics, log-review, backup, and CSV
+  export boundaries.
+* Phase 10 design remediation across governance, roadmap, modules, screen flow,
+  security, testing, tenancy, architecture, and RBAC defaults.
+* Focused RBAC regression coverage for Phase 10 permission boundaries.
 
 ## Planned
 
-* Student reports
-* Attendance reports
-* Fee reports
-* Examination reports
-* Dashboard analytics
-* Charts and visualizations
+* Activity Log and Audit Trail review screens
+* Backup Management with private backup history
 
 ## Deliverables
 
 * Reporting System
 * Analytics Dashboard
+* Activity and Audit Review Screens
+* Backup Management Module
+
+---
+
+# [1.2.1] - Phase 10 Design Remediation
+
+Status: Completed
+
+## Changed
+
+* Reconciled export boundary to CSV and browser print for Phase 10 MVP; deferred
+  PDF and Excel libraries.
+* Aligned Teacher and Accountant RBAC defaults with dashboard-only analytics.
+* Activated Accountant `fees.report` and `fees.export` for financial reports.
+* Documented `backups.delete` as private-file removal with retained history.
+
+## Deliverables
+
+* DECISION-036
+* Phase 10 implementation-ready documentation set
+
+---
+
+# [1.2.2] - Phase 10 Core Reporting Foundation
+
+Status: Completed
+
+## Added
+
+* `ReportCategory` registry for role-visible report types.
+* `ReportPolicy`, `ReportService`, and `ReportCsvExportService`.
+* Shared `ReportFilterRequest` foundation with prohibited tenant-override fields.
+* Reports hub route, controller, view, and sidebar navigation.
+* Focused `ReportFoundationTest` coverage.
+
+## Deliverables
+
+* Reporting foundation ready for module report prompts
+
+---
+
+# [1.2.3] - Phase 10 Student And Attendance Reports
+
+Status: Completed
+
+## Added
+
+* `StudentReportService` and `AttendanceReportService` with platform aggregate and
+  school-scoped modes.
+* Per-category report gates (`reports.students.view`, `reports.attendance.view`,
+  and matching export gates).
+* Student and Attendance report index/export routes, Form Requests, controller
+  actions, Bootstrap views, and shared report navigation partials.
+* Privacy-safe columns excluding guardian contact details, addresses, DOB, and
+  photos.
+* Role-scoped datasets for Super Admin aggregates, School Admin school scope,
+  Teacher assignment scope, and Accountant fee-context student lookup.
+* Focused `StudentAttendanceReportTest` coverage (7 tests).
+
+## Deliverables
+
+* Student and Attendance report screens ready for fee and examination prompts
+
+---
+
+# [1.2.4] - Phase 10 Fee And Examination Reports
+
+Status: Completed
+
+## Added
+
+* `FeeReportService` and `ExaminationReportService` with platform aggregate and
+  school-scoped modes.
+* Fee and Examination report index/export routes, Form Requests, controller
+  actions, Bootstrap views, and shared navigation links.
+* Role-scoped datasets for Super Admin aggregates, School Admin school scope,
+  Accountant fee reports, and Teacher assigned-subject examination scope.
+* Focused `FeeExaminationReportTest` coverage (9 tests).
+
+## Deliverables
+
+* Fee and Examination report screens ready for dashboard analytics prompt
+
+---
+
+# [1.2.5] - Phase 10 Dashboard And Analytics Widgets
+
+Status: Completed
+
+## Added
+
+* `AnalyticsService`, `AnalyticsController`, and Chart.js analytics page for Super
+  Admin and School Admin with up to four server-derived charts.
+* `chart.js` npm dependency and `resources/js/analytics.js` Vite entry.
+* `analytics.view` gate and sidebar navigation link.
+* Enhanced `DashboardService` role-specific summary widgets for all roles.
+* Focused `AnalyticsTest` coverage (6 tests) and dashboard regression updates.
+
+## Deliverables
+
+* Dashboard and Analytics widgets ready for Activity/Audit screens prompt
+
+---
+
+# [1.2.6] - Phase 10 Activity And Audit Review Screens
+
+Status: Completed
+
+## Added
+
+* `ActivityLogService`, `AuditLogService`, and `SystemLogCsvExportService` for
+  read-only list, detail, and CSV export workflows.
+* `ActivityLogController`, `AuditLogController`, policies, gates, routes, and
+  Bootstrap review screens for Super Admin (platform-wide) and School Admin
+  (own school).
+* `PrivacySafeLogValues` for privacy-safe audit detail rendering.
+* Sidebar links and system-operations navigation partial.
+* Focused `ActivityAuditLogTest` coverage (8 tests).
+
+## Deliverables
+
+* Activity Log and Audit Trail review screens ready for Backup Management prompt
+
+---
+
+# [1.2.7] - Phase 10 Backup Management
+
+Status: Completed
+
+## Added
+
+* `backup_logs` migration and `BackupLog` model with manual platform backup
+  metadata and retained history statuses.
+* `BackupService`, `PlatformDatabaseExporter`, `BackupController`, policy,
+  gates, routes, and private-storage download workflow.
+* Backup Management screens with create, history, detail, download, and file
+  removal actions.
+* Focused `BackupManagementTest` coverage (5 tests).
+
+## Deliverables
+
+* Phase 10 system-operations scope complete pending release-gate review
 
 ---
 
@@ -1148,9 +1295,9 @@ Example:
 
 # Current Project Status
 
-Phase: Phase 7 Attendance Completed — Release Approved; Phase 8 Fee Management
-Completed — Release Approved; Phase 9 Examination Management Completed —
-Release Approved; Phase 10 Reports, Analytics & System Operations next
+Phase: Phase 10 Reports, Analytics & System Operations In Progress — Design
+Remediation Approved; Phase 9 Examination Management Completed — Release
+Approved
 
 Repository Setup: Completed
 
@@ -1174,5 +1321,4 @@ School Admin exam setup, Exam Subject assignment, Teacher-scoped marks entry,
 grade calculation, School Admin result processing, and operational report cards
 are implemented and release-approved.
 
-Next Task: Start Phase 10 Reports, Analytics & System Operations readiness
-review and submission evidence planning.
+Next Task: Run Phase 10 release-gate review or proceed to MCA submission evidence.

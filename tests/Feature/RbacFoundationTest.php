@@ -54,6 +54,62 @@ class RbacFoundationTest extends TestCase
         );
     }
 
+    public function test_phase_10_reporting_permission_boundaries_match_decision_036(): void
+    {
+        $teacher = config('rbac.maximum_mappings.teacher');
+        $accountant = config('rbac.maximum_mappings.accountant');
+        $superAdmin = config('rbac.maximum_mappings.super_admin');
+
+        $this->assertNotContains('analytics.view', $teacher);
+        $this->assertNotContains('analytics.view', $accountant);
+        $this->assertContains('analytics.view', $superAdmin);
+        $this->assertContains('analytics.view', config('rbac.maximum_mappings.school_admin'));
+
+        $this->assertEqualsCanonicalizing(
+            ['attendance.report', 'attendance.export', 'reports.view', 'reports.export'],
+            array_values(array_intersect(
+                $teacher,
+                ['attendance.report', 'attendance.export', 'exams.report', 'exams.export', 'reports.view', 'reports.export'],
+            )),
+        );
+
+        $this->assertNotContains('exams.report', $teacher);
+        $this->assertNotContains('fees.report', $teacher);
+        $this->assertNotContains('activity_logs.view', $teacher);
+        $this->assertNotContains('audit_logs.view', $teacher);
+
+        $this->assertEqualsCanonicalizing(
+            ['fees.report', 'fees.export', 'reports.view', 'reports.export'],
+            array_values(array_intersect(
+                $accountant,
+                ['fees.report', 'fees.export', 'attendance.report', 'exams.report', 'reports.view', 'reports.export'],
+            )),
+        );
+
+        $this->assertNotContains('attendance.report', $accountant);
+        $this->assertNotContains('exams.report', $accountant);
+        $this->assertNotContains('activity_logs.view', $accountant);
+        $this->assertNotContains('audit_logs.view', $accountant);
+
+        $this->assertEqualsCanonicalizing(
+            ['backups.view', 'backups.create', 'backups.download', 'backups.delete'],
+            array_values(array_intersect(
+                $superAdmin,
+                ['backups.view', 'backups.create', 'backups.download', 'backups.delete'],
+            )),
+        );
+
+        foreach (['school_admin', 'teacher', 'accountant'] as $roleCode) {
+            foreach (['backups.view', 'backups.create', 'backups.download', 'backups.delete'] as $permission) {
+                $this->assertNotContains(
+                    $permission,
+                    config("rbac.maximum_mappings.{$roleCode}"),
+                    "{$roleCode} must not receive {$permission}.",
+                );
+            }
+        }
+    }
+
     public function test_reseeding_repairs_mapping_boundaries_without_restoring_allowed_revocations_or_passwords(): void
     {
         $schoolAdmin = Role::query()->where('code', Role::SCHOOL_ADMIN)->firstOrFail();

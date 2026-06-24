@@ -990,7 +990,7 @@ Stores generated report card summaries.
 Implementation status: the append-only `activity_logs` and `audit_logs` tables,
 tenant-aware models, and recording foundation are implemented for current Phase
 2 and Phase 3 workflows. Their review screens and `backup_logs` implementation
-remain scheduled for Phase 10 system operations.
+remain scheduled for Phase 10 system operations per DECISION-036.
 
 ## 11.1 activity_logs
 

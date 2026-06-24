@@ -754,8 +754,11 @@ Features:
 
 Export Formats:
 
-* PDF
-* Excel
+* CSV
+* Browser print for printable report views
+
+PDF and Excel export libraries remain deferred for Phase 10 MVP per
+DECISION-036.
 
 ---
 
@@ -992,6 +995,12 @@ Phase Availability:
   permissions. Teacher operational access uses `exams.view`, `exams.create`, and
   `exams.update` only within assigned class/subject scope. Super Admin and
   Accountant have no Phase 9 route.
+* In Phase 10, `reports.view`, `reports.export`, module report permissions,
+  `activity_logs.view`, `audit_logs.view`, and backup permissions activate only
+  with matching routes, Policies, and services. Teacher and Accountant do not
+  receive `analytics.view`. Accountant receives `fees.report` and `fees.export`
+  for financial reports only. Super Admin platform reports remain
+  aggregate-only.
 
 ## Essential Permission Rules
 

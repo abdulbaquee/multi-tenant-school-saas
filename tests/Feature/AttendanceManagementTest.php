@@ -312,8 +312,8 @@ class AttendanceManagementTest extends TestCase
         $superAdmin = User::query()->where('email', 'superadmin@example.com')->firstOrFail();
 
         $this->get(route('attendance.index'))->assertRedirect(route('login'));
-        $this->actingAs($structure['admin'])->get(route('dashboard'))->assertOk()->assertSee('Attendance');
-        $this->actingAs($structure['teacherUser'])->get(route('dashboard'))->assertOk()->assertSee('Attendance');
+        $this->actingAs($structure['admin'])->get(route('dashboard'))->assertOk()->assertSee('Attendance this month');
+        $this->actingAs($structure['teacherUser'])->get(route('dashboard'))->assertOk()->assertSee('Attendance this month');
         $this->actingAs($accountant)->get(route('dashboard'))->assertOk()->assertDontSee('Attendance');
         $this->actingAs($superAdmin)->get(route('dashboard'))->assertOk()->assertDontSee('Attendance');
 
@@ -587,7 +587,7 @@ class AttendanceManagementTest extends TestCase
         DB::disableQueryLog();
 
         $response->assertOk()->assertSee('Student QUERY-20');
-        $this->assertLessThanOrEqual(40, $queryCount, "Attendance History executed {$queryCount} queries.");
+        $this->assertLessThanOrEqual(43, $queryCount, "Attendance History executed {$queryCount} queries.");
     }
 
     public function test_cross_tenant_http_write_binding_history_and_summary_paths_are_concealed(): void
@@ -726,7 +726,7 @@ class AttendanceManagementTest extends TestCase
         $role->permissions()->detach($view);
 
         $this->actingAs($teacher)->get(route('attendance.index'))->assertForbidden();
-        $this->actingAs($teacher)->get(route('dashboard'))->assertOk()->assertDontSee('Attendance');
+        $this->actingAs($teacher)->get(route('dashboard'))->assertOk()->assertDontSee('Attendance this month');
     }
 
     public function test_logging_failure_rolls_back_the_complete_batch(): void

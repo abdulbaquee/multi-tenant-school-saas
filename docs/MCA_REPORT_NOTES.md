@@ -541,6 +541,16 @@ Phase 2 through Phase 5 evidence available for later report assembly:
   scope in report-card list/detail/print output. Focused Phase 9 Examination
   suites pass 28 tests with 390 assertions, and the full application suite
   passes 348 tests with 3,078 assertions.
+* Phase 10 Reports, Analytics & System Operations design evidence: DECISION-036
+  defines CSV and browser-print export boundaries, Chart.js scope for Super Admin
+  and School Admin Analytics, manual private backup workflow, Activity Log and
+  Audit Trail review access, dashboard-only Teacher and Accountant analytics,
+  Accountant financial report permissions, and aggregate-only Super Admin platform
+  reports before implementation.
+* Phase 10 design remediation evidence (2026-06-24): documentation, RBAC
+  defaults, and focused regression coverage are aligned. The readiness rerun is
+  approved with no blocking issues. Core reporting foundation is the next
+  checkpoint.
 
 Screenshots remain to be selected and captured during the documentation and
 submission phases.

@@ -4,7 +4,10 @@ namespace App\Providers;
 
 use App\Models\AcademicTerm;
 use App\Models\AcademicYear;
+use App\Models\ActivityLog;
 use App\Models\Attendance;
+use App\Models\AuditLog;
+use App\Models\BackupLog;
 use App\Models\Exam;
 use App\Models\ExamResult;
 use App\Models\ExamSubject;
@@ -26,7 +29,10 @@ use App\Models\Teacher;
 use App\Models\User;
 use App\Policies\AcademicTermPolicy;
 use App\Policies\AcademicYearPolicy;
+use App\Policies\ActivityLogPolicy;
 use App\Policies\AttendancePolicy;
+use App\Policies\AuditLogPolicy;
+use App\Policies\BackupPolicy;
 use App\Policies\ExamPolicy;
 use App\Policies\ExamResultPolicy;
 use App\Policies\ExamSubjectPolicy;
@@ -35,6 +41,7 @@ use App\Policies\FeePaymentPolicy;
 use App\Policies\FeeStructurePolicy;
 use App\Policies\PaymentTransactionPolicy;
 use App\Policies\ReportCardPolicy;
+use App\Policies\ReportPolicy;
 use App\Policies\RolePolicy;
 use App\Policies\SchoolClassPolicy;
 use App\Policies\SchoolPolicy;
@@ -46,6 +53,7 @@ use App\Policies\StudentPolicy;
 use App\Policies\SubjectPolicy;
 use App\Policies\TeacherPolicy;
 use App\Policies\UserPolicy;
+use App\Reporting\ReportCategory;
 use App\Tenancy\TenantContext;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
@@ -71,7 +79,10 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::policy(AcademicYear::class, AcademicYearPolicy::class);
         Gate::policy(AcademicTerm::class, AcademicTermPolicy::class);
+        Gate::policy(ActivityLog::class, ActivityLogPolicy::class);
         Gate::policy(Attendance::class, AttendancePolicy::class);
+        Gate::policy(AuditLog::class, AuditLogPolicy::class);
+        Gate::policy(BackupLog::class, BackupPolicy::class);
         Gate::policy(Exam::class, ExamPolicy::class);
         Gate::policy(ExamSubject::class, ExamSubjectPolicy::class);
         Gate::policy(ExamResult::class, ExamResultPolicy::class);
@@ -92,6 +103,27 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Role::class, RolePolicy::class);
         Gate::policy(User::class, UserPolicy::class);
         Gate::define('dashboard.view', fn (User $user): bool => $user->canViewDashboard());
+        Gate::define('analytics.view', fn (User $user): bool => $user->status === User::STATUS_ACTIVE
+            && $user->hasPermission('analytics.view')
+            && ($user->isSuperAdmin() || $user->hasRoleCode(Role::SCHOOL_ADMIN)));
+        Gate::define('activity_logs.view', fn (User $user): bool => app(ActivityLogPolicy::class)->viewAny($user));
+        Gate::define('audit_logs.view', fn (User $user): bool => app(AuditLogPolicy::class)->viewAny($user));
+        Gate::define('backups.view', fn (User $user): bool => app(BackupPolicy::class)->viewAny($user));
+        Gate::define('backups.create', fn (User $user): bool => app(BackupPolicy::class)->create($user));
+        Gate::define('reports.view', fn (User $user): bool => app(ReportPolicy::class)->viewAny($user));
+        Gate::define('reports.export', fn (User $user): bool => app(ReportPolicy::class)->exportAny($user));
+
+        foreach (ReportCategory::cases() as $category) {
+            Gate::define("reports.{$category->value}.view", fn (User $user): bool => app(ReportPolicy::class)->viewCategory($user, $category));
+            Gate::define("reports.{$category->value}.export", fn (User $user): bool => app(ReportPolicy::class)->exportCategory($user, $category));
+        }
+
+        Gate::define('viewReportCategory', function (User $user, string $category): bool {
+            return app(ReportPolicy::class)->viewCategory($user, ReportCategory::from($category));
+        });
+        Gate::define('exportReportCategory', function (User $user, string $category): bool {
+            return app(ReportPolicy::class)->exportCategory($user, ReportCategory::from($category));
+        });
         Paginator::useBootstrapFive();
     }
 }

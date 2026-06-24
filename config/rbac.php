@@ -107,7 +107,7 @@ $maximumMappings = [
         'activity_logs.view', 'audit_logs.view',
     ],
     'teacher' => [
-        'profile.view', 'profile.update', 'dashboard.view', 'analytics.view',
+        'profile.view', 'profile.update', 'dashboard.view',
         'academic.view', 'students.view',
         'attendance.view', 'attendance.create', 'attendance.update', 'attendance.delete',
         'attendance.report', 'attendance.export',
@@ -115,9 +115,9 @@ $maximumMappings = [
         'reports.view', 'reports.export',
     ],
     'accountant' => [
-        'profile.view', 'profile.update', 'dashboard.view', 'analytics.view',
+        'profile.view', 'profile.update', 'dashboard.view',
         'students.view',
-        'fees.view', 'fees.collect',
+        'fees.view', 'fees.collect', 'fees.report', 'fees.export',
         'reports.view', 'reports.export',
     ],
 ];

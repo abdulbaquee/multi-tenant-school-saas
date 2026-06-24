@@ -2,7 +2,11 @@
 
 use App\Http\Controllers\AcademicTermController;
 use App\Http\Controllers\AcademicYearController;
+use App\Http\Controllers\ActivityLogController;
+use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\AuditLogController;
+use App\Http\Controllers\BackupController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ExamMarksEntryController;
@@ -16,6 +20,7 @@ use App\Http\Controllers\FeeStructureController;
 use App\Http\Controllers\PaymentTransactionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportCardController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SchoolClassController;
 use App\Http\Controllers\SchoolController;
@@ -38,6 +43,9 @@ Route::middleware(['auth', 'tenant.context'])->group(function () {
     Route::get('/dashboard', DashboardController::class)
         ->middleware(['verified', 'can:dashboard.view'])
         ->name('dashboard');
+    Route::get('/analytics', [AnalyticsController::class, 'index'])
+        ->middleware(['verified', 'can:analytics.view'])
+        ->name('analytics.index');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -186,6 +194,70 @@ Route::middleware(['auth', 'tenant.context'])->group(function () {
     Route::get('/report-cards/{report_card}', [ReportCardController::class, 'show'])->name('report-cards.show');
     Route::get('/report-cards/{report_card}/print', [ReportCardController::class, 'print'])->name('report-cards.print');
     Route::post('/exams/{exam}/report-cards', [ReportCardController::class, 'generate'])->name('report-cards.generate');
+
+    Route::get('/reports', [ReportController::class, 'index'])
+        ->middleware('can:reports.view')
+        ->name('reports.index');
+    Route::get('/reports/students', [ReportController::class, 'students'])
+        ->middleware('can:reports.students.view')
+        ->name('reports.students.index');
+    Route::get('/reports/students/export', [ReportController::class, 'exportStudents'])
+        ->middleware('can:reports.students.export')
+        ->name('reports.students.export');
+    Route::get('/reports/attendance', [ReportController::class, 'attendance'])
+        ->middleware('can:reports.attendance.view')
+        ->name('reports.attendance.index');
+    Route::get('/reports/attendance/export', [ReportController::class, 'exportAttendance'])
+        ->middleware('can:reports.attendance.export')
+        ->name('reports.attendance.export');
+    Route::get('/reports/fees', [ReportController::class, 'fees'])
+        ->middleware('can:reports.fees.view')
+        ->name('reports.fees.index');
+    Route::get('/reports/fees/export', [ReportController::class, 'exportFees'])
+        ->middleware('can:reports.fees.export')
+        ->name('reports.fees.export');
+    Route::get('/reports/examinations', [ReportController::class, 'examinations'])
+        ->middleware('can:reports.examinations.view')
+        ->name('reports.examinations.index');
+    Route::get('/reports/examinations/export', [ReportController::class, 'exportExaminations'])
+        ->middleware('can:reports.examinations.export')
+        ->name('reports.examinations.export');
+
+    Route::get('/activity-logs', [ActivityLogController::class, 'index'])
+        ->middleware('can:activity_logs.view')
+        ->name('activity-logs.index');
+    Route::get('/activity-logs/export', [ActivityLogController::class, 'export'])
+        ->middleware('can:activity_logs.view')
+        ->name('activity-logs.export');
+    Route::get('/activity-logs/{activity_log}', [ActivityLogController::class, 'show'])
+        ->middleware('can:activity_logs.view')
+        ->name('activity-logs.show');
+
+    Route::get('/audit-logs', [AuditLogController::class, 'index'])
+        ->middleware('can:audit_logs.view')
+        ->name('audit-logs.index');
+    Route::get('/audit-logs/export', [AuditLogController::class, 'export'])
+        ->middleware('can:audit_logs.view')
+        ->name('audit-logs.export');
+    Route::get('/audit-logs/{audit_log}', [AuditLogController::class, 'show'])
+        ->middleware('can:audit_logs.view')
+        ->name('audit-logs.show');
+
+    Route::get('/backups', [BackupController::class, 'index'])
+        ->middleware('can:backups.view')
+        ->name('backups.index');
+    Route::post('/backups', [BackupController::class, 'store'])
+        ->middleware('can:backups.create')
+        ->name('backups.store');
+    Route::get('/backups/{backup_log}/download', [BackupController::class, 'download'])
+        ->middleware('can:download,backup_log')
+        ->name('backups.download');
+    Route::get('/backups/{backup_log}', [BackupController::class, 'show'])
+        ->middleware('can:backups.view')
+        ->name('backups.show');
+    Route::delete('/backups/{backup_log}', [BackupController::class, 'destroy'])
+        ->middleware('can:delete,backup_log')
+        ->name('backups.destroy');
 });
 
 require __DIR__.'/auth.php';

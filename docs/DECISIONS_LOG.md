@@ -1579,4 +1579,98 @@ Development Decisions:
 Completed
 
 Project Ready For:
-Phase 9 School Admin Exam Setup And Exam Subject Assignment Workflows
+Phase 10 Core Reporting Foundation And Shared Report Filters
+
+---
+
+# DECISION-036
+
+Date:
+2026-06-24
+
+Title:
+Define Phase 10 Reports, Analytics, System Operations, Export, And Backup Boundaries
+
+Status:
+Approved
+
+Decision:
+
+Phase 10 implements Reporting, Dashboard Analytics, Activity Log review, Audit
+Trail review, and Backup Management for the MCA MVP. Student, Attendance, Fee,
+and Examination report screens inherit the same tenant, role, assignment, and
+privacy boundaries as their source modules. Operational Attendance monthly
+summaries, Fee payment-history views, and Phase 9 report-card view/print remain
+separate operational workflows and must not be duplicated as Phase 10 report
+routes.
+
+School Admin receives own-school Student, Attendance, Fee, and Examination
+reports plus Activity Log and Audit Trail review for the active school. Teacher
+receives assigned-class Student, directly assigned Section Attendance, and
+assigned class/subject Examination reports only; Teacher has no Fee report, log
+review, backup, or standalone Analytics route. Accountant receives own-school
+Fee reports and fee-context Student lookup reports only; Accountant has no
+Attendance, Examination, log review, backup, or standalone Analytics route.
+Super Admin receives platform aggregate report summaries, platform Activity Log
+and Audit Trail review, and Backup Management in explicit Platform context only.
+Super Admin platform reports must expose aggregate counts and summaries, not raw
+cross-tenant minor data, guardian contact details, addresses, or unnecessary PII.
+
+Phase 10 export boundary for the MCA MVP is CSV streaming through native PHP
+response handling plus browser print for printable on-screen report views. CSV
+export requires the same permission, tenant filter, assignment scope, and
+privacy review as the matching on-screen report. PDF and Excel libraries are not
+approved for Phase 10 MVP because no export package exists in `composer.json`
+and package introduction requires a separate approved decision. Future PDF or
+Excel support must not bypass CSV authorization or privacy rules.
+
+Role-specific dashboard widgets are enhanced in `DashboardService` using
+server-derived aggregate queries. A dedicated Analytics page with Chart.js is
+limited to Super Admin platform summaries and School Admin own-school summaries.
+Teacher and Accountant receive role-appropriate summary widgets on the dashboard
+only and do not receive `analytics.view` or a separate Analytics route.
+
+Activity Log and Audit Trail review screens are read-only list/detail views.
+Super Admin may review platform-wide logs in Platform context. School Admin may
+review own-school logs in Tenant context. Teachers and Accountants have no
+Activity Log or Audit Trail route. Detail views must apply privacy-safe field
+allowlists; audit `old_values` and `new_values` must not expose passwords,
+tokens, guardian contact details, or other unnecessary minor data. Activity and
+audit records remain immutable; hard deletion is prohibited.
+
+Backup Management is Super Admin only. Phase 10 adds the `backup_logs` table,
+model, and manual platform backup workflow. Backup files use private storage per
+DECISION-025 and are served only through authorized controller download paths.
+Manual backup generation is synchronous and local; scheduled backups, external
+providers, queue infrastructure, and deployment-credential automation remain out
+of scope. `backups.delete` authorizes removal of the private backup file and a
+`backup_logs.status = deleted` transition only; it never authorizes hard
+deletion of backup history rows. Backup create and download actions write
+privacy-safe activity and audit evidence.
+
+Reporting permissions activate only with matching Policies, services, and routes.
+`reports.view` and `reports.export` gate cross-module report entry where
+documented. Module report permissions such as `attendance.report`,
+`fees.report`, and `exams.report` gate module-specific report screens. Super
+Admin does not receive module `.export` permissions beyond `reports.export` and
+platform log export paths documented for Super Admin. Activity Log and Audit
+Trail CSV export is limited to Super Admin and School Admin. Separate Audit
+Reports and Backup Reports menu categories are satisfied by Audit Trail and
+Backup Management screens rather than duplicate report modules.
+
+Reason:
+
+* Resolves Phase 10 readiness blockers without introducing unapproved export
+  packages or external backup services.
+* Keeps report, analytics, log, and backup boundaries aligned with Phases 6–9
+  tenant and assignment contracts.
+* Preserves minor-data privacy and retained operational history.
+* Provides an MCA-friendly reporting and system-operations scope before feature
+  freeze.
+
+Outcome:
+
+The Phase 10 roadmap, module specification, screen flow, database rules,
+tenancy, security, testing, RBAC defaults, prompt inventory, and MCA evidence
+are aligned to this decision. The readiness rerun is approved with no blocking
+issues. Core reporting foundation work is the next implementation checkpoint.

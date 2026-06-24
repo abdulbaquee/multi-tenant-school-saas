@@ -1002,11 +1002,17 @@ Never expose:
 
 # 28. EXPORT SECURITY
 
+Phase 10 MVP export boundary (DECISION-036):
+
 Supported Exports:
+
+* CSV
+* Browser print for printable on-screen report views
+
+Deferred Until An Approved Package Decision Exists:
 
 * PDF
 * Excel
-* CSV
 
 Requirements:
 
@@ -1014,6 +1020,10 @@ Requirements:
 * Same tenant filters as screen view
 * Authorization validation before export
 * Privacy review for student DOB, guardian data, mobile numbers, and photos
+* CSV responses must not include hidden fields, secrets, tokens, or unnecessary
+  minor data
+* Browser print views must use the same authorized dataset as the on-screen
+  report
 
 ---
 
@@ -1033,6 +1043,37 @@ Track:
 Backup files must never be publicly accessible.
 
 Backup downloads must pass authorization before file access.
+
+`backups.delete` removes only the private backup file and transitions
+`backup_logs.status` to `deleted`. Backup history rows remain retained and must
+not be hard-deleted.
+
+---
+
+## Phase 10 Reports, Analytics & System Operations Security And Privacy Rules
+
+Phase 10 activates Reporting, Dashboard Analytics, Activity Log review, Audit
+Trail review, and Backup Management under DECISION-036.
+
+* Report datasets inherit the same tenant, role, assignment, and privacy
+  boundaries as their source modules.
+* Super Admin platform report access is aggregate-only in explicit Platform
+  context and must not expose raw cross-tenant minor data.
+* School Admin report and log review access is own-school only.
+* Teacher report access is limited to assigned Students, directly assigned
+  Attendance Sections, and assigned Examination class/subject scope.
+* Accountant report access is limited to own-school Fee reports and fee-context
+  Student lookup only.
+* Activity Log and Audit Trail review screens are Super Admin platform-wide and
+  School Admin own-school only.
+* Audit and activity detail views must apply privacy-safe field allowlists.
+* Backup files remain private; public storage is not used for backups.
+* CSV export and browser print require the same authorization and filters as the
+  matching on-screen report.
+* PDF and Excel export libraries are not approved for Phase 10 MVP.
+
+Implementation evidence: Phase 10 design remediation approved on 2026-06-24.
+Core reporting foundation is the next checkpoint.
 
 ---
 
