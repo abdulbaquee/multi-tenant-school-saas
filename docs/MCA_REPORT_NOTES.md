@@ -558,6 +558,11 @@ Phase 2 through Phase 5 evidence available for later report assembly:
   Operations. Release gate approved at 9.8/10. Full application suite passes
   **394 tests**. Operator manual checklist passed. Submission workstream shifted
   to deployment, final report, and Qollabb Milestone 6.
+* Production deployment evidence (2026-06-25): **School Portal** live at
+  `https://schoolportal.pagescorch.com` on OVH VPS (Ubuntu 22.04, Nginx 1.18.0,
+  PHP 8.4.21, MySQL 8.0.46). Landing page, login, and School Admin dashboard
+  verified. `DEPLOYMENT_GUIDE.md` frozen at v1.1 as the canonical production
+  record.
 
 Screenshots remain to be selected and captured during the documentation and
 submission phases.

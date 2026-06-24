@@ -6,7 +6,8 @@ Project: Multi-Tenant School Administration Management SaaS Platform
 
 This guide covers local developer installation for MCA demonstration, testing, and
 report evidence. Production deployment for **School Portal** at
-`https://schoolportal.pagescorch.com` is documented in `DEPLOYMENT_GUIDE.md`.
+`https://schoolportal.pagescorch.com` is documented in the frozen
+`DEPLOYMENT_GUIDE.md` (v1.1).
 
 ## 1. Prerequisites
 

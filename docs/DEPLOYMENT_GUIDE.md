@@ -1,14 +1,63 @@
 # Deployment Guide
 
-Version: 1.0  
-Status: Active  
+Version: 1.1  
+Status: **Frozen — Production Verified**  
+Last Verified: 2026-06-25  
 Project: Multi-Tenant School Administration Management SaaS Platform
 
 Cloud deployment is required for the Qollabb live-demo link and MCA Milestone 6
-(**Deploy and Test Application**). This guide targets a single Ubuntu VPS with
-Nginx, PHP 8.4, MySQL 8, and HTTPS.
+(**Deploy and Test Application**). This document is the canonical, frozen
+production deployment record for **School Portal**.
 
-**Canonical demo URL:** `https://schoolportal.pagescorch.com`
+**Live demo URL:** `https://schoolportal.pagescorch.com`  
+**Application brand:** School Portal  
+**Co-hosted domain:** `pagescorch.com` (main site on the same OVH VPS)
+
+Do not change the production topology, paths, or hostname without updating this
+guide, `MCA_REPORT_NOTES.md`, and the Qollabb live-demo link.
+
+## 0. Frozen Production Record
+
+| Item | Canonical value |
+| ---- | ---------------- |
+| Status | Verified live — landing page, login, and School Admin dashboard confirmed |
+| Verified on | 2026-06-25 |
+| Provider | OVH VPS (`vps-744671cb.vps.ovh.net`) |
+| OS | Ubuntu 22.04 LTS |
+| Web server | Nginx 1.18.0 |
+| PHP | 8.4.21 (PHP-FPM) |
+| Database | MySQL 8.0.46 |
+| Application root | `/var/www/schoolportal` |
+| Web root | `/var/www/schoolportal/public` |
+| Nginx site file | `/etc/nginx/sites-available/schoolportal` |
+| TLS | Let's Encrypt via Certbot (`schoolportal.pagescorch.com`) |
+| DNS | `schoolportal` A record → VPS public IP |
+| Database name | `schoolportal_prod` |
+| Database user | `schoolportal` |
+| Repository | `https://github.com/abdulbaquee/multi-tenant-school-saas` |
+| Demo schools | SHA, SHB, SHC via `DemoDataSeeder` |
+| Demo credentials | `Dummy-Logins-for-multiple-schools.md` (private; not in repository) |
+
+### Freeze rules
+
+After 2026-06-25:
+
+* Do not redeploy to a different hostname without mentor/Qollabb link updates.
+* Do not change `/var/www/schoolportal` path or Nginx `server_name` casually.
+* Apply only security patches, SSL renewal, release-blocking fixes, or
+  submission-document corrections.
+* Before any production change: database dump + note the deployed Git commit.
+* After any production change: rerun §6 smoke tests and update this section.
+
+### Operator verification (2026-06-25)
+
+- [x] HTTPS loads `https://schoolportal.pagescorch.com`
+- [x] Landing page shows **School Portal** branding
+- [x] School Admin login and dashboard operational (Springdale High A)
+- [x] Footer shows **Multi-Tenant School Administration**
+- [ ] Full four-role smoke test recorded
+- [ ] Two-browser SHA/SHB tenant isolation screenshot captured
+- [ ] Qollabb Milestone 6 marked complete
 
 Before deployment, add a DNS **A record** for `schoolportal` pointing to your VPS
 public IP address.
@@ -22,22 +71,24 @@ public IP address.
 * Smoke-tested four roles across two schools
 * Recorded evidence for report Chapter 7 and Qollabb milestone 6
 
-## 2. Recommended Stack
+## 2. Production Stack (OVH VPS)
 
-| Layer | Choice |
-| ----- | ------ |
-| Server | Ubuntu 22.04 or 24.04 LTS VPS (1 vCPU, 2 GB RAM minimum) |
-| Web server | Nginx |
-| Application | PHP 8.4-FPM |
-| Database | MySQL 8.0 |
-| Process manager | systemd for `php-fpm` and queue worker if used |
-| TLS | Let's Encrypt via Certbot |
-| Source | GitHub repository |
+| Layer | Verified choice |
+| ----- | --------------- |
+| Server | OVH VPS, Ubuntu 22.04 LTS |
+| Web server | Nginx 1.18.0 |
+| Application | PHP 8.4.21-FPM |
+| Database | MySQL 8.0.46 |
+| TLS | Let's Encrypt (Certbot) |
+| Source | GitHub `main` branch |
+| Node.js | Required on server for `npm ci` / `npm run build` at deploy time |
 
-Providers such as DigitalOcean, Linode, Hostinger VPS, or AWS Lightsail are
-suitable. Use managed MySQL only if you understand network access and backups.
+`pagescorch.com` already runs on this VPS. **School Portal** uses a separate
+Nginx site block and does not replace the main domain configuration.
 
-## 3. Server Preparation
+### Fresh-server preparation (reference only)
+
+Skip this section on the verified OVH VPS unless rebuilding from scratch.
 
 ```bash
 sudo apt update && sudo apt upgrade -y
@@ -51,7 +102,7 @@ curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
 sudo apt install -y nodejs
 ```
 
-Secure MySQL and create database:
+## 3. Database Setup
 
 ```sql
 CREATE DATABASE schoolportal_prod CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -61,6 +112,8 @@ FLUSH PRIVILEGES;
 ```
 
 ## 4. Deploy Application Files
+
+Canonical production path on the OVH VPS:
 
 ```bash
 sudo mkdir -p /var/www/schoolportal
@@ -103,21 +156,24 @@ SUPER_ADMIN_EMAIL=superadmin@example.com
 SUPER_ADMIN_PASSWORD="Change-Me-Strong-Password-2026"
 ```
 
-Build and migrate:
+Build, migrate, and seed:
 
 ```bash
 npm ci
 npm run build
 php artisan migrate --force
-php artisan db:seed --class=DatabaseSeeder
+php artisan db:seed --class=DatabaseSeeder --force
+php artisan db:seed --class=DemoDataSeeder --force
 php artisan storage:link
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 ```
 
-For demonstration only, you may also run `DemoDataSeeder` after reviewing
-`database/seeders/DemoDataSeeder.php`.
+`DatabaseSeeder` creates RBAC and the Super Admin user. `DemoDataSeeder` is
+**required** for the MCA demo because demo schools (SHA, SHB, SHC) are only
+auto-loaded when `APP_ENV=local`. On production, run `DemoDataSeeder` explicitly
+as shown above.
 
 Set permissions:
 
@@ -225,16 +281,37 @@ Management** inside the Super Admin UI.
 
 ## 9. Security Checklist
 
-- [ ] `APP_DEBUG=false`
-- [ ] HTTPS enabled
-- [ ] `SESSION_SECURE_COOKIE=true`
-- [ ] Strong `APP_KEY` and database passwords
-- [ ] Demo passwords rotated if repository defaults were used publicly
-- [ ] `.env` never committed
-- [ ] `storage/app/private` not web-accessible
-- [ ] Firewall allows only 22, 80, 443
+Production verification on 2026-06-25:
 
-## 10. Qollabb Milestone 6 Submission Text
+- [x] `APP_DEBUG=false`
+- [x] HTTPS enabled (`schoolportal.pagescorch.com`)
+- [x] `SESSION_SECURE_COOKIE=true`
+- [x] Strong `APP_KEY` and database passwords (server `.env` only)
+- [x] `.env` not committed to Git
+- [x] `storage/app/private` not web-accessible
+- [ ] Demo passwords rotated after public demo period (recommended before viva)
+- [ ] Firewall allows only 22, 80, 443 (confirm on VPS)
+
+## 10. Production Update Procedure (post-freeze)
+
+To deploy a new `main` commit without changing infrastructure:
+
+```bash
+cd /var/www/schoolportal
+mysqldump -u schoolportal -p schoolportal_prod > ~/backup-$(date +%F)-pre-deploy.sql
+git pull origin main
+composer install --no-dev --optimize-autoloader
+npm ci && npm run build
+php artisan migrate --force
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+sudo chown -R www-data:www-data storage bootstrap/cache
+```
+
+Rerun §6 smoke tests after every update.
+
+## 11. Qollabb Milestone 6 Submission Text
 
 Copy into Qollabb when smoke tests and report draft are complete:
 
@@ -246,7 +323,7 @@ Copy into Qollabb when smoke tests and report draft are complete:
 > regression suite passes 394 tests locally. Final report PDF, presentation, and
 > GitHub/live-demo links submitted on Qollabb.
 
-## 11. Related Documents
+## 12. Related Documents
 
 * `INSTALLATION_GUIDE.md`
 * `MCA_SUBMISSION_CHECKLIST.md`

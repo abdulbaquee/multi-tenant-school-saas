@@ -12,7 +12,7 @@ them.
 | Item | Status |
 | ---- | ------ |
 | Qollabb milestones | 5 / 6 (payment integration marked complete) |
-| Remaining milestone | Deploy and Test Application |
+| Remaining milestone | Deploy and Test Application (live URL verified 2026-06-25) |
 | Final report upload | Pending |
 | Evaluation | Pending |
 
@@ -29,10 +29,10 @@ them.
 
 ### Cloud deployment
 
-- [ ] Provision VPS + MySQL 8 (see `DEPLOYMENT_GUIDE.md`)
-- [ ] Configure production `.env` (`APP_DEBUG=false`, HTTPS)
-- [ ] `composer install --no-dev`, `npm run build`, `migrate --seed`
-- [ ] Post-deploy smoke tests on live URL
+- [x] Provision VPS + MySQL 8 (OVH — verified 2026-06-25)
+- [x] Configure production `.env` (`APP_DEBUG=false`, HTTPS)
+- [x] `composer install --no-dev`, `npm run build`, `migrate --seed`
+- [x] Post-deploy smoke tests on live URL
 - [ ] Record live URL: `https://schoolportal.pagescorch.com` in Qollabb
 
 ### Report drafting (parallel — 25% time daily)

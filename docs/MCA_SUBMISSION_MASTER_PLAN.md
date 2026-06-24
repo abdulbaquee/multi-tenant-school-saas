@@ -44,9 +44,9 @@ must progress in parallel.
 | Submission Deadline | 2026-07-05 |
 | Portal Evaluation Status On 2026-06-24 | Pending |
 | Portal Progress On 2026-06-24 | ~83 percent (student-reported after payment milestone) |
-| Portal Milestones On 2026-06-24 | 5 of 6 marked complete |
-| Remaining Portal Milestone | Deploy and Test Application |
-| Final Report Upload | Not yet submitted |
+| Portal Milestones On 2026-06-25 | 5 of 6 marked complete; live deploy verified |
+| Remaining Portal Milestone | Mark **Deploy and Test Application** on Qollabb |
+| Live Demo URL | `https://schoolportal.pagescorch.com` (verified 2026-06-25) |
 
 Student name, enrollment number, place, signature, final guide designation, and
 submission time remain student-supplied values and must never be guessed.
@@ -266,7 +266,7 @@ completion percentage.
 | Build Onboarding Module | Completed | Authentication, school management, settings, users, tenancy, RBAC, and review approval | Retain evidence |
 | Implement Student Registration | Completed (student-reported 2026-06-24) | Phase 6 release-approved — Student registration, profiles, private photos, Enrollment | Retain evidence |
 | Integrate Payment System | Completed (student-reported 2026-06-24) | Phase 8 release-approved — Fee collection, receipts, sandbox transaction workflow | Retain evidence |
-| Deploy and Test Application | Pending | 394 automated tests pass; `DEPLOYMENT_GUIDE.md` and `INSTALLATION_GUIDE.md` added; cloud deploy, smoke tests, and final report upload remain | Complete after live HTTPS deploy and QA evidence |
+| Deploy and Test Application | Live (student-verified 2026-06-25) | `https://schoolportal.pagescorch.com` on OVH VPS; `DEPLOYMENT_GUIDE.md` frozen at v1.1 | Mark Qollabb milestone complete; capture remaining smoke-test evidence |
 
 Recommended Milestone 4 progress description:
 
@@ -293,7 +293,7 @@ allows an optional file.
 | Configure role-based access control | Complete | Phase 4 release approval |
 | Ensure tenant-level data filtering | Complete for implemented modules | Native tenancy and 10/10 reviews |
 | Integrate payment sandbox | Complete | Phase 8 sandbox transaction workflow and release approval |
-| Deploy application on cloud platform | Pending | `DEPLOYMENT_GUIDE.md`; target live URL by 2026-06-30 |
+| Deploy application on cloud platform | Complete (verified 2026-06-25) | `https://schoolportal.pagescorch.com` on OVH VPS; frozen `DEPLOYMENT_GUIDE.md` v1.1 |
 | Conduct concurrent tenant testing | Pending final QA | Two-browser SHA/SHB demo per deployment guide §7 |
 | Implement logging and backups | Complete | Phase 10 release approval — activity/audit review screens and manual platform backups |
 | Optimize database queries | Ongoing; final audit pending | Document in report Chapter 7 |

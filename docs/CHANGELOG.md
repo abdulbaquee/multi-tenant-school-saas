@@ -1262,7 +1262,36 @@ Status: In Progress
 
 ---
 
-# [1.3.0] - Testing & Quality Assurance
+# [1.3.0] - Production Deployment Frozen
+
+Date: 2026-06-25
+
+Status: Completed
+
+## Deployed
+
+* **School Portal** live at `https://schoolportal.pagescorch.com`
+* OVH VPS (Ubuntu 22.04, Nginx 1.18.0, PHP 8.4.21, MySQL 8.0.46)
+* Application root `/var/www/schoolportal`
+* Let's Encrypt HTTPS on `schoolportal.pagescorch.com`
+
+## Frozen
+
+* `DEPLOYMENT_GUIDE.md` v1.1 — canonical production deployment record
+* Co-hosted with `pagescorch.com` on the same VPS (separate Nginx site block)
+
+## Verification
+
+* Landing page and School Portal branding confirmed
+* School Admin dashboard operational (Springdale High A)
+
+## Deliverables
+
+* Live demo URL ready for Qollabb Milestone 6 and MCA report Chapter 7
+
+---
+
+# [1.4.0] - Testing & Quality Assurance
 
 Status: Planned
 
@@ -1281,7 +1310,7 @@ Status: Planned
 
 ---
 
-# [1.4.0] - Deployment & Documentation
+# [1.5.0] - Deployment & Documentation
 
 Status: Planned
 
@@ -1350,9 +1379,9 @@ Example:
 
 # Current Project Status
 
-Phase: MCA submission critical path — deployment, final report, Qollabb
-Milestone 6 (Deploy and Test Application). Phase 10 release-approved; 394 tests
-passing. Feature freeze effective 2026-07-02.
+Phase: MCA submission critical path — **production deployed and frozen** at
+`https://schoolportal.pagescorch.com`. Final report and Qollabb Milestone 6
+portal upload remain. Feature freeze effective 2026-07-02.
 
 Repository Setup: Completed
 
