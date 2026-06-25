@@ -12,6 +12,7 @@ use App\Models\Section;
 use App\Models\Student;
 use App\Models\StudentEnrollment;
 use App\Models\StudentFee;
+use App\Models\Teacher;
 use App\Models\User;
 use App\Tenancy\TenantContext;
 use Illuminate\Database\Seeder;
@@ -25,7 +26,8 @@ class DemoDataSeeder extends Seeder
     public function run(): void
     {
         if (School::query()->where('code', 'SHA')->exists()) {
-            $this->command?->warn('Demo schools already exist. Skipping DemoDataSeeder.');
+            $this->ensureDemoTeacherProfiles();
+            $this->command?->warn('Demo schools already exist. Synchronized demo teacher profiles only.');
 
             return;
         }
@@ -143,6 +145,8 @@ class DemoDataSeeder extends Seeder
                 'capacity' => 40,
                 'status' => Section::STATUS_ACTIVE,
             ]);
+
+            $this->linkDemoTeacher($school, $section8A);
 
             $section9A = Section::create([
                 'class_id' => $class9->id,
@@ -328,6 +332,16 @@ class DemoDataSeeder extends Seeder
                 'status' => SchoolClass::STATUS_ACTIVE,
             ]);
 
+            $class8 = SchoolClass::query()->where('code', 'VIII')->firstOrFail();
+            $section = Section::create([
+                'class_id' => $class8->id,
+                'name' => 'A',
+                'capacity' => 40,
+                'status' => Section::STATUS_ACTIVE,
+            ]);
+
+            $this->linkDemoTeacher($school, $section);
+
             FeeCategory::create([
                 'name' => 'Tuition',
                 'description' => 'Baseline tenant category for isolation testing.',
@@ -356,5 +370,60 @@ class DemoDataSeeder extends Seeder
             'due_date' => $structure->due_date,
             'status' => StudentFee::STATUS_PENDING,
         ]);
+    }
+
+    private function ensureDemoTeacherProfiles(): void
+    {
+        foreach (['SHA', 'SHB', 'SHC'] as $code) {
+            $school = School::query()->where('code', $code)->first();
+
+            if (! $school instanceof School) {
+                continue;
+            }
+
+            app(TenantContext::class)->runAsTenant($school->id, function () use ($school): void {
+                $section = Section::query()
+                    ->whereNull('deleted_at')
+                    ->where('status', Section::STATUS_ACTIVE)
+                    ->orderBy('id')
+                    ->first();
+
+                if (! $section instanceof Section) {
+                    return;
+                }
+
+                $this->linkDemoTeacher($school, $section);
+            });
+        }
+    }
+
+    private function linkDemoTeacher(School $school, Section $section): void
+    {
+        $teacherUser = User::query()
+            ->where('school_id', $school->id)
+            ->whereHas('role', fn ($query) => $query->where('code', Role::TEACHER))
+            ->orderBy('id')
+            ->first();
+
+        if (! $teacherUser instanceof User) {
+            return;
+        }
+
+        $teacher = $teacherUser->teacherProfile()
+            ->whereNull('deleted_at')
+            ->first();
+
+        if (! $teacher instanceof Teacher) {
+            $teacher = Teacher::create([
+                'user_id' => $teacherUser->id,
+                'employee_code' => 'TCH-'.$school->code,
+                'joining_date' => '2025-04-01',
+                'status' => Teacher::STATUS_ACTIVE,
+            ]);
+        }
+
+        if ((int) $section->teacher_id !== (int) $teacher->id) {
+            $section->update(['teacher_id' => $teacher->id]);
+        }
     }
 }

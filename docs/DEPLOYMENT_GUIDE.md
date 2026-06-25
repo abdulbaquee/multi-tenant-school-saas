@@ -54,9 +54,9 @@ After 2026-06-25:
 - [x] HTTPS loads `https://schoolportal.pagescorch.com`
 - [x] Landing page shows **School Portal** branding
 - [x] School Admin login and dashboard operational (Springdale High A)
-- [x] Footer shows **Multi-Tenant School Administration**
+- [x] Two-browser SHA/SHB tenant isolation screenshot captured
+- [ ] Teacher report screens verified after demo teacher-profile sync
 - [ ] Full four-role smoke test recorded
-- [ ] Two-browser SHA/SHB tenant isolation screenshot captured
 - [ ] Qollabb Milestone 6 marked complete
 
 Before deployment, add a DNS **A record** for `schoolportal` pointing to your VPS
@@ -173,7 +173,16 @@ php artisan view:cache
 `DatabaseSeeder` creates RBAC and the Super Admin user. `DemoDataSeeder` is
 **required** for the MCA demo because demo schools (SHA, SHB, SHC) are only
 auto-loaded when `APP_ENV=local`. On production, run `DemoDataSeeder` explicitly
-as shown above.
+as shown above. It also creates linked **Teacher profiles** required for Teacher
+report screens.
+
+If demo schools already exist, re-run:
+
+```bash
+php artisan db:seed --class=DemoDataSeeder --force
+```
+
+This synchronizes missing demo teacher profiles without recreating schools.
 
 Set permissions:
 
@@ -238,11 +247,12 @@ production `.env` first).
 | 1 | Super Admin | Login, Schools list, Reports hub, Analytics, System Operations |
 | 2 | School Admin A | Students, Attendance, Fees, own-school reports only |
 | 3 | School Admin B | Confirm School A data is not visible |
-| 4 | Teacher | Assigned attendance/marks only; no System Operations |
+| 4 | Teacher | Assigned attendance/marks; Student, Attendance, and Examination reports for assigned scope |
 | 5 | Accountant | Fee workflows; no examination admin screens |
-| 6 | Files | Student photo loads through authorized route only |
-| 7 | Backup | Super Admin creates and downloads platform backup |
-| 8 | HTTPS | No mixed-content warnings; session persists after login |
+| 6 | School Admin System Operations | **Expected:** Activity Logs and Audit Trail for own school only; **no** Backup Management |
+| 7 | Files | Student photo loads through authorized route only |
+| 8 | Backup | Super Admin creates and downloads platform backup |
+| 9 | HTTPS | No mixed-content warnings; session persists after login |
 
 Record `https://schoolportal.pagescorch.com`, date, PHP/MySQL versions, and
 screenshot filenames in `MCA_REPORT_NOTES.md`.
