@@ -27,3 +27,13 @@ Homestead.yaml
 Thumbs.db
 
 /Dummy-Logins-for-multiple-schools.md
+smoke-test-manual-test-donot-commit-this-file.md
+/.matplotlib-cache/
+/.venv-report/
+
+# MCA report — regeneratable outputs and local-only copies
+/docs/MCA-Final-Project-Report-Qollabb/MCA-Final-Project-Report-FILLED.docx
+/docs/MCA-Final-Project-Report-Qollabb/Project Report Writting Guidelines.pdf
+/docs/MCA-Final-Project-Report-Qollabb/**/*.backup.*
+/docs/MCA-Final-Project-Report-Qollabb/review-md/
+/docs/mca-screenshots/test-output.txt
